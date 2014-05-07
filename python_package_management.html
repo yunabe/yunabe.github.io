@@ -8,7 +8,7 @@
     
     <title>Python パッケージ管理 &mdash; yunabe 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -38,7 +38,80 @@
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python パッケージ管理</a><ul>
+<li><a class="reference internal" href="#keywords">キーワード</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">事前知識</a><ul>
+<li><a class="reference internal" href="#site-packages">site-packages</a><ul>
+<li><a class="reference internal" href="#id4">参考文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#user-site-directory">User site directory</a><ul>
+<li><a class="reference internal" href="#id5">参考文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pypi">PyPI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distutils">distutils</a><ul>
+<li><a class="reference internal" href="#distutils-basic">基本</a><ul>
+<li><a class="reference internal" href="#id9">distutils における依存関係の扱い</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distribute">distribute</a></li>
+<li><a class="reference internal" href="#setuptools">setuptools</a><ul>
+<li><a class="reference internal" href="#id12">インストール</a><ul>
+<li><a class="reference internal" href="#id13">参考文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#easy-install">easy_install</a><ul>
+<li><a class="reference internal" href="#id15">easy_install の使い方</a></li>
+<li><a class="reference internal" href="#id17">文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python-eggs">Python Eggs</a></li>
+<li><a class="reference internal" href="#ez-setup-py">ez_setup.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pip">PIP</a><ul>
+<li><a class="reference internal" href="#id20">インストール &amp; アップグレード</a></li>
+<li><a class="reference internal" href="#id21">使い方</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id22">その他文献</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to yunabe&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/python_package_management.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -343,79 +416,6 @@ setuptools を使って (つまり setuptools を使って setup.py を定義し
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Python パッケージ管理</a><ul>
-<li><a class="reference internal" href="#keywords">キーワード</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id3">事前知識</a><ul>
-<li><a class="reference internal" href="#site-packages">site-packages</a><ul>
-<li><a class="reference internal" href="#id4">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#user-site-directory">User site directory</a><ul>
-<li><a class="reference internal" href="#id5">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pypi">PyPI</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils">distutils</a><ul>
-<li><a class="reference internal" href="#distutils-basic">基本</a><ul>
-<li><a class="reference internal" href="#id9">distutils における依存関係の扱い</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distribute">distribute</a></li>
-<li><a class="reference internal" href="#setuptools">setuptools</a><ul>
-<li><a class="reference internal" href="#id12">インストール</a><ul>
-<li><a class="reference internal" href="#id13">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#easy-install">easy_install</a><ul>
-<li><a class="reference internal" href="#id15">easy_install の使い方</a></li>
-<li><a class="reference internal" href="#id17">文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#python-eggs">Python Eggs</a></li>
-<li><a class="reference internal" href="#ez-setup-py">ez_setup.py</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pip">PIP</a><ul>
-<li><a class="reference internal" href="#id20">インストール &amp; アップグレード</a></li>
-<li><a class="reference internal" href="#id21">使い方</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id22">その他文献</a></li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to yunabe&#8217;s documentation!</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/python_package_management.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
