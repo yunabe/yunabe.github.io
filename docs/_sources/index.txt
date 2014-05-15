@@ -9,9 +9,10 @@ Welcome to yunabe's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    python_package_management
+   python_metaclass
 
 Indices and tables
 ==================
