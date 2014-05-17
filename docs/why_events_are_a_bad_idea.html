@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<title>Why Events Are A Bad Idea の要点</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="prev" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する" href="python_metaclass.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Why Events Are A Bad Idea の要点</a><ul>
+<li><a class="reference internal" href="#id2">論文の概要</a></li>
+<li><a class="reference internal" href="#duality-revisited">2.1 Duality Revisited</a></li>
+<li><a class="reference internal" href="#problems-with-threads">2.2 “Problems” with Threads</a><ul>
+<li><a class="reference internal" href="#performance">Performance</a></li>
+<li><a class="reference internal" href="#control-flow">Control Flow</a></li>
+<li><a class="reference internal" href="#synchronization">Synchronization</a></li>
+<li><a class="reference internal" href="#state-management">State Management</a></li>
+<li><a class="reference internal" href="#scheduling">Scheduling</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-case-for-threads">3 The Case for Threads</a><ul>
+<li><a class="reference internal" href="#id3">Control Flow</a></li>
+<li><a class="reference internal" href="#exception-handling">Exception Handling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="python_metaclass.html"
+                        title="previous chapter">Python の メタプログラミング (__metaclass__, メタクラス) を理解する</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/why_events_are_a_bad_idea.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="why-events-are-a-bad-idea">
+<h1>Why Events Are A Bad Idea の要点<a class="headerlink" href="#why-events-are-a-bad-idea" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.cs.berkeley.edu/~brewer/papers/threads-hotos-2003.pdf">Why Events Are A Bad Idea</a>
+を読んだので要点をまとめてみた。</p>
+<div class="section" id="id2">
+<h2>論文の概要<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>イベントモデルだとアプリケーションレベルで状態管理
+（スレッドモデルではスタックとプログラムカウンタで保持されているもの）
+とスケジューリング (スレッドモデルではカーネルによるスケジューリング)
+を自前で行うからスレッドライブラリの実装による数々の問題が回避できる。つまり</p>
+<ul class="simple">
+<li>イベントモデルのメリット == 既存のスレッドライブラリの抱える問題を自前の実装で回避可能 ということだと思う。</li>
+<li>逆にスレッドライブラリ・プログラミング言語が提供してくれている便利な機能（そしてそれは通常のプログラミングで普段から利用しているものである。関数呼び出しとか例外処理とか）が使えなくなり、自前で実装する必要があるからコードが複雑なことになってマイナス面も多いよねってことかな。</li>
+</ul>
+<p>以下は各章の要点</p>
+</div>
+<div class="section" id="duality-revisited">
+<h2>2.1 Duality Revisited<a class="headerlink" href="#duality-revisited" title="Permalink to this headline">¶</a></h2>
+<p>根っこではイベントモデルとスレッドモデルは双対だよね。</p>
+</div>
+<div class="section" id="problems-with-threads">
+<h2>2.2 “Problems” with Threads<a class="headerlink" href="#problems-with-threads" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>スレッドのスケジューリングのアルゴリズムにまずいところがあると困る。</li>
+<li>例えばO(n)のアルゴリズムとか（この論文が書かれた時点ではGNU Pthには存在したっぽい、2012年現在はどうなのだろうね）。</li>
+<li>まあ、これはスレッドモデルそのものも問題じゃないよね。</li>
+</ul>
+</div>
+<div class="section" id="control-flow">
+<h3>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>スレッドモデルだと call/return パターン（普通の関数呼び出し + if-else, loop によるコントロールフロー）
+しか書けない。自由度が低いという批判。</li>
+<li>そもそもそんな複雑なモデルは使わないよね (We believe more complex patterns are not used because they are difficult to use well.)。
+大別すると<ol class="arabic">
+<li>call/return</li>
+<li>parallel calls</li>
+<li>pipeline になるよね。どれもtheradで書いたほうがずっと自然に書けるよね。</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="synchronization">
+<h3>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>イベントモデルだと synchchronization が不要で単純で済む。</li>
+<li>それはイベントモデルだとタスクが no preemption (cooperative multitasking) だからだよね。
+スレッドも preemption が起こらないような実装 (cooperative thread systems) にしたら同じメリットがあるよ。
+しかも multiprocessors の場合は成り立たないよね (とすでに2003年に言われている. 2012年携帯ですらマルチコア)</li>
+</ul>
+</div>
+<div class="section" id="state-management">
+<h3>State Management<a class="headerlink" href="#state-management" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>スレッドごとに stack 作るから仮想メモリ空間が足りなくなる 。stackサイズを小さくするとstack overflowする。</li>
+<li>イベント方式だとプログラマが state の管理を自前でする必要があるので、無駄なstateが保持されないで済む。</li>
+<li>論文では言及されてないけど、仮想メモリ不足に関しては64bitになるとどうでもよくなる。</li>
+<li>2番目の点に関しては、まあイベント特有のメリットと言えるかも。
+スレッドでもプログラマが注意すればstateは小さくできるけど、プログラマが注意しないと簡単に無駄なstateが保持されるから。</li>
+</ul>
+</div>
+<div class="section" id="scheduling">
+<h3>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">¶</a></h3>
+<p>スケジューリングがアプリケーションレベルで行えるので、
+イベント方式だとアプリケーションレイヤの知識を利用してスケジューリングを最適化する余地がある。
+例えば同種のイベントをまとめて処理すると
+code locality を上げられるなど
+（逆に同じデータは同じプロセッサで処理したほうが data locality が上がってよいケースもあるだろう）。</p>
+</div>
+</div>
+<div class="section" id="the-case-for-threads">
+<h2>3 The Case for Threads<a class="headerlink" href="#the-case-for-threads" title="Permalink to this headline">¶</a></h2>
+<p>大体の場合 concurrent requests はそもそも独立して処理される。</p>
+<div class="section" id="id3">
+<h3>Control Flow<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>イベントモデルだとプログラム理解する際に プログラマがプログラムを call-return のパターンに頭の中でマッチさせなくてはいけない
+(The programmer must mentally match these call/return pairs)。
+またイベントモデルで書く場合、stateの保持を自分で書かなくてはならならず(stack ripping)、
+これがイベントモデルを使う際の大きな重荷となる (実際そう思う)。
+あと、control flow が形式的に縛られなくなることで本来1つしか届かないメッセージが複数呼び出される(あるいはコールバックが必要以上に呼び出される)
+ような問題が起こりやすい (言語やライブラリの仕様としてそういう事態を防ぐのは困難)。
+あと既存のデバッグツールとの相性がよい（例えばスタックの状態の表示とか。イベントモデルで自前で状態管理してるとそういったツールからは扱いづらい）。</p>
+</div>
+<div class="section" id="exception-handling">
+<h3>Exception Handling<a class="headerlink" href="#exception-handling" title="Permalink to this headline">¶</a></h3>
+<p>例外発生時の処理とかややこしいから言語の機能をそのまま使える
+thread モデルのほうがよいよねという。 control flow の派生の話.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yu Watanabe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

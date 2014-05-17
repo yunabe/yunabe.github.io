@@ -13,6 +13,7 @@ Contents:
 
    python_package_management
    python_metaclass
+   why_events_are_a_bad_idea
 
 Indices and tables
 ==================
