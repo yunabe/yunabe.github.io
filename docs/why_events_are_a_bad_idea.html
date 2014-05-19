@@ -6,9 +6,10 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-<title>Why Events Are A Bad Idea (イベントモデルはスレッドに比べて何が悪いのか)</title>
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea )</title>
     
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -43,7 +44,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Why Events Are A Bad Idea (イベントモデルはスレッドに比べて何が悪いのか)</a><ul>
+<li><a class="reference internal" href="#">イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea )</a><ul>
 <li><a class="reference internal" href="#id2">論文の概要</a></li>
 <li><a class="reference internal" href="#duality-revisited">2.1 Duality Revisited</a></li>
 <li><a class="reference internal" href="#problems-with-threads">2.2 “Problems” with Threads</a><ul>
@@ -93,10 +94,10 @@
           <div class="body">
             
   <div class="section" id="why-events-are-a-bad-idea">
-<h1>Why Events Are A Bad Idea (イベントモデルはスレッドに比べて何が悪いのか)<a class="headerlink" href="#why-events-are-a-bad-idea" title="Permalink to this headline">¶</a></h1>
+<h1>イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea )<a class="headerlink" href="#why-events-are-a-bad-idea" title="Permalink to this headline">¶</a></h1>
 <p>並行処理をプログラミングする方法は大別すると、
 スレッドなどを利用した同期処理的な書き方と
-イベントを利用した非同期処理的な書き方があります。
+イベントを利用した非同期処理的な書き方があります (イベントループ)。
 最近 <a class="reference external" href="http://www.kegel.com/c10k.html">C10K問題</a> が有名になったことや、
 Node.js が流行っていて Node.js のメリットとしてイベントモデルであるため
 C10Kが解決されるというのが上げられていたりして、

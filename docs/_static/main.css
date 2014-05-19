@@ -1,0 +1,31 @@
+@import url("sphinxdoc.css");
+
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    margin:0;
+    word-break: break-all;
+    min-width: 200px;
+  }
+
+  div.sphinxsidebar {
+    display:none;
+  }
+
+  div.bodywrapper {
+    margin: 0;
+  }
+
+  ul {
+    padding: 0 0 0 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  div.related {
+    display:none;
+  }
+}
