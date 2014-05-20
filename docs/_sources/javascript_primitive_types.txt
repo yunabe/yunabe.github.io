@@ -1,0 +1,168 @@
+JavaScript プリミティブ型 (基本データ型)
+========================================
+
+.. container:: editdate
+
+  更新 2013年3月24日
+
+プリミティブ型とラッパーオブジェクト
+------------------------------------
+数値(number)・文字列(string)・真偽値(boolean) のプリミティブ型（基本型）には
+それぞれNumber, String, Booleanという対応するオブジェクト型(ラッパーオブジェクト)が存在する。
+
+
++--------+----------------+---------------------+
+|        | プリミティブ型 | ラッパーオブジェクト|
++--------+----------------+---------------------+
+| 数値   | number         | Number              |
++--------+----------------+---------------------+
+| 文字列 | string         | String              |
++--------+-----+----------+---------------------+
+| 真偽値 | boolean        | Boolean             |
++--------+----------------+---------------------+
+
+プリミティブ型からラッパーオブジェクトへの変換は
+`Objectを使って行うことができる <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Description>`_。::
+
+  var obj = new Object(1); //newは省略可能
+  alert(obj instanceof Number); //true
+
+ただ、ラッパーオブジェクトのメソッドやプロパティ（文字列のlengthなど）はプリミティブ型からも利用可能なので、
+ラッパーオブジェクトを拡張して新しいメソッドを追加する場合を除いて、
+ラッパーオブジェクトを意識して利用するケースはそれほどないと思う。
+型変換のための関数として利用するのが、ラッパーオブジェクトの一番の使い道になるような気がする。
+なおラッパーオブジェクトからプリミティブ型への変換を行うには、 各ラッパーオブジェクトが持つvalueOfメソッドを利用すればよい。::
+
+  var i = new Number(0);
+  alert(typeof i); //object
+  alert(typeof i.valueOf()); //number
+
+ラッパーオブジェクトのインスタンスと論理値
+------------------------------------------
+ラッパーオブジェクトのインスタンスはすべて ``true`` として解釈される
+(参考: `Boolean - MDN <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description>`_)。
+そのため、``0`` や ``false``, ``''`` (空文字列) が ``false`` として扱われるにも関わらず、
+それをラップしたインスタンスは ``true`` として取り扱われる。 
+これはすこし直感に反しているので、注意が必要な挙動。
+
+::
+
+  //!!（否定2回)でbooleanへの変換が行える
+  var b, i, s;
+  b = false;
+  i = 0;
+  s = '';
+  alert(!!b); //false
+  alert(!!i); //false
+  alert(!!s); //false
+  b = new Boolean(false);
+  i = new Number(0);
+  s = new String('');
+  alert(!!b); //true
+  alert(!!i); //true
+  alert(!!s); //true
+  // Booleanはfalseに対応するラッパーオブジェクトをtrueと解釈する
+  alert(new Boolean(new Boolean(false))); //true
+  alert(new Boolean(Boolean(false))); //false
+
+型変換
+------
+ラッパーオブジェクトは関数として利用すると、
+対応するプリミティブ型へのコンバーターとして機能する::
+
+  var n = Number('123');
+  alert(typeof n); // number
+  alert(n instanceof Number); // false
+
+また、newをつけて呼び出すと、ラッパーオブジェクトのインスタンスが作成される。(あまりこれを使うことはないと思うが)::
+
+  var n = new Number('123');
+  alert(typeof n); // object
+  alert(n instanceof Number); // true
+
+ラッパーオブジェクトの演算
+--------------------------
+ラッパーオブジェクトのインスタンスを演算子で処理した結果は、 プリミティブ型となる。::
+
+  var x = new Number(3);
+  var y = new Number(4);
+  alert(typeof x); // object
+  alert(typeof x + y); // number
+
+ラッパーオブジェクトの関数の演算結果は基本的にプリミティブ型が返る。::
+
+  var s = new String('Hello world');
+  alert(typeof s); // object
+  alert(typeof s.substring(0, 5)); // string
+
+このように何かしら処理を行うと、結果は簡単にプリミティブ型になってしまうので
+``new String('Hello world')`` のようにして積極的にラッパーオブジェクトを利用するのは避けた方がよさそうである。
+
+プリミティブ型のプロパティへのアクセス
+--------------------------------------
+プリミティブ型の値に対して、``x.key`` や ``x['key']`` でプロパティのアクセスを行うと
+対応するラッパーオブジェクトへ自動変換されてからプロパティのアクセスが実行される（FirefoxのString.lengthなど）。
+
+そのため、ラッパーオブジェクトのメソッドやプロパティはプリミティブ型からも利用可能。
+またラッパーオブジェクトの ``prototype`` を拡張しておけば、プリミティブ型からも利用することができる。
+
+::
+
+  Boolean.prototype.invert = function() {
+    /*
+     * thisはラッパーオブジェクトBooleanのインスタンスであり、
+     * ラッパークラスのインスタンスは常にtrueとして扱われることに注意
+     * (つまりreturn !this;とすると常にfalseを返す関数となってしまう。）
+     */
+    return !this.valueOf();
+  };
+  var t = true;
+  var f = false;
+  alert(t.invert()); // false
+  alert(f.invert()); // true
+
+またプロパティに値を代入しても、プリミティブ型に対しては反映されない。::
+
+  var i = 0;
+  i.x = 'i.x';
+  alert(i.x); // undefined
+  var j = 0;
+  j.x = 'j.x';
+  alert(j.x); // j.x
+
+Google Chromeの場合
+~~~~~~~~~~~~~~~~~~~
+Firefox, Safariは上のように動いていると思って問題なさそうだが、Chromeは若干動作が違うようである。::
+
+  Object.prototype.getType = function() {
+    return typeof this;
+  };
+  var i = 0;
+  alert(i.getType());
+
+上で述べたように、プリミティブ型（number）のプロパティを参照すると、対応するラッパーオブジェクト（Number）に変換され、
+そこからprototypeをたどってgetTypeを呼び出しているとすれば、最後の文は::
+
+  alert(new Number(i).getType());
+
+と等価となり ``this`` はラッパーオブジェクトのインスタンスになるはずなので、
+実行結果は ``"object"`` となるはずである。
+実際、このスクリプトを実行するとSafari, Firefoxでは ``"object"`` が表示される。
+
+しかしChromeでは ``"number"`` が表示される。
+つまりChromeではラッパーオブジェクトへの変換は行われず、thisには元々のプリミティブ型がそのまま格納されるようである。
+なお、プリミティブ型のプロパティに値の代入を行っても反映されないのはChromeでも同じである。
+
+falseとして扱われる値
+---------------------
+if, whileなどの条件式や、!演算にfalseとして解釈される値::
+
+  false
+  0, -0
+  NaN
+  ''
+  null
+  undefined
+
+ほかにあるのかな？
+`new Boolean(false)や、new Number(0)はfalseとしては扱われないので注意が必要 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description>`_。

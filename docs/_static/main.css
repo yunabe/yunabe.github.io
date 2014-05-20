@@ -2,7 +2,7 @@
 
 body {
   -webkit-text-size-adjust: 100%;
-  color:#505050;
+  color:#404040;
   background-color:#fff;
   border:none;
 }
@@ -19,6 +19,11 @@ div.sphinxsidebar h3, div.sphinxsidebar h4 {
 
 div.body a {
   text-decoration: none;
+}
+
+div.editdate {
+  font-size:13px;
+  color:#909090;
 }
 
 @media screen and (max-width: 600px) {

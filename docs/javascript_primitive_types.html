@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>JavaScript プリミティブ型 (基本データ型)</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">JavaScript プリミティブ型 (基本データ型)</a><ul>
+<li><a class="reference internal" href="#id1">プリミティブ型とラッパーオブジェクト</a></li>
+<li><a class="reference internal" href="#id2">ラッパーオブジェクトのインスタンスと論理値</a></li>
+<li><a class="reference internal" href="#id3">型変換</a></li>
+<li><a class="reference internal" href="#id4">ラッパーオブジェクトの演算</a></li>
+<li><a class="reference internal" href="#id5">プリミティブ型のプロパティへのアクセス</a><ul>
+<li><a class="reference internal" href="#google-chrome">Google Chromeの場合</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#false">falseとして扱われる値</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/javascript_primitive_types.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="javascript">
+<h1>JavaScript プリミティブ型 (基本データ型)<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2013年3月24日</div>
+<div class="section" id="id1">
+<h2>プリミティブ型とラッパーオブジェクト<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>数値(number)・文字列(string)・真偽値(boolean) のプリミティブ型（基本型）には
+それぞれNumber, String, Booleanという対応するオブジェクト型(ラッパーオブジェクト)が存在する。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="11%" />
+<col width="23%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>&nbsp;</td>
+<td colspan="2">プリミティブ型</td>
+<td>ラッパーオブジェクト</td>
+</tr>
+<tr class="row-even"><td>数値</td>
+<td colspan="2">number</td>
+<td>Number</td>
+</tr>
+<tr class="row-odd"><td>文字列</td>
+<td colspan="2">string</td>
+<td>String</td>
+</tr>
+<tr class="row-even"><td>真偽値</td>
+<td colspan="2">boolean</td>
+<td>Boolean</td>
+</tr>
+</tbody>
+</table>
+<p>プリミティブ型からラッパーオブジェクトへの変換は
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Description">Objectを使って行うことができる</a>。:</p>
+<div class="highlight-python"><div class="highlight"><pre>var obj = new Object(1); //newは省略可能
+alert(obj instanceof Number); //true
+</pre></div>
+</div>
+<p>ただ、ラッパーオブジェクトのメソッドやプロパティ（文字列のlengthなど）はプリミティブ型からも利用可能なので、
+ラッパーオブジェクトを拡張して新しいメソッドを追加する場合を除いて、
+ラッパーオブジェクトを意識して利用するケースはそれほどないと思う。
+型変換のための関数として利用するのが、ラッパーオブジェクトの一番の使い道になるような気がする。
+なおラッパーオブジェクトからプリミティブ型への変換を行うには、 各ラッパーオブジェクトが持つvalueOfメソッドを利用すればよい。:</p>
+<div class="highlight-python"><div class="highlight"><pre>var i = new Number(0);
+alert(typeof i); //object
+alert(typeof i.valueOf()); //number
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>ラッパーオブジェクトのインスタンスと論理値<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>ラッパーオブジェクトのインスタンスはすべて <tt class="docutils literal"><span class="pre">true</span></tt> として解釈される
+(参考: <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">Boolean - MDN</a>)。
+そのため、<tt class="docutils literal"><span class="pre">0</span></tt> や <tt class="docutils literal"><span class="pre">false</span></tt>, <tt class="docutils literal"><span class="pre">''</span></tt> (空文字列) が <tt class="docutils literal"><span class="pre">false</span></tt> として扱われるにも関わらず、
+それをラップしたインスタンスは <tt class="docutils literal"><span class="pre">true</span></tt> として取り扱われる。
+これはすこし直感に反しているので、注意が必要な挙動。</p>
+<div class="highlight-python"><div class="highlight"><pre>//!!（否定2回)でbooleanへの変換が行える
+var b, i, s;
+b = false;
+i = 0;
+s = &#39;&#39;;
+alert(!!b); //false
+alert(!!i); //false
+alert(!!s); //false
+b = new Boolean(false);
+i = new Number(0);
+s = new String(&#39;&#39;);
+alert(!!b); //true
+alert(!!i); //true
+alert(!!s); //true
+// Booleanはfalseに対応するラッパーオブジェクトをtrueと解釈する
+alert(new Boolean(new Boolean(false))); //true
+alert(new Boolean(Boolean(false))); //false
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>型変換<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>ラッパーオブジェクトは関数として利用すると、
+対応するプリミティブ型へのコンバーターとして機能する:</p>
+<div class="highlight-python"><div class="highlight"><pre>var n = Number(&#39;123&#39;);
+alert(typeof n); // number
+alert(n instanceof Number); // false
+</pre></div>
+</div>
+<p>また、newをつけて呼び出すと、ラッパーオブジェクトのインスタンスが作成される。(あまりこれを使うことはないと思うが):</p>
+<div class="highlight-python"><div class="highlight"><pre>var n = new Number(&#39;123&#39;);
+alert(typeof n); // object
+alert(n instanceof Number); // true
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>ラッパーオブジェクトの演算<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>ラッパーオブジェクトのインスタンスを演算子で処理した結果は、 プリミティブ型となる。:</p>
+<div class="highlight-python"><div class="highlight"><pre>var x = new Number(3);
+var y = new Number(4);
+alert(typeof x); // object
+alert(typeof x + y); // number
+</pre></div>
+</div>
+<p>ラッパーオブジェクトの関数の演算結果は基本的にプリミティブ型が返る。:</p>
+<div class="highlight-python"><div class="highlight"><pre>var s = new String(&#39;Hello world&#39;);
+alert(typeof s); // object
+alert(typeof s.substring(0, 5)); // string
+</pre></div>
+</div>
+<p>このように何かしら処理を行うと、結果は簡単にプリミティブ型になってしまうので
+<tt class="docutils literal"><span class="pre">new</span> <span class="pre">String('Hello</span> <span class="pre">world')</span></tt> のようにして積極的にラッパーオブジェクトを利用するのは避けた方がよさそうである。</p>
+</div>
+<div class="section" id="id5">
+<h2>プリミティブ型のプロパティへのアクセス<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>プリミティブ型の値に対して、<tt class="docutils literal"><span class="pre">x.key</span></tt> や <tt class="docutils literal"><span class="pre">x['key']</span></tt> でプロパティのアクセスを行うと
+対応するラッパーオブジェクトへ自動変換されてからプロパティのアクセスが実行される（FirefoxのString.lengthなど）。</p>
+<p>そのため、ラッパーオブジェクトのメソッドやプロパティはプリミティブ型からも利用可能。
+またラッパーオブジェクトの <tt class="docutils literal"><span class="pre">prototype</span></tt> を拡張しておけば、プリミティブ型からも利用することができる。</p>
+<div class="highlight-python"><div class="highlight"><pre>Boolean.prototype.invert = function() {
+  /*
+   * thisはラッパーオブジェクトBooleanのインスタンスであり、
+   * ラッパークラスのインスタンスは常にtrueとして扱われることに注意
+   * (つまりreturn !this;とすると常にfalseを返す関数となってしまう。）
+   */
+  return !this.valueOf();
+};
+var t = true;
+var f = false;
+alert(t.invert()); // false
+alert(f.invert()); // true
+</pre></div>
+</div>
+<p>またプロパティに値を代入しても、プリミティブ型に対しては反映されない。:</p>
+<div class="highlight-python"><div class="highlight"><pre>var i = 0;
+i.x = &#39;i.x&#39;;
+alert(i.x); // undefined
+var j = 0;
+j.x = &#39;j.x&#39;;
+alert(j.x); // j.x
+</pre></div>
+</div>
+<div class="section" id="google-chrome">
+<h3>Google Chromeの場合<a class="headerlink" href="#google-chrome" title="Permalink to this headline">¶</a></h3>
+<p>Firefox, Safariは上のように動いていると思って問題なさそうだが、Chromeは若干動作が違うようである。:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object.prototype.getType = function() {
+  return typeof this;
+};
+var i = 0;
+alert(i.getType());
+</pre></div>
+</div>
+<p>上で述べたように、プリミティブ型（number）のプロパティを参照すると、対応するラッパーオブジェクト（Number）に変換され、
+そこからprototypeをたどってgetTypeを呼び出しているとすれば、最後の文は:</p>
+<div class="highlight-python"><div class="highlight"><pre>alert(new Number(i).getType());
+</pre></div>
+</div>
+<p>と等価となり <tt class="docutils literal"><span class="pre">this</span></tt> はラッパーオブジェクトのインスタンスになるはずなので、
+実行結果は <tt class="docutils literal"><span class="pre">&quot;object&quot;</span></tt> となるはずである。
+実際、このスクリプトを実行するとSafari, Firefoxでは <tt class="docutils literal"><span class="pre">&quot;object&quot;</span></tt> が表示される。</p>
+<p>しかしChromeでは <tt class="docutils literal"><span class="pre">&quot;number&quot;</span></tt> が表示される。
+つまりChromeではラッパーオブジェクトへの変換は行われず、thisには元々のプリミティブ型がそのまま格納されるようである。
+なお、プリミティブ型のプロパティに値の代入を行っても反映されないのはChromeでも同じである。</p>
+</div>
+</div>
+<div class="section" id="false">
+<h2>falseとして扱われる値<a class="headerlink" href="#false" title="Permalink to this headline">¶</a></h2>
+<p>if, whileなどの条件式や、!演算にfalseとして解釈される値:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">false</span>
+<span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">0</span>
+<span class="n">NaN</span>
+<span class="s">&#39;&#39;</span>
+<span class="n">null</span>
+<span class="n">undefined</span>
+</pre></div>
+</div>
+<p>ほかにあるのかな？
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">new Boolean(false)や、new Number(0)はfalseとしては扱われないので注意が必要</a>。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yu Watanabe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
