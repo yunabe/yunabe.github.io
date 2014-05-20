@@ -2,6 +2,23 @@
 
 body {
   -webkit-text-size-adjust: 100%;
+  color:#505050;
+  background-color:#fff;
+  border:none;
+}
+
+a,
+div.related ul li a {
+  color: #6070b0
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+  background-color: #6070b0;
+  border:none;
+}
+
+div.body a {
+  text-decoration: none;
 }
 
 @media screen and (max-width: 600px) {
