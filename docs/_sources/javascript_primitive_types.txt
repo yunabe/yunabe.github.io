@@ -9,6 +9,7 @@ JavaScript プリミティブ型 (基本データ型)
 ------------------------------------
 数値(number)・文字列(string)・真偽値(boolean) のプリミティブ型（基本型）には
 それぞれNumber, String, Booleanという対応するオブジェクト型(ラッパーオブジェクト)が存在する。
+(`Values, variables, and literals <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Values,_variables,_and_literals>`_)
 
 
 +--------+----------------+---------------------+
