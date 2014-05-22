@@ -7,6 +7,10 @@ body {
   border:none;
 }
 
+div.body {
+  padding-top: 0px;
+}
+
 h1 {
   color: #fff;
   background: -webkit-gradient(linear, left top, right top, from(#6070b0), to(#099));
@@ -52,6 +56,7 @@ div.editdate {
 
   div.bodywrapper {
     margin: 0;
+    border-right: none;
   }
 
   ul {
