@@ -15,6 +15,7 @@ Contents:
    python_metaclass
    why_events_are_a_bad_idea
    javascript_primitive_types
+   maximum_number_of_threads
 
 Indices and tables
 ==================
