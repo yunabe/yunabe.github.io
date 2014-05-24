@@ -16,6 +16,7 @@ Contents:
    why_events_are_a_bad_idea
    javascript_primitive_types
    maximum_number_of_threads
+   cpp_virtual_destructor
 
 Indices and tables
 ==================

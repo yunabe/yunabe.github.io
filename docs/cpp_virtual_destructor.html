@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="prev" title="Linux におけるスレッド数の上限" href="maximum_number_of_threads.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="maximum_number_of_threads.html" title="Linux におけるスレッド数の上限"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</a><ul>
+<li><a class="reference internal" href="#id1">ルールの前提</a><ul>
+<li><a class="reference internal" href="#virtual">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</a></li>
+<li><a class="reference internal" href="#id2">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">結論</a></li>
+<li><a class="reference internal" href="#id4">おまけ: 派生系のルール</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="maximum_number_of_threads.html"
+                        title="previous chapter">Linux におけるスレッド数の上限</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cpp_virtual_destructor.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="c-virtual-virtual">
+<h1>C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由<a class="headerlink" href="#c-virtual-virtual" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
+<a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
+(If your class has virtual methods, its destructor should be virtual.)</a>。</p>
+<p>その理由を整理しておきます。</p>
+<div class="section" id="id1">
+<h2>ルールの前提<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="virtual">
+<h3>virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される<a class="headerlink" href="#virtual" title="Permalink to this headline">¶</a></h3>
+<p>そもそも virtual なメソッド (仮想メンバー関数) がクラスに定義されているということは、
+そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用する (ポリモーフィズム) はずです。
+そうでないならば、メソッドを virtual にする意義がそもそもありません。
+virtual なメソッドがクラス定義されていると、vtable へのポインタの分だけインスタンスのサイズが増えますし
+virtual なメソッドの呼び出しは vtable を利用する分遅くなります。
+そのためプリモーフィズムを利用しないクラスであれば、不必要に virtual をつけるべきではないでしょう。</p>
+</div>
+<div class="section" id="id2">
+<h3>子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>言い換えると、デストラクタが virtual でない場合、子クラスのポインタを親クラスのポインタにキャストして使用してはいけません。
+なぜならデストラクタが virtual でない場合、親クラスの型のポインタを <tt class="docutils literal"><span class="pre">delete</span></tt> した際には親クラスのデストラクタしか呼ばれないからです。
+たとえ親クラスの型のポインタが指している実体が子クラスだったとしても子クラスのデストラクタ
+(これは暗黙的に親クラスのデストラクタを呼ぶ) は呼び出されません。</p>
+<div class="highlight-python"><div class="highlight"><pre>// ~Parent is not virtual.
+Parent* parent = new Child();
+...
+delete parent;  // this always calls ~Parent(); ~Child() is never called.
+</pre></div>
+</div>
+<p>このコードでは <tt class="docutils literal"><span class="pre">Child</span></tt> のデストラクタが呼び出されないので Child のリソースの解放が行われません。
+もちろん <tt class="docutils literal"><span class="pre">delete</span> <span class="pre">parent;</span></tt> を呼ばなければ問題は起こらないので、 <tt class="docutils literal"><span class="pre">delete</span> <span class="pre">parent;</span></tt> しないように気をつけていれば
+Child のポインタを Parent* に代入すること自体は問題ないが、
+間違えやすい上に間違えた場合にはメモリーリーク系の厄介なバグの原因になるので
+親クラスのポインタにキャストすること自体を避けるべきです。</p>
+<p>なお、暗黙的に作られるデストラクタは virtual ではないのでデストラクタが空の場合でも
+virtual なデストラクタを明示的に定義しなくてならない点に気をつけて下さい:</p>
+<div class="highlight-python"><div class="highlight"><pre>class Parent {
+  ...
+
+  // 例えデストラクタが空でも
+  // virtual なデストラクタは明示的に定義する
+  virtual ~Parent() {}
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>結論<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>上で述べた2つの前提</p>
+<ul class="simple">
+<li>virtual なメソッドを持つクラスは、その子クラスのポインタを親クラスのポインタとして必ず利用するが、</li>
+<li>子クラスを親クラスのポインタとして利用する場合、デストラクタは virtual でなくてはならない</li>
+</ul>
+<p>から <strong>「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」</strong> というルールが必要であることが分かります。</p>
+</div>
+<div class="section" id="id4">
+<h2>おまけ: 派生系のルール<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>「C++では常にデストラクタは virtual にすべき」というルールでないのは virtual 関数はvtableを使用するため、
+virtualのデストラクタは呼び出しが若干遅くなるのと、
+virtual があることでインスタンスのサイズが vtable へのポインタ分増えてしまい無駄だからです。
+しかし多くのプログラムではこの2つによるパフォーマンスの劣化はそれほど深刻にはならないと思いますし、
+その点を理解した上で「常にデストラクタをvirtualにする」というルールで運用するのは合理的かと思います。</p>
+<p>また「継承される可能性のあるクラスのデストラクタは virtual にすべき」というルールが書かれていることもありますが、
+このルールだと継承はするけれど、親クラスのポインタへのキャストをしない場合には
+virtual をつけることで無駄なコストが発生してしまいます。
+一方で、このルールのほうが virtual なメソッドは無い (ポリモフィズムは使わない)
+が子クラスのポインタを親クラスのポインタとして利用することはある場合  (あまりないと思うが) にも対応できるので
+優れているとも言える。
+いずれにせよ現実には、継承は多くの場合ポリモフィズムとセットで利用されるので、
+「継承される可能性のあるクラス」と「virtual なメソッドを持つクラス」は同義である場合が多いかと思いますし、
+個人的には
+「継承される可能性のあるクラスのデストラクタは virtual でなくてはならない」と
+「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」は
+実用上は差はないかと思います。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="maximum_number_of_threads.html" title="Linux におけるスレッド数の上限"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yu Watanabe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
