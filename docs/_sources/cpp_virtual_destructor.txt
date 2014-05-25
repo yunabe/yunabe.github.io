@@ -1,11 +1,18 @@
 C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由
 ========================================================================================
+
+.. container:: editdate
+
+  更新 2014年5月24日
+
 `Google C++ Style Guide <http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml>`_ にも書かれているように、
-`クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
-(If your class has virtual methods, its destructor should be virtual.)
+クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
+`(If your class has virtual methods, its destructor should be virtual.)
 <http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance>`_。
 
-その理由を整理しておきます。
+ただその理由は若干複雑です。
+理由が説明できないとコードレビューで問題を指摘する際に困りますし、
+逆に必要ないのに :ref:`「デストラクタには常に virtual をつけろ」 <others>` と言われた場合に反論できなくて困ることになります。
 
 ルールの前提
 ------------
@@ -60,13 +67,15 @@ virtual なデストラクタを明示的に定義しなくてならない点に
 
 から **「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」** というルールが必要であることが分かります。
 
+.. _others:
+
 おまけ: 派生系のルール
 ----------------------
 「C++では常にデストラクタは virtual にすべき」というルールでないのは virtual 関数はvtableを使用するため、
 virtualのデストラクタは呼び出しが若干遅くなるのと、
 virtual があることでインスタンスのサイズが vtable へのポインタ分増えてしまい無駄だからです。
 しかし多くのプログラムではこの2つによるパフォーマンスの劣化はそれほど深刻にはならないと思いますし、
-その点を理解した上で「常にデストラクタをvirtualにする」というルールで運用するのは合理的かと思います。
+その点を理解した上で「常にデストラクタをvirtualにする」というシンプルで覚えやすいルールで運用するのはありうるかなと思います。
 
 また「継承される可能性のあるクラスのデストラクタは virtual にすべき」というルールが書かれていることもありますが、
 このルールだと継承はするけれど、親クラスのポインタへのキャストをしない場合には

@@ -51,7 +51,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#id3">結論</a></li>
-<li><a class="reference internal" href="#id4">おまけ: 派生系のルール</a></li>
+<li><a class="reference internal" href="#others">おまけ: 派生系のルール</a></li>
 </ul>
 </li>
 </ul>
@@ -87,10 +87,14 @@
             
   <div class="section" id="c-virtual-virtual">
 <h1>C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由<a class="headerlink" href="#c-virtual-virtual" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2014年5月24日</div>
 <p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
-<a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
-(If your class has virtual methods, its destructor should be virtual.)</a>。</p>
-<p>その理由を整理しておきます。</p>
+クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
+<a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">(If your class has virtual methods, its destructor should be virtual.)</a>。</p>
+<p>ただその理由は若干複雑です。
+理由が説明できないとコードレビューで問題を指摘する際に困りますし、
+逆に必要ないのに <a class="reference internal" href="#others"><em>「デストラクタには常に virtual をつけろ」</em></a> と言われた場合に反論できなくて困ることになります。</p>
 <div class="section" id="id1">
 <h2>ルールの前提<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="virtual">
@@ -141,13 +145,13 @@ virtual なデストラクタを明示的に定義しなくてならない点に
 </ul>
 <p>から <strong>「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」</strong> というルールが必要であることが分かります。</p>
 </div>
-<div class="section" id="id4">
-<h2>おまけ: 派生系のルール<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="others">
+<span id="id4"></span><h2>おまけ: 派生系のルール<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
 <p>「C++では常にデストラクタは virtual にすべき」というルールでないのは virtual 関数はvtableを使用するため、
 virtualのデストラクタは呼び出しが若干遅くなるのと、
 virtual があることでインスタンスのサイズが vtable へのポインタ分増えてしまい無駄だからです。
 しかし多くのプログラムではこの2つによるパフォーマンスの劣化はそれほど深刻にはならないと思いますし、
-その点を理解した上で「常にデストラクタをvirtualにする」というルールで運用するのは合理的かと思います。</p>
+その点を理解した上で「常にデストラクタをvirtualにする」というシンプルで覚えやすいルールで運用するのはありうるかなと思います。</p>
 <p>また「継承される可能性のあるクラスのデストラクタは virtual にすべき」というルールが書かれていることもありますが、
 このルールだと継承はするけれど、親クラスのポインタへのキャストをしない場合には
 virtual をつけることで無駄なコストが発生してしまいます。
@@ -181,9 +185,19 @@ virtual をつけることで無駄なコストが発生してしまいます。
         <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2014, Yu Watanabe.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-    </div>
+<div class="footer">
+    &copy; Copyright 2014, Yu Watanabe.
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19477574-2', 'yunabe.jp');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+</div>
   </body>
 </html>
