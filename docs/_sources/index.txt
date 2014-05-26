@@ -18,6 +18,8 @@ Contents:
    maximum_number_of_threads
    cpp_virtual_destructor
 
+.. TODO: Add maximum_number_of_sockets and pysh_overview.
+
 Indices and tables
 ==================
 
