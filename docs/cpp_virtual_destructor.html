@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
 <meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>C++ でデストラクタが virtual にしなくてはならない条件と理由</title>
+<title>C++ でデストラクタを virtual にしなくてはならない条件と理由</title>
     
     <link rel="stylesheet" href="_static/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -44,7 +44,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">C++ でデストラクタが virtual にしなくてはならない条件と理由</a><ul>
+<li><a class="reference internal" href="#">C++ でデストラクタを virtual にしなくてはならない条件と理由</a><ul>
 <li><a class="reference internal" href="#id1">ルールの前提</a><ul>
 <li><a class="reference internal" href="#virtual">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</a></li>
 <li><a class="reference internal" href="#id2">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</a></li>
@@ -86,7 +86,7 @@
           <div class="body">
             
   <div class="section" id="c-virtual">
-<h1>C++ でデストラクタが virtual にしなくてはならない条件と理由<a class="headerlink" href="#c-virtual" title="Permalink to this headline">¶</a></h1>
+<h1>C++ でデストラクタを virtual にしなくてはならない条件と理由<a class="headerlink" href="#c-virtual" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2014年5月24日</div>
 <p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
