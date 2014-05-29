@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
 <meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</title>
+<title>C++ でデストラクタが virtual にしなくてはならない条件と理由</title>
     
     <link rel="stylesheet" href="_static/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -44,7 +44,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</a><ul>
+<li><a class="reference internal" href="#">C++ でデストラクタが virtual にしなくてはならない条件と理由</a><ul>
 <li><a class="reference internal" href="#id1">ルールの前提</a><ul>
 <li><a class="reference internal" href="#virtual">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</a></li>
 <li><a class="reference internal" href="#id2">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</a></li>
@@ -85,8 +85,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="c-virtual-virtual">
-<h1>C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由<a class="headerlink" href="#c-virtual-virtual" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="c-virtual">
+<h1>C++ でデストラクタが virtual にしなくてはならない条件と理由<a class="headerlink" href="#c-virtual" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2014年5月24日</div>
 <p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
@@ -102,7 +102,7 @@
 <p>そもそも virtual なメソッド (仮想メンバー関数) がクラスに定義されているということは、
 そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用する (ポリモーフィズム) はずです。
 そうでないならば、メソッドを virtual にする意義がそもそもありません。
-virtual なメソッドがクラス定義されていると、vtable へのポインタの分だけインスタンスのサイズが増えますし
+virtual なメソッドがクラス定義されていると、<a class="reference external" href="https://www.google.co.jp/search?q=vtable&amp;hl=ja">vtable</a> へのポインタの分だけインスタンスのサイズが増えますし
 virtual なメソッドの呼び出しは vtable を利用する分遅くなります。
 そのためプリモーフィズムを利用しないクラスであれば、不必要に virtual をつけるべきではないでしょう。</p>
 </div>
@@ -191,6 +191,7 @@ virtual をつけることで無駄なコストが発生してしまいます。
     &copy; Copyright 2014, Yu Watanabe.
   Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
 <script>
+  if(location.host=='www.yunabe.jp'){
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -199,6 +200,7 @@ virtual をつけることで無駄なコストが発生してしまいます。
   ga('create', 'UA-19477574-2', 'yunabe.jp');
   ga('require', 'displayfeatures');
   ga('send', 'pageview');
+  }
 </script>
 </div>
   </body>

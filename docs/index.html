@@ -87,7 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="why_events_are_a_bad_idea.html">イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="javascript_primitive_types.html">JavaScript プリミティブ型 (基本データ型)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="maximum_number_of_threads.html">Linux におけるスレッド数の上限</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cpp_virtual_destructor.html">C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_virtual_destructor.html">C++ でデストラクタが virtual にしなくてはならない条件と理由</a></li>
 </ul>
 </div>
 </div>
@@ -122,6 +122,7 @@
     &copy; Copyright 2014, Yu Watanabe.
   Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
 <script>
+  if(location.host=='www.yunabe.jp'){
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -130,6 +131,7 @@
   ga('create', 'UA-19477574-2', 'yunabe.jp');
   ga('require', 'displayfeatures');
   ga('send', 'pageview');
+  }
 </script>
 </div>
   </body>

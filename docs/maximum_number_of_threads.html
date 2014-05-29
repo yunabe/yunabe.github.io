@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由" href="cpp_virtual_destructor.html" />
+    <link rel="next" title="C++ でデストラクタが virtual にしなくてはならない条件と理由" href="cpp_virtual_destructor.html" />
     <link rel="prev" title="JavaScript プリミティブ型 (基本データ型)" href="javascript_primitive_types.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="cpp_virtual_destructor.html" title="C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由"
+          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタが virtual にしなくてはならない条件と理由"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="javascript_primitive_types.html" title="JavaScript プリミティブ型 (基本データ型)"
@@ -63,7 +63,7 @@
                         title="previous chapter">JavaScript プリミティブ型 (基本データ型)</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="cpp_virtual_destructor.html"
-                        title="next chapter">C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由</a></p>
+                        title="next chapter">C++ でデストラクタが virtual にしなくてはならない条件と理由</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/maximum_number_of_threads.txt"
@@ -194,7 +194,7 @@ yunabe      hard    nproc     unlimited
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="cpp_virtual_destructor.html" title="C++ で virtual なメンバー関数を持つクラスのデストラクタが virtual でなくてはならない理由"
+          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタが virtual にしなくてはならない条件と理由"
              >next</a> |</li>
         <li class="right" >
           <a href="javascript_primitive_types.html" title="JavaScript プリミティブ型 (基本データ型)"
@@ -206,6 +206,7 @@ yunabe      hard    nproc     unlimited
     &copy; Copyright 2014, Yu Watanabe.
   Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
 <script>
+  if(location.host=='www.yunabe.jp'){
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -214,6 +215,7 @@ yunabe      hard    nproc     unlimited
   ga('create', 'UA-19477574-2', 'yunabe.jp');
   ga('require', 'displayfeatures');
   ga('send', 'pageview');
+  }
 </script>
 </div>
   </body>
