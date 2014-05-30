@@ -17,6 +17,7 @@ Contents:
    javascript_primitive_types
    maximum_number_of_threads
    cpp_virtual_destructor
+   static_library
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 
