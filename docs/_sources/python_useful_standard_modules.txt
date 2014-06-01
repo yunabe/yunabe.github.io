@@ -80,7 +80,13 @@ heapq
 - ``merge(*iterable)``
 
   - ソート済みのiterableを複数受け取り、マージして１つのソート済み iterable を返す。
-    ソート済みの配列のマージなので効率的。遅延評価。
+    ソート済みの配列のマージなので効率的。遅延評価なので次のコードは高速に動作する
+
+    ::
+
+      import itertools
+      import heapq
+      list(itertools.islice(heapq.merge(xrange(1 << 32), xrange(1 << 32)), 10))
 
 code
 ----

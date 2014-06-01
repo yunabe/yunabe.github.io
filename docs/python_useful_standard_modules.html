@@ -200,10 +200,17 @@ assert d.get(‘d’) is None
 </div>
 <div class="section" id="id4">
 <h3><a class="toc-backref" href="#id14">その他の便利関数</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">merge(*iterable)</span></tt><ul>
-<li>ソート済みのiterableを複数受け取り、マージして１つのソート済み iterable を返す。
-ソート済みの配列のマージなので効率的。遅延評価。</li>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">merge(*iterable)</span></tt></p>
+<ul>
+<li><p class="first">ソート済みのiterableを複数受け取り、マージして１つのソート済み iterable を返す。
+ソート済みの配列のマージなので効率的。遅延評価なので次のコードは高速に動作する</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">heapq</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">heapq</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">),</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)),</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </li>
 </ul>
@@ -290,6 +297,7 @@ myfunc の yield の返り値が with-as の val に格納される。
   ga('send', 'pageview');
   }
 </script>
+<script type="text/javascript" src="_static/main.js"></script>
 </div>
   </body>
 </html>
