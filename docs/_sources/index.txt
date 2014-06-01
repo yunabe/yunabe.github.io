@@ -18,6 +18,7 @@ Contents:
    maximum_number_of_threads
    cpp_virtual_destructor
    static_library
+   python_useful_standard_modules
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 

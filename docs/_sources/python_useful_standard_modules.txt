@@ -1,0 +1,136 @@
+Python たまに便利な標準ライブラリ
+=================================
+
+.. container:: editdate
+
+  更新 2014年6月1日
+
+.. contents:: 目次
+   :depth: 3
+
+そんなに頻繁に使わないけど、覚えてるとたまに便利な (忘れがちな) 標準ライブラリ
+
+collections
+-----------
+`Python standard library: collections <https://docs.python.org/2/library/collections.html>`_
+
+namedtuple
+~~~~~~~~~~
+::
+
+  Point = collections.namedtuple(‘Point’, [‘x’, ‘y’])
+  point = Point(10, 20)
+
+のようにして、readonly の attribute を持つクラス (tupleの子クラス) を簡単に定義できる．
+
+Counter
+~~~~~~~
+コンストラクタ, update で iterable を受け取り、要素数を数えてくれる dict (key: 要素, value: 要素数)。 iterable として dict (Counter も dict の子要素) を受け取った場合は、受け取った dict の keyを要素, value を要素数とみなして結合してくれる。
+
+OrderedDict
+~~~~~~~~~~~
+キーの追加された順序を保持してくれる dict
+
+defaultdict
+~~~~~~~~~~~
+キーが存在しない場合には第一引数に与えた default_factory を使って value を生成する dict。コンストラクタの第一引数が default_factory, それ以外の引数は dict の引数として渡される。get の挙動は dict と変わらないので注意！
+
+::
+
+  def default_factory():
+      return ‘default’
+  d = collections.defaultdict(default_factory, {‘a’: 1, ‘b’: 2})
+  assert d[‘c’] == ‘default’
+  assert d.get(‘d’) is None
+
+その他
+~~~~~~
+- dequeue
+
+heapq
+-----
+`配列を使った binary heap (priority queue の代表的な実装) <http://ja.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E3%83%92%E3%83%BC%E3%83%97#.E3.83.92.E3.83.BC.E3.83.97.E3.81.AE.E5.AE.9F.E8.A3.85>`_ を実現するためのモジュール。
+このモジュールは binary-heap のクラスを提供するのではなく、list をヒープの内部データとして利用するための補助関数を提供している。
+
+ヒープ用の関数群
+~~~~~~~~~~~~~~~~
+- heap = []
+
+  - heap は heapクラスではなくて heapの内部構造として利用されるリストをそのまま使う。
+  - heap の操作は heapモジュールの staticな関数で行う。
+
+- heappush(heap, item)
+
+  - heap に新しい要素を追加する。
+
+- heappop(heap)
+
+  - もっとも小さい値を取り出す。
+
+- heappushpop(heap, item) / heappoppush(heap, item)
+
+  - heapush -> heappop (pop->push) を行う。ただし別々に呼び出すより効率的。
+
+- heapify
+
+ - 既存の list を heap に変換する。
+
+その他の便利関数
+~~~~~~~~~~~~~~~~
+- ``merge(*iterable)``
+
+  - ソート済みのiterableを複数受け取り、マージして１つのソート済み iterable を返す。
+    ソート済みの配列のマージなので効率的。遅延評価。
+
+code
+----
+
+::
+
+  import code
+  code.InteractiveConsole(None).interact()
+
+あるいは
+
+::
+
+  import code
+  code.interact('', None, locals())
+
+デバッグのお供に
+
+contextlib
+----------
+`contextlib.contextmanager <https://docs.python.org/2/library/contextlib.html>`_ を用いると ``__enter__``, ``__exit__`` を定義せずに、 ``yield`` を使って
+``with`` 文で利用する関数を作成することができる。
+
+::
+
+  @contextlib.contextmanager
+  def myfunc(arg):
+    print 'start with-stmt'
+    yield val
+    print 'end with-stmt'
+  
+  ...
+  
+  with myfunc as val:
+    print 'in with-stmt'
+
+とすると、 yield の前が with文の開始時に、 yield の後ろが with文の終了時に実行される。
+myfunc の yield の返り値が with-as の val に格納される。
+`contextmanager の実体は受け取った関数が返すジェネレータの next() を __enter__ と __exit__ で呼び出すクラスである <https://github.com/python-git/python/blob/master/Lib/contextlib.py>`_。
+
+functools
+---------
+
+functools.wraps
+~~~~~~~~~~~~~~~~~~~~~
+::
+
+  @functools.wraps(f)
+  def wrapper_f(*args, **kwds):
+    print 'wrapper_f...'
+    return f(*args, **kwds)
+
+のようにラッパー関数のデコレータに ``@functools.wraps(original)`` をつけると元の関数のドキュメンテーション文字列とかが保持される。

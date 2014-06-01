@@ -25,6 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="next" title="Python たまに便利な標準ライブラリ" href="python_useful_standard_modules.html" />
     <link rel="prev" title="C++ でデストラクタを virtual にしなくてはならない条件と理由" href="cpp_virtual_destructor.html" /> 
   </head>
   <body>
@@ -34,6 +35,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="python_useful_standard_modules.html" title="Python たまに便利な標準ライブラリ"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
              accesskey="P">previous</a> |</li>
@@ -53,7 +57,7 @@
 <li><a class="reference internal" href="#whole-archive">whole-archive</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id9">文献</a></li>
+<li><a class="reference internal" href="#id8">文献</a></li>
 </ul>
 </li>
 </ul>
@@ -61,6 +65,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="cpp_virtual_destructor.html"
                         title="previous chapter">C++ でデストラクタを virtual にしなくてはならない条件と理由</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="python_useful_standard_modules.html"
+                        title="next chapter">Python たまに便利な標準ライブラリ</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/static_library.txt"
@@ -88,35 +95,35 @@
           <div class="body">
             
   <div class="section" id="a">
-<h1><a class="toc-backref" href="#id10">静的ライブラリ (.a) の作成と利用</a><a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id9">静的ライブラリ (.a) の作成と利用</a><a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2013年3月24日</div>
 <div class="contents topic" id="id1">
 <p class="topic-title first">目次</p>
 <ul class="simple">
-<li><a class="reference internal" href="#a" id="id10">静的ライブラリ (.a) の作成と利用</a><ul>
-<li><a class="reference internal" href="#id2" id="id11">静的ライブラリ (.a) の作成</a></li>
-<li><a class="reference internal" href="#id3" id="id12">静的ライブラリをリンクする</a></li>
-<li><a class="reference internal" href="#id4" id="id13">静的ライブラリの内容(シンボル)の確認</a></li>
-<li><a class="reference internal" href="#linker" id="id14">リンカーの挙動</a><ul>
-<li><a class="reference internal" href="#id6" id="id15">大雑把な流れ</a></li>
-<li><a class="reference internal" href="#whole-archive" id="id16">whole-archive</a></li>
+<li><a class="reference internal" href="#a" id="id9">静的ライブラリ (.a) の作成と利用</a><ul>
+<li><a class="reference internal" href="#id2" id="id10">静的ライブラリ (.a) の作成</a></li>
+<li><a class="reference internal" href="#id3" id="id11">静的ライブラリをリンクする</a></li>
+<li><a class="reference internal" href="#id4" id="id12">静的ライブラリの内容(シンボル)の確認</a></li>
+<li><a class="reference internal" href="#linker" id="id13">リンカーの挙動</a><ul>
+<li><a class="reference internal" href="#id6" id="id14">大雑把な流れ</a></li>
+<li><a class="reference internal" href="#whole-archive" id="id15">whole-archive</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id9" id="id17">文献</a></li>
+<li><a class="reference internal" href="#id8" id="id16">文献</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="id2">
-<h2><a class="toc-backref" href="#id11">静的ライブラリ (.a) の作成</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">静的ライブラリ (.a) の作成</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>ar コマンドで複数のオブジェクトファイル (<tt class="docutils literal"><span class="pre">.o</span></tt>) をまとめて静的ライブラリ (<tt class="docutils literal"><span class="pre">.a</span></tt>) を作成できます。</p>
 <div class="highlight-python"><div class="highlight"><pre>ar rcs libfoo.a foo.o bar.o baz.o
 </pre></div>
 </div>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id12">静的ライブラリをリンクする</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">静的ライブラリをリンクする</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>オブジェクトファイルをリンクするのと同じように gcc に引数を渡すとリンクされます</p>
 <div class="highlight-python"><div class="highlight"><pre>gcc(g++) -o program program.o libfoo.a
 </pre></div>
@@ -130,7 +137,7 @@
 <a class="reference internal" href="#linker"><em>静的ライブラリ (.a) をリンクする場合は引数の順序が重要になるので注意が必要です</em></a>。</p>
 </div>
 <div class="section" id="id4">
-<h2><a class="toc-backref" href="#id13">静的ライブラリの内容(シンボル)の確認</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12">静的ライブラリの内容(シンボル)の確認</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>nm コマンドで確認することができる</p>
 <div class="highlight-python"><div class="highlight"><pre>$ nm foo.o
                  U _Z7say_bari
@@ -160,13 +167,13 @@ bar.o:
 </div>
 </div>
 <div class="section" id="linker">
-<span id="id5"></span><h2><a class="toc-backref" href="#id14">リンカーの挙動</a><a class="headerlink" href="#linker" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><a class="toc-backref" href="#id13">リンカーの挙動</a><a class="headerlink" href="#linker" title="Permalink to this headline">¶</a></h2>
 <p>静的ライブラリをリンクする場合は、引数で与える静的ファイルやオブジェクトファイルの順序が重要になる。
 基本的にはAがBに依存しているなら、AをBの前に引数で与えなくてはならない。
 このルールはリンカーが静的ライブラリ内のオブジェクトファイルを参照する際の挙動を理解していると分かりやすい。</p>
 <div class="section" id="id6">
-<h3><a class="toc-backref" href="#id15">大雑把な流れ</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<p>リンカは未解決の参照のリストを保持している。はじめ、このリストにはmainが入っている <a href="#id7"><span class="problematic" id="id8">*</span></a>1。
+<h3><a class="toc-backref" href="#id14">大雑把な流れ</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>リンカは未解決の参照のリストを保持している。はじめ、このリストにはmainが入っている <a class="footnote-reference" href="#f1" id="id7">[1]</a>。
 リンカはオブジェクトファイル(.o)を受け取り、参照を解決し、新しい未解決の参照がみつかったらリストに追加する（リンクする）。
 静的ライブラリ(.a)を受け取った場合は、未解決の参照を定義しているオブジェクトファイルのみを静的ライブラリから抜き出し、リンクを行う。
 いままで処理したオブジェクトファイルから参照されていないオブジェクトファイルは 静的ライブラリに含まれていても無視される。
@@ -180,7 +187,7 @@ bar.o:
 libfoo.a内のオブジェクトファイルはリンカに無視されてしまい、 あとでmain.oを読み込んだ際に、参照の解決が行えなくなりエラーとなる。</p>
 </div>
 <div class="section" id="whole-archive">
-<h3><a class="toc-backref" href="#id16">whole-archive</a><a class="headerlink" href="#whole-archive" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">whole-archive</a><a class="headerlink" href="#whole-archive" title="Permalink to this headline">¶</a></h3>
 <p>リンカ(ld)に <tt class="docutils literal"><span class="pre">--whole-archive</span></tt> を指定すると、それ以降の引数で与えらる静的ライブラリに含まれる全てのオブジェクトファイルがリンクされるようになる。
 <tt class="docutils literal"><span class="pre">--no-whole-archive</span></tt> で挙動を元に戻す。
 gcc(g++)の引数で指定する場合は <tt class="docutils literal"><span class="pre">-Wl,</span></tt> を前につける</p>
@@ -190,11 +197,17 @@ gcc -o program -Wl,--whole-archive libfoo.a -Wl,--no-whole-archive main.o
 </div>
 </div>
 </div>
-<div class="section" id="id9">
-<h2><a class="toc-backref" href="#id17">文献</a><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2><a class="toc-backref" href="#id16">文献</a><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://groups.google.com/group/gnu.gcc.help/msg/c1ed29766d6a5a7d">linking problems and order</a></li>
 </ul>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[1]</a></td><td>厳密にはmainへの参照をもつcrt0.oがリンカに渡されるというのが正しい？</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -210,6 +223,9 @@ gcc -o program -Wl,--whole-archive libfoo.a -Wl,--no-whole-archive main.o
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="python_useful_standard_modules.html" title="Python たまに便利な標準ライブラリ"
+             >next</a> |</li>
         <li class="right" >
           <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
              >previous</a> |</li>

@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>Python たまに便利な標準ライブラリ</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="prev" title="静的ライブラリ (.a) の作成と利用" href="static_library.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="static_library.html" title="静的ライブラリ (.a) の作成と利用"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python たまに便利な標準ライブラリ</a><ul>
+<li><a class="reference internal" href="#collections">collections</a><ul>
+<li><a class="reference internal" href="#namedtuple">namedtuple</a></li>
+<li><a class="reference internal" href="#counter">Counter</a></li>
+<li><a class="reference internal" href="#ordereddict">OrderedDict</a></li>
+<li><a class="reference internal" href="#defaultdict">defaultdict</a></li>
+<li><a class="reference internal" href="#id2">その他</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#heapq">heapq</a><ul>
+<li><a class="reference internal" href="#id3">ヒープ用の関数群</a></li>
+<li><a class="reference internal" href="#id4">その他の便利関数</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#code">code</a></li>
+<li><a class="reference internal" href="#contextlib">contextlib</a></li>
+<li><a class="reference internal" href="#functools">functools</a><ul>
+<li><a class="reference internal" href="#functools-wraps">functools.wraps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="static_library.html"
+                        title="previous chapter">静的ライブラリ (.a) の作成と利用</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/python_useful_standard_modules.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python">
+<h1><a class="toc-backref" href="#id5">Python たまに便利な標準ライブラリ</a><a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2014年6月1日</div>
+<div class="contents topic" id="id1">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#python" id="id5">Python たまに便利な標準ライブラリ</a><ul>
+<li><a class="reference internal" href="#collections" id="id6">collections</a><ul>
+<li><a class="reference internal" href="#namedtuple" id="id7">namedtuple</a></li>
+<li><a class="reference internal" href="#counter" id="id8">Counter</a></li>
+<li><a class="reference internal" href="#ordereddict" id="id9">OrderedDict</a></li>
+<li><a class="reference internal" href="#defaultdict" id="id10">defaultdict</a></li>
+<li><a class="reference internal" href="#id2" id="id11">その他</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#heapq" id="id12">heapq</a><ul>
+<li><a class="reference internal" href="#id3" id="id13">ヒープ用の関数群</a></li>
+<li><a class="reference internal" href="#id4" id="id14">その他の便利関数</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#code" id="id15">code</a></li>
+<li><a class="reference internal" href="#contextlib" id="id16">contextlib</a></li>
+<li><a class="reference internal" href="#functools" id="id17">functools</a><ul>
+<li><a class="reference internal" href="#functools-wraps" id="id18">functools.wraps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>そんなに頻繁に使わないけど、覚えてるとたまに便利な (忘れがちな) 標準ライブラリ</p>
+<div class="section" id="collections">
+<h2><a class="toc-backref" href="#id6">collections</a><a class="headerlink" href="#collections" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.python.org/2/library/collections.html">Python standard library: collections</a></p>
+<div class="section" id="namedtuple">
+<h3><a class="toc-backref" href="#id7">namedtuple</a><a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>Point = collections.namedtuple(‘Point’, [‘x’, ‘y’])
+point = Point(10, 20)
+</pre></div>
+</div>
+<p>のようにして、readonly の attribute を持つクラス (tupleの子クラス) を簡単に定義できる．</p>
+</div>
+<div class="section" id="counter">
+<h3><a class="toc-backref" href="#id8">Counter</a><a class="headerlink" href="#counter" title="Permalink to this headline">¶</a></h3>
+<p>コンストラクタ, update で iterable を受け取り、要素数を数えてくれる dict (key: 要素, value: 要素数)。 iterable として dict (Counter も dict の子要素) を受け取った場合は、受け取った dict の keyを要素, value を要素数とみなして結合してくれる。</p>
+</div>
+<div class="section" id="ordereddict">
+<h3><a class="toc-backref" href="#id9">OrderedDict</a><a class="headerlink" href="#ordereddict" title="Permalink to this headline">¶</a></h3>
+<p>キーの追加された順序を保持してくれる dict</p>
+</div>
+<div class="section" id="defaultdict">
+<h3><a class="toc-backref" href="#id10">defaultdict</a><a class="headerlink" href="#defaultdict" title="Permalink to this headline">¶</a></h3>
+<p>キーが存在しない場合には第一引数に与えた default_factory を使って value を生成する dict。コンストラクタの第一引数が default_factory, それ以外の引数は dict の引数として渡される。get の挙動は dict と変わらないので注意！</p>
+<div class="highlight-python"><div class="highlight"><pre>def default_factory():
+    return ‘default’
+d = collections.defaultdict(default_factory, {‘a’: 1, ‘b’: 2})
+assert d[‘c’] == ‘default’
+assert d.get(‘d’) is None
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id11">その他</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>dequeue</li>
+</ul>
+</div>
+</div>
+<div class="section" id="heapq">
+<h2><a class="toc-backref" href="#id12">heapq</a><a class="headerlink" href="#heapq" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://ja.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E3%83%92%E3%83%BC%E3%83%97#.E3.83.92.E3.83.BC.E3.83.97.E3.81.AE.E5.AE.9F.E8.A3.85">配列を使った binary heap (priority queue の代表的な実装)</a> を実現するためのモジュール。
+このモジュールは binary-heap のクラスを提供するのではなく、list をヒープの内部データとして利用するための補助関数を提供している。</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id13">ヒープ用の関数群</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>heap = []<ul>
+<li>heap は heapクラスではなくて heapの内部構造として利用されるリストをそのまま使う。</li>
+<li>heap の操作は heapモジュールの staticな関数で行う。</li>
+</ul>
+</li>
+<li>heappush(heap, item)<ul>
+<li>heap に新しい要素を追加する。</li>
+</ul>
+</li>
+<li>heappop(heap)<ul>
+<li>もっとも小さい値を取り出す。</li>
+</ul>
+</li>
+<li>heappushpop(heap, item) / heappoppush(heap, item)<ul>
+<li>heapush -&gt; heappop (pop-&gt;push) を行う。ただし別々に呼び出すより効率的。</li>
+</ul>
+</li>
+<li>heapify</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>既存の list を heap に変換する。</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id14">その他の便利関数</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">merge(*iterable)</span></tt><ul>
+<li>ソート済みのiterableを複数受け取り、マージして１つのソート済み iterable を返す。
+ソート済みの配列のマージなので効率的。遅延評価。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="code">
+<h2><a class="toc-backref" href="#id15">code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">code</span>
+<span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>あるいは</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">code</span>
+<span class="n">code</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>デバッグのお供に</p>
+</div>
+<div class="section" id="contextlib">
+<h2><a class="toc-backref" href="#id16">contextlib</a><a class="headerlink" href="#contextlib" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.python.org/2/library/contextlib.html">contextlib.contextmanager</a> を用いると <tt class="docutils literal"><span class="pre">__enter__</span></tt>, <tt class="docutils literal"><span class="pre">__exit__</span></tt> を定義せずに、 <tt class="docutils literal"><span class="pre">yield</span></tt> を使って
+<tt class="docutils literal"><span class="pre">with</span></tt> 文で利用する関数を作成することができる。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@contextlib.contextmanager</span>
+<span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+  <span class="k">print</span> <span class="s">&#39;start with-stmt&#39;</span>
+  <span class="k">yield</span> <span class="n">val</span>
+  <span class="k">print</span> <span class="s">&#39;end with-stmt&#39;</span>
+
+<span class="o">...</span>
+
+<span class="k">with</span> <span class="n">myfunc</span> <span class="k">as</span> <span class="n">val</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s">&#39;in with-stmt&#39;</span>
+</pre></div>
+</div>
+<p>とすると、 yield の前が with文の開始時に、 yield の後ろが with文の終了時に実行される。
+myfunc の yield の返り値が with-as の val に格納される。
+<a class="reference external" href="https://github.com/python-git/python/blob/master/Lib/contextlib.py">contextmanager の実体は受け取った関数が返すジェネレータの next() を __enter__ と __exit__ で呼び出すクラスである</a>。</p>
+</div>
+<div class="section" id="functools">
+<h2><a class="toc-backref" href="#id17">functools</a><a class="headerlink" href="#functools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functools-wraps">
+<h3><a class="toc-backref" href="#id18">functools.wraps</a><a class="headerlink" href="#functools-wraps" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">wrapper_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+  <span class="k">print</span> <span class="s">&#39;wrapper_f...&#39;</span>
+  <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>のようにラッパー関数のデコレータに <tt class="docutils literal"><span class="pre">&#64;functools.wraps(original)</span></tt> をつけると元の関数のドキュメンテーション文字列とかが保持される。</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="static_library.html" title="静的ライブラリ (.a) の作成と利用"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2014, Yu Watanabe.
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+<script>
+  if(location.host=='www.yunabe.jp'){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19477574-2', 'yunabe.jp');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+  }
+</script>
+</div>
+  </body>
+</html>
