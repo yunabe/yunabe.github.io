@@ -8,6 +8,10 @@ Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)
 Python のパッケージ管理関係の情報があまりオフィシャルには整理されてなくて、
 パッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみた。
 
+.. contents:: 目次
+   :depth: 3
+   :local:
+
 .. _keywords:
 
 キーワード
@@ -61,9 +65,6 @@ Python におけるパッケージ管理に関係のあるキーワードをア�
 - その他
 
   - buildout, virtualenv
-
-.. contents:: 詳細
-   :depth: 3
 
 事前知識
 --------

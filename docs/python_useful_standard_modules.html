@@ -98,42 +98,39 @@
           <div class="body">
             
   <div class="section" id="python">
-<h1><a class="toc-backref" href="#id5">Python たまに便利な標準ライブラリ</a><a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
+<h1>Python たまに便利な標準ライブラリ<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2014年6月1日</div>
-<div class="contents topic" id="id1">
+<div class="contents local topic" id="id1">
 <p class="topic-title first">目次</p>
 <ul class="simple">
-<li><a class="reference internal" href="#python" id="id5">Python たまに便利な標準ライブラリ</a><ul>
-<li><a class="reference internal" href="#collections" id="id6">collections</a><ul>
-<li><a class="reference internal" href="#namedtuple" id="id7">namedtuple</a></li>
-<li><a class="reference internal" href="#counter" id="id8">Counter</a></li>
-<li><a class="reference internal" href="#ordereddict" id="id9">OrderedDict</a></li>
-<li><a class="reference internal" href="#defaultdict" id="id10">defaultdict</a></li>
-<li><a class="reference internal" href="#id2" id="id11">その他</a></li>
+<li><a class="reference internal" href="#collections" id="id5">collections</a><ul>
+<li><a class="reference internal" href="#namedtuple" id="id6">namedtuple</a></li>
+<li><a class="reference internal" href="#counter" id="id7">Counter</a></li>
+<li><a class="reference internal" href="#ordereddict" id="id8">OrderedDict</a></li>
+<li><a class="reference internal" href="#defaultdict" id="id9">defaultdict</a></li>
+<li><a class="reference internal" href="#id2" id="id10">その他</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#heapq" id="id12">heapq</a><ul>
-<li><a class="reference internal" href="#id3" id="id13">ヒープ用の関数群</a></li>
-<li><a class="reference internal" href="#id4" id="id14">その他の便利関数</a></li>
+<li><a class="reference internal" href="#heapq" id="id11">heapq</a><ul>
+<li><a class="reference internal" href="#id3" id="id12">ヒープ用の関数群</a></li>
+<li><a class="reference internal" href="#id4" id="id13">その他の便利関数</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#code" id="id15">code</a></li>
-<li><a class="reference internal" href="#contextlib" id="id16">contextlib</a></li>
-<li><a class="reference internal" href="#functools" id="id17">functools</a><ul>
-<li><a class="reference internal" href="#functools-wraps" id="id18">functools.wraps</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#code" id="id14">code</a></li>
+<li><a class="reference internal" href="#contextlib" id="id15">contextlib</a></li>
+<li><a class="reference internal" href="#functools" id="id16">functools</a><ul>
+<li><a class="reference internal" href="#functools-wraps" id="id17">functools.wraps</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <p>そんなに頻繁に使わないけど、覚えてるとたまに便利な (忘れがちな) 標準ライブラリ</p>
 <div class="section" id="collections">
-<h2><a class="toc-backref" href="#id6">collections</a><a class="headerlink" href="#collections" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5">collections</a><a class="headerlink" href="#collections" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/2/library/collections.html">Python standard library: collections</a></p>
 <div class="section" id="namedtuple">
-<h3><a class="toc-backref" href="#id7">namedtuple</a><a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id6">namedtuple</a><a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>Point = collections.namedtuple(‘Point’, [‘x’, ‘y’])
 point = Point(10, 20)
 </pre></div>
@@ -141,15 +138,15 @@ point = Point(10, 20)
 <p>のようにして、readonly の attribute を持つクラス (tupleの子クラス) を簡単に定義できる．</p>
 </div>
 <div class="section" id="counter">
-<h3><a class="toc-backref" href="#id8">Counter</a><a class="headerlink" href="#counter" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Counter</a><a class="headerlink" href="#counter" title="Permalink to this headline">¶</a></h3>
 <p>コンストラクタ, update で iterable を受け取り、要素数を数えてくれる dict (key: 要素, value: 要素数)。 iterable として dict (Counter も dict の子要素) を受け取った場合は、受け取った dict の keyを要素, value を要素数とみなして結合してくれる。</p>
 </div>
 <div class="section" id="ordereddict">
-<h3><a class="toc-backref" href="#id9">OrderedDict</a><a class="headerlink" href="#ordereddict" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">OrderedDict</a><a class="headerlink" href="#ordereddict" title="Permalink to this headline">¶</a></h3>
 <p>キーの追加された順序を保持してくれる dict</p>
 </div>
 <div class="section" id="defaultdict">
-<h3><a class="toc-backref" href="#id10">defaultdict</a><a class="headerlink" href="#defaultdict" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">defaultdict</a><a class="headerlink" href="#defaultdict" title="Permalink to this headline">¶</a></h3>
 <p>キーが存在しない場合には第一引数に与えた default_factory を使って value を生成する dict。コンストラクタの第一引数が default_factory, それ以外の引数は dict の引数として渡される。get の挙動は dict と変わらないので注意！</p>
 <div class="highlight-python"><div class="highlight"><pre>def default_factory():
     return ‘default’
@@ -160,18 +157,18 @@ assert d.get(‘d’) is None
 </div>
 </div>
 <div class="section" id="id2">
-<h3><a class="toc-backref" href="#id11">その他</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">その他</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>dequeue</li>
 </ul>
 </div>
 </div>
 <div class="section" id="heapq">
-<h2><a class="toc-backref" href="#id12">heapq</a><a class="headerlink" href="#heapq" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">heapq</a><a class="headerlink" href="#heapq" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://ja.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E3%83%92%E3%83%BC%E3%83%97#.E3.83.92.E3.83.BC.E3.83.97.E3.81.AE.E5.AE.9F.E8.A3.85">配列を使った binary heap (priority queue の代表的な実装)</a> を実現するためのモジュール。
 このモジュールは binary-heap のクラスを提供するのではなく、list をヒープの内部データとして利用するための補助関数を提供している。</p>
 <div class="section" id="id3">
-<h3><a class="toc-backref" href="#id13">ヒープ用の関数群</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">ヒープ用の関数群</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>heap = []<ul>
 <li>heap は heapクラスではなくて heapの内部構造として利用されるリストをそのまま使う。</li>
@@ -199,7 +196,7 @@ assert d.get(‘d’) is None
 </div></blockquote>
 </div>
 <div class="section" id="id4">
-<h3><a class="toc-backref" href="#id14">その他の便利関数</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id13">その他の便利関数</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first"><tt class="docutils literal"><span class="pre">merge(*iterable)</span></tt></p>
 <ul>
@@ -217,7 +214,7 @@ assert d.get(‘d’) is None
 </div>
 </div>
 <div class="section" id="code">
-<h2><a class="toc-backref" href="#id15">code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14">code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">code</span>
 <span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </pre></div>
@@ -230,7 +227,7 @@ assert d.get(‘d’) is None
 <p>デバッグのお供に</p>
 </div>
 <div class="section" id="contextlib">
-<h2><a class="toc-backref" href="#id16">contextlib</a><a class="headerlink" href="#contextlib" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15">contextlib</a><a class="headerlink" href="#contextlib" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/2/library/contextlib.html">contextlib.contextmanager</a> を用いると <tt class="docutils literal"><span class="pre">__enter__</span></tt>, <tt class="docutils literal"><span class="pre">__exit__</span></tt> を定義せずに、 <tt class="docutils literal"><span class="pre">yield</span></tt> を使って
 <tt class="docutils literal"><span class="pre">with</span></tt> 文で利用する関数を作成することができる。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@contextlib.contextmanager</span>
@@ -250,9 +247,9 @@ myfunc の yield の返り値が with-as の val に格納される。
 <a class="reference external" href="https://github.com/python-git/python/blob/master/Lib/contextlib.py">contextmanager の実体は受け取った関数が返すジェネレータの next() を __enter__ と __exit__ で呼び出すクラスである</a>。</p>
 </div>
 <div class="section" id="functools">
-<h2><a class="toc-backref" href="#id17">functools</a><a class="headerlink" href="#functools" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">functools</a><a class="headerlink" href="#functools" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="functools-wraps">
-<h3><a class="toc-backref" href="#id18">functools.wraps</a><a class="headerlink" href="#functools-wraps" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">functools.wraps</a><a class="headerlink" href="#functools-wraps" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">wrapper_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
   <span class="k">print</span> <span class="s">&#39;wrapper_f...&#39;</span>

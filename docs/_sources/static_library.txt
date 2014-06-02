@@ -7,6 +7,7 @@
 
 .. contents:: 目次
    :depth: 3
+   :local:
 
 静的ライブラリ (.a) の作成
 --------------------------
@@ -83,7 +84,7 @@ nm コマンドで確認することができる
 
 ::
 
-gcc -o program main.o libfoo.a
+  gcc -o program main.o libfoo.a
 
 は問題なく実行できるが
 

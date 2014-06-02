@@ -117,13 +117,49 @@
           <div class="body">
             
   <div class="section" id="python-pip-setuptools-easy-install-etc">
-<h1><a class="toc-backref" href="#id21">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</a><a class="headerlink" href="#python-pip-setuptools-easy-install-etc" title="Permalink to this headline">¶</a></h1>
+<h1>Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)<a class="headerlink" href="#python-pip-setuptools-easy-install-etc" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2014年5月20日</div>
 <p>Python のパッケージ管理関係の情報があまりオフィシャルには整理されてなくて、
 パッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみた。</p>
+<div class="contents local topic" id="id1">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#keywords" id="id21">キーワード</a></li>
+<li><a class="reference internal" href="#id3" id="id22">事前知識</a><ul>
+<li><a class="reference internal" href="#site-packages" id="id23">site-packages</a></li>
+<li><a class="reference internal" href="#user-site-directory" id="id24">User site directory</a></li>
+<li><a class="reference internal" href="#pypi" id="id25">PyPI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distutils" id="id26">distutils</a><ul>
+<li><a class="reference internal" href="#distutils-basic" id="id27">基本</a></li>
+<li><a class="reference internal" href="#id7" id="id28">distutils における依存関係の扱い</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distribute" id="id29">distribute</a></li>
+<li><a class="reference internal" href="#setuptools" id="id30">setuptools</a><ul>
+<li><a class="reference internal" href="#id10" id="id31">インストール</a></li>
+<li><a class="reference internal" href="#id11" id="id32">参考文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#easy-install" id="id33">easy_install</a><ul>
+<li><a class="reference internal" href="#id13" id="id34">easy_install の使い方</a></li>
+<li><a class="reference internal" href="#id15" id="id35">文献</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python-eggs" id="id36">Python Eggs</a></li>
+<li><a class="reference internal" href="#ez-setup-py" id="id37">ez_setup.py</a></li>
+<li><a class="reference internal" href="#pip" id="id38">PIP</a><ul>
+<li><a class="reference internal" href="#id18" id="id39">インストール &amp; アップグレード</a></li>
+<li><a class="reference internal" href="#id19" id="id40">使い方</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id20" id="id41">その他文献</a></li>
+</ul>
+</div>
 <div class="section" id="keywords">
-<span id="id1"></span><h2><a class="toc-backref" href="#id22">キーワード</a><a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id21">キーワード</a><a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <p>Python におけるパッケージ管理に関係のあるキーワードをアルファベット順に。</p>
 <ul class="simple">
 <li><a class="reference internal" href="#easy-install"><em>easy_install</em></a><ul>
@@ -175,50 +211,11 @@ setuptools を使って (つまり setuptools を使って setup.py を定義し
 </ul>
 </li>
 </ul>
-<div class="contents topic" id="id2">
-<p class="topic-title first">詳細</p>
-<ul class="simple">
-<li><a class="reference internal" href="#python-pip-setuptools-easy-install-etc" id="id21">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</a><ul>
-<li><a class="reference internal" href="#keywords" id="id22">キーワード</a></li>
-<li><a class="reference internal" href="#id3" id="id23">事前知識</a><ul>
-<li><a class="reference internal" href="#site-packages" id="id24">site-packages</a></li>
-<li><a class="reference internal" href="#user-site-directory" id="id25">User site directory</a></li>
-<li><a class="reference internal" href="#pypi" id="id26">PyPI</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils" id="id27">distutils</a><ul>
-<li><a class="reference internal" href="#distutils-basic" id="id28">基本</a></li>
-<li><a class="reference internal" href="#id7" id="id29">distutils における依存関係の扱い</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distribute" id="id30">distribute</a></li>
-<li><a class="reference internal" href="#setuptools" id="id31">setuptools</a><ul>
-<li><a class="reference internal" href="#id10" id="id32">インストール</a></li>
-<li><a class="reference internal" href="#id11" id="id33">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#easy-install" id="id34">easy_install</a><ul>
-<li><a class="reference internal" href="#id13" id="id35">easy_install の使い方</a></li>
-<li><a class="reference internal" href="#id15" id="id36">文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#python-eggs" id="id37">Python Eggs</a></li>
-<li><a class="reference internal" href="#ez-setup-py" id="id38">ez_setup.py</a></li>
-<li><a class="reference internal" href="#pip" id="id39">PIP</a><ul>
-<li><a class="reference internal" href="#id18" id="id40">インストール &amp; アップグレード</a></li>
-<li><a class="reference internal" href="#id19" id="id41">使い方</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id20" id="id42">その他文献</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id23">事前知識</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id22">事前知識</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="site-packages">
-<h3><a class="toc-backref" href="#id24">site-packages</a><a class="headerlink" href="#site-packages" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">site-packages</a><a class="headerlink" href="#site-packages" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Python には <tt class="docutils literal"><span class="pre">site-packages</span></tt> というディレクトリが存在し、そのサイト (マシン環境) 固有のモジュールは site-packages に保存されるようになっている。</li>
 <li>site-packages が モジュールの探索パス (sys.path) に足された後、sitecustomize というモジュールが暗黙的に Python に import される。 sitecustomize にサイト固有の設定を書いておくことができる。<tt class="docutils literal"><span class="pre">sys.setdefaultencoding('utf-8')</span></tt> でエンコーディングを設定するのによく使われる。</li>
@@ -232,7 +229,7 @@ setuptools を使って (つまり setuptools を使って setup.py を定義し
 </ul>
 </div>
 <div class="section" id="user-site-directory">
-<h3><a class="toc-backref" href="#id25">User site directory</a><a class="headerlink" href="#user-site-directory" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id24">User site directory</a><a class="headerlink" href="#user-site-directory" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Python 2.6 から <tt class="docutils literal"><span class="pre">per</span> <span class="pre">user</span> <span class="pre">site-packages</span></tt> というものが存在していて、ユーザ毎のモジュールを保存することができる。</li>
 <li><tt class="docutils literal"><span class="pre">per</span> <span class="pre">user</span> <span class="pre">site-packages</span></tt> を使えば site-packages にアクセス権がないユーザ (環境標準の Python を使っているならすべての非rootユーザ) も site-packages にモジュールが簡単にインストールできる。</li>
@@ -247,14 +244,14 @@ Linux だと <tt class="docutils literal"><span class="pre">$HOME/.local/lib/pyt
 </ul>
 </div>
 <div class="section" id="pypi">
-<span id="id4"></span><h3><a class="toc-backref" href="#id26">PyPI</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3><a class="toc-backref" href="#id25">PyPI</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://pypi.python.org/pypi">PyPI: the Python Package Index</a>。
 だれでも Python のパッケージが登録できる python.org のサイト。
 後述の easy_install とか pip はここからパッケージを探してきてインストールしてくれる。</p>
 </div>
 </div>
 <div class="section" id="distutils">
-<span id="id5"></span><h2><a class="toc-backref" href="#id27">distutils</a><a class="headerlink" href="#distutils" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><a class="toc-backref" href="#id26">distutils</a><a class="headerlink" href="#distutils" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Python 標準のパッケージ管理用のモジュール。パッケージ管理の基本的な機能を提供する。</li>
 <li>setuptools や pip などのその他のパッケージ管理システムは distutils に機能を拡張するものである。</li>
@@ -262,7 +259,7 @@ Linux だと <tt class="docutils literal"><span class="pre">$HOME/.local/lib/pyt
 <li>しかしパッケージ作成に実際に使うのは distutils の拡張である setuptools だろうから、distutils の仕様をそこまで細かく理解しておく必要はあまりないかも。</li>
 </ul>
 <div class="section" id="distutils-basic">
-<span id="id6"></span><h3><a class="toc-backref" href="#id28">基本</a><a class="headerlink" href="#distutils-basic" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3><a class="toc-backref" href="#id27">基本</a><a class="headerlink" href="#distutils-basic" title="Permalink to this headline">¶</a></h3>
 <p>Python のソースコードの入ったディレクトリに:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 
@@ -293,7 +290,7 @@ setup.py ができたら、:</p>
 <p>で表示できる。</p>
 </div>
 <div class="section" id="id7">
-<h3><a class="toc-backref" href="#id29">distutils における依存関係の扱い</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id28">distutils における依存関係の扱い</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://docs.python.org/2/distutils/setupscript.html#relationships-between-distributions-and-packages">distutils ドキュメントには、setup に渡す requires パラメータで依存関係が定義できる</a> という下りがあるが、
 <a class="reference external" href="https://docs.python.org/2.7/distutils/apiref.html">setup のパラメータ一覧</a> には requires はないようにみえる。整合性が取れていなくてよく分からない。
 <a class="reference external" href="http://legacy.python.org/dev/peps/pep-0314/">PEP314</a> にはrequires に関する言及がある。
@@ -301,19 +298,19 @@ setup.py ができたら、:</p>
 </div>
 </div>
 <div class="section" id="distribute">
-<span id="id8"></span><h2><a class="toc-backref" href="#id30">distribute</a><a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2><a class="toc-backref" href="#id29">distribute</a><a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h2>
 <p>setuptoolsのクローン。setuptools の開発が進まないので、 distribute という setuptools のブランチが作成されていた。
 少し古いページでは distribute のインストールが勧められていることも多い。
 しかし、<a class="reference external" href="http://pythonhosted.org/setuptools/merge.html">2013年に distribute は setuptools にマージされた</a> ので今後は
 distribute を使う必要はないと思われる。</p>
 </div>
 <div class="section" id="setuptools">
-<span id="id9"></span><h2><a class="toc-backref" href="#id31">setuptools</a><a class="headerlink" href="#setuptools" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2><a class="toc-backref" href="#id30">setuptools</a><a class="headerlink" href="#setuptools" title="Permalink to this headline">¶</a></h2>
 <p>distutils を拡張するライブラリと easy_install というモジュールのインストールを行う補助コマンドのセット。
 更新が停止していたので、代替として distribute が開発されていたが
 distribute は2013年にマージされたので、今後はsetuptools を使えば良い。</p>
 <div class="section" id="id10">
-<h3><a class="toc-backref" href="#id32">インストール</a><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id31">インストール</a><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>ez_setup.py というブートストラップ用のスクリプトをダウンロードし実行する。:</p>
 <div class="highlight-python"><div class="highlight"><pre>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python ez_setup.py
@@ -330,16 +327,16 @@ Mac の Python には始めから入っているような気がする。:</p>
 </div>
 </div>
 <div class="section" id="id11">
-<h3><a class="toc-backref" href="#id33">参考文献</a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id32">参考文献</a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://pypi.python.org/pypi/setuptools">https://pypi.python.org/pypi/setuptools</a></p>
 </div>
 </div>
 <div class="section" id="easy-install">
-<span id="id12"></span><h2><a class="toc-backref" href="#id34">easy_install</a><a class="headerlink" href="#easy-install" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2><a class="toc-backref" href="#id33">easy_install</a><a class="headerlink" href="#easy-install" title="Permalink to this headline">¶</a></h2>
 <p>簡単に PyPI や指定されたURLにあるアーカイブからモジュールのインストールが行えるコマンド。
 setuptools に付随している。パッケージを自作しないユーザが setuptols を入れる直接的な理由のほとんどはこれをインストールするためであろう。</p>
 <div class="section" id="id13">
-<h3><a class="toc-backref" href="#id35">easy_install の使い方</a><a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id34">easy_install の使い方</a><a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>PyPI から最新版をダウンロードしてインストール<ul>
 <li>easy_install SQLObject</li>
@@ -361,27 +358,27 @@ easy_install によってインストールされるパッケージもデフォ�
 </ul>
 </div>
 <div class="section" id="id15">
-<h3><a class="toc-backref" href="#id36">文献</a><a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id35">文献</a><a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="https://pythonhosted.org/setuptools/easy_install.html">easy_install documentation</a></li>
 </ul>
 </div>
 </div>
 <div class="section" id="python-eggs">
-<span id="id16"></span><h2><a class="toc-backref" href="#id37">Python Eggs</a><a class="headerlink" href="#python-eggs" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2><a class="toc-backref" href="#id36">Python Eggs</a><a class="headerlink" href="#python-eggs" title="Permalink to this headline">¶</a></h2>
 <p>setuptools で定義された Python の配布形式。
 Python のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの (distutils の生成するzip/tar の拡張版)。
 setuptools を使って (つまり setuptools を使って setup.py を定義していれば) 作成することができる。</p>
 </div>
 <div class="section" id="ez-setup-py">
-<span id="ez-setup"></span><h2><a class="toc-backref" href="#id38">ez_setup.py</a><a class="headerlink" href="#ez-setup-py" title="Permalink to this headline">¶</a></h2>
+<span id="ez-setup"></span><h2><a class="toc-backref" href="#id37">ez_setup.py</a><a class="headerlink" href="#ez-setup-py" title="Permalink to this headline">¶</a></h2>
 <p>上述したように、setuptools のインストールに利用されるブートストラップ用のスクリプト。</p>
 </div>
 <div class="section" id="pip">
-<span id="id17"></span><h2><a class="toc-backref" href="#id39">PIP</a><a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
+<span id="id17"></span><h2><a class="toc-backref" href="#id38">PIP</a><a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
 <p>easy_install の強化版みたいなもの。<a class="reference external" href="http://www.pip-installer.org/">http://www.pip-installer.org/</a></p>
 <div class="section" id="id18">
-<h3><a class="toc-backref" href="#id40">インストール &amp; アップグレード</a><a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id39">インストール &amp; アップグレード</a><a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>setuptools をインストール</li>
 <li>wget &quot;<a class="reference external" href="https://raw.github.com/pypa/pip/master/contrib/get-pip.py">https://raw.github.com/pypa/pip/master/contrib/get-pip.py</a>&quot;</li>
@@ -389,11 +386,11 @@ setuptools を使って (つまり setuptools を使って setup.py を定義し
 </ol>
 </div>
 <div class="section" id="id19">
-<h3><a class="toc-backref" href="#id41">使い方</a><a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id40">使い方</a><a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="id20">
-<h2><a class="toc-backref" href="#id42">その他文献</a><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id41">その他文献</a><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://www.freia.jp/taka/docs/pyhack4/index.html">Python Hack-a-thon 4 ハンズオン 中級コース</a> 日本語でよくまとまっていてわかりやすい。</li>
 </ul>
