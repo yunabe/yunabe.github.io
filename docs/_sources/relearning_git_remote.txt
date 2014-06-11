@@ -227,11 +227,12 @@ git push
 
 共有用のレポジトリを作る
 ~~~~~~~~~~~~~~~~~~~~~~~~
-まず共有用のレポジトリを作成しましょう。各々のユーザがコミットの書き込み (``git push``) を行うレポジトリは「裸」のレポジトリ（bare repository）である必要があります。
+まず共有用のレポジトリを作成しましょう。各々のユーザがコミットの書き込み (``git push``) を行うレポジトリは
+`「裸」のレポジトリ（bare repository） <http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository>`_ である必要があります。
 bare repository は作業ディレクトリのない（``.git`` ディレクトリのみ存在する） git レポジトリです。
 bare レポジトリは git init に ``--bare`` オプションをつけて実行することで作成できます。
 あるいは、 git clone で既存のレポジトリを複製する際に ``--bare`` オプションを付けることで 既存のレポジトリを bare レポジトリとして複製することも出来ます。
-また bare レポジトリのディレクトリ名には .git を末尾につけるのが慣習のようです。
+また bare レポジトリのディレクトリ名には `.git を末尾につけるのが慣習です <http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository>`_。
 
 ::
 

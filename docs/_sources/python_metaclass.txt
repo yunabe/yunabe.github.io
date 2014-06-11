@@ -96,17 +96,14 @@ Python でクラスを定義して、それを呼び出してインスタンス�
 
 __metaclass__
 -------------
-class を定義すると自動的に type('ClassName', ...) が呼び出されて
-クラスが生成されるということを type の節で述べました。
-実は Python ではこの class を定義される際に暗黙的に呼び出される関数を
-別の関数で置き換えることができます。
+class を定義すると自動的に ``type('ClassName', ...)`` が呼び出されてクラスが生成されるということを type の節で述べました。
+実は Python ではこの class を定義される際に暗黙的に呼び出される関数を別の関数で置き換えることができます。
 これが `__metaclass__ <https://docs.python.org/2.7/reference/datamodel.html#__metaclass__>`_ です
 (`__metaclass__ の日本語のドキュメント <http://docs.python.jp/2/reference/datamodel.html#__metaclass__>`_)。
 
-classの定義に ``__metaclass__`` が存在すると
-クラスを生成する際に ``__metaclass__`` に格納された関数が ``type`` の代わりに呼び出されます。
-metaclass という名前がついていますが、__metaclass__ は class である必要はありません。
-``type`` と同様の引数を受け取れるcallableなオブジェクトならば何でも __metaclass__ として利用できます。
+classの定義に ``__metaclass__`` が存在するとクラスを生成する際に ``__metaclass__`` に格納された関数が ``type`` の代わりに呼び出されます。
+metaclass という名前がついていますが、``__metaclass__`` は class である必要はありません。
+``type`` と同様の引数を受け取れる callable なオブジェクトならば何でも ``__metaclass__`` として利用できます。
 例えば::
 
   def tolower_classname(name, bases, dict):
@@ -122,4 +119,25 @@ metaclass という名前がついていますが、__metaclass__ は class で�
 
 typeの継承
 ~~~~~~~~~~
-(to be continued...)
+ただそれだと metaclass という名称とマッチしないので、実際にはtypeを継承したクラスを作成してそれを ``__metaclass__`` に指定するのが一番自然なのではないかと思います。
+その場合、 ``__metaclass__`` に指定されたクラスのインスタンスとしてクラスが作成されるようになるので、
+クラス作成をカスタマイズするには ``__metaclass__`` に指定したクラスの ``__new__`` もしくは ``__init__`` をカスタマイズすることになります。
+
+メタクラスの例
+------------------
+メタクラスのサンプルとして、``__metaclass__`` に指定すると
+getter/setter っぽい名前のメソッド (e.g. ``get_name``, ``getName``, ``setName``) を自動的に `プロパティ <http://docs.python.jp/2/library/functions.html#property>`_ に変換してくれるメタクラス
+`auto_property (ソースコード) <https://github.com/yunabe/practice/tree/master/python/metaclass/>`_ を作成しました。
+例えば ``get_x`` というメソッドを持つクラスに指定すると、アクセスすると ``get_x`` が呼び出されるプロパティ ``x`` が自動的に生成されます。
+（逆に ``get_x`` はメソッドから消えます）
+
+::
+
+  class C(object):
+    __metaclass__ = auto_property
+
+    def get_x(self):
+      return 123
+
+  c = C()
+  assert c.x == 123
