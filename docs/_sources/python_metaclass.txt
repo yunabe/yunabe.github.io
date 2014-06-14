@@ -10,6 +10,10 @@ Pythonのメタプログラミング (__metaclass__) は組み込み関数 ``typ
 理解するのが結構難しい。
 あまり関連情報がまとまってるドキュメントがなくて理解するのに苦労したので情報をまとめておきました。
 
+.. contents:: 目次
+   :depth: 3
+   :local:
+
 事前知識
 --------
 
@@ -130,13 +134,14 @@ typeの継承
 クラス作成をカスタマイズするには ``__metaclass__`` に指定したクラスの ``__new__`` もしくは ``__init__`` をカスタマイズすることになります。
 
 ``type`` は ``__init__`` ではなく ``__new__`` メソッドの方でクラス生成の主な作業を行っています (`typeobject.c ソースコード <http://svn.python.org/projects/python/trunk/Objects/typeobject.c>`_)。
-そのため、 ``__new__`` メソッドをオーバーライドして ``type.__new__`` を呼び出す前に引数の
-``name``, ``bases``, ``dict`` を編集してクラス生成をカスタマイズすることになります。
+そのため、 ``type`` の挙動をカスタマイズするには、普段オーバーライドする ``__init__`` ではなくて、 ``__new__`` メソッドをオーバーライドする必要があります。
+そして ``type.__new__`` を呼び出す前に引数の ``name``, ``bases``, ``dict`` を編集してクラス生成をカスタマイズすることになります。
 
 ::
 
   class mymeta(type):
     def __new__(cls, name, bases, dict):
+      # TODO: customize name, bases, dict.
       type.__new__(cls, name, bases, dict)
 
 メタクラスの例

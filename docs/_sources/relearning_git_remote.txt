@@ -201,6 +201,10 @@ git pull
 
 また後述するように ``git pull`` は引数を省略することができるので、日常の業務で利用するには ``git fetch`` と ``merge`` をそれぞれ実行するよりも便利です。
 
+.. image:: https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545
+   :height: 272px
+   :width: 505px
+
 ここまでのまとめ
 ----------------
 - 別の場所にあるgit レポジトリ（リモートレポジトリ）と連携するための仕組みとして git には「リモート」というものが用意されています。
@@ -224,6 +228,10 @@ git push
 この問題を解決する git の運用方法は複数存在しますが、1つの単純な解決方法は共有のレポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有レポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有レポジトリに書き込むことです。
 これを実現するには今まで述べてきたリモートレポジトリからコミットを読み込む方法に加えて、リモートレポジトリに対して手元のコミットを書き込む方法も必要になります。
 このコミットをリモートレポジトリに書き込むための手段が ``git push`` です。
+
+.. image:: https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499
+   :height: 249px
+   :width: 520px
 
 共有用のレポジトリを作る
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,6 +278,10 @@ git push でコミットを書き込む
 
 これでアリスの master ブランチ（の指すコミットとその全ての先祖コミット）が shared に対して書き込まれ、shared に master ブランチが作成されます。図にすると以下な状態になります。
 
+.. image:: https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;h=1073
+   :height: 536px
+   :width: 507px
+
 続いて新しいコミットを作ってそれも shared に push してみましょう。
 
 ::
@@ -277,6 +289,10 @@ git push でコミットを書き込む
   $ echo "Email: alice@example.com" >> alice.txt
   $ git commit -a -m "Added an email addr to alice.txt"
   $ git push shared master:master
+
+.. image:: https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069
+   :height: 534px
+   :width: 667px
 
 push に失敗した場合にマージを行う
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
