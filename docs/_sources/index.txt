@@ -11,14 +11,14 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
+   why_events_are_a_bad_idea
+   maximum_number_of_threads
+   python_useful_standard_modules
    python_package_management
    python_metaclass
-   why_events_are_a_bad_idea
-   javascript_primitive_types
-   maximum_number_of_threads
    cpp_virtual_destructor
    static_library
-   python_useful_standard_modules
+   javascript_primitive_types
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 

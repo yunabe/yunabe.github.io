@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea)" href="why_events_are_a_bad_idea.html" />
+    <link rel="next" title="C++ でデストラクタを virtual にしなくてはならない条件と理由" href="cpp_virtual_destructor.html" />
     <link rel="prev" title="Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)" href="python_package_management.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="why_events_are_a_bad_idea.html" title="イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea)"
+          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="python_package_management.html" title="Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)"
@@ -58,7 +58,10 @@
 <li><a class="reference internal" href="#id7">typeの継承</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id8">メタクラスの例</a></li>
+<li><a class="reference internal" href="#id8">メタクラスの例</a><ul>
+<li><a class="reference internal" href="#id10">実装の解説</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -67,8 +70,8 @@
   <p class="topless"><a href="python_package_management.html"
                         title="previous chapter">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="why_events_are_a_bad_idea.html"
-                        title="next chapter">イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea)</a></p>
+  <p class="topless"><a href="cpp_virtual_destructor.html"
+                        title="next chapter">C++ でデストラクタを virtual にしなくてはならない条件と理由</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/python_metaclass.txt"
@@ -97,6 +100,8 @@
             
   <div class="section" id="python-metaclass">
 <h1>Python の メタプログラミング (__metaclass__, メタクラス) を理解する<a class="headerlink" href="#python-metaclass" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2014年6月11日</div>
 <p>Pythonのメタプログラミング (__metaclass__) は組み込み関数 <tt class="docutils literal"><span class="pre">type</span></tt> の普段利用しない隠れた機能や、
 普通は利用しない特殊メソッド <tt class="docutils literal"><span class="pre">__new__</span></tt> などを理解する必要があり
 理解するのが結構難しい。
@@ -116,8 +121,7 @@
 type は type(obj) のように1つの引数を与えて obj の型を取得するのに利用したことがあるはずです。
 普通はこちらの機能しか使いません。</p>
 <p>しかし実は type にはもう一つの隠れた機能があります。
-第1引数に文字列でクラス名、第2引数に親クラスの列、第3引数にクラスのメソッドや属性を定義した dict
-を渡して type を呼び出すとクラスを動的に定義することが可能です。:</p>
+<a class="reference external" href="http://docs.python.jp/2/library/functions.html#type">第1引数に文字列でクラス名、第2引数に親クラスの列、第3引数にクラスのメソッドや属性を定義した dict を渡して type を呼び出すとクラスを動的に定義することが可能です。</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">P1</span><span class="p">):</span>
   <span class="n">attrivute1</span> <span class="o">=</span> <span class="n">value1</span>
 
@@ -168,7 +172,7 @@ ClassName に与えた残りの引数が与えられて呼び出される。</li
 <p>というようになっています。
 例えばものすごく極端な例ですが:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -212,12 +216,21 @@ metaclass という名前がついていますが、<tt class="docutils literal"
 <p>ただそれだと metaclass という名称とマッチしないので、実際にはtypeを継承したクラスを作成してそれを <tt class="docutils literal"><span class="pre">__metaclass__</span></tt> に指定するのが一番自然なのではないかと思います。
 その場合、 <tt class="docutils literal"><span class="pre">__metaclass__</span></tt> に指定されたクラスのインスタンスとしてクラスが作成されるようになるので、
 クラス作成をカスタマイズするには <tt class="docutils literal"><span class="pre">__metaclass__</span></tt> に指定したクラスの <tt class="docutils literal"><span class="pre">__new__</span></tt> もしくは <tt class="docutils literal"><span class="pre">__init__</span></tt> をカスタマイズすることになります。</p>
+<p><tt class="docutils literal"><span class="pre">type</span></tt> は <tt class="docutils literal"><span class="pre">__init__</span></tt> ではなく <tt class="docutils literal"><span class="pre">__new__</span></tt> メソッドの方でクラス生成の主な作業を行っています (<a class="reference external" href="http://svn.python.org/projects/python/trunk/Objects/typeobject.c">typeobject.c ソースコード</a>)。
+そのため、 <tt class="docutils literal"><span class="pre">__new__</span></tt> メソッドをオーバーライドして <tt class="docutils literal"><span class="pre">type.__new__</span></tt> を呼び出す前に引数の
+<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">bases</span></tt>, <tt class="docutils literal"><span class="pre">dict</span></tt> を編集してクラス生成をカスタマイズすることになります。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">mymeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="id8">
 <h2>メタクラスの例<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
-<p>メタクラスのサンプルとして、<tt class="docutils literal"><span class="pre">__metaclass__</span></tt> に指定すると
-getter/setter っぽい名前のメソッド (e.g. <tt class="docutils literal"><span class="pre">get_name</span></tt>, <tt class="docutils literal"><span class="pre">getName</span></tt>, <tt class="docutils literal"><span class="pre">setName</span></tt>) を自動的に <a class="reference external" href="http://docs.python.jp/2/library/functions.html#property">プロパティ</a> に変換してくれるメタクラス
+<p><tt class="docutils literal"><span class="pre">__metaclass__</span></tt> でどんなことができるのか理解するには例をみてみるのが一番だと思うので、
+メタクラスのサンプルとして、<tt class="docutils literal"><span class="pre">__metaclass__</span></tt> に指定すると
+getter/setter っぽい名前のメソッド (e.g. <tt class="docutils literal"><span class="pre">get_name</span></tt>, <tt class="docutils literal"><span class="pre">getName</span></tt>, <tt class="docutils literal"><span class="pre">SetName</span></tt>) を自動的に <a class="reference external" href="http://docs.python.jp/2/library/functions.html#property">プロパティ</a> に変換してくれるメタクラス
 <a class="reference external" href="https://github.com/yunabe/practice/tree/master/python/metaclass/">auto_property (ソースコード)</a> を作成しました。
 例えば <tt class="docutils literal"><span class="pre">get_x</span></tt> というメソッドを持つクラスに指定すると、アクセスすると <tt class="docutils literal"><span class="pre">get_x</span></tt> が呼び出されるプロパティ <tt class="docutils literal"><span class="pre">x</span></tt> が自動的に生成されます。
 （逆に <tt class="docutils literal"><span class="pre">get_x</span></tt> はメソッドから消えます）</p>
@@ -230,6 +243,39 @@ getter/setter っぽい名前のメソッド (e.g. <tt class="docutils literal">
 <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="mi">123</span>
 </pre></div>
+</div>
+<div class="section" id="id10">
+<h3>実装の解説<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>まずは <tt class="docutils literal"><span class="pre">type</span></tt> を継承したクラス auto_property を定義します。
+そして <tt class="docutils literal"><span class="pre">__new__</span></tt> の中で引数として受け取ったクラス定義の辞書 <tt class="docutils literal"><span class="pre">dict</span></tt> をカスタマイズしてから、
+<tt class="docutils literal"><span class="pre">type.__new__</span></tt> を呼び出します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">auto_property</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c"># TODO: dict から setter/getter っぽい名前のメソッドを取り除いて、</span>
+    <span class="c">#       代わりに対応する property を持つ new_dict を作成する</span>
+    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>後は、 TODO の部分で <tt class="docutils literal"><span class="pre">dict</span></tt> に対して for文を回して正規表現を使って getter/setter と property 名を取り出して、
+最後に <tt class="docutils literal"><span class="pre">new_dict</span></tt> に対して <tt class="docutils literal"><span class="pre">property(getter,</span> <span class="pre">setter)</span></tt> を代入するだけです。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">auto_property</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">setters</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">getters</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+      <span class="c"># TODO: setter/getter を正規表現で検出</span>
+
+    <span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
+      <span class="n">getter</span> <span class="o">=</span> <span class="n">getters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+      <span class="n">setter</span> <span class="o">=</span> <span class="n">setters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+      <span class="n">new_dict</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getter</span><span class="p">,</span> <span class="n">setter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/yunabe/practice/tree/master/python/metaclass/">github にソースコードをコミットしてある</a> ので、実装の細かい部分はそちらを確認して下さい。</p>
 </div>
 </div>
 </div>
@@ -247,7 +293,7 @@ getter/setter っぽい名前のメソッド (e.g. <tt class="docutils literal">
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="why_events_are_a_bad_idea.html" title="イベントはスレッドに比べて何故ダメなのか (Why Events Are A Bad Idea)"
+          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
              >next</a> |</li>
         <li class="right" >
           <a href="python_package_management.html" title="Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)"
