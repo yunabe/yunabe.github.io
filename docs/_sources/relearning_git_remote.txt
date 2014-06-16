@@ -12,7 +12,7 @@ Git リモート再入門
 
 この文書の目的
 --------------
-- 別の場所にあるレポジトリ（リモートレポジトリ）と連携する方法について再学習します。
+- 別の場所にある git レポジトリ（リモートレポジトリ）と連携する方法について再学習します。
 - はじめに git remote, git fetch, git merge を使ってリモートレポジトリの内容を手元のレポジトリ（ローカルレポジトリ）に取り込む方法について学習します。
 - 次に git fetch, git merge を使った一連の作業を自動的に行なってくれる git pull について学習します。
 - 次に git push を使ってローカルレポジトリの内容をリモートレポジトリに書き出す方法について 学習します。
@@ -41,6 +41,7 @@ Git リモート再入門
   $ mkdir alice
   $ cd alice
   $ git init
+  Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
 
 これでレポジトリができました。まず自分の紹介ページを作ってコミットしましょう。
 
@@ -49,6 +50,9 @@ Git リモート再入門
   $ echo "I’m Alice." >> alice.txt
   $ git add alice.txt
   $ git commit -m "Added alice.txt"
+  [master (root-commit) 8f6e1d0] Added alice.txt
+   1 file changed, 1 insertion(+)
+   create mode 100644 alice.txt
 
 次にメンバー一覧ページも作ってコミットします。
 
@@ -57,6 +61,9 @@ Git リモート再入門
   $ echo "Alice <alice.txt>" >> members.txt
   $ git add members.txt
   $ git commit -m "Added Alice to members.txt"
+  [master 9e73b53] Added Alice to members.txt
+   1 file changed, 1 insertion(+)
+   create mode 100644 members.txt
 
 アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでレポジトリの作成とコミットを行います。
 
@@ -66,16 +73,23 @@ Git リモート再入門
   $ mkdir bob
   $ cd bob
   $ git init
+  Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
 
   $ echo "I’m Bob." > bob.txt
   $ git add bob.txt
   $ git commit -m "Added bob.txt"
+  [master (root-commit) 527df0c] Added bob.txt
+   1 file changed, 1 insertion(+)
+   create mode 100644 bob.txt
 
   $ echo "Bob <bob.txt>" > members.txt
   $ git add members.txt
   $ git commit -m "Added Bob to members.txt"
+  [master f3bc482] Added Bob to members.txt
+   1 file changed, 1 insertion(+)
+   create mode 100644 members.txt
 
-アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために git では「リモート」という仕組みと、git fetch, pull, push といったコマンドが用意されています。
+アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために git では「リモート」という仕組みと、``git fetch``, ``pull``, ``push`` といったコマンドが用意されています。
 
 .. image:: https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;h=728
    :height: 378px
@@ -96,7 +110,7 @@ git では別の場所にあるレポジトリ（以下リモートレポジト�
 
   git remote add <name> <URL>
 
-現在ローカルレポジトリに登録されているリモートレポジトリの一覧は git remote で確認することができます。
+現在ローカルレポジトリに登録されているリモートレポジトリの一覧は ``git remote`` で確認することができます。
 各 remote の、例えばURLなどの、詳細な情報 は ``git remote show <remote>`` で確認できます。
 
 リモートレポジトリにあるコミットを読み込んでみましょう。リモートレポジトリにあるコミットは ``git fetch <remote>`` でローカルレポジトリにロードすることができます。
@@ -116,14 +130,29 @@ git fetch でコミットをロードすると、リモートレポジトリ上�
   $ git remote
   alice
   $ git remote show alice
+  * remote alice
+    Fetch URL: /tmp/my/workingdir/alice
+    Push  URL: /tmp/my/workingdir/alice
+    HEAD branch: master
+    Remote branch:
+      master new (next fetch will store in remotes/alice)
+    Local ref configured for 'git push':
+      master pushes to master (local out of date)
 
 次にアリスのレポジトリをフェッチします。
 
 ::
 
   $ git fetch alice
-
+  warning: no common commits
+  remote: Counting objects: 6, done.
+  remote: Compressing objects: 100% (3/3), done.
+  remote: Total 6 (delta 0), reused 0 (delta 0)
+  Unpacking objects: 100% (6/6), done.
+  From /tmp/my/workingdir/alice
+   * [new branch]      master     -> alice/master
   $ git branch -r
+    alice/master
 
 bob のレポジトリの状態を図を書くと次のようになります。
 レポジトリ alice からコミットがコピーされており、master ブランチの代わりに ``alice/master`` という「リモートトラッキングブランチ」が作成されていることに注意して下さい。
@@ -137,9 +166,9 @@ bob のレポジトリの状態を図を書くと次のようになります。
 これで ``git remote add`` と ``git fetch`` で別の場所にあるレポジトリを登録し、そこからコミットを読み込むことができました。
 その際にリモートレポジトリ上のブランチに対応する ``<remote>/<branch>`` という名前の「リモートトラキングブランチ」が自動的に作られることが分かりました。
 
-「リモートトラッキングブランチ」(e.g. ``origin/master``) は通常のブランチ (e.g. master) やHEAD, HEAD^, コミットのハッシュID (198bc17aade),
+「リモートトラッキングブランチ」(e.g. ``origin/master``) は通常のブランチ (e.g. ``master``) や ``HEAD``, ``HEAD^``, コミットのハッシュID (``198bc17aade``),
 タグと同様に手元のレポジトリに保存されているコミットに対するポインタです。
-そのため前章で学んだような git checkout, git merge, git branch のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。
+そのため前章で学んだような ``git checkout``, ``git merge``, ``git branch`` のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。
 
 ::
 
@@ -151,7 +180,8 @@ bob のレポジトリの状態を図を書くと次のようになります。
 
   git checkout alice/master
 
-とするとボブはアリスのレポジトリの ``master`` ブランチの最新の状態を再現することができます （``detached HEAD`` となってこのままでは作業できないことに注意）。
+とするとボブはアリスのレポジトリの ``master`` ブランチの最新の状態を再現することができます
+（ただし ``You are in 'detached HEAD' state.`` と言われてこのままでは編集作業ができないことに注意）。
 
 リモートトラッキングブランチとマージする
 ----------------------------------------
@@ -166,13 +196,19 @@ bob のレポジトリの状態を図を書くと次のようになります。
 
   $ git checkout master
   $ git merge alice/master
+  Auto-merging members.txt
+  CONFLICT (add/add): Merge conflict in members.txt
+  Automatic merge failed; fix conflicts and then commit the result.
 
 members.txt はアリスとボブ両方のレポジトリで編集されていたのでコンフリクトが発生します。
 適当にコンフリクトを解消します。このあたりの作業もローカルのブランチをマージする場合となにも変わりません。
 
 ::
 
-  $ git commit -m "Merged changes in alice to bob"
+  $ emacs members.txt # 適当なエディタで衝突を解消
+  $ git add members.txt
+  $ git commit
+  [master 5de7b36] Merge remote-tracking branch 'alice/master'
 
 これで無事、ボブはアリスが行った変更を自分のレポジトリに取り込むことができました。ボブのレポジトリの状態は図で書くと以下のようになります
 
@@ -196,10 +232,24 @@ git pull
 
 ::
 
+  $ cd /tmp/my/workingdir/alice
   $ git remote add bob /tmp/my/workingdir/bob
   $ git pull bob master
+  remote: Counting objects: 11, done.
+  remote: Compressing objects: 100% (5/5), done.
+  remote: Total 9 (delta 0), reused 0 (delta 0)
+  Unpacking objects: 100% (9/9), done.
+  From /tmp/my/workingdir/bob
+   * branch            master     -> FETCH_HEAD
+   * [new branch]      master     -> bob/master
+  Updating 9e73b53..5de7b36
+  Fast-forward
+   bob.txt     | 1 +
+   members.txt | 1 +
+   2 files changed, 2 insertions(+)
+   create mode 100644 bob.txt
 
-また後述するように ``git pull`` は引数を省略することができるので、日常の業務で利用するには ``git fetch`` と ``merge`` をそれぞれ実行するよりも便利です。
+また後述するように ``git pull`` は引数を省略することができるので、日常の業務で利用するには ``git fetch`` と ``merge`` をばらばらに実行するよりも便利です。
 
 .. image:: https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545
    :height: 272px
@@ -208,12 +258,12 @@ git pull
 ここまでのまとめ
 ----------------
 - 別の場所にあるgit レポジトリ（リモートレポジトリ）と連携するための仕組みとして git には「リモート」というものが用意されています。
-- リモートレポジトリと連携するには、まずローカルレポジトリに登録するリモートレポジトリを登録します。これには git remote add <name> <url> を利用します。
+- リモートレポジトリと連携するには、まずローカルレポジトリに登録するリモートレポジトリを登録します。これには ``git remote add <name> <url>`` を利用します。
 - リモートレポジトリ上のコミットを ``git fetch`` でロードすることができます。
   この際、リモートレポジトリ上のブランチに対応する「リモートトラッキングブランチ」が自動的に作成されます。
   リモートトラッキングブランチの名前は ``<remote>/<branch>`` (e.g. ``alice/master``) となります。
-- git fetch で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のレポジトリで作業している場合全く同じように作業できる。 リモートレポジトリ上で行われたコミットを手元のブランチに取り込むには git merge を行えば良い。
-- git fetch → git merge の一連の流れは git pull コマンドで行うことができる。
+- git fetch で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のレポジトリで作業している場合全く同じように作業できる。 リモートレポジトリ上で行われたコミットを手元のブランチに取り込むには ``git merge`` を行えば良い。
+- ``git fetch`` → ``git merge`` の一連の流れは ``git pull`` コマンドで行うことができる。
 
 git push
 --------
@@ -246,8 +296,16 @@ bare レポジトリは git init に ``--bare`` オプションをつけて実�
 
   $ cd /tmp/my/workingdir
   $ mkdir shared.git
-  $ cd shared
+  $ cd shared.git
   $ git init --bare
+  Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
+
+`ls` で `shared.git` の中身を確認してみると、通常のレポジトリの `.git` ディレクトリの中身が保存されていることが分かります。
+
+::
+
+  $ ls
+  HEAD        branches    config      description hooks       info        objects     refs
 
 git push でコミットを書き込む
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -256,7 +314,9 @@ git push でコミットを書き込む
 ::
 
   $ cd /tmp/my/workingdir/alice
-  $ git remote add shared /tmp/my/workingdir/shared
+  $ git remote add shared /tmp/my/workingdir/shared.git
+
+.. TODO(yunabe): .git suffix は省略可？
 
 次に shared に対してコミットを書き込みます。コミットの書き込みには git push を利用します。
 
@@ -268,7 +328,7 @@ git push でコミットを書き込む
 同時に <remote> の <dst> が <src> と同じコミットを指すように変更します。
 
 - <dst> ブランチが存在しない場合は <dst> ブランチが <remote> に作成されます。
-- <dst> ブランチがすでに存在する場合には <dst> を <src> まで fast-forward します。fast-forward できない場合 （<dst> が <src> の祖先でない場合）には git push は失敗します。
+- <dst> ブランチがすでに存在する場合には <dst> を <src> まで **fast-forward** します。fast-forward できない場合 （<dst> が <src> の祖先でない場合）には git push は **失敗** します。
 
 アリスのレポジトリから共有レポジトリに対して、master ブランチを書き込んでみましょう
 
@@ -294,12 +354,22 @@ git push でコミットを書き込む
    :height: 534px
    :width: 667px
 
-push に失敗した場合にマージを行う
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+push に失敗した場合の対処法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 次にボブの立場になって共有レポジトリに新しいコミットを push してみましょう。
+まず共有レポジトリを ``git remote add`` で登録します
+
+::
+
+  $ git remote add shared /tmp/my/workingdir/shared
+
+続いて新しいコミットを作成します。
 
 ::
 
   $ echo "Email: bob@example.com" >> bob.txt
   $ git commit -a -m "Added an email addr to bob.txt"
+
+::
+
   $ git push shared master:master
