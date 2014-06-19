@@ -407,6 +407,10 @@ push (fast-forward) に失敗した場合の対処法
 ``<src>`` (今回は ``bob`` の ``master``) が指しているコミットまで fast-forward します。
 fast-forward 出来ない場合は失敗してしまいます。
 
+.. image:: https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;h=878
+   :height: 439px
+   :width: 667px
+
 fast-forward を可能にして ``push`` を行うためには、ローカルの ``master`` ブランチを ``shared`` の ``master`` とマージしてあげる必要があります。
 前述したように ``git pull`` でマージしましょう (あるいは ``git fetch`` と ``git merge`` でもよい)。
 
@@ -417,7 +421,14 @@ fast-forward を可能にして ``push`` を行うためには、ローカルの
    alice.txt | 1 +
    1 file changed, 1 insertion(+)
 
-これで
+bob のレポジトリは図のような状態になります。
+
+.. image:: https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;h=599
+   :height: 300px
+   :width: 758px
+
+これで ``shared/master`` が bob の ``master`` の先祖になったので、 ``shared`` の ``master`` を bob の ``master`` にfast-forwardできるようになりました。
+もう一度プッシュを行うと今度は成功するはずです。
 
 ::
 

@@ -443,6 +443,7 @@ hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; fo
 <p>前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> は <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> 上の <tt class="docutils literal"><span class="pre">&lt;dst&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">shared</span></tt> 上の <tt class="docutils literal"><span class="pre">master</span></tt>) を
 <tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">bob</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt>) が指しているコミットまで fast-forward します。
 fast-forward 出来ない場合は失敗してしまいます。</p>
+<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878"><img alt="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878" src="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878" style="width: 667px; height: 439px;" /></a>
 <p>fast-forward を可能にして <tt class="docutils literal"><span class="pre">push</span></tt> を行うためには、ローカルの <tt class="docutils literal"><span class="pre">master</span></tt> ブランチを <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> とマージしてあげる必要があります。
 前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> でマージしましょう (あるいは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> と <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt> でもよい)。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git pull shared master
@@ -451,7 +452,10 @@ Merge made by the &#39;recursive&#39; strategy.
  1 file changed, 1 insertion(+)
 </pre></div>
 </div>
-<p>これで</p>
+<p>bob のレポジトリは図のような状態になります。</p>
+<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599"><img alt="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599" src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599" style="width: 758px; height: 300px;" /></a>
+<p>これで <tt class="docutils literal"><span class="pre">shared/master</span></tt> が bob の <tt class="docutils literal"><span class="pre">master</span></tt> の先祖になったので、 <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> を bob の <tt class="docutils literal"><span class="pre">master</span></tt> にfast-forwardできるようになりました。
+もう一度プッシュを行うと今度は成功するはずです。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
 Counting objects: 8, done.
 Delta compression using up to 8 threads.
