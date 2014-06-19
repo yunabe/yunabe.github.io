@@ -55,7 +55,7 @@
 <li><a class="reference internal" href="#git-push">git push</a><ul>
 <li><a class="reference internal" href="#id11">共有用のレポジトリを作る</a></li>
 <li><a class="reference internal" href="#id13">git push でコミットを書き込む</a></li>
-<li><a class="reference internal" href="#push">push に失敗した場合の対処法</a></li>
+<li><a class="reference internal" href="#push-fast-forward">push (fast-forward) に失敗した場合の対処法</a></li>
 </ul>
 </li>
 </ul>
@@ -109,7 +109,7 @@
 <li><a class="reference internal" href="#git-push" id="id23">git push</a><ul>
 <li><a class="reference internal" href="#id11" id="id24">共有用のレポジトリを作る</a></li>
 <li><a class="reference internal" href="#id13" id="id25">git push でコミットを書き込む</a></li>
-<li><a class="reference internal" href="#push" id="id26">push に失敗した場合の対処法</a></li>
+<li><a class="reference internal" href="#push-fast-forward" id="id26">push (fast-forward) に失敗した場合の対処法</a></li>
 </ul>
 </li>
 </ul>
@@ -360,7 +360,7 @@ $ git init --bare
 Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
 </pre></div>
 </div>
-<p><cite>ls</cite> で <cite>shared.git</cite> の中身を確認してみると、通常のレポジトリの <cite>.git</cite> ディレクトリの中身が保存されていることが分かります。</p>
+<p><tt class="docutils literal"><span class="pre">ls</span></tt> で <tt class="docutils literal"><span class="pre">shared.git</span></tt> の中身を確認してみると、通常のレポジトリの <tt class="docutils literal"><span class="pre">.git</span></tt> ディレクトリの中身が保存されていることが分かります。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ ls
 HEAD        branches    config      description hooks       info        objects     refs
 </pre></div>
@@ -385,6 +385,13 @@ $ git remote add shared /tmp/my/workingdir/shared.git
 </ul>
 <p>アリスのレポジトリから共有レポジトリに対して、master ブランチを書き込んでみましょう</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+ounting objects: 15, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (15/15), 1.32 KiB | 0 bytes/s, done.
+Total 15 (delta 0), reused 0 (delta 0)
+To /tmp/my/workingdir/shared.git
+ * [new branch]      master -&gt; master
 </pre></div>
 </div>
 <p>これでアリスの master ブランチ（の指すコミットとその全ての先祖コミット）が shared に対して書き込まれ、shared に master ブランチが作成されます。図にすると以下な状態になります。</p>
@@ -392,24 +399,67 @@ $ git remote add shared /tmp/my/workingdir/shared.git
 <p>続いて新しいコミットを作ってそれも shared に push してみましょう。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ echo &quot;Email: alice@example.com&quot; &gt;&gt; alice.txt
 $ git commit -a -m &quot;Added an email addr to alice.txt&quot;
+[master c671712] Added an email addr to alice.txt
+ 1 file changed, 1 insertion(+)
 $ git push shared master:master
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 357 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To /tmp/my/workingdir/shared.git
+   77c39e3..c671712  master -&gt; master
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069"><img alt="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069" src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069" style="width: 667px; height: 534px;" /></a>
 </div>
-<div class="section" id="push">
-<h3><a class="toc-backref" href="#id26">push に失敗した場合の対処法</a><a class="headerlink" href="#push" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="push-fast-forward">
+<h3><a class="toc-backref" href="#id26">push (fast-forward) に失敗した場合の対処法</a><a class="headerlink" href="#push-fast-forward" title="Permalink to this headline">¶</a></h3>
 <p>次にボブの立場になって共有レポジトリに新しいコミットを push してみましょう。
 まず共有レポジトリを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span></tt> で登録します</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git remote add shared /tmp/my/workingdir/shared
+<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/bo
+$ git remote add shared /tmp/my/workingdir/shared
 </pre></div>
 </div>
 <p>続いて新しいコミットを作成します。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ echo &quot;Email: bob@example.com&quot; &gt;&gt; bob.txt
 $ git commit -a -m &quot;Added an email addr to bob.txt&quot;
+[master 99af642] Added an email addr to bob.txt
+ 1 file changed, 1 insertion(+)
 </pre></div>
 </div>
+<p>これを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> してみましょう。そうするとエラーが発生してしまいます。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+To /tmp/my/workingdir/shared.git
+ ! [rejected]        master -&gt; master (fetch first)
+error: failed to push some refs to &#39;/tmp/my/workingdir/shared.git&#39;
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.
+</pre></div>
+</div>
+<p>前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> は <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> 上の <tt class="docutils literal"><span class="pre">&lt;dst&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">shared</span></tt> 上の <tt class="docutils literal"><span class="pre">master</span></tt>) を
+<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">bob</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt>) が指しているコミットまで fast-forward します。
+fast-forward 出来ない場合は失敗してしまいます。</p>
+<p>fast-forward を可能にして <tt class="docutils literal"><span class="pre">push</span></tt> を行うためには、ローカルの <tt class="docutils literal"><span class="pre">master</span></tt> ブランチを <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> とマージしてあげる必要があります。
+前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> でマージしましょう (あるいは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> と <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt> でもよい)。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git pull shared master
+Merge made by the &#39;recursive&#39; strategy.
+ alice.txt | 1 +
+ 1 file changed, 1 insertion(+)
+</pre></div>
+</div>
+<p>これで</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+Counting objects: 8, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 684 bytes | 0 bytes/s, done.
+Total 5 (delta 0), reused 0 (delta 0)
+To /tmp/my/workingdir/shared
+   c671712..14245e3  master -&gt; master
 </pre></div>
 </div>
 </div>

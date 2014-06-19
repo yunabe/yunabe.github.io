@@ -113,7 +113,7 @@ code
 
 contextlib
 ----------
-`contextlib.contextmanager <https://docs.python.org/2/library/contextlib.html>`_ を用いると ``__enter__``, ``__exit__`` を定義せずに、 ``yield`` を使って
+`contextlib.contextmanager <https://docs.python.org/2/library/contextlib.html#contextlib.contextmanager>`_ を用いると ``__enter__``, ``__exit__`` を定義せずに、 ``yield`` を使って
 ``with`` 文で利用する関数を作成することができる。
 
 ::

@@ -300,7 +300,7 @@ bare レポジトリは git init に ``--bare`` オプションをつけて実�
   $ git init --bare
   Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
 
-`ls` で `shared.git` の中身を確認してみると、通常のレポジトリの `.git` ディレクトリの中身が保存されていることが分かります。
+``ls`` で ``shared.git`` の中身を確認してみると、通常のレポジトリの ``.git`` ディレクトリの中身が保存されていることが分かります。
 
 ::
 
@@ -335,6 +335,13 @@ git push でコミットを書き込む
 ::
 
   $ git push shared master:master
+  ounting objects: 15, done.
+  Delta compression using up to 8 threads.
+  Compressing objects: 100% (8/8), done.
+  Writing objects: 100% (15/15), 1.32 KiB | 0 bytes/s, done.
+  Total 15 (delta 0), reused 0 (delta 0)
+  To /tmp/my/workingdir/shared.git
+   * [new branch]      master -> master
 
 これでアリスの master ブランチ（の指すコミットとその全ての先祖コミット）が shared に対して書き込まれ、shared に master ブランチが作成されます。図にすると以下な状態になります。
 
@@ -348,19 +355,29 @@ git push でコミットを書き込む
 
   $ echo "Email: alice@example.com" >> alice.txt
   $ git commit -a -m "Added an email addr to alice.txt"
+  [master c671712] Added an email addr to alice.txt
+   1 file changed, 1 insertion(+)
   $ git push shared master:master
+  Counting objects: 5, done.
+  Delta compression using up to 8 threads.
+  Compressing objects: 100% (2/2), done.
+  Writing objects: 100% (3/3), 357 bytes | 0 bytes/s, done.
+  Total 3 (delta 0), reused 0 (delta 0)
+  To /tmp/my/workingdir/shared.git
+     77c39e3..c671712  master -> master
 
 .. image:: https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069
    :height: 534px
    :width: 667px
 
-push に失敗した場合の対処法
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+push (fast-forward) に失敗した場合の対処法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 次にボブの立場になって共有レポジトリに新しいコミットを push してみましょう。
 まず共有レポジトリを ``git remote add`` で登録します
 
 ::
 
+  $ cd /tmp/my/workingdir/bo
   $ git remote add shared /tmp/my/workingdir/shared
 
 続いて新しいコミットを作成します。
@@ -369,7 +386,46 @@ push に失敗した場合の対処法
 
   $ echo "Email: bob@example.com" >> bob.txt
   $ git commit -a -m "Added an email addr to bob.txt"
+  [master 99af642] Added an email addr to bob.txt
+   1 file changed, 1 insertion(+)
+
+これを ``git push`` してみましょう。そうするとエラーが発生してしまいます。
 
 ::
 
   $ git push shared master:master
+  To /tmp/my/workingdir/shared.git
+   ! [rejected]        master -> master (fetch first)
+  error: failed to push some refs to '/tmp/my/workingdir/shared.git'
+  hint: Updates were rejected because the remote contains work that you do
+  hint: not have locally. This is usually caused by another repository pushing
+  hint: to the same ref. You may want to first integrate the remote changes
+  hint: (e.g., 'git pull ...') before pushing again.
+  hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+前述したように ``git push <remote> <src>:<dst>`` は ``<remote>`` 上の ``<dst>`` (今回は ``shared`` 上の ``master``) を
+``<src>`` (今回は ``bob`` の ``master``) が指しているコミットまで fast-forward します。
+fast-forward 出来ない場合は失敗してしまいます。
+
+fast-forward を可能にして ``push`` を行うためには、ローカルの ``master`` ブランチを ``shared`` の ``master`` とマージしてあげる必要があります。
+前述したように ``git pull`` でマージしましょう (あるいは ``git fetch`` と ``git merge`` でもよい)。
+
+::
+
+  $ git pull shared master
+  Merge made by the 'recursive' strategy.
+   alice.txt | 1 +
+   1 file changed, 1 insertion(+)
+
+これで
+
+::
+
+  $ git push shared master:master
+  Counting objects: 8, done.
+  Delta compression using up to 8 threads.
+  Compressing objects: 100% (4/4), done.
+  Writing objects: 100% (5/5), 684 bytes | 0 bytes/s, done.
+  Total 5 (delta 0), reused 0 (delta 0)
+  To /tmp/my/workingdir/shared
+     c671712..14245e3  master -> master
