@@ -3,7 +3,7 @@ Git リモート再入門
 
 .. container:: editdate
 
-  更新 2014年6月10日
+  更新 2014年7月25日
 
 .. contents:: 目次
    :depth: 3
@@ -440,3 +440,98 @@ bob のレポジトリは図のような状態になります。
   Total 5 (delta 0), reused 0 (delta 0)
   To /tmp/my/workingdir/shared
      c671712..14245e3  master -> master
+
+git pull のデフォルトの動作
+---------------------------
+git pull を紹介した際に ``git pull <repository> <src>`` のように引数を与えると説明しましたが、
+実はこの2つの引数は省略することができます。
+
+::
+
+  git pull
+
+ではこのように引数を省略した時には、git はどのリモートレポジトリのブランチを選んで現在のブランチに pull するのでしょうか。
+
+トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``git pull/push`` で引数を省略できるように、Git ではローカルブランチをリモートトラッキングブランチに対して関連付けることができます。
+リモートトラッキングブランチに関連付けられたローカルブランチのことを
+`トラッキングブランチ (Tracking Branch) <http://git-scm.com/book/en/Git-Branching-Remote-Branches#Tracking-Branches>`_ と呼びます。
+逆に関連付けられているリモートトラキングブランチのことはアップストリーム (Upstream) と呼びます。
+
+アップストリームの設定と確認
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+既存のブランチをリモートトラキングブランチに関連付けてみましょう。
+これは ``git branch -u <upstream> <branch>`` で行うことができます (``<branch>`` は省略可。省略した際は現在のブランチが暗黙的に指定される)。
+
+::
+
+  $ cd /tmp/my/workingdir/alice
+  $ git branch -u shared/master master
+  Branch master set up to track remote branch master from shared.
+
+これでローカルブランチ ``master`` が リモートトラキングブランチ ``shared/master`` と関連付けられました。
+ローカルブランチがどのリモートトラキングブランチに関連付けられているかは、``git remote show <repository>`` の出力あるいは
+``.git/config`` ファイルの中身から確認できます。
+
+::
+
+  $ git remote show shared
+    * remote shared
+    (略)
+    Local branch configured for 'git pull':
+      master merges with remote master
+    (略)
+
+このように、``master`` ブランチが ``shared`` の ``master`` ブランチに関連付けられていることが ``'git pull'`` の項目に表示されます。
+また、``.git/config`` ファイルを開くと下のような項目が追加されているはずです。
+
+::
+
+  [branch "master"]
+   remote = shared
+   merge = refs/heads/master
+
+これで、アップストリームが設定できたので ``git pull`` を引数なしで実行してみましょう (``-v`` をつけると分かりやすいです)。
+
+::
+
+  $ git pull
+  Already up-to-date.
+
+ローカルブランチとリモートトラキングブランチの関連付けは ``git branch --unset-upstream <local_branch>`` で解除できます。
+解除すると、``git pull`` は引数なしでは動かなくなります。
+
+::
+
+  $ git branch --unset-upstream master
+  $ git pull
+  fatal: No remote repository specified.  Please, specify either a URL or a
+  remote name from which new revisions should be fetched.
+
+``git remote show shared`` の出力と ``.git/config`` の中身をみて、関連付けが解除されていることを確認してみてください。
+
+暗黙的に設定されるアップストリーム
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ここまで読んで、アップストリームの設定はしたことないけれど ``git pull`` は引数なしで普段使っていると思った人がいるかもしれません。
+実はアップストリームの設定は暗黙的に行われることがあります。
+そのため、アップストリームの設定を明示的にしなくても ``git pull`` は多くの場合で引数なしで使えるようになっています。
+
+アップストリームの設定は以下の様な場合に暗黙的に行われます
+
+- リモートトラキングブランチからブランチを作成した場合
+
+  - ``git branch <local> <remote>/<branch>`` (あるいは ``git checkout -b <local> <remote>/<branch>``) を実行してリモートトラキングブランチから
+    ブランチを作成した場合、<local> と <remote>/<branch> が関連付けられます。
+    (参考: `git branch の --track の項目 <http://git-scm.com/docs/git-branch>`_)
+
+- ``git clone`` で複製した場合
+
+  - ``git clone`` を使うと複製元のレポジトリが ``origin`` として自動的に登録され、
+    ``origin/master`` からブランチ ``master`` が自動的に作成されます。
+    この際、``master`` と ``origin/master`` が関連付けられます。
+
+
+git push のデフォルトの動作
+---------------------------
+``git push <remote> <src>:<dst>``
