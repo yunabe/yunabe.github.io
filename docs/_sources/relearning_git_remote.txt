@@ -443,7 +443,7 @@ bob のレポジトリは図のような状態になります。
 
 引数なしの git pull
 -------------------
-git pull を紹介した際に ``git pull <repository> <src>`` のように引数を与えると説明しましたが、
+git pull を紹介した際に ``git pull <remote> <src>`` のように引数を与えると説明しましたが、
 実はこの2つの引数は省略することができます。
 
 ::
@@ -471,8 +471,16 @@ git pull を紹介した際に ``git pull <repository> <src>`` のように引�
   Branch master set up to track remote branch master from shared.
 
 これでローカルブランチ ``master`` が リモートトラキングブランチ ``shared/master`` と関連付けられました。
-ローカルブランチがどのリモートトラキングブランチに関連付けられているかは、``git remote show <repository>`` の出力あるいは
+ローカルブランチがどのリモートトラキングブランチに関連付けられているかは、
+``git branch -vv``, ``git remote show <repository>`` の出力あるいは
 ``.git/config`` ファイルの中身から確認できます。
+
+::
+
+  $ git branch -vv
+  * master   d623bbf [shared/master] Merged.
+
+ブランチの upstream が存在する場合 ``[]`` で囲まれて表示されます。
 
 ::
 
@@ -545,12 +553,12 @@ pushされた ``<src>`` を指すように first-forward します。
 
 ``git push`` で引数を省略した場合のルールは ``git pull`` で引数を省略した場合のそれより複雑です。
 
-<repository> が省略された時の挙動
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``<repository>`` が省略された場合は `git push の --repo=<repository> の項目 <http://git-scm.com/docs/git-push/1.9.2>`_ に書かれています。
+<remote> が省略された時の挙動
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``<remote>`` が省略された場合は `git push の --repo=<repository> の項目 <http://git-scm.com/docs/git-push/1.9.2>`_ に書かれています。
 
 - 現在のブランチ (``<src>`` ではない点に注意！) がトラッキングブランチである場合 (upstream が設定されている場合)
-  トラックしているブランチ (== upstream) のリモートレポジトリが ``<repository>`` として利用される。
+  トラックしているブランチ (== upstream) のリモートレポジトリが ``<remote>`` として利用される。
 - そうでない場合は、
 
   - ``--repository=<repository>`` が設定されている場合は、指定された値が利用されます
@@ -582,12 +590,12 @@ pushされた ``<src>`` を指すように first-forward します。
 
   - 現在のブランチをその upstream に対して push します。
     現在のブランチに upstream がない場合は何もしません。
-    また ``<repository>`` が upstream に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
+    また ``<remote>`` が upstream に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
     個人的にはこれが自然かな？という気がします。
 
 - simple
 
-  - 現在のブランチに upstream が設定されており、upstream のレポジトリが ``<repository>`` と一致する場合
+  - 現在のブランチに upstream が設定されており、upstream のレポジトリが ``<remote>`` と一致する場合
 
     - 現在のブランチと upstram のブランチが同名の場合 push を行います。
     - 名前が異なる場合は何もしません。
