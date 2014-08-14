@@ -21,6 +21,7 @@ Contents:
    javascript_primitive_types
    relearning_git_remote
    html5_ping
+   pysh_overview
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 
