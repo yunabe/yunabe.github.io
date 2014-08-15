@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="next" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動" href="relearning_git_push_default.html" />
+    <link rel="prev" title="Git 再入門: リモートレポジトリを使った作業" href="relearning_git_remote.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="relearning_git_push_default.html" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="relearning_git_remote.html" title="Git 再入門: リモートレポジトリを使った作業"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Git 再入門:  引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a><ul>
+<li><a class="reference internal" href="#tracking-branch-upstream">トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</a></li>
+<li><a class="reference internal" href="#id1">アップストリームの設定と確認</a></li>
+<li><a class="reference internal" href="#id2">暗黙的に設定されるアップストリーム</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="relearning_git_remote.html"
+                        title="previous chapter">Git 再入門:  リモートレポジトリを使った作業</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="relearning_git_push_default.html"
+                        title="next chapter">Git 再入門:  引数がない場合の git push のデフォルトの挙動</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/relearning_git_pull_default.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="git-git-pull">
+<h1>Git 再入門:  引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)<a class="headerlink" href="#git-git-pull" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="relearning_git_remote.html#git-pull"><em>前章で git pull の使い方を紹介</em></a> した際に <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;src&gt;</span></tt> のように引数を与えると説明しましたが、
+実はこの2つの引数を省略して単に <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> として実行することも出来ます。
+このように引数を省略した時には、git はどのリモートレポジトリのブランチを選んで現在のブランチに pull するのでしょうか。</p>
+<div class="section" id="tracking-branch-upstream">
+<h2>トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)<a class="headerlink" href="#tracking-branch-upstream" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull/push</span></tt> で引数を省略できるように、Git ではローカルブランチをリモートトラッキングブランチに対して関連付けることができます。
+リモートトラッキングブランチに関連付けられたローカルブランチのことを
+<a class="reference external" href="http://git-scm.com/book/en/Git-Branching-Remote-Branches#Tracking-Branches">トラッキングブランチ (Tracking Branch)</a> と呼びます。
+逆に関連付けられているリモートトラキングブランチのことはアップストリーム (Upstream) と呼びます。</p>
+</div>
+<div class="section" id="id1">
+<h2>アップストリームの設定と確認<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>既存のブランチをリモートトラキングブランチに関連付けてみましょう。
+これは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-u</span> <span class="pre">&lt;upstream&gt;</span> <span class="pre">&lt;branch&gt;</span></tt> で行うことができます (<tt class="docutils literal"><span class="pre">&lt;branch&gt;</span></tt> は省略可。省略した際は現在のブランチが暗黙的に指定される)。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/alice
+$ git branch -u shared/master master
+Branch master set up to track remote branch master from shared.
+</pre></div>
+</div>
+<p>これでローカルブランチ <tt class="docutils literal"><span class="pre">master</span></tt> が リモートトラキングブランチ <tt class="docutils literal"><span class="pre">shared/master</span></tt> と関連付けられました。
+ローカルブランチがどのリモートトラキングブランチに関連付けられているかは、
+<tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-vv</span></tt>, <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">show</span> <span class="pre">&lt;repository&gt;</span></tt> の出力あるいは
+<tt class="docutils literal"><span class="pre">.git/config</span></tt> ファイルの中身から確認できます。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git branch -vv
+* master   d623bbf [shared/master] Merged.
+</pre></div>
+</div>
+<p>ブランチの upstream が存在する場合 <tt class="docutils literal"><span class="pre">[]</span></tt> で囲まれて表示されます。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git remote show shared
+  * remote shared
+  (略)
+  Local branch configured for &#39;git pull&#39;:
+    master merges with remote master
+  (略)
+</pre></div>
+</div>
+<p>このように、<tt class="docutils literal"><span class="pre">master</span></tt> ブランチが <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> ブランチに関連付けられていることが <tt class="docutils literal"><span class="pre">'git</span> <span class="pre">pull'</span></tt> の項目に表示されます。
+また、<tt class="docutils literal"><span class="pre">.git/config</span></tt> ファイルを開くと下のような項目が追加されているはずです。</p>
+<div class="highlight-python"><div class="highlight"><pre>[branch &quot;master&quot;]
+ remote = shared
+ merge = refs/heads/master
+</pre></div>
+</div>
+<p>これで、アップストリームが設定できたので <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> を引数なしで実行してみましょう (<tt class="docutils literal"><span class="pre">-v</span></tt> をつけると分かりやすいです)。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git pull
+Already up-to-date.
+</pre></div>
+</div>
+<p>ローカルブランチとリモートトラキングブランチの関連付けは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">--unset-upstream</span> <span class="pre">&lt;local_branch&gt;</span></tt> で解除できます。
+解除すると、<tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は引数なしでは動かなくなります。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git branch --unset-upstream master
+$ git pull
+fatal: No remote repository specified.  Please, specify either a URL or a
+remote name from which new revisions should be fetched.
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">show</span> <span class="pre">shared</span></tt> の出力と <tt class="docutils literal"><span class="pre">.git/config</span></tt> の中身をみて、関連付けが解除されていることを確認してみてください。</p>
+</div>
+<div class="section" id="id2">
+<h2>暗黙的に設定されるアップストリーム<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>ここまで読んで、アップストリームの設定はしたことないけれど <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は引数なしで普段使っていると思った人がいるかもしれません。
+実はアップストリームの設定は暗黙的に行われることがあります。
+そのため、アップストリームの設定を明示的にしなくても <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は多くの場合で引数なしで使えるようになっています。</p>
+<p>アップストリームの設定は以下の様な場合に暗黙的に行われます</p>
+<ul class="simple">
+<li>リモートトラキングブランチからブランチを作成した場合<ul>
+<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">&lt;local&gt;</span> <span class="pre">&lt;remote&gt;/&lt;branch&gt;</span></tt> (あるいは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">&lt;local&gt;</span> <span class="pre">&lt;remote&gt;/&lt;branch&gt;</span></tt>) を実行してリモートトラキングブランチから
+ブランチを作成した場合、&lt;local&gt; と &lt;remote&gt;/&lt;branch&gt; が関連付けられます。
+(参考: <a class="reference external" href="http://git-scm.com/docs/git-branch">git branch の --track の項目</a>)</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span></tt> で複製した場合<ul>
+<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span></tt> を使うと複製元のレポジトリが <tt class="docutils literal"><span class="pre">origin</span></tt> として自動的に登録され、
+<tt class="docutils literal"><span class="pre">origin/master</span></tt> からブランチ <tt class="docutils literal"><span class="pre">master</span></tt> が自動的に作成されます。
+この際、<tt class="docutils literal"><span class="pre">master</span></tt> と <tt class="docutils literal"><span class="pre">origin/master</span></tt> が関連付けられます。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="relearning_git_push_default.html" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="relearning_git_remote.html" title="Git 再入門: リモートレポジトリを使った作業"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2014, Yu Watanabe.
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+<script>
+  if(location.host=='www.yunabe.jp'){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19477574-2', 'yunabe.jp');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+  }
+</script>
+<script type="text/javascript" src="_static/main.js"></script>
+</div>
+  </body>
+</html>

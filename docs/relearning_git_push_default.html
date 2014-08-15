@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>Git 再入門: 引数がない場合の git push のデフォルトの挙動</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="next" title="HTML5 ping 属性" href="html5_ping.html" />
+    <link rel="prev" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)" href="relearning_git_pull_default.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="html5_ping.html" title="HTML5 ping 属性"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="relearning_git_pull_default.html" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Git 再入門:  引数がない場合の git push のデフォルトの挙動</a><ul>
+<li><a class="reference internal" href="#remote">&lt;remote&gt; が省略された時の挙動</a></li>
+<li><a class="reference internal" href="#src-dst">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</a></li>
+<li><a class="reference internal" href="#dst">:&lt;dst&gt; が省略された時の挙動</a></li>
+<li><a class="reference internal" href="#id1">&lt;remote&gt; が省略された時の挙動</a></li>
+<li><a class="reference internal" href="#id3">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</a></li>
+<li><a class="reference internal" href="#id5">:&lt;dst&gt; が省略された時の挙動</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="relearning_git_pull_default.html"
+                        title="previous chapter">Git 再入門:  引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="html5_ping.html"
+                        title="next chapter">HTML5 ping 属性</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/relearning_git_push_default.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="git-git-push">
+<h1>Git 再入門:  引数がない場合の git push のデフォルトの挙動<a class="headerlink" href="#git-git-push" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2014年8月14日</div>
+<p><a class="reference internal" href="relearning_git_remote.html#git-push"><em>前述</em></a> したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> を実行するとローカルブランチ <tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> を
+リモートレポジトリ <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> に対して書き込み、<tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> 上のブランチ <tt class="docutils literal"><span class="pre">&lt;dst&gt;</span></tt> が
+pushされた <tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> を指すように first-forward します。
+<tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> の場合と同様にこの引数も省略することができます。</p>
+<div class="highlight-python"><div class="highlight"><pre>git push
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> で引数を省略した場合のルールは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> で引数を省略した場合のそれより複雑です。</p>
+<div class="section" id="remote">
+<h2>&lt;remote&gt; が省略された時の挙動<a class="headerlink" href="#remote" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が省略された場合は <a class="reference external" href="http://git-scm.com/docs/git-push/1.9.2">git push の --repo=&lt;repository&gt; の項目</a> に書かれています。</p>
+<ul class="simple">
+<li>現在のブランチ (<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> ではない点に注意！) がトラッキングブランチである場合 (upstream が設定されている場合)
+トラックしているブランチ (== upstream) のリモートレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> として利用される。</li>
+<li>そうでない場合は、<ul>
+<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> が設定されている場合は、指定された値が利用されます</li>
+<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> がない場合は <tt class="docutils literal"><span class="pre">origin</span></tt> が利用されます。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="src-dst">
+<h2>&lt;src&gt;:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#src-dst" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> が省略された場合の挙動は、<a class="reference external" href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
+1.x系列では <tt class="docutils literal"><span class="pre">matching</span></tt> がデフォルト値ですが、<tt class="docutils literal"><span class="pre">mathing</span></tt> だと現在のブランチ以外も push してしまうという割りと
+危険な動作をするので2.x系からのデフォルト値の <tt class="docutils literal"><span class="pre">simple</span></tt> などに変更しておくことが推奨されます。</p>
+<div class="highlight-python"><div class="highlight"><pre>git config --global push.default simple
+</pre></div>
+</div>
+<p>5つの値について簡単に説明しておきます。</p>
+<ul class="simple">
+<li>nothing<ul>
+<li>省略された場合何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
+</ul>
+</li>
+<li>current<ul>
+<li>現在のブランチ <tt class="docutils literal"><span class="pre">&lt;current&gt;</span></tt> を同名のブランチとして push します。
+<tt class="docutils literal"><span class="pre">&lt;current&gt;:&lt;current&gt;</span></tt> を指定したことになります。</li>
+</ul>
+</li>
+<li>upstream<ul>
+<li>現在のブランチをその upstream に対して push します。
+現在のブランチに upstream がない場合は何もしません。
+また <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が upstream に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
+個人的にはこれが自然かな？という気がします。</li>
+</ul>
+</li>
+<li>simple<ul>
+<li>現在のブランチに upstream が設定されており、upstream のレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> と一致する場合<ul>
+<li>現在のブランチと upstram のブランチが同名の場合 push を行います。</li>
+<li>名前が異なる場合は何もしません。</li>
+</ul>
+</li>
+<li>そうでない場合は <tt class="docutils literal"><span class="pre">current</span></tt> と同じように動作します。</li>
+<li>デフォルトの割には動作が少し複雑...</li>
+</ul>
+</li>
+<li>matching<ul>
+<li>同じ名前のブランチがリモートレポジトリに存在する全てのブランチを push します。
+現在のブランチとは関係なく、同名のブランチがあればすべて push される。
+意図していないブランチをうっかり push しかねない、恐ろしいオプション。
+しかし 1.x 系列ではこれがデフォルト値である...
+<tt class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">push.default</span> <span class="pre">simple</span></tt> で設定を変更しておきましょう。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="dst">
+<h2>:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#dst" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> に渡す <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> の <tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> の部分は省略可能です。
+<tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> を省略した場合には <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;src&gt;</span></tt> を指定したのと同じことになります。</p>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> で引数を省略した場合のルールは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> で引数を省略した場合のそれより複雑です。</p>
+</div>
+<div class="section" id="id1">
+<h2>&lt;remote&gt; が省略された時の挙動<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が省略された場合は <a class="reference external" href="http://git-scm.com/docs/git-push/1.9.2">git push の --repo=&lt;repository&gt; の項目</a> に書かれています。</p>
+<ul class="simple">
+<li>現在のブランチ (<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> ではない点に注意！) がトラッキングブランチである場合 (upstream が設定されている場合)
+トラックしているブランチ (== upstream) のリモートレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> として利用される。</li>
+<li>そうでない場合は、<ul>
+<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> が設定されている場合は、指定された値が利用されます</li>
+<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> がない場合は <tt class="docutils literal"><span class="pre">origin</span></tt> が利用されます。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>&lt;src&gt;:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> が省略された場合の挙動は、<a class="reference external" href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
+1.x系列では <tt class="docutils literal"><span class="pre">matching</span></tt> がデフォルト値ですが、<tt class="docutils literal"><span class="pre">mathing</span></tt> だと現在のブランチ以外も push してしまうという割りと
+危険な動作をするので2.x系からのデフォルト値の <tt class="docutils literal"><span class="pre">simple</span></tt> などに変更しておくことが推奨されます。</p>
+<div class="highlight-python"><div class="highlight"><pre>git config --global push.default simple
+</pre></div>
+</div>
+<p>5つの値について簡単に説明しておきます。</p>
+<ul class="simple">
+<li>nothing<ul>
+<li>省略された場合何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
+</ul>
+</li>
+<li>current<ul>
+<li>現在のブランチ <tt class="docutils literal"><span class="pre">&lt;current&gt;</span></tt> を同名のブランチとして push します。
+<tt class="docutils literal"><span class="pre">&lt;current&gt;:&lt;current&gt;</span></tt> を指定したことになります。</li>
+</ul>
+</li>
+<li>upstream<ul>
+<li>現在のブランチをその upstream に対して push します。
+現在のブランチに upstream がない場合は何もしません。
+また <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が upstream に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
+個人的にはこれが自然かな？という気がします。</li>
+</ul>
+</li>
+<li>simple<ul>
+<li>現在のブランチに upstream が設定されており、upstream のレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> と一致する場合<ul>
+<li>現在のブランチと upstram のブランチが同名の場合 push を行います。</li>
+<li>名前が異なる場合は何もしません。</li>
+</ul>
+</li>
+<li>そうでない場合は <tt class="docutils literal"><span class="pre">current</span></tt> と同じように動作します。</li>
+<li>デフォルトの割には動作が少し複雑...</li>
+</ul>
+</li>
+<li>matching<ul>
+<li>同じ名前のブランチがリモートレポジトリに存在する全てのブランチを push します。
+現在のブランチとは関係なく、同名のブランチがあればすべて push される。
+意図していないブランチをうっかり push しかねない、恐ろしいオプション。
+しかし 1.x 系列ではこれがデフォルト値である...
+<tt class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">push.default</span> <span class="pre">simple</span></tt> で設定を変更しておきましょう。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> に渡す <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> の <tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> の部分は省略可能です。
+<tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> を省略した場合には <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;src&gt;</span></tt> を指定したのと同じことになります。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="html5_ping.html" title="HTML5 ping 属性"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="relearning_git_pull_default.html" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2014, Yu Watanabe.
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+<script>
+  if(location.host=='www.yunabe.jp'){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19477574-2', 'yunabe.jp');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+  }
+</script>
+<script type="text/javascript" src="_static/main.js"></script>
+</div>
+  </body>
+</html>
