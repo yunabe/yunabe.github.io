@@ -1,5 +1,5 @@
-HTML5 a ping
-============
+HTML5 ping 属性
+===============
 
 .. container:: editdate
 

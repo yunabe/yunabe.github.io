@@ -20,6 +20,8 @@ Contents:
    static_library
    javascript_primitive_types
    relearning_git_remote
+   relearning_git_pull_default
+   relearning_git_push_default
    html5_ping
    pysh_overview
 
