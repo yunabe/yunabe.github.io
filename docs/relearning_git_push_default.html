@@ -52,9 +52,6 @@
 <li><a class="reference internal" href="#remote">&lt;remote&gt; が省略された時の挙動</a></li>
 <li><a class="reference internal" href="#src-dst">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</a></li>
 <li><a class="reference internal" href="#dst">:&lt;dst&gt; が省略された時の挙動</a></li>
-<li><a class="reference internal" href="#id1">&lt;remote&gt; が省略された時の挙動</a></li>
-<li><a class="reference internal" href="#id3">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</a></li>
-<li><a class="reference internal" href="#id5">:&lt;dst&gt; が省略された時の挙動</a></li>
 </ul>
 </li>
 </ul>
@@ -105,9 +102,9 @@ pushされた <tt class="docutils literal"><span class="pre">&lt;src&gt;</span><
 <p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> で引数を省略した場合のルールは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> で引数を省略した場合のそれより複雑です。</p>
 <div class="section" id="remote">
 <h2>&lt;remote&gt; が省略された時の挙動<a class="headerlink" href="#remote" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が省略された場合は <a class="reference external" href="http://git-scm.com/docs/git-push/1.9.2">git push の --repo=&lt;repository&gt; の項目</a> に書かれています。</p>
+<p><tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が省略された場合の挙動は <a class="reference external" href="http://git-scm.com/docs/git-push/1.9.2">git push の --repo=&lt;repository&gt; の項目</a> に書かれています。</p>
 <ul class="simple">
-<li>現在のブランチ (<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> ではない点に注意！) がトラッキングブランチである場合 (upstream が設定されている場合)
+<li>現在のブランチ (<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> ではない点に注意！) が <a class="reference external" href="tracking-branch-upstream">トラッキングブランチである場合 (upstream が設定されている場合)</a>、
 トラックしているブランチ (== upstream) のリモートレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> として利用される。</li>
 <li>そうでない場合は、<ul>
 <li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> が設定されている場合は、指定された値が利用されます</li>
@@ -153,82 +150,17 @@ pushされた <tt class="docutils literal"><span class="pre">&lt;src&gt;</span><
 </ul>
 </li>
 <li>matching<ul>
-<li>同じ名前のブランチがリモートレポジトリに存在する全てのブランチを push します。
-現在のブランチとは関係なく、同名のブランチがあればすべて push される。
-意図していないブランチをうっかり push しかねない、恐ろしいオプション。
-しかし 1.x 系列ではこれがデフォルト値である...
-<tt class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">push.default</span> <span class="pre">simple</span></tt> で設定を変更しておきましょう。</li>
+<li>同じ名前のブランチがリモートレポジトリに存在する <strong>全て</strong> のブランチを push します。
+現在のブランチとは関係なく、同名のブランチがあればすべて push されてしまいます。
+意図していないブランチをうっかり push しかねない、恐ろしいオプションです。
+しかも 1.x 系列では何故かこれがデフォルト値になっています。
+1.x系を使っている人は失敗する前に今すぐ <tt class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">push.default</span> <span class="pre">simple</span></tt> で設定を変更しておきましょう。</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="dst">
 <h2>:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#dst" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> に渡す <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> の <tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> の部分は省略可能です。
-<tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> を省略した場合には <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;src&gt;</span></tt> を指定したのと同じことになります。</p>
-<p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> で引数を省略した場合のルールは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> で引数を省略した場合のそれより複雑です。</p>
-</div>
-<div class="section" id="id1">
-<h2>&lt;remote&gt; が省略された時の挙動<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が省略された場合は <a class="reference external" href="http://git-scm.com/docs/git-push/1.9.2">git push の --repo=&lt;repository&gt; の項目</a> に書かれています。</p>
-<ul class="simple">
-<li>現在のブランチ (<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> ではない点に注意！) がトラッキングブランチである場合 (upstream が設定されている場合)
-トラックしているブランチ (== upstream) のリモートレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> として利用される。</li>
-<li>そうでない場合は、<ul>
-<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> が設定されている場合は、指定された値が利用されます</li>
-<li><tt class="docutils literal"><span class="pre">--repository=&lt;repository&gt;</span></tt> がない場合は <tt class="docutils literal"><span class="pre">origin</span></tt> が利用されます。</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h2>&lt;src&gt;:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p><tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> が省略された場合の挙動は、<a class="reference external" href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
-1.x系列では <tt class="docutils literal"><span class="pre">matching</span></tt> がデフォルト値ですが、<tt class="docutils literal"><span class="pre">mathing</span></tt> だと現在のブランチ以外も push してしまうという割りと
-危険な動作をするので2.x系からのデフォルト値の <tt class="docutils literal"><span class="pre">simple</span></tt> などに変更しておくことが推奨されます。</p>
-<div class="highlight-python"><div class="highlight"><pre>git config --global push.default simple
-</pre></div>
-</div>
-<p>5つの値について簡単に説明しておきます。</p>
-<ul class="simple">
-<li>nothing<ul>
-<li>省略された場合何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
-</ul>
-</li>
-<li>current<ul>
-<li>現在のブランチ <tt class="docutils literal"><span class="pre">&lt;current&gt;</span></tt> を同名のブランチとして push します。
-<tt class="docutils literal"><span class="pre">&lt;current&gt;:&lt;current&gt;</span></tt> を指定したことになります。</li>
-</ul>
-</li>
-<li>upstream<ul>
-<li>現在のブランチをその upstream に対して push します。
-現在のブランチに upstream がない場合は何もしません。
-また <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> が upstream に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
-個人的にはこれが自然かな？という気がします。</li>
-</ul>
-</li>
-<li>simple<ul>
-<li>現在のブランチに upstream が設定されており、upstream のレポジトリが <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> と一致する場合<ul>
-<li>現在のブランチと upstram のブランチが同名の場合 push を行います。</li>
-<li>名前が異なる場合は何もしません。</li>
-</ul>
-</li>
-<li>そうでない場合は <tt class="docutils literal"><span class="pre">current</span></tt> と同じように動作します。</li>
-<li>デフォルトの割には動作が少し複雑...</li>
-</ul>
-</li>
-<li>matching<ul>
-<li>同じ名前のブランチがリモートレポジトリに存在する全てのブランチを push します。
-現在のブランチとは関係なく、同名のブランチがあればすべて push される。
-意図していないブランチをうっかり push しかねない、恐ろしいオプション。
-しかし 1.x 系列ではこれがデフォルト値である...
-<tt class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">push.default</span> <span class="pre">simple</span></tt> で設定を変更しておきましょう。</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id5">
-<h2>:&lt;dst&gt; が省略された時の挙動<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> に渡す <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> の <tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> の部分は省略可能です。
 <tt class="docutils literal"><span class="pre">:&lt;dst&gt;</span></tt> を省略した場合には <tt class="docutils literal"><span class="pre">&lt;src&gt;:&lt;src&gt;</span></tt> を指定したのと同じことになります。</p>
 </div>

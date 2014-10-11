@@ -13,6 +13,7 @@ Contents:
 
    why_events_are_a_bad_idea
    maximum_number_of_threads
+   maximum_number_of_sockets
    python_useful_standard_modules
    python_package_management
    python_metaclass

@@ -50,8 +50,8 @@
   <ul>
 <li><a class="reference internal" href="#">Git 再入門:  引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a><ul>
 <li><a class="reference internal" href="#tracking-branch-upstream">トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</a></li>
-<li><a class="reference internal" href="#id1">アップストリームの設定と確認</a></li>
-<li><a class="reference internal" href="#id2">暗黙的に設定されるアップストリーム</a></li>
+<li><a class="reference internal" href="#id2">アップストリームの設定と確認</a></li>
+<li><a class="reference internal" href="#id3">暗黙的に設定されるアップストリーム</a></li>
 </ul>
 </li>
 </ul>
@@ -94,14 +94,14 @@
 実はこの2つの引数を省略して単に <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> として実行することも出来ます。
 このように引数を省略した時には、git はどのリモートレポジトリのブランチを選んで現在のブランチに pull するのでしょうか。</p>
 <div class="section" id="tracking-branch-upstream">
-<h2>トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)<a class="headerlink" href="#tracking-branch-upstream" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)<a class="headerlink" href="#tracking-branch-upstream" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull/push</span></tt> で引数を省略できるように、Git ではローカルブランチをリモートトラッキングブランチに対して関連付けることができます。
 リモートトラッキングブランチに関連付けられたローカルブランチのことを
 <a class="reference external" href="http://git-scm.com/book/en/Git-Branching-Remote-Branches#Tracking-Branches">トラッキングブランチ (Tracking Branch)</a> と呼びます。
 逆に関連付けられているリモートトラキングブランチのことはアップストリーム (Upstream) と呼びます。</p>
 </div>
-<div class="section" id="id1">
-<h2>アップストリームの設定と確認<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h2>アップストリームの設定と確認<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>既存のブランチをリモートトラキングブランチに関連付けてみましょう。
 これは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-u</span> <span class="pre">&lt;upstream&gt;</span> <span class="pre">&lt;branch&gt;</span></tt> で行うことができます (<tt class="docutils literal"><span class="pre">&lt;branch&gt;</span></tt> は省略可。省略した際は現在のブランチが暗黙的に指定される)。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/alice
@@ -148,8 +148,8 @@ remote name from which new revisions should be fetched.
 </div>
 <p><tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">show</span> <span class="pre">shared</span></tt> の出力と <tt class="docutils literal"><span class="pre">.git/config</span></tt> の中身をみて、関連付けが解除されていることを確認してみてください。</p>
 </div>
-<div class="section" id="id2">
-<h2>暗黙的に設定されるアップストリーム<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>暗黙的に設定されるアップストリーム<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>ここまで読んで、アップストリームの設定はしたことないけれど <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は引数なしで普段使っていると思った人がいるかもしれません。
 実はアップストリームの設定は暗黙的に行われることがあります。
 そのため、アップストリームの設定を明示的にしなくても <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は多くの場合で引数なしで使えるようになっています。</p>
