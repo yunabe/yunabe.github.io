@@ -1,0 +1,16 @@
+Google BigQuery 入門
+====================
+
+.. container:: editdate
+
+  更新 2014年7月25日
+
+参考文献
+--------
+- `Google BigQuery -- Google Developer <https://developers.google.com/bigquery/>`_
+- `Query Syntax <https://developers.google.com/bigquery/query-reference>`_
+
+価格
+----
+
+

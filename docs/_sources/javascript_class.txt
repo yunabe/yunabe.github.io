@@ -1,0 +1,99 @@
+JavaScript におけるクラスの実現
+===============================
+
+.. container:: editdate
+
+  更新 2014年11月13日
+
+他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
+代わりに C++, Java などにはない ``this`` や ``prototype``,  (C++, Java の ``new`` とは全く異なる) ``new`` 演算子が用意されています。
+ただこれらの機能はどれもかなり奇妙な仕様をしています(少なくともC++, Java, Python などのプログラマにとっては)。
+それぞれの機能の仕様だけ1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
+どのようにその機能を活用してプログラムを作ればよいのかは全く分からないと思います。
+
+そのため C++, Java, Python などの「まともな」オブジェクト指向プログラミング言語の経験のあるプログラマが JavaScript で大規模なプログラミングを書こうとすると
+クラスがないからプログラムをどうやってモジュール化したらよいのか分からないし、
+代わりにある ``this`` とか ``prototype`` とかは何に使えばよいか分からないしで途方に暮れてしまうと思います。
+
+しかし JavaScript にはクラスという言語仕様は用意されていないものの、``this``, ``prototype`` などを一定のルールに基づいて利用すれば
+他の言語のクラスほぼ同等のことは実現可能です。
+つまり他のクラスで行うようなクラスを使ったカプセル化、ポリモーフィズム、継承などを JavaScript でも実現することができます。
+このドキュメントでは Google が作った JavaScript のオープンソースライブラリ
+`Google Closure Library <https://developers.google.com/closure/library/>`_ を参考にしてどのように
+JavaScript でクラスを実現すればよいかを学びます。
+
+前提知識
+--------
+function
+~~~~~~~~
+JavaScript では ``function`` で関数を定義します。
+
+::
+
+  var sum = function(a, b) {
+    return a + b;
+  }
+
+JavaScript における関数の定義方法を知らない場合はクラスの実現方法を学ぶ前に、まず JavaScript の入門書や
+`関数と関数スコープ <https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Functions_and_function_scope>`_
+などを読んだほうがよいかと思います。
+
+this
+~~~~
+JavaScript では ``this`` という特殊な変数が関数の中で利用可能です。
+``this`` はその関数が呼び出された際に格納されていた ``object`` を指します。
+例えば
+
+::
+
+  var sayHelloShared = function() {
+    console.log("Hello, I'm" + this.name);
+  };
+
+という関数があり、それが alice, bob というオブジェクトの ``sayHello`` として登録されていたとします。
+
+::
+
+  var alice = {
+    sayHello: sayHelloShared,
+    name: 'Alice'
+  };
+
+  var bob = {
+    sayHello: sayHelloShared,
+    name: 'Bob',
+    child: alice
+  };
+
+これを
+
+::
+
+  alice.sayHello();  // I'm Alice
+  bob.sayHello();  // I'm Bob
+
+のように呼び出すと前者の場合では ``this`` は ``alice`` を, 後者の場合では ``bob`` を指すので
+それぞれの実行で ``I'm Alice`` と ``I'm Bob`` が表示されます。
+また下の例のように ``.`` が複数存在する場合は ``this``
+はその関数を直接格納していたオブジェクト ``child`` を参照します。
+
+::
+  
+  bob.child.sayHello();  // I'm Alice
+
+クラスを実現する上ではあまり重要なことではないですが、``obj.method();``
+のような形ではなく関数を ``method();`` という形で単体で実行した場合には ``this`` は ``window`` を指します。
+
+new 演算子
+~~~~~~~~~~
+JavaScript にも ``new`` 演算子が存在します。
+ただJavaScript の ``new`` は Java や C++ でクラスのインスタンス化を行う ``new`` とは全く動きが異なります。
+JavaScript の ``new`` は関数と一緒に呼び出します。
+
+::
+
+  var obj = new MyFunc(arg);
+
+
+prototype chain
+~~~~~~~~~~~~~~~
