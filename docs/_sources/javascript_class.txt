@@ -88,12 +88,33 @@ new 演算子
 ~~~~~~~~~~
 JavaScript にも ``new`` 演算子が存在します。
 ただJavaScript の ``new`` は Java や C++ でクラスのインスタンス化を行う ``new`` とは全く動きが異なります。
-JavaScript の ``new`` は関数と一緒に呼び出します。
+C++, Java では ``new`` はクラスと共に利用しますが JavaScript の ``new`` は任意の関数と一緒に呼び出します。
 
 ::
 
-  var obj = new MyFunc(arg);
+  var <変数> = new <関数>(<引数>);
 
+``new`` と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり ``{}``, ``new Object();``) が生成されます。
+次に関数が呼び出されますが、その際に関数内の ``this`` が生成されたオブジェクトを指すようになります。
+そして、``new`` の実行結果としてそのオブジェクトが ``<変数>`` に格納されます。
+
+::
+
+  Person = functoin(name, age) {
+    this.name = name;
+    this.age = age;
+  };
+
+  Person alice = new Person('Alice', 7);
+
+例えばこの例では、``new Person...`` によって新しいオブジェクトが生成され、それが ``this`` に格納されて ``Person`` が実行され、
+``name``, ``age`` がオブジェクトにセットされます。そして生成されたオブジェクトは ``alice`` に代入されます。
+そのため、``alice.name``, ``alice.age`` は ``Person`` に渡された引数 ``name``, ``age`` になります。
+
+::
+
+  console.log(alice.name);  // Alice
+  console.log(alice.age);  // 7
 
 prototype chain
 ~~~~~~~~~~~~~~~

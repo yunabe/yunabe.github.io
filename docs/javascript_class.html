@@ -152,8 +152,26 @@ bob.sayHello();  // I&#39;m Bob
 <h3>new 演算子<a class="headerlink" href="#new" title="Permalink to this headline">¶</a></h3>
 <p>JavaScript にも <tt class="docutils literal"><span class="pre">new</span></tt> 演算子が存在します。
 ただJavaScript の <tt class="docutils literal"><span class="pre">new</span></tt> は Java や C++ でクラスのインスタンス化を行う <tt class="docutils literal"><span class="pre">new</span></tt> とは全く動きが異なります。
-JavaScript の <tt class="docutils literal"><span class="pre">new</span></tt> は関数と一緒に呼び出します。</p>
-<div class="highlight-python"><div class="highlight"><pre>var obj = new MyFunc(arg);
+C++, Java では <tt class="docutils literal"><span class="pre">new</span></tt> はクラスと共に利用しますが JavaScript の <tt class="docutils literal"><span class="pre">new</span></tt> は任意の関数と一緒に呼び出します。</p>
+<div class="highlight-python"><div class="highlight"><pre>var &lt;変数&gt; = new &lt;関数&gt;(&lt;引数&gt;);
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">new</span></tt> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <tt class="docutils literal"><span class="pre">{}</span></tt>, <tt class="docutils literal"><span class="pre">new</span> <span class="pre">Object();</span></tt>) が生成されます。
+次に関数が呼び出されますが、その際に関数内の <tt class="docutils literal"><span class="pre">this</span></tt> が生成されたオブジェクトを指すようになります。
+そして、<tt class="docutils literal"><span class="pre">new</span></tt> の実行結果としてそのオブジェクトが <tt class="docutils literal"><span class="pre">&lt;変数&gt;</span></tt> に格納されます。</p>
+<div class="highlight-python"><div class="highlight"><pre>Person = functoin(name, age) {
+  this.name = name;
+  this.age = age;
+};
+
+Person alice = new Person(&#39;Alice&#39;, 7);
+</pre></div>
+</div>
+<p>例えばこの例では、<tt class="docutils literal"><span class="pre">new</span> <span class="pre">Person...</span></tt> によって新しいオブジェクトが生成され、それが <tt class="docutils literal"><span class="pre">this</span></tt> に格納されて <tt class="docutils literal"><span class="pre">Person</span></tt> が実行され、
+<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">age</span></tt> がオブジェクトにセットされます。そして生成されたオブジェクトは <tt class="docutils literal"><span class="pre">alice</span></tt> に代入されます。
+そのため、<tt class="docutils literal"><span class="pre">alice.name</span></tt>, <tt class="docutils literal"><span class="pre">alice.age</span></tt> は <tt class="docutils literal"><span class="pre">Person</span></tt> に渡された引数 <tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">age</span></tt> になります。</p>
+<div class="highlight-python"><div class="highlight"><pre>console.log(alice.name);  // Alice
+console.log(alice.age);  // 7
 </pre></div>
 </div>
 </div>
