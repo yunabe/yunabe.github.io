@@ -181,7 +181,7 @@ JavaScript である ``obj`` のプロトタイプを参照するには ``Object
 
 一部の JavaScript エンジンでは ``__proto__`` という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
-ただしこれは非標準の機能であり廃止される予定なので今後はあまり利用しないほうがよいでしょう。
+ただしこれは `非標準の機能であり廃止される予定 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto>`_ なので今後はあまり利用しないほうがよいでしょう。
 
 プロパティ: prototype 
 ~~~~~~~~~~~~~~~~~~~~~
@@ -212,8 +212,6 @@ JavaScript である ``obj`` のプロトタイプを参照するには ``Object
   console.log(instance.b);  // 'Banana';
 
 
-Google Closure 流のクラスの実現方法
-===============================
 クラスの宣言とコンストラクタの定義
 ----------------------------------
 上で述べたように ``new`` 演算子をつかうと関数をクラスのコンストラクタのように利用することができます。
@@ -265,6 +263,14 @@ JavaScript でメソッドを定義するときにはコンストラクタ関数
 このように ``prototype`` と ``this`` の単体だと何のためにあるのか分からない奇妙な仕様がこのように。
 
 上のメソッド定義の例をみると ``this`` が ``prototype`` を指すのではないか？心配になるかもしれませんが前節で述べたように JavaScript の ``this`` は関数が呼び出された際にその関数をプロパティ保持していたオブジェクトを指します。そのため、 ``alice.sayHello();`` という形で ``sayHello`` を呼び出した場合は ``this`` は ``alice`` を指すことになるのです。
+
+private, protected
+~~~~~~~~~~~~~~~~~~
+JavaScript でクラスを実現する場合、メンバ変数やメソッドを ``private`` や ``protected`` にすることはできません。
+ただし名前規約で ``private`` なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
+`Google の JavaScript のスタイルガイド <https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming>`_
+では private なメソッド, メンバ変数は名前の末尾に ``_`` をつけることが求められています。
+
 
 継承
 ----
@@ -334,7 +340,12 @@ JavaScript はまず ``child`` のプロトタイプである ``Child.prototype`
 子クラスで同名のメソッドを定義されてしまえば問答無用でオーバーライドされてしまいます。
 これは大規模なプログラムでは問題になってしまいますが、純粋な JavaScript では解決する手段がありません。
 
-private, protected
-~~~~~~~~~~~~~~~~~~
-JavaScript でクラスを実現する場合、メンバ変数やメソッドを ``private`` や ``protected`` にすることはできません。
-https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
+また親クラスのメソッドを明示的に呼び出すには、親クラスのコンストラクタの呼び出しの場合と同様に ``call`` を使用します。
+
+::
+
+  Parent.proto.sayHello(this);
+
+abstract, interface
+~~~~~~~~~~~~~~~~~~~
+JavaScript には ``interface`` や ``abstract`` に相当する言語仕様は用意されていません。

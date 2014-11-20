@@ -47,20 +47,20 @@
 <li><a class="reference internal" href="#call">call</a></li>
 <li><a class="reference internal" href="#new">new 演算子</a></li>
 <li><a class="reference internal" href="#prototype">prototype チェーン</a></li>
-<li><a class="reference internal" href="#id5">プロパティ: prototype</a></li>
+<li><a class="reference internal" href="#id6">プロパティ: prototype</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#google-closure">Google Closure 流のクラスの実現方法</a><ul>
-<li><a class="reference internal" href="#id6">クラスの宣言とコンストラクタの定義</a></li>
-<li><a class="reference internal" href="#id7">メンバ変数 (インスタンス変数)</a></li>
-<li><a class="reference internal" href="#id8">メソッド定義と呼び出し</a></li>
-<li><a class="reference internal" href="#id9">継承</a><ul>
-<li><a class="reference internal" href="#id10">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
-<li><a class="reference internal" href="#id11">親クラスのコンストラクタの呼び出し</a></li>
-<li><a class="reference internal" href="#id12">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
+<li><a class="reference internal" href="#id7">クラスの宣言とコンストラクタの定義</a></li>
+<li><a class="reference internal" href="#id8">メンバ変数 (インスタンス変数)</a></li>
+<li><a class="reference internal" href="#id9">メソッド定義と呼び出し</a><ul>
 <li><a class="reference internal" href="#private-protected">private, protected</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">継承</a><ul>
+<li><a class="reference internal" href="#id11">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
+<li><a class="reference internal" href="#id12">親クラスのコンストラクタの呼び出し</a></li>
+<li><a class="reference internal" href="#id13">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
+<li><a class="reference internal" href="#abstract-interface">abstract, interface</a></li>
 </ul>
 </li>
 </ul>
@@ -242,10 +242,10 @@ JavaScript である <tt class="docutils literal"><span class="pre">obj</span></
 逆に <tt class="docutils literal"><span class="pre">obj</span></tt> のプロトタイプとして <tt class="docutils literal"><span class="pre">proto</span></tt> を設定するには <tt class="docutils literal"><span class="pre">Object.setPrototypeOf(obj,</span> <span class="pre">proto)</span></tt> を利用します。</p>
 <p>一部の JavaScript エンジンでは <tt class="docutils literal"><span class="pre">__proto__</span></tt> という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
-ただしこれは非標準の機能であり廃止される予定なので今後はあまり利用しないほうがよいでしょう。</p>
+ただしこれは <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a> なので今後はあまり利用しないほうがよいでしょう。</p>
 </div>
-<div class="section" id="id5">
-<h3>プロパティ: prototype<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>プロパティ: prototype<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>プロトタイプの設定の方法はもう1つ存在します。それが関数の <tt class="docutils literal"><span class="pre">prototype</span></tt> プロパティを使う方法です。
 実は <tt class="docutils literal"><span class="pre">function</span></tt> で作られた関数オブジェクトには <tt class="docutils literal"><span class="pre">prototype</span></tt> というプロパティが存在し、空のオブジェクトが格納されています(要出典)。
 そしてその関数が <tt class="docutils literal"><span class="pre">new</span></tt> 演算子とともにコンストラクタとして実行された際に、<tt class="docutils literal"><span class="pre">new</span></tt> で作成されたオブジェクト（つまり関数内では <tt class="docutils literal"><span class="pre">this</span></tt> が表すオブジェクト)
@@ -270,11 +270,8 @@ console.log(instance.b);  // &#39;Banana&#39;;
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="google-closure">
-<h1>Google Closure 流のクラスの実現方法<a class="headerlink" href="#google-closure" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id6">
-<h2>クラスの宣言とコンストラクタの定義<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>クラスの宣言とコンストラクタの定義<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <p>上で述べたように <tt class="docutils literal"><span class="pre">new</span></tt> 演算子をつかうと関数をクラスのコンストラクタのように利用することができます。
 そのため JavaScript では関数を使ってクラスとコンストラクタを同時に定義します。
 クラスのインスタンスの生成とコンストラクタの呼び出しには <tt class="docutils literal"><span class="pre">new</span></tt> 演算子を使います。
@@ -288,15 +285,15 @@ var alice = new Person(&#39;Alice&#39;, 7);
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>メンバ変数 (インスタンス変数)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>メンバ変数 (インスタンス変数)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには <tt class="docutils literal"><span class="pre">this.&lt;プロパティ名&gt;</span></tt> を使います。
 JavaScript では Java や C++ と違い <strong>this を省略することは不可能</strong> なので注意してください。
 Python を知っている人は <tt class="docutils literal"><span class="pre">this</span></tt> は <tt class="docutils literal"><span class="pre">self</span></tt> に相当するものだと思うと分かりやすいかと思います。
 インスタンス変数やメソッド呼び出しの際に Python では <tt class="docutils literal"><span class="pre">self</span></tt> を付けなければならないように JavaScript では <tt class="docutils literal"><span class="pre">this</span></tt> が必ず必要です。</p>
 </div>
-<div class="section" id="id8">
-<h2>メソッド定義と呼び出し<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>メソッド定義と呼び出し<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <tt class="docutils literal"><span class="pre">prototype</span></tt> オブジェクトに関数を定義します。
 またメソッド内から他のメソッドの呼び出しを行う場合は <tt class="docutils literal"><span class="pre">this.&lt;メソッド名&gt;(引数)</span></tt> を使います。
 メンバ変数の場合と同様に、メソッド呼び出しの際に <strong>this を省略することは不可能</strong> なので気をつけて下さい。</p>
@@ -319,11 +316,18 @@ alice.sayHello();
 <tt class="docutils literal"><span class="pre">alice.sayHello();</span></tt> という形で <tt class="docutils literal"><span class="pre">sayHello</span></tt> を呼び出した際には <tt class="docutils literal"><span class="pre">this</span></tt> は <tt class="docutils literal"><span class="pre">alice</span></tt> となります。</p>
 <p>このように <tt class="docutils literal"><span class="pre">prototype</span></tt> と <tt class="docutils literal"><span class="pre">this</span></tt> の単体だと何のためにあるのか分からない奇妙な仕様がこのように。</p>
 <p>上のメソッド定義の例をみると <tt class="docutils literal"><span class="pre">this</span></tt> が <tt class="docutils literal"><span class="pre">prototype</span></tt> を指すのではないか？心配になるかもしれませんが前節で述べたように JavaScript の <tt class="docutils literal"><span class="pre">this</span></tt> は関数が呼び出された際にその関数をプロパティ保持していたオブジェクトを指します。そのため、 <tt class="docutils literal"><span class="pre">alice.sayHello();</span></tt> という形で <tt class="docutils literal"><span class="pre">sayHello</span></tt> を呼び出した場合は <tt class="docutils literal"><span class="pre">this</span></tt> は <tt class="docutils literal"><span class="pre">alice</span></tt> を指すことになるのです。</p>
+<div class="section" id="private-protected">
+<h3>private, protected<a class="headerlink" href="#private-protected" title="Permalink to this headline">¶</a></h3>
+<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <tt class="docutils literal"><span class="pre">private</span></tt> や <tt class="docutils literal"><span class="pre">protected</span></tt> にすることはできません。
+ただし名前規約で <tt class="docutils literal"><span class="pre">private</span></tt> なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
+<a class="reference external" href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming">Google の JavaScript のスタイルガイド</a>
+では private なメソッド, メンバ変数は名前の末尾に <tt class="docutils literal"><span class="pre">_</span></tt> をつけることが求められています。</p>
 </div>
-<div class="section" id="id9">
-<h2>継承<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="id10">
-<h3>プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h2>継承<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>&lt;figure&gt;
 </pre></div>
 </div>
@@ -356,8 +360,8 @@ child.method1();
 </pre></div>
 </div>
 </div>
-<div class="section" id="id11">
-<h3>親クラスのコンストラクタの呼び出し<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>親クラスのコンストラクタの呼び出し<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>上の例ではコンストラクタが空だったので問題ありませんでしたが、
 現実のプログラムでは初期化を正しく行うためには子クラスのコンストラクタから
 親クラスのコンストラクタを呼びださなくてはなりません。</p>
@@ -371,8 +375,8 @@ child.method1();
 </pre></div>
 </div>
 </div>
-<div class="section" id="id12">
-<h3>メソッドオーバーライドと親クラスのメソッドの呼び出し<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id13">
+<h3>メソッドオーバーライドと親クラスのメソッドの呼び出し<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <p>前述したように、<tt class="docutils literal"><span class="pre">child.method0()</span></tt> のようにメソッド呼び出しが行われると、
 JavaScript はまず <tt class="docutils literal"><span class="pre">child</span></tt> のプロトタイプである <tt class="docutils literal"><span class="pre">Child.prototype</span></tt> から <tt class="docutils literal"><span class="pre">method</span></tt> を探します。
 <tt class="docutils literal"><span class="pre">Child.prototype</span></tt> に <tt class="docutils literal"><span class="pre">method</span></tt> が見つからない場合は、さらにプロトタイプチェーンをたどって
@@ -381,11 +385,14 @@ JavaScript はまず <tt class="docutils literal"><span class="pre">child</span>
 また <tt class="docutils literal"><span class="pre">Java</span></tt> のようにメソッドに <tt class="docutils literal"><span class="pre">final</span></tt> をつけてオーバーライドを禁止することもできません。
 子クラスで同名のメソッドを定義されてしまえば問答無用でオーバーライドされてしまいます。
 これは大規模なプログラムでは問題になってしまいますが、純粋な JavaScript では解決する手段がありません。</p>
+<p>また親クラスのメソッドを明示的に呼び出すには、親クラスのコンストラクタの呼び出しの場合と同様に <tt class="docutils literal"><span class="pre">call</span></tt> を使用します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Parent</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">sayHello</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+</pre></div>
 </div>
-<div class="section" id="private-protected">
-<h3>private, protected<a class="headerlink" href="#private-protected" title="Permalink to this headline">¶</a></h3>
-<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <tt class="docutils literal"><span class="pre">private</span></tt> や <tt class="docutils literal"><span class="pre">protected</span></tt> にすることはできません。
-<a class="reference external" href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml">https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml</a></p>
+</div>
+<div class="section" id="abstract-interface">
+<h3>abstract, interface<a class="headerlink" href="#abstract-interface" title="Permalink to this headline">¶</a></h3>
+<p>JavaScript には <tt class="docutils literal"><span class="pre">interface</span></tt> や <tt class="docutils literal"><span class="pre">abstract</span></tt> に相当する言語仕様は用意されていません。</p>
 </div>
 </div>
 </div>
