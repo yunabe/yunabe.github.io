@@ -22,6 +22,10 @@ JavaScript におけるクラスの実現
 `Google Closure Library <https://developers.google.com/closure/library/>`_ を参考にしてどのように
 JavaScript でクラスを実現すればよいかを学びます。
 
+.. contents:: 目次
+   :depth: 3
+   :local:
+
 クラス実現のために必要な JavaScript の言語仕様
 ----------------------------------------------
 function
@@ -211,6 +215,74 @@ JavaScript である ``obj`` のプロトタイプを参照するには ``Object
   console.log(instance.a);  // 'Apple';
   console.log(instance.b);  // 'Banana';
 
+Google Closure 流のクラスの実現方法の概要
+-----------------------------------------
+まずクラスの実現方法の例を示して、それから各要素について解説します。
+クラスの定義は次のような形になります。
+
+::
+
+  // クラスとコンストラクタは関数を使って定義します
+  Person = function(name, age) {
+    // this はインスタンスを表します。
+    this.name = name;
+    this.age = age;
+  };
+
+  // メソッドはコンストラクタの prototype プロパティに定義します
+  Person.prototype.getName = function() {
+    // メンバ変数の定義・参照は this.<メンバ変数> を使います。
+    // C++, Java と違い this は省略できません。
+    return this.name;
+  };
+
+  Person.prototype.sayHello = function() {
+    // メソッド内から他のメソッドを呼ぶ場合も this.<メソッド> を使います。
+    // C++, Java と違い this は省略できません。
+    console.log('Hello I'm ' + this.getName());
+  };
+
+クラスをインスタンス化する際には ``new`` を使います。
+
+::
+
+  var alice = new Person('Alice', 7);
+  alice.sayHello();
+
+継承は ``inherits`` という関数を用意して次のように行います。
+
+::
+
+  var inherits = function(childCtor, parentCtor) {
+    // 子クラスの prototype のプロトタイプとして 親クラスの
+    // prototype を指定することで継承が実現される
+    Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
+  };
+
+  // 子クラスのコンストラクタ
+  var Employee = function(name, age, salary) {
+    // 親クラスのコンストラクタの呼び出しには call を使用
+    Person.call(this, name, age);
+    this.salary = salary;
+  };
+
+  // inherits を使って親子関係を明示する
+  inherits(Employee, Person);
+
+  // 子クラスのメソッド
+  Employee.prototype.getSalary = function() {
+    return this.salary;
+  };
+
+  // 同じ名前のメソッドを子クラスで定義すればオーバーライドになる。
+  Employee.prototype.sayHello = function() {
+    // 親クラスのメソッドを呼び出す場合は親クラスの prototype に
+    // 定義されているメソッドを call を使って呼び出す。
+    Person.prototype.sayHello.call();
+    console.log('Salary is ' + this.salary);
+  };
+
+ではそれぞれの要素について解説していきましょう。
 
 クラスの宣言とコンストラクタの定義
 ----------------------------------
@@ -346,6 +418,24 @@ JavaScript はまず ``child`` のプロトタイプである ``Child.prototype`
 
   Parent.proto.sayHello(this);
 
+多重継承
+~~~~~~~~
+プロトタイプチェーンを利用している仕組み上、多重継承はできません。
+
 abstract, interface
 ~~~~~~~~~~~~~~~~~~~
 JavaScript には ``interface`` や ``abstract`` に相当する言語仕様は用意されていません。
+Java, C++ の抽象メソッド (abstract method) はメソッドの実体は定義せずに、
+子クラスあるいはインターフェースを実装するクラスが実装しなくてはならないメソッドを宣言するものです。
+Java, C++ は静的型チェックを行うのでそのような仕組みが必須です。
+しかし JavaScript は型は動的にチェックされるので抽象メソッドはなくてもプログラムを書くことは可能です。
+
+ただ現実にはプログラムの可読性を高めるために子クラスが実装しなくてはならないメソッドを明示的に書きたいと思うことも多いでしょう。
+JavaScript ではそのような場合、単純に例外を投げるだけの関数を定義してしまいます。これは Python でも同じです。
+Java の interface に相当することをしたい場合はすべてのメソッドが例外を投げるだけのクラスを作成すればよいでしょう。
+
+::
+
+  Person.prototype.sayHello() = function() {
+    throw new Error('Not Implemented');
+  };
