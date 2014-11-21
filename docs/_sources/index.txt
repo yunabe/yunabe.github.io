@@ -20,6 +20,7 @@ Contents:
    cpp_virtual_destructor
    static_library
    javascript_primitive_types
+   javascript_class_in_google
    relearning_git_remote
    relearning_git_pull_default
    relearning_git_push_default
