@@ -1,4 +1,4 @@
-JavaScript におけるクラスの実現方法 (Google流)
+JavaScript におけるクラスの定義方法 (Google流)
 ==============================================
 
 .. container:: editdate
