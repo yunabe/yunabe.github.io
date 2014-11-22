@@ -1,21 +1,21 @@
-JavaScript におけるクラスの定義方法 (Google流)
+JavaScript におけるクラス定義の方法 (Google流)
 ==============================================
 
 .. container:: editdate
 
-  更新 2014年11月20日
+  更新 2014年11月23日
 
 他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
-代わりに C++, Java などにはない ``this`` や ``prototype``,  (C++, Java の ``new`` とは全く異なる) ``new`` 演算子が用意されています。
-ただこれらの機能はどれもかなり奇妙な仕様をしています(少なくともC++, Java, Python などのプログラマにとっては)。
-それぞれの機能の仕様だけ1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
-どのようにその機能を活用してプログラムを作ればよいのかは全く分からないと思います。
+代わりに C++, Java などにはない ``prototype`` や C++, Java のとは全く異なる ``new`` 演算子や ``this`` が用意されています。
+これらの機能はどれもかなり奇妙な仕様をしています。
+そのため、それぞれの機能の仕様を1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
+どのようにその機能を活用してプログラムを作ればよいのか全く理解できないと思います。
 
 そのため C++, Java, Python などの「まともな」オブジェクト指向プログラミング言語の経験のあるプログラマが JavaScript で大規模なプログラミングを書こうとすると
-クラスがないからプログラムをどうやってモジュール化したらよいのか分からないし、
+クラスがないのにプログラムをどうやってモジュール化したらよいのか分からないし、
 代わりにある ``this`` とか ``prototype`` とかは何に使えばよいか分からないしで途方に暮れてしまうと思います。
 
-しかし JavaScript にはクラスという言語仕様は用意されていないものの、``this``, ``prototype`` などを一定のルールに基づいて利用すれば
+しかし JavaScript には「クラス」という言語仕様は用意されていないものの、``this``, ``prototype`` などを一定のルールに基づいて利用すれば
 他の言語のクラスほぼ同等のことは実現可能です。
 つまり他のクラスで行うようなクラスを使ったカプセル化、ポリモーフィズム、継承などを JavaScript でも実現することができます。
 このドキュメントでは Google が公開している JavaScript のオープンソースライブラリ
@@ -28,6 +28,10 @@ JavaScript でクラスを実現すればよいかを学びます。
 
 クラス実現のために必要な JavaScript の言語仕様
 ----------------------------------------------
+JavaScript でのクラスの実現方法を理解するためには ``this``, ``new``, ``prototype``
+などのJavaScriptの特殊な言語仕様を理解している必要があります。
+まずはそうした JavaScript の言語仕様から復習しておきます。
+
 function
 ~~~~~~~~
 JavaScript では ``function`` で関数を定義します。
@@ -36,7 +40,7 @@ JavaScript では ``function`` で関数を定義します。
 
   var sum = function(a, b) {
     return a + b;
-  }
+  };
 
 JavaScript における関数の定義方法を知らない場合はクラスの実現方法を学ぶ前に、まず JavaScript の入門書や
 `関数と関数スコープ <https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Functions_and_function_scope>`_
@@ -45,7 +49,7 @@ JavaScript における関数の定義方法を知らない場合はクラスの
 this
 ~~~~
 JavaScript では ``this`` という特殊な変数が関数の中で利用可能です。
-`JavaScript の this は Java, C++ の this とは全く挙動が異なるので注意してください。`
+JavaScript の this は **Java, C++ の this とは全く挙動が異なる** ので注意してください。
 JavaScript の ``this`` はある関数が呼び出された際にその関数を格納していた ``object`` を指します。
 例えば
 
@@ -74,8 +78,8 @@ JavaScript の ``this`` はある関数が呼び出された際にその関数�
 
 ::
 
-  alice.sayHello();  // I'm Alice
-  bob.sayHello();  // I'm Bob
+  alice.sayHello();  // Hello, I'm Alice
+  bob.sayHello();  // Hello, I'm Bob
 
 のように呼び出すと前者の場合では ``this`` は ``alice`` を, 後者の場合では ``bob`` を指すので
 それぞれの実行で ``I'm Alice`` と ``I'm Bob`` が表示されます。
@@ -84,11 +88,10 @@ JavaScript の ``this`` はある関数が呼び出された際にその関数�
 
 ::
   
-  bob.child.sayHello();  // I'm Alice
+  bob.child.sayHello();  // Hello, I'm Alice
 
-なおクラスを実現する上ではあまり重要なことではないですが、``obj.method();``
-のような形ではなく関数を ``method();`` という形で単体で実行した場合には ``this`` は ``window`` を指します。
-
+なおクラスを実現する上ではあまり重要なことではないですが、
+関数を単に ``method();`` という形で単体で実行した場合には ``this`` は ``window`` を指します。
 
 call
 ~~~~
@@ -100,20 +103,20 @@ call
 
 ::
 
-  sayHelloShared.call(alice);  // I'm Alice
-  sayHelloShared.call(bob);  // I'm Bob
+  sayHelloShared.call(alice);  // Hello, I'm Alice
+  sayHelloShared.call(bob);  // Hello, I'm Bob
 
 new 演算子
 ~~~~~~~~~~
 JavaScript にも ``new`` 演算子が存在します。
-ただし `JavaScript の new も Java や C++ でクラスのインスタンス化を行う new とは全く動きが異なります`。
+ただし JavaScript の new も **Java や C++ でクラスのインスタンス化を行う new とは全く動きが異なります。**
 C++, Java では ``new`` はクラスと共に利用しますが JavaScript の ``new`` は任意の関数と一緒に呼び出します。
 
 ::
 
   new <関数>(<引数>);
 
-``new`` と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり ``{}``, ``new Object();``) が生成されます。
+``new`` と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり ``{}``) が生成されます。
 次に関数が呼び出されますが、その際に関数内の ``this`` が生成されたオブジェクトを指すようになります。
 関数が実行された後、生成されたオブジェクトが ``new`` の実行結果として返されます。
 
@@ -160,7 +163,7 @@ JavaScript のオブジェクトは基本的には key と value のペアを保
 ::
 
   // alice['name'] と alice.name は同義
-  console.log(alice.name]);  // Alice
+  console.log(alice.name);  // Alice
   console.log(alice.age);  // 7
   console.log(alice.address);  // undefined
 
@@ -178,30 +181,30 @@ JavaScript のオブジェクトは他のオブジェクトを `プロトタイ�
   <figure>
 
 なお `JavaScript の仕様書 <http://www.ecma-international.org/ecma-262/5.1/>`_ ではこの `プロトタイプ` を表す内部的なプロパティを
-``obj[[Prototype]]`` のように記述します。
+`obj[[Prototype]]` のように記述します。
 ただしこれは仕様書の中でのみ現れる表現であって、JavaScript のコードの中では利用できません。
-JavaScript である ``obj`` のプロトタイプを参照するには ``Object.getPropertyOf(obj)``。
+JavaScript で ``obj`` のプロトタイプを参照するには ``Object.getPropertyOf(obj)`` を使用します。
 逆に ``obj`` のプロトタイプとして ``proto`` を設定するには ``Object.setPrototypeOf(obj, proto)`` を利用します。
 
-一部の JavaScript エンジンでは ``__proto__`` という特殊なプロパティが用意されていて、
+一部の JavaScript エンジンでは `[[Prototype]]` に相当する ``__proto__`` という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
 ただしこれは `非標準の機能であり廃止される予定 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto>`_ なので今後はあまり利用しないほうがよいでしょう。
 
 プロパティ: prototype 
 ~~~~~~~~~~~~~~~~~~~~~
 プロトタイプの設定の方法はもう1つ存在します。それが関数の ``prototype`` プロパティを使う方法です。
-実は ``function`` で作られた関数オブジェクトには ``prototype`` というプロパティが存在し、空のオブジェクトが格納されています(要出典)。
+実は ``function`` で作られた関数オブジェクトには ``prototype`` というプロパティが存在し、空のオブジェクトが格納されています。
 そしてその関数が ``new`` 演算子とともにコンストラクタとして実行された際に、``new`` で作成されたオブジェクト（つまり関数内では ``this`` が表すオブジェクト)
 のプロトタイプとして関数の ``prototype`` プロパティのオブジェクトが設定されます。
 
-名前が非常に紛らわしいですが、 `prototype はオブジェクトのプロトタイプを表すプロパティではありません`。
+名前が非常に紛らわしいですが、 **prototype はオブジェクトのプロトタイプを表すプロパティではありません**。
 ``prototype`` プロパティは「そのオブジェクトがコンストラクタとして利用された際に作成される新しいオブジェクト」のプロトタイプを決めるものです。
-オブジェクトのプロトタイプを表すプロパティは ``__proto__`` あるいは言語仕様書で [[Prototype]] と表されるもので ``prototype`` プロパティとは異なります。
-ここを勘違いしていると混乱のもとになるので自分で図を書いたりコードを実行してよく違いを理解しておいて下さい。
+オブジェクトのプロトタイプを表すプロパティは ``__proto__`` あるいは言語仕様書で `[[Prototype]]` と表されるもので ``prototype`` プロパティとは異なります。
+ここを勘違いしてしまうと混乱のもとになるので自分で図を書いたりコードを実行してよく違いを理解しておいて下さい。
 
-さてこの ``prototype`` というプロパティ、オブジェクトの直接のプロトタイプを表さないので一見してもどのように使えばいいのか分かり難いです。
+さてこの ``prototype`` というプロパティ、オブジェクトの直接のプロトタイプを表さないので一見非常に使いにくように思えます。
 しかしこの特殊な仕様が JavaScript でクラスを実現するにはとても重要になります。
-実際、JavaScript でプロトタイプを利用する場合 ``setPrototypeOf`` よりもこちらを使うのが普通です。
+実際、JavaScript でプロトタイプを利用する場合 ``setPrototypeOf`` よりもこちらを使うのが一般的です。
 
 ::
 
@@ -211,7 +214,7 @@ JavaScript である ``obj`` のプロトタイプを参照するには ``Object
   
   var instance = new Constructor();
 
-  console.log(Object(setPrototypeOf(instance == Constructor.prototype);  // true
+  console.log(Object.getPrototypeOf(instance) == Constructor.prototype);  // true
   console.log(instance.a);  // 'Apple';
   console.log(instance.b);  // 'Banana';
 
