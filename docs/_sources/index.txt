@@ -26,6 +26,7 @@ Contents:
    relearning_git_push_default
    html5_ping
    pysh_overview
+   terminal_progress_bar
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 
