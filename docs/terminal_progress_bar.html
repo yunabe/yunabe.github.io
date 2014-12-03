@@ -50,6 +50,10 @@
 <li><a class="reference internal" href="#python">Python</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#id6">おまけ</a><ul>
+<li><a class="reference internal" href="#id7">色をつける</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -89,7 +93,7 @@
 Python, Ruby, C++, Java など言語に関係なく簡単にターミナルにプログレスバーを表示することができます。</p>
 <div class="section" id="id2">
 <h2>仕組み<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>[==&gt;          ] 25.2%
+<div class="highlight-python"><div class="highlight"><pre>[=&gt;           ]  5.2%
 </pre></div>
 </div>
 <p>プログレスバーが更新されるたびに新しい行が表示されるのを防ぐために、
@@ -114,19 +118,55 @@ Python, Ruby, C++, Java など言語に関係なく簡単にターミナルに�
 </div>
 <div class="section" id="id5">
 <h2>実装<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>[=========&gt;   ] 72.3%
+<div class="highlight-python"><div class="highlight"><pre>[======&gt;      ] 42.3%
 </pre></div>
 </div>
 <p>基本的には <tt class="docutils literal"><span class="pre">\r</span></tt> と <cite>&lt;ESC&gt;[94m</cite> を標準出力に書き出して、その後に <tt class="docutils literal"><span class="pre">&quot;[====&gt;</span>&nbsp; <span class="pre">]</span> <span class="pre">70%&quot;</span></tt> のようなプログレスバーを表す文字列を書くだけです。
-ただし <strong>プログレスバーの文字の後で改行してしまわないように注意</strong> して下さい。
-例えば、Python では <tt class="docutils literal"><span class="pre">print</span></tt> ではなくて <tt class="docutils literal"><span class="pre">sys.stdout.write</span></tt> を使わなくてはならないし、
-Javaでは <tt class="docutils literal"><span class="pre">println</span></tt> ではなくて <tt class="docutils literal"><span class="pre">print</span></tt> を使わなくてはなりません。</p>
+ただし以下の点に気をつけて下さい</p>
+<ul class="simple">
+<li>プログレスバーの文字列の後で改行しない。<ul>
+<li>例えば、Python では <tt class="docutils literal"><span class="pre">print</span></tt> ではなくて <tt class="docutils literal"><span class="pre">sys.stdout.write</span></tt> を使わなくてはならないし、
+Javaでは <tt class="docutils literal"><span class="pre">println</span></tt> ではなくて <tt class="docutils literal"><span class="pre">print</span></tt> を使わなくてはなりません。</li>
+</ul>
+</li>
+<li>ファイルオブジェクトへの書き込みはバッファリングされてしまい、即座にターミナルに書き込まれない場合があるので
+プログレスバーを出力したらバッファをフラッシュする。</li>
+</ul>
+<p>これでそれっぽくプログレスバーが表示できるようになります (というか多くの解説がそこまでしか触れてない) が、
+人に公開するようなプログラムなら以下の点も留意すべきです。</p>
+<ul class="simple">
+<li>標準出力ではなくて標準エラーに出力する。</li>
+<li>リダイレクトなどによって、出力先がファイルなどターミナル以外になっている場合はプログレスバーを表示しない。
+そうしないとリダイレクト先のファイルがプログレスバーと制御文字で埋め尽くされて読むときに困ります。</li>
+</ul>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r\033</span><span class="s">[K&#39;</span> <span class="o">+</span> <span class="n">get_progressbar_str</span><span class="p">(</span><span class="n">progress</span><span class="p">))</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r\033</span><span class="s">[K&#39;</span> <span class="o">+</span> <span class="n">get_progressbar_str</span><span class="p">(</span><span class="n">progress</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>おまけ<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>[===========&gt; ] 89.7%
+</pre></div>
+</div>
+<div class="section" id="id7">
+<h3>色をつける<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>プログレスバーがカラフルだと楽しいので余裕があったら色を付けてみましょう。
+<a class="reference external" href="http://www.termsys.demon.co.uk/vtansi.htm#colors">エスケープシーケンスを使って文字の色と背景色が制御できる</a> のでこれを使います。
+色の制御に使うエスケープシーケンスのフォーマットは <cite>&lt;ESC&gt;[n1;n2;n3;...]m</cite> です。
+n1, n2, ... の部分には <a class="reference external" href="http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes">Wikipedia の SGR (Select Graphic Rendition) parameters 表</a>
+にある数字が入ります。例えば、文字を明るい赤にするには <cite>&lt;ESC&gt;</cite> <tt class="docutils literal"><span class="pre">[1;31m</span></tt> を出力します。設定をリセットするのは <tt class="docutils literal"><span class="pre">0</span></tt> なので
+<cite>&lt;ESC&gt;</cite> <tt class="docutils literal"><span class="pre">[0m]</span></tt> を出力することで元に戻ります。例えば次の命令を Python で実行すると真ん中の <tt class="docutils literal"><span class="pre">*</span></tt> のみが明るい赤で表示されるはずです。
+いろいろ自分で試して遊んでみて下さい。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;*</span><span class="se">\x1b</span><span class="s">[1;31m*</span><span class="se">\x1b</span><span class="s">[0m*&quot;</span>
+</pre></div>
+</div>
+<p>エスケープシーケンスで指定できる <cite>Red</cite>, <cite>Blue</cite> などの色が実際のターミナルでどのような色になるかは、
+<a class="reference external" href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia にあるエスケープシーケンスで指定する色とターミナル上での色の対応表</a>
+が分かりやすいので参考にして下さい（ターミナル毎に微妙に色合いが異なります）。</p>
 </div>
 </div>
 </div>
