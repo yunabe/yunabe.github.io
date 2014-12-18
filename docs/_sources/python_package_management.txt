@@ -3,10 +3,22 @@ Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)
 
 .. container:: editdate
 
-  更新 2014年5月20日
+  更新 2014年12月18日
 
-Python のパッケージ管理関係の情報があまりオフィシャルには整理されてなくて、
-パッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみた。
+Python のパッケージ管理関係の情報がオフィシャルには整理されてなく、
+またパッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみました。
+このドキュメント自体は少し長いですが、結論としては2014年12月時点では
+
+- 原則 pip を使ってパッケージの管理を行う
+- setuptools も広く使われているので入れておくとよい。そもそも pip のインストール時に自動的ににインストールされる
+- distribute は 2013年に setuptools にマージされたので不要
+
+という方針でよいと思います。
+
+ただ少し古い情報ソースやパッケージのドキュメントを読んでいると distribute の利用が進められていたり、
+site-packages, easy_install, ez_setup.py, distutils, PyPI, Eggs, etc... と色々なキーワードが出て来て、
+それぞれが何なのかを理解していないと混乱してしまいます。
+そのため、それぞれの技術と技術同士の関係を理解しておくのは Python で正しくパッケージ管理を行う上で大切かと思います。
 
 .. contents:: 目次
    :depth: 3
@@ -235,19 +247,37 @@ ez_setup.py
 
 .. _pip:
 
-PIP
+pip
 ---
-easy_install の強化版みたいなもの。http://www.pip-installer.org/
+`pip <https://pip.pypa.io/en/latest/>`_ はeasy_install の強化版です。
+パッケージのアンインストールなど、easy_install にはない機能が提供されています。
+2014年12月現在、pip を使うのが Python における最もモダンなパッケージ管理方法だと思います。
 
 インストール & アップグレード
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#. setuptools をインストール
-#. wget "https://raw.github.com/pypa/pip/master/contrib/get-pip.py"
-#. python get-pip
+- wget "https://bootstrap.pypa.io/get-pip.py"
+- rootにインストールする場合
+
+  - sudo python get-pip.py
+
+- 非rootで User site directory にインストール場合
+
+  - python get-pip.py --user
+
+- pip 自体をアップデートする
+
+  - pip install -U pip
 
 使い方
 ~~~~~~
+- PyPI から最新版をダウンロードしてインストール
 
-その他文献
-----------
+  - pip install SQLObject
+
+- ``User site directory`` へインストール
+
+  - pip install --user SQLObject
+
+参考文献
+--------
 - `Python Hack-a-thon 4 ハンズオン 中級コース <http://www.freia.jp/taka/docs/pyhack4/index.html>`_ 日本語でよくまとまっていてわかりやすい。

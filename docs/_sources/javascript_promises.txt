@@ -1,0 +1,18 @@
+Promise を使った JavaScript 非同期プログラミング (コールバック地獄からの解放)
+=============================================================================
+`EcmaScript 6 に Promise が追加され <http://www.html5rocks.com/en/tutorials/es6/promises/>`_、
+今後 Promise が JavaScript で複雑な非同期処理を書く標準的な方法になると期待されます。
+また Promise は新しい言語機能ではなくてライブラリなのでブラウザがサポートしていなくても、
+jQuery や Google Closure Library で実装されているものを使えばすぐに使いはじめることができます
+(標準の Promise とは多少仕様は異なりますがコンセプトはほぼ同じです)。
+
+参考文献
+--------
+- `爆速でわかるjQuery.Deferred超入門 <http://techblog.yahoo.co.jp/programming/jquery-deferred/>`_
+- `あなたが読むべきJavaScript Promises <http://jser.info/post/77696682011/es6-promises/>`_
+- `JavaScript Promises: There and back again - HTML5 Rocks <http://www.html5rocks.com/en/tutorials/es6/promises/>`_
+
+  - `日本語版 <http://www.html5rocks.com/ja/tutorials/es6/promises/>`_
+
+- `Promise API in MDN <https://developer.mozilla.org/ja/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise>`_
+- `JavaScript Promises - Thinking Sync in an Async World <https://speakerdeck.com/kerrick/javascript-promises-thinking-sync-in-an-async-world>`_
