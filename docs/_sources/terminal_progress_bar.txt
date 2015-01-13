@@ -3,6 +3,10 @@
 ターミナルに用意されている特殊な制御コード (エスケープシーケンス) を使用して、
 Python, Ruby, C++, Java など言語に関係なく簡単にターミナルにプログレスバーを表示することができます。
 
+.. image:: _static/progressbar.gif
+   :height: 60px
+   :width: 344px
+
 仕組み
 ------
 ::

@@ -3,7 +3,7 @@ Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)
 
 .. container:: editdate
 
-  更新 2014年12月18日
+  更新 2014年1月13日
 
 Python のパッケージ管理関係の情報がオフィシャルには整理されてなく、
 またパッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみました。
@@ -15,7 +15,7 @@ Python のパッケージ管理関係の情報がオフィシャルには整理�
 
 という方針でよいと思います。
 
-ただ少し古い情報ソースやパッケージのドキュメントを読んでいると distribute の利用が進められていたり、
+ただ少し古い情報ソースやパッケージのドキュメントを読んでいると distribute の利用が勧められていたり、
 site-packages, easy_install, ez_setup.py, distutils, PyPI, Eggs, etc... と色々なキーワードが出て来て、
 それぞれが何なのかを理解していないと混乱してしまいます。
 そのため、それぞれの技術と技術同士の関係を理解しておくのは Python で正しくパッケージ管理を行う上で大切かと思います。
@@ -73,6 +73,10 @@ Python におけるパッケージ管理に関係のあるキーワードをア�
   - setuptools で定義された Python の配布形式。
     Python のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの (distutils の生成するzip/tar の拡張版)。
     setuptools を使って (つまり setuptools を使って setup.py を定義していれば) 作成することができる。
+
+- `Python Wheels <https://www.python.org/dev/peps/pep-0427/>`_
+
+  - Python Eggs の後継のフォーマット。
 
 - その他
 
@@ -235,7 +239,7 @@ easy_install の使い方
 
 Python Eggs
 -----------
-setuptools で定義された Python の配布形式。
+`setuptools で定義された Python の配布形式 <http://peak.telecommunity.com/DevCenter/PythonEggs>`_。
 Python のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの (distutils の生成するzip/tar の拡張版)。
 setuptools を使って (つまり setuptools を使って setup.py を定義していれば) 作成することができる。
 
@@ -277,7 +281,41 @@ pip
 - ``User site directory`` へインストール
 
   - pip install --user SQLObject
+  - easy_install と違って --user 付きでインストールした pip もデフォルトでは root に
+    パッケージをインストールしようとするので、 User site directory にインストールしたい場合は ``--user`` は省略できない。
 
-参考文献
---------
+Wheels
+------
+- `Wheel <https://wheel.readthedocs.org/en/latest/>`_
+
+インストール
+~~~~~~~~~~~~
+::
+
+  pip install wheel
+  (必要ならば --user をつける)
+
+Wheelの作成
+~~~~~~~~~~~
+- setup.py が setuptools を使って書かれていれば、 wheel をインストールすることで `bdist_wheel` が使えるようになります。
+
+その他
+------
+- `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
+
+  - Python の `isolated` な仮想環境を ``virtualenv ENV`` コマンド一発で作り出す超便利ツール。
+  - 仮想環境毎に別々のパッケージがインストールできるので、クリーンな環境を作ったり、
+    アプリケーションによって異なるバージョンのパッケージを使ったりするのに便利。
+  - root 権限がないユーザがパッケージを入れるのにも便利ではあるが、2.6以降は ``User site directory`` があるので
+    virtualenv を使わなくても非rootユーザ毎にパッケージを入れるのは簡単。
+
+その他 参考文献
+---------------
 - `Python Hack-a-thon 4 ハンズオン 中級コース <http://www.freia.jp/taka/docs/pyhack4/index.html>`_ 日本語でよくまとまっていてわかりやすい。
+- `Python Packaging User Guide <https://packaging.python.org/en/latest/>`_
+
+  - ついに Python のパッケージ管理の情報が公式に整理され始めた？
+
+- `Python Packaging Authority <https://www.pypa.io/en/latest/>`_
+
+  - `Packaging History <https://www.pypa.io/en/latest/history/>`_ とか2014になってからまとめ始めている
