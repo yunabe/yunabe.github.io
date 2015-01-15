@@ -3,7 +3,7 @@ Linux におけるスレッド数の上限
 
 .. container:: editdate
 
-  更新 2014年5月23日
+  更新 2014年1月15日
 
 .. contents:: 目次
    :depth: 2
@@ -28,8 +28,8 @@ Linux におけるスレッド数の上限
 そのため、スレッドモデルで書かれたプログラムで多数のリクエストを捌くためには、
 スレッド数の上限を決めてしまう制約にどのようなものがあり、それらの制約をどのように緩めればいいかを把握しておく必要があります。
 
-テスト用のコード
-https://github.com/yunabe/practice/blob/master/cpp/thread/max_num_thread.cc
+`テスト用のコードを github <https://github.com/yunabe/practice/blob/master/cpp/thread/max_num_thread.cc>`_
+にアップロードしてあります。
 
 ulimit によるプロセス数制限
 ---------------------------

@@ -101,7 +101,7 @@
   <div class="section" id="python-metaclass">
 <h1>Python の メタプログラミング (__metaclass__, メタクラス) を理解する<a class="headerlink" href="#python-metaclass" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
-更新 2014年6月11日</div>
+更新 2015年1月14日</div>
 <p>Pythonのメタプログラミング (__metaclass__) は組み込み関数 <tt class="docutils literal"><span class="pre">type</span></tt> の普段利用しない隠れた機能や、
 普通は利用しない特殊メソッド <tt class="docutils literal"><span class="pre">__new__</span></tt> などを理解する必要があり
 理解するのが結構難しい。
@@ -127,16 +127,16 @@
 <div class="section" id="id2">
 <h2><a class="toc-backref" href="#id12">事前知識</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/2/reference/datamodel.html#customizing-class-creation">Customizing class creation</a>
-(<a class="reference external" href="http://docs.python.jp/2/reference/datamodel.html#metaclasses">クラス生成をカスタマイズする</a>)
+(<a class="reference external" href="http://docs.python.jp/2/reference/datamodel.html#metaclasses">日本語: クラス生成をカスタマイズする</a>)
 を読むと、型を取得するのに普通利用するbuiltin関数 <tt class="docutils literal"><span class="pre">type</span></tt> を継承していたり、
 普通利用することのない <tt class="docutils literal"><span class="pre">__new__</span></tt> が定義されていたりして、
 <tt class="docutils literal"><span class="pre">type</span></tt> の隠された機能と <tt class="docutils literal"><span class="pre">__new__</span></tt> について理解していないと
 何が書かれているかさっぱり分からないと思います。
-まずは __metaclass__ を理解する上で重要なこの2つについて整理しておきましょう。</p>
+まずは <tt class="docutils literal"><span class="pre">__metaclass__</span></tt> を理解する上で重要なこの2つについて整理しておきましょう。</p>
 <div class="section" id="type">
 <h3><a class="toc-backref" href="#id13">type とクラス定義のあまり知られていない関係</a><a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
-<p>ご存知のように Python には type という builtin 関数が定義されています。
-type は type(obj) のように1つの引数を与えて obj の型を取得するのに利用したことがあるはずです。
+<p>ご存知のように Python には <tt class="docutils literal"><span class="pre">type</span></tt> という builtin 関数が定義されています。
+type は <tt class="docutils literal"><span class="pre">type(obj)</span></tt> のように1つの引数を与えて obj の型を取得するのに利用したことがあるはずです。
 普通はこちらの機能しか使いません。</p>
 <p>しかし実は type にはもう一つの隠れた機能があります。
 <a class="reference external" href="http://docs.python.jp/2/library/functions.html#type">第1引数に文字列でクラス名、第2引数に親クラスの列、第3引数にクラスのメソッドや属性を定義した dict を渡して type を呼び出すとクラスを動的に定義することが可能です。</a></p>
@@ -147,7 +147,7 @@ type は type(obj) のように1つの引数を与えて obj の型を取得す�
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>のように普段クラスを定義していると思いますが、これは type を使うと:</p>
+<p>のように普段クラスを定義していると思いますが、これは <tt class="docutils literal"><span class="pre">type</span></tt> を使うと:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">function1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
    <span class="o">...</span>
 
@@ -160,14 +160,13 @@ type は type(obj) のように1つの引数を与えて obj の型を取得す�
 <p>のように定義することも可能です。この2つの定義は全く同じ実行結果が得られます。
 ここで2つ目の type を使った定義をよく見てみると、
 実は ClassName は type クラスにクラス名、親クラス、クラス定義を渡してインスタンス生成
-したものだということが分かります。クラスは <tt class="docutils literal"><span class="pre">type</span></tt> のインスタンスなのです。
+したものだということが分かります。クラスは <strong>type のインスタンス</strong> なのです。
 その証拠に <tt class="docutils literal"><span class="pre">type(cls)</span></tt> は <tt class="docutils literal"><span class="pre">type</span></tt> を返しますし、
 <tt class="docutils literal"><span class="pre">isinstance(cls,</span> <span class="pre">type)</span></tt> は True を返します。</p>
 </div>
 <div class="section" id="new">
 <h3><a class="toc-backref" href="#id14">特殊メソッド __new__</a><a class="headerlink" href="#new" title="Permalink to this headline">¶</a></h3>
-<p>Python でクラスを定義する際に、インスタンスを初期化するメソッドとして
-<tt class="docutils literal"><span class="pre">__init__</span></tt> を使います。
+<p>Python でクラスを定義する際、インスタンスを初期化するメソッドとして普通は <tt class="docutils literal"><span class="pre">__init__</span></tt> を定義します。
 厳密には Python には「コンストラクタ」という用語はありませんが、
 C++/Java におけるコンストラクタに相当する処理は普通 <tt class="docutils literal"><span class="pre">__init__</span></tt> に書かれます。
 しかし実は Python にはインスタンスの生成方法を定義するもう一つの <a class="reference external" href="https://docs.python.org/2/reference/datamodel.html#object.__new__">特殊メソッド __new__</a>

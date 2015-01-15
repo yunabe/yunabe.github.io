@@ -3,7 +3,7 @@ Python の メタプログラミング (__metaclass__, メタクラス) を理�
 
 .. container:: editdate
 
-  更新 2014年6月11日
+  更新 2015年1月14日
 
 Pythonのメタプログラミング (__metaclass__) は組み込み関数 ``type`` の普段利用しない隠れた機能や、
 普通は利用しない特殊メソッド ``__new__`` などを理解する必要があり
@@ -18,17 +18,17 @@ Pythonのメタプログラミング (__metaclass__) は組み込み関数 ``typ
 --------
 
 `Customizing class creation <https://docs.python.org/2/reference/datamodel.html#customizing-class-creation>`_
-(`クラス生成をカスタマイズする <http://docs.python.jp/2/reference/datamodel.html#metaclasses>`_)
+(`日本語: クラス生成をカスタマイズする <http://docs.python.jp/2/reference/datamodel.html#metaclasses>`_)
 を読むと、型を取得するのに普通利用するbuiltin関数 ``type`` を継承していたり、
 普通利用することのない ``__new__`` が定義されていたりして、
 ``type`` の隠された機能と ``__new__`` について理解していないと
 何が書かれているかさっぱり分からないと思います。
-まずは __metaclass__ を理解する上で重要なこの2つについて整理しておきましょう。
+まずは ``__metaclass__`` を理解する上で重要なこの2つについて整理しておきましょう。
 
 type とクラス定義のあまり知られていない関係
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ご存知のように Python には type という builtin 関数が定義されています。
-type は type(obj) のように1つの引数を与えて obj の型を取得するのに利用したことがあるはずです。
+ご存知のように Python には ``type`` という builtin 関数が定義されています。
+type は ``type(obj)`` のように1つの引数を与えて obj の型を取得するのに利用したことがあるはずです。
 普通はこちらの機能しか使いません。
 
 しかし実は type にはもう一つの隠れた機能があります。
@@ -42,7 +42,7 @@ type は type(obj) のように1つの引数を与えて obj の型を取得す�
     def function1(self, args):
       ...
 
-のように普段クラスを定義していると思いますが、これは type を使うと::
+のように普段クラスを定義していると思いますが、これは ``type`` を使うと::
 
   def function1(self, args):
      ...
@@ -55,14 +55,13 @@ type は type(obj) のように1つの引数を与えて obj の型を取得す�
 のように定義することも可能です。この2つの定義は全く同じ実行結果が得られます。
 ここで2つ目の type を使った定義をよく見てみると、
 実は ClassName は type クラスにクラス名、親クラス、クラス定義を渡してインスタンス生成
-したものだということが分かります。クラスは ``type`` のインスタンスなのです。
+したものだということが分かります。クラスは **type のインスタンス** なのです。
 その証拠に ``type(cls)`` は ``type`` を返しますし、
 ``isinstance(cls, type)`` は True を返します。
 
 特殊メソッド __new__
 ~~~~~~~~~~~~~~~~~~~~
-Python でクラスを定義する際に、インスタンスを初期化するメソッドとして
-``__init__`` を使います。
+Python でクラスを定義する際、インスタンスを初期化するメソッドとして普通は ``__init__`` を定義します。
 厳密には Python には「コンストラクタ」という用語はありませんが、
 C++/Java におけるコンストラクタに相当する処理は普通 ``__init__`` に書かれます。
 しかし実は Python にはインスタンスの生成方法を定義するもう一つの `特殊メソッド __new__ <https://docs.python.org/2/reference/datamodel.html#object.__new__>`_
