@@ -95,7 +95,7 @@
   <div class="section" id="c-virtual">
 <h1>C++ でデストラクタを virtual にしなくてはならない条件と理由<a class="headerlink" href="#c-virtual" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
-更新 2014年5月24日</div>
+更新 2015年2月6日</div>
 <p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
 クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
 <a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">(If your class has virtual methods, its destructor should be virtual.)</a>。</p>
@@ -107,7 +107,7 @@
 <div class="section" id="virtual">
 <h3>virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される<a class="headerlink" href="#virtual" title="Permalink to this headline">¶</a></h3>
 <p>そもそも virtual なメソッド (仮想メンバー関数) がクラスに定義されているということは、
-そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用する (ポリモーフィズム) はずです。
+そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用するはずです (ポリモーフィズム) 。
 そうでないならば、メソッドを virtual にする意義がそもそもありません。
 virtual なメソッドがクラス定義されていると、<a class="reference external" href="https://www.google.co.jp/search?q=vtable&amp;hl=ja">vtable</a> へのポインタの分だけインスタンスのサイズが増えますし
 virtual なメソッドの呼び出しは vtable を利用する分遅くなります。
@@ -160,7 +160,7 @@ virtual があることでインスタンスのサイズが vtable へのポイ�
 <a class="reference external" href="http://www.stroustrup.com/bs_faq2.html#virtual-dtor">デストラクタがデフォルトで virtual でないのは意図的なものです</a>。
 しかし多くのプログラムではこの2つによるパフォーマンスの劣化はそれほど深刻にはならないと思いますし、
 その点を理解した上で「常にデストラクタをvirtualにする」というシンプルで覚えやすいルールで運用するのはありえなくはないかと思います。
-でもそういうプログラムではC++をそもそも使わないかもしれませんね。</p>
+でもそういうプログラムではC++をそもそも使わないかもしれません。</p>
 <p>また「継承される可能性のあるクラスのデストラクタは virtual にすべき」というルールが書かれていることもありますが、
 このルールだと継承はするけれど、親クラスのポインタへのキャストをしない場合には
 virtual をつけることで無駄なコストが発生してしまいます。
