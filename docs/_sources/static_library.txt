@@ -3,7 +3,7 @@
 
 .. container:: editdate
 
-  更新 2015年2月6日
+  更新 2015年3月15日
 
 .. contents:: 目次
    :depth: 3

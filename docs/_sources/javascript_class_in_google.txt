@@ -3,7 +3,7 @@ Google流 JavaScript におけるクラス定義の実現方法
 
 .. container:: editdate
 
-  更新 2014年11月23日
+  更新 2015年3月15日
 
 他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
 代わりに C++, Java などにはない ``prototype`` や C++, Java のとは全く異なる ``new`` 演算子や ``this`` が用意されています。
@@ -176,9 +176,9 @@ JavaScript のオブジェクトは他のオブジェクトを `プロトタイ�
 またプロトタイプのオブジェクトがそのプロパティを保持していない場合には、さらにプロトタイプのプロトタイプを参照します。
 このようにプロトタイプとしてオブジェクトが鎖のように繋がれて、それが順々に参照されることからこの仕組は「プロトタイプチェーン」と呼ばれます。
 
-::
-
-  <figure>
+.. image:: https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&h=171
+   :height: 85px
+   :width: 341px
 
 なお `JavaScript の仕様書 <http://www.ecma-international.org/ecma-262/5.1/>`_ ではこの `プロトタイプ` を表す内部的なプロパティを
 `obj[[Prototype]]` のように記述します。

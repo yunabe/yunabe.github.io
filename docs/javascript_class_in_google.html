@@ -112,7 +112,7 @@
   <div class="section" id="google-javascript">
 <h1>Google流 JavaScript におけるクラス定義の実現方法<a class="headerlink" href="#google-javascript" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
-更新 2014年11月23日</div>
+更新 2015年3月15日</div>
 <p>他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
 代わりに C++, Java などにはない <tt class="docutils literal"><span class="pre">prototype</span></tt> や C++, Java のとは全く異なる <tt class="docutils literal"><span class="pre">new</span></tt> 演算子や <tt class="docutils literal"><span class="pre">this</span></tt> が用意されています。
 これらの機能はどれもかなり奇妙な仕様をしています。
@@ -280,9 +280,7 @@ console.log(alice.address);  // undefined
 オブジェクのプロパティが参照された際、そのプロパティをオブジェクト自身が保持していない場合には代わりにプロトタイプのオブジェクトのプロパティが参照されます。
 またプロトタイプのオブジェクトがそのプロパティを保持していない場合には、さらにプロトタイプのプロトタイプを参照します。
 このようにプロトタイプとしてオブジェクトが鎖のように繋がれて、それが順々に参照されることからこの仕組は「プロトタイプチェーン」と呼ばれます。</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;figure&gt;
-</pre></div>
-</div>
+<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&amp;h=171"><img alt="https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&amp;h=171" src="https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&amp;h=171" style="width: 341px; height: 85px;" /></a>
 <p>なお <a class="reference external" href="http://www.ecma-international.org/ecma-262/5.1/">JavaScript の仕様書</a> ではこの <cite>プロトタイプ</cite> を表す内部的なプロパティを
 <cite>obj[[Prototype]]</cite> のように記述します。
 ただしこれは仕様書の中でのみ現れる表現であって、JavaScript のコードの中では利用できません。
