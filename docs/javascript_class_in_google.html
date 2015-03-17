@@ -73,6 +73,7 @@
 <li><a class="reference internal" href="#abstract-interface">abstract, interface</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#inherits">inherits の実際のコード</a></li>
 </ul>
 </li>
 </ul>
@@ -112,7 +113,7 @@
   <div class="section" id="google-javascript">
 <h1>Google流 JavaScript におけるクラス定義の実現方法<a class="headerlink" href="#google-javascript" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
-更新 2015年3月15日</div>
+更新 2015年3月17日</div>
 <p>他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
 代わりに C++, Java などにはない <tt class="docutils literal"><span class="pre">prototype</span></tt> や C++, Java のとは全く異なる <tt class="docutils literal"><span class="pre">new</span></tt> 演算子や <tt class="docutils literal"><span class="pre">this</span></tt> が用意されています。
 これらの機能はどれもかなり奇妙な仕様をしています。
@@ -154,6 +155,7 @@ JavaScript でクラスを実現すればよいかを学びます。</p>
 <li><a class="reference internal" href="#abstract-interface" id="id33">abstract, interface</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#inherits" id="id34">inherits の実際のコード</a></li>
 </ul>
 </div>
 <div class="section" id="javascript">
@@ -437,14 +439,20 @@ alice.sayHello();
 <h2><a class="toc-backref" href="#id28">継承</a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id12">
 <h3><a class="toc-backref" href="#id29">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a><a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>子クラスから親クラスのメソッドが引き継がれるようにするには、
+子クラスの <tt class="docutils literal"><span class="pre">prototype</span></tt> にメソッドが見つからなかった場合に、親クラスの <tt class="docutils literal"><span class="pre">prototype</span></tt> に定義されてるメソッドが参照されれば良いので、
+親クラスの <tt class="docutils literal"><span class="pre">prototype</span></tt> が子クラスの <tt class="docutils literal"><span class="pre">prototype</span></tt> のプロトタイプ (<tt class="docutils literal"><span class="pre">__proto__</span></tt>, あるいは <cite>[[Prototype]]</cite>)になるようにします。</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;figure&gt;
 </pre></div>
 </div>
+<p>前述したように、<tt class="docutils literal"><span class="pre">setPrototypeOf</span></tt> であるオブジェクトを他のオブジェクトのプロトタイプに設定できるので、次のような継承用の関数を事前に用意しておきます。
+(Google Closure の実際の inherits は互換性のためにもう少し複雑です)</p>
 <div class="highlight-python"><div class="highlight"><pre>var inherits = function(childCtor, parentCtor) {
   Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
 };
 </pre></div>
 </div>
+<p>子クラスのコンストラクタを定義した後に、 <tt class="docutils literal"><span class="pre">inherits(Child,</span> <span class="pre">Parent);</span></tt> のように呼び出して使います。</p>
 <div class="highlight-python"><div class="highlight"><pre>var Parent = function(arg) {
   // Parent のコンストラクタ実装
 };
@@ -518,6 +526,24 @@ Java の interface に相当することをしたい場合はすべてのメソ�
 };
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="inherits">
+<h2><a class="toc-backref" href="#id34">inherits の実際のコード</a><a class="headerlink" href="#inherits" title="Permalink to this headline">¶</a></h2>
+<p>前述した継承用の関数 <tt class="docutils literal"><span class="pre">inherits</span></tt> は非常にシンプルでしたが、実際には <tt class="docutils literal"><span class="pre">setPrototypeOf</span></tt> が利用できない古いブラウザの互換性のために、
+同じことをもう少し複雑なコードで行う必要があります。
+Google Closure に定義されている <a class="reference external" href="http://docs.closure-library.googlecode.com/git-history/15160ce901b70ac9df5e7d25ae4835835738f782/closure_goog_base.js.source.html">base.js</a>
+クラス継承用の <tt class="docutils literal"><span class="pre">inherits</span></tt> 関数はブラウザ互換性のために <tt class="docutils literal"><span class="pre">setPrototypeOf</span></tt> を使わず下のような少し複雑なコードになっています。</p>
+<div class="highlight-python"><div class="highlight"><pre>goog.inherits = function(childCtor, parentCtor) {
+  /** @constructor */
+  function tempCtor() {};
+  tempCtor.prototype = parentCtor.prototype;
+  childCtor.superClass_ = parentCtor.prototype;
+  childCtor.prototype = new tempCtor();
+  /** @override */
+  childCtor.prototype.constructor = childCtor;
+};
+</pre></div>
 </div>
 </div>
 </div>

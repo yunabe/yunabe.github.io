@@ -3,7 +3,7 @@ Google流 JavaScript におけるクラス定義の実現方法
 
 .. container:: editdate
 
-  更新 2015年3月15日
+  更新 2015年3月17日
 
 他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
 代わりに C++, Java などにはない ``prototype`` や C++, Java のとは全く異なる ``new`` 演算子や ``this`` が用意されています。
@@ -351,16 +351,24 @@ JavaScript でクラスを実現する場合、メンバ変数やメソッドを
 ----
 プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+子クラスから親クラスのメソッドが引き継がれるようにするには、
+子クラスの ``prototype`` にメソッドが見つからなかった場合に、親クラスの ``prototype`` に定義されてるメソッドが参照されれば良いので、
+親クラスの ``prototype`` が子クラスの ``prototype`` のプロトタイプ (``__proto__``, あるいは `[[Prototype]]`)になるようにします。
 
 ::
 
   <figure>
+
+前述したように、``setPrototypeOf`` であるオブジェクトを他のオブジェクトのプロトタイプに設定できるので、次のような継承用の関数を事前に用意しておきます。
+(Google Closure の実際の inherits は互換性のためにもう少し複雑です)
 
 ::
 
   var inherits = function(childCtor, parentCtor) {
     Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
   };
+
+子クラスのコンストラクタを定義した後に、 ``inherits(Child, Parent);`` のように呼び出して使います。
 
 ::
 
@@ -442,3 +450,22 @@ Java の interface に相当することをしたい場合はすべてのメソ�
   Person.prototype.sayHello() = function() {
     throw new Error('Not Implemented');
   };
+
+inherits の実際のコード
+-----------------------
+前述した継承用の関数 ``inherits`` は非常にシンプルでしたが、実際には ``setPrototypeOf`` が利用できない古いブラウザの互換性のために、
+同じことをもう少し複雑なコードで行う必要があります。
+Google Closure に定義されている `base.js <http://docs.closure-library.googlecode.com/git-history/15160ce901b70ac9df5e7d25ae4835835738f782/closure_goog_base.js.source.html>`_
+クラス継承用の ``inherits`` 関数はブラウザ互換性のために ``setPrototypeOf`` を使わず下のような少し複雑なコードになっています。
+
+::
+
+ goog.inherits = function(childCtor, parentCtor) {
+   /** @constructor */
+   function tempCtor() {};
+   tempCtor.prototype = parentCtor.prototype;
+   childCtor.superClass_ = parentCtor.prototype;
+   childCtor.prototype = new tempCtor();
+   /** @override */
+   childCtor.prototype.constructor = childCtor;
+ };
