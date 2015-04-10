@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<title>Cookie の仕様とセキュリティ</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
+    <link rel="prev" title="ターミナルにプログレスバーを表示する方法" href="terminal_progress_bar.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="terminal_progress_bar.html" title="ターミナルにプログレスバーを表示する方法"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cookie の仕様とセキュリティ</a><ul>
+<li><a class="reference internal" href="#http-header-set-cookie-cookie">HTTP header “Set-Cookie” を使って Cookie を保存する</a></li>
+<li><a class="reference internal" href="#id1">Cookie を参照する</a></li>
+<li><a class="reference internal" href="#javascript-cookie">JavaScript を使って Cookie を保存・参照する</a></li>
+<li><a class="reference internal" href="#id2">Cookie の属性</a><ul>
+<li><a class="reference internal" href="#domain">domain属性</a></li>
+<li><a class="reference internal" href="#path">path属性</a></li>
+<li><a class="reference internal" href="#max-age-expire">max-age と expire</a></li>
+<li><a class="reference internal" href="#secure-httponly">Secure/HttpOnly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="terminal_progress_bar.html"
+                        title="previous chapter">ターミナルにプログレスバーを表示する方法</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cookie_and_security.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cookie">
+<h1>Cookie の仕様とセキュリティ<a class="headerlink" href="#cookie" title="Permalink to this headline">¶</a></h1>
+<div class="editdate container">
+更新 2015年4月11日</div>
+<p>このドキュメントの目的は Cookie とは何かを一から説明することではないので、そもそもCookieとは何で何に使えるのかといった話は、
+<a class="reference external" href="http://ja.wikipedia.org/wiki/HTTP_cookie">Wikipedia の Cookie の記事</a> などを参考にして下さい。
+ここでは Cookie がどういうものかは大体理解しているという前提で、仕様の確認をしていきます。</p>
+<div class="section" id="http-header-set-cookie-cookie">
+<h2>HTTP header “Set-Cookie” を使って Cookie を保存する<a class="headerlink" href="#http-header-set-cookie-cookie" title="Permalink to this headline">¶</a></h2>
+<p>Cookie を設定する一番基本的な方法は HTTPヘッダ の Set-Cookie を使う方法です。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value
+</pre></div>
+</div>
+<p>のような HTTP header をサーバから返すと key と value のペアがブラウザに保存されて、後からそれを参照することができます。
+Set-Cookie に属性をつけて保存期間やCookieが送信される条件などを制御することも可能です。
+属性をつけるには、 <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;max-age=3600&quot;</span></tt> や <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;Secure&quot;</span></tt> のように <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;&quot;</span></tt> + 属性名 + <tt class="docutils literal"><span class="pre">&quot;=&quot;</span></tt> + 属性の値を後ろに追加します。
+(<tt class="docutils literal"><span class="pre">;</span></tt> の後ろには半角スペースが必要で末尾には <tt class="docutils literal"><span class="pre">;</span></tt> は付けません。多くのブラウザは半角スペースを削除したり末尾に不要な <tt class="docutils literal"><span class="pre">;</span></tt> をつけても問題なく動くでしょうが)</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; max-age=3600; Secure
+</pre></div>
+</div>
+<p>これは、key=value というクッキーを3600秒間保存しておきなさい、ただしそのクッキーが利用できるのはhttps のページでのみです、
+と指定してることになります。</p>
+<p>複数の key-value のペアを設定したい場合は Set-Cookie ヘッダを複数送ります。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key0=value0
+Set-Cookie: key1=value1
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Cookie を参照する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> で保存された Cookie は、HTTP Request の Cookie ヘッダとしてブラウザからサーバーに送信されます。
+Cookie ヘッダは</p>
+<div class="highlight-python"><div class="highlight"><pre>Cookie: key=0=value0; key1=value1
+</pre></div>
+</div>
+<p>のように、ブラウザに保存されている key=value のペアを <tt class="docutils literal"><span class="pre">&quot;;</span> <span class="pre">&quot;</span></tt> で連結したものものになります。
+どのクッキーがサーバーに対して送信されるかは、Set-Cookie で指定した max-age や Secure などの属性によって制御することができます。
+Secure が指定されていれば、サーバーが https の時にしか送信されないし、
+max-age を超えた古くなったクッキーも送信されません(ブラウザから削除されます)。</p>
+</div>
+<div class="section" id="javascript-cookie">
+<h2>JavaScript を使って Cookie を保存・参照する<a class="headerlink" href="#javascript-cookie" title="Permalink to this headline">¶</a></h2>
+<p>document.cookie というプロパティを利用して JavaScript から cookie を設定したり参照することができます。</p>
+<div class="highlight-python"><div class="highlight"><pre>document.cookie = “key=value”;
+</pre></div>
+</div>
+<p>のように document.cookie に対して文字列を代入すると、
+<tt class="docutils literal"><span class="pre">Set-Cookkie:</span> <span class="pre">key=value</span></tt> ヘッダをサーバーからブラウザに送信した場合と同じことが起こります。
+Set-Cookie ヘッダとどうように、属性を付けることができます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key=value; max-age=3600; Secure&quot;</span>
+</pre></div>
+</div>
+<p>復数のクッキーを指定した場合は、１つずつ代入します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key0=value0&quot;</span><span class="p">;</span>
+<span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key1=value1&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>クッキーの値を参照するには、 <tt class="docutils literal"><span class="pre">document.cookie</span></tt> プロパティを参照します。
+<tt class="docutils literal"><span class="pre">document.cookie</span></tt> プロパティは参照すると <tt class="docutils literal"><span class="pre">Cookie</span></tt> ヘッダで送信されるのと同じ文字列を得ることができます。
+<tt class="docutils literal"><span class="pre">document.cookie</span></tt> は一見すると string 型のプロパティのように見えますが、そうではないことに注意して下さい。</p>
+<div class="highlight-python"><div class="highlight"><pre>console.log(document.cookie);  // “key=0=value0; key1=value1”
+</pre></div>
+</div>
+<p>すでにお気づきかもしれませんが、 <tt class="docutils literal"><span class="pre">document.cookie</span></tt> への代入は <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> を送るのと同じ効果があるので、
+document.cookie に空文字列などを代入しても クッキーは削除されないので注意して下さい。</p>
+</div>
+<div class="section" id="id2">
+<h2>Cookie の属性<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="domain">
+<h3>domain属性<a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h3>
+<p>Set-Cookieでクッキーをブラウザに保存する際、domain という属性を付加することでクッキーが送信される
+(あるいはdocument.cookieでクッキーが読み取れる)ドメインを制御することができます。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; domain=example.com
+</pre></div>
+</div>
+<p>domain属性が指定されている場合、そのクッキーは domain で指定された domain 自体とそのサブドメインに対して送信されます。
+上の例の場合、このクッキーは example.com, www.example.com, docs.example.com などのホストに対して送信されます。
+一方で domain を指定しない場合は、Set-Cookie を送信したホストにのみクッキーは送信されます。
+domain 属性なしで、example.com によって設定されたクッキーは www.example.com や docs.example.com には送信されません。
+domain を省略した場合と、domainに今接続しているホスト名を指定した場合ではクッキーが送信される範囲が異なる点に注意が必要です。
+サブドメインに送信されてはならないクッキーには domain 属性はつけてはなりません。</p>
+<p>また domain属性で指定するドメインは現在のホスト名を含むドメインでなくてはなりません。
+そうでない値を指定した場合は無視されます。例えばあるページが www.example.com にある場合、domain に example.com を指定してクッキーが example.com 以下のあらゆるホストに対して送信されるように設定できますが、 domain に google.com を指定して google.com に対してクッキーを送信するように設定することはできません。また、domain属性に abc.www.example.com を指定してサブドメイン abc.www.example.com にのみクッキーが送信されるようにすることもできません。</p>
+<p>domain 属性の値の先頭に “.” を付けても構いません。その “.” は無視されます。
+また念の為述べておくと domain に www.example あるいは www.example. などと指定しても www.example.co.jp と example.com にクッキーを送信されたりはしません。</p>
+</div>
+<div class="section" id="path">
+<h3>path属性<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
+<p>クッキーには path 属性を指定することができます。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; path=/mydir
+</pre></div>
+</div>
+<p>のように  path属性を指定するとクッキーは /mydir/ に含まれるURL (e.g. <a class="reference external" href="http://example.com/mydir/">http://example.com/mydir/</a>, <a class="reference external" href="http://example.com/mydir/index.html">http://example.com/mydir/index.html</a>,  <a class="reference external" href="http://example.com/mydir/subdir/">http://example.com/mydir/subdir/</a>) にのみ送信されます。path が省略された場合は現在のURL の path が使われます。例えば現在のページが <a class="reference external" href="http://example.com/mydir/subdir/index.html">http://example.com/mydir/subdir/index.html</a> であれば /mydir/subdir/ が path に設定されます。ほとんどの場合、同一ドメインの全てのリクエストでクッキーが送信されるようにしたいと思うので、多くの場合 path=/ を常に指定することになります。path=/ を指定するのをうっかり忘れると、<a class="reference external" href="http://example.com/2014/11/">http://example.com/2014/11/</a> で指定されたクッキーが <a class="reference external" href="http://example.com/2013/12/">http://example.com/2013/12/</a> には送信されません。</p>
+<p>さて、path も domain と同じようにクッキーが送信される範囲を制御するので、セキュリティ上重要なように一見すると思えますが、実は pathはセキュリティ保護には利用できません。<a class="reference external" href="http://www.ipa.go.jp/security/awareness/vendor/programmingv2/contents/304.html">IPAの第4章 セッション対策</a> には path をなるべく限定しておいたほうがよいような記述がありますが、path を限定してもその他の path にあるリソースからクッキーを読む方法は存在するので気をつけて下さい。セッションIDなどを保存するのであれば、普通は <tt class="docutils literal"><span class="pre">path=/</span></tt> を指定すると思います。</p>
+</div>
+<div class="section" id="max-age-expire">
+<h3>max-age と expire<a class="headerlink" href="#max-age-expire" title="Permalink to this headline">¶</a></h3>
+<p>max-age あるいは expire 属性でクッキーの寿命が指定できます。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; max-age=3600
+Set-Cookie: key=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">max-age</span></tt> ではクッキーの寿命を秒数で指定します。負の値を指定すると、最も過去の日付を指定したことになります。
+<tt class="docutils literal"><span class="pre">expires</span></tt> では有効期限が切れる日付・時刻を指定します。
+<tt class="docutils literal"><span class="pre">max-age</span></tt> と <tt class="docutils literal"><span class="pre">expires</span></tt> の両方が指定された場合は <tt class="docutils literal"><span class="pre">max-age</span></tt> が使用されます。
+<tt class="docutils literal"><span class="pre">max-age</span></tt> は古いブラウザではサポートされない場合があります。</p>
+</div>
+<div class="section" id="secure-httponly">
+<h3>Secure/HttpOnly<a class="headerlink" href="#secure-httponly" title="Permalink to this headline">¶</a></h3>
+<p>これは比較的忘れられがちですが、セキュリティ上とても大切な仕様です (特に Secure の方)。
+Secure 属性をつけた場合、そのクッキーは接続が https で保護されている場合のみに送信されます。
+逆に HttpOnly を付けた場合は接続が http の場合のみに送信されます。</p>
+<p>デフォルトではクッキーは接続が https の http なのかには関係なく動作します。
+https 接続で設定されたクッキーであっても Secure 属性がなければ同じホスト名に
+http で接続した場合にそのクッキーは送信されてしまい、通信経路上にいる第三者に盗聴される可能性があります。
+セッションID のような第三者に盗み見られてはならないクッキーは必ず Secure 属性をつけなくてはなりません。
+絶対に忘れないようにしましょう。</p>
+<p>ちなみに Secure 属性と HttpOnly 属性は現在の接続が http であろうが、 https であろうが関係なく指定できます。
+https 接続 HttpOnly をつけたり、 http 接続で Secure をつけたりしても動きます。
+ただ後者は Secure をつけている意味がないので絶対に行いませんが...</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="terminal_progress_bar.html" title="ターミナルにプログレスバーを表示する方法"
+             >previous</a> |</li>
+        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2014, Yu Watanabe.
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+<script>
+  if(location.host=='www.yunabe.jp'){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19477574-2', 'yunabe.jp');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+  }
+</script>
+<script type="text/javascript" src="_static/main.js"></script>
+</div>
+  </body>
+</html>

@@ -27,6 +27,7 @@ Contents:
    html5_ping
    pysh_overview
    terminal_progress_bar
+   cookie_and_security
 
 .. TODO: Add maximum_number_of_sockets and pysh_overview.
 
