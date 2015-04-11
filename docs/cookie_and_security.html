@@ -45,7 +45,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Cookie の仕様とセキュリティ</a><ul>
-<li><a class="reference internal" href="#http-header-set-cookie-cookie">HTTP header “Set-Cookie” を使って Cookie を保存する</a></li>
+<li><a class="reference internal" href="#set-cookie-cookie">Set-Cookie ヘッダを使って Cookie を保存する</a></li>
 <li><a class="reference internal" href="#id1">Cookie を参照する</a></li>
 <li><a class="reference internal" href="#javascript-cookie">JavaScript を使って Cookie を保存・参照する</a></li>
 <li><a class="reference internal" href="#id2">Cookie の属性</a><ul>
@@ -53,6 +53,10 @@
 <li><a class="reference internal" href="#path">path属性</a></li>
 <li><a class="reference internal" href="#max-age-expire">max-age と expire</a></li>
 <li><a class="reference internal" href="#secure-httponly">Secure/HttpOnly</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">その他</a><ul>
+<li><a class="reference internal" href="#port">クッキーとport番号</a></li>
 </ul>
 </li>
 </ul>
@@ -95,24 +99,25 @@
 <p>このドキュメントの目的は Cookie とは何かを一から説明することではないので、そもそもCookieとは何で何に使えるのかといった話は、
 <a class="reference external" href="http://ja.wikipedia.org/wiki/HTTP_cookie">Wikipedia の Cookie の記事</a> などを参考にして下さい。
 ここでは Cookie がどういうものかは大体理解しているという前提で、仕様の確認をしていきます。</p>
-<div class="section" id="http-header-set-cookie-cookie">
-<h2>HTTP header “Set-Cookie” を使って Cookie を保存する<a class="headerlink" href="#http-header-set-cookie-cookie" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="set-cookie-cookie">
+<h2>Set-Cookie ヘッダを使って Cookie を保存する<a class="headerlink" href="#set-cookie-cookie" title="Permalink to this headline">¶</a></h2>
 <p>Cookie を設定する一番基本的な方法は HTTPヘッダ の Set-Cookie を使う方法です。</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value
 </pre></div>
 </div>
-<p>のような HTTP header をサーバから返すと key と value のペアがブラウザに保存されて、後からそれを参照することができます。
+<p>のような HTTP header をサーバから返すと name と value のペアがブラウザに保存されて、後からそれを参照することができます。
 Set-Cookie に属性をつけて保存期間やCookieが送信される条件などを制御することも可能です。
 属性をつけるには、 <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;max-age=3600&quot;</span></tt> や <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;Secure&quot;</span></tt> のように <tt class="docutils literal"><span class="pre">&quot;</span> <span class="pre">;&quot;</span></tt> + 属性名 + <tt class="docutils literal"><span class="pre">&quot;=&quot;</span></tt> + 属性の値を後ろに追加します。
-(<tt class="docutils literal"><span class="pre">;</span></tt> の後ろには半角スペースが必要で末尾には <tt class="docutils literal"><span class="pre">;</span></tt> は付けません。多くのブラウザは半角スペースを削除したり末尾に不要な <tt class="docutils literal"><span class="pre">;</span></tt> をつけても問題なく動くでしょうが)</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; max-age=3600; Secure
+(厳密には <tt class="docutils literal"><span class="pre">;</span></tt> の後ろには半角スペースが必要で末尾には <tt class="docutils literal"><span class="pre">;</span></tt> は付けません。
+多くのブラウザは半角スペースを削除したり末尾に不要な <tt class="docutils literal"><span class="pre">;</span></tt> をつけても問題なく動くでしょうが)</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; max-age=3600; Secure
 </pre></div>
 </div>
-<p>これは、key=value というクッキーを3600秒間保存しておきなさい、ただしそのクッキーが利用できるのはhttps のページでのみです、
+<p>これは、name=value というクッキーを3600秒間保存しておきなさい、ただしそのクッキーが利用できるのはhttps のページでのみです、
 と指定してることになります。</p>
-<p>複数の key-value のペアを設定したい場合は Set-Cookie ヘッダを複数送ります。</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key0=value0
-Set-Cookie: key1=value1
+<p>複数の name-value のペアを設定したい場合は Set-Cookie ヘッダを複数送ります。</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name0=value0
+Set-Cookie: name1=value1
 </pre></div>
 </div>
 </div>
@@ -120,39 +125,57 @@ Set-Cookie: key1=value1
 <h2>Cookie を参照する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> で保存された Cookie は、HTTP Request の Cookie ヘッダとしてブラウザからサーバーに送信されます。
 Cookie ヘッダは</p>
-<div class="highlight-python"><div class="highlight"><pre>Cookie: key=0=value0; key1=value1
+<div class="highlight-python"><div class="highlight"><pre>Cookie: name=0=value0; name1=value1
 </pre></div>
 </div>
-<p>のように、ブラウザに保存されている key=value のペアを <tt class="docutils literal"><span class="pre">&quot;;</span> <span class="pre">&quot;</span></tt> で連結したものものになります。
+<p>のように、ブラウザに保存されているクッキーの name=value のペアを <tt class="docutils literal"><span class="pre">&quot;;</span> <span class="pre">&quot;</span></tt> で連結したものものになります。
 どのクッキーがサーバーに対して送信されるかは、Set-Cookie で指定した max-age や Secure などの属性によって制御することができます。
 Secure が指定されていれば、サーバーが https の時にしか送信されないし、
 max-age を超えた古くなったクッキーも送信されません(ブラウザから削除されます)。</p>
+<p>クッキーの順序は以下のように決まります。</p>
+<ul class="simple">
+<li>後述する path 属性のなるべく長いものが前に来る</li>
+<li>path 属性の長さが同じ場合は、最近作られたものが前に来る</li>
+</ul>
+<p>また後述するように、クッキーはnameが同一でも <tt class="docutils literal"><span class="pre">domain</span></tt>, <tt class="docutils literal"><span class="pre">path</span></tt> 属性の値が異なれば別のものとして扱われるので、
+<strong>同じ name のクッキーが複数 Cookieヘッダの中に現れることがありうる</strong> ので注意してください。
+例えば、www.example.com にあるサーバーが</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: myname=value0; example.com; path=/
+Set-Cookie: myname=value1; www.example.com; path=/
+</pre></div>
+</div>
+<p>という Set-Cookie でクッキーを設定した場合、ブラウザは</p>
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: myname=value1; myname=value0
+</pre></div>
+</div>
+<p>のように同じ名前のCookieを２つサーバーに送るようになります。</p>
 </div>
 <div class="section" id="javascript-cookie">
 <h2>JavaScript を使って Cookie を保存・参照する<a class="headerlink" href="#javascript-cookie" title="Permalink to this headline">¶</a></h2>
 <p>document.cookie というプロパティを利用して JavaScript から cookie を設定したり参照することができます。</p>
-<div class="highlight-python"><div class="highlight"><pre>document.cookie = “key=value”;
+<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;name=value&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>のように document.cookie に対して文字列を代入すると、
-<tt class="docutils literal"><span class="pre">Set-Cookkie:</span> <span class="pre">key=value</span></tt> ヘッダをサーバーからブラウザに送信した場合と同じことが起こります。
+<tt class="docutils literal"><span class="pre">Set-Cookkie:</span> <span class="pre">name=value</span></tt> ヘッダをサーバーからブラウザに送信した場合と同じことが起こります。
 Set-Cookie ヘッダとどうように、属性を付けることができます。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key=value; max-age=3600; Secure&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;name=value; max-age=3600; Secure&quot;</span>
 </pre></div>
 </div>
-<p>復数のクッキーを指定した場合は、１つずつ代入します。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key0=value0&quot;</span><span class="p">;</span>
-<span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;key1=value1&quot;</span><span class="p">;</span>
+<p>復数のクッキーを指定した場合は、Set-Cookieヘッダと似たような感じに1つずつ代入します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;name0=value0&quot;</span><span class="p">;</span>
+<span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;name1=value1&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>クッキーの値を参照するには、 <tt class="docutils literal"><span class="pre">document.cookie</span></tt> プロパティを参照します。
-<tt class="docutils literal"><span class="pre">document.cookie</span></tt> プロパティは参照すると <tt class="docutils literal"><span class="pre">Cookie</span></tt> ヘッダで送信されるのと同じ文字列を得ることができます。
-<tt class="docutils literal"><span class="pre">document.cookie</span></tt> は一見すると string 型のプロパティのように見えますが、そうではないことに注意して下さい。</p>
-<div class="highlight-python"><div class="highlight"><pre>console.log(document.cookie);  // “key=0=value0; key1=value1”
+<tt class="docutils literal"><span class="pre">document.cookie</span></tt> プロパティは参照すると <tt class="docutils literal"><span class="pre">Cookie</span></tt> ヘッダで送信されるのと同じ文字列を得ることができます。</p>
+<div class="highlight-python"><div class="highlight"><pre>console.log(document.cookie);  // “name=0=value0; name1=value1”
 </pre></div>
 </div>
-<p>すでにお気づきかもしれませんが、 <tt class="docutils literal"><span class="pre">document.cookie</span></tt> への代入は <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> を送るのと同じ効果があるので、
-document.cookie に空文字列などを代入しても クッキーは削除されないので注意して下さい。</p>
+<p><tt class="docutils literal"><span class="pre">document.cookie</span></tt> は一見すると string 型のプロパティのように見えますが、そうではないことに注意して下さい。
+<tt class="docutils literal"><span class="pre">document.cookie</span></tt> へ代入した文字列と <tt class="docutils literal"><span class="pre">document.cookie</span></tt> を読んだ時に得られる文字列はまったく異なります。
+また、<tt class="docutils literal"><span class="pre">document.cookie</span></tt> に空文字を代入しても 空の <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> を送ったのと同じことにしかならないので何も起こりません。
+クッキーは削除されず、<tt class="docutils literal"><span class="pre">document.cookie</span></tt> を読んだ時に得られる値も変化しません。</p>
 </div>
 <div class="section" id="id2">
 <h2>Cookie の属性<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -160,7 +183,7 @@ document.cookie に空文字列などを代入しても クッキーは削除さ
 <h3>domain属性<a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h3>
 <p>Set-Cookieでクッキーをブラウザに保存する際、domain という属性を付加することでクッキーが送信される
 (あるいはdocument.cookieでクッキーが読み取れる)ドメインを制御することができます。</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; domain=example.com
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; domain=example.com
 </pre></div>
 </div>
 <p>domain属性が指定されている場合、そのクッキーは domain で指定された domain 自体とそのサブドメインに対して送信されます。
@@ -177,7 +200,7 @@ domain を省略した場合と、domainに今接続しているホスト名を�
 <div class="section" id="path">
 <h3>path属性<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
 <p>クッキーには path 属性を指定することができます。</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; path=/mydir
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; path=/mydir
 </pre></div>
 </div>
 <p>のように  path属性を指定するとクッキーは /mydir/ に含まれるURL (e.g. <a class="reference external" href="http://example.com/mydir/">http://example.com/mydir/</a>, <a class="reference external" href="http://example.com/mydir/index.html">http://example.com/mydir/index.html</a>,  <a class="reference external" href="http://example.com/mydir/subdir/">http://example.com/mydir/subdir/</a>) にのみ送信されます。path が省略された場合は現在のURL の path が使われます。例えば現在のページが <a class="reference external" href="http://example.com/mydir/subdir/index.html">http://example.com/mydir/subdir/index.html</a> であれば /mydir/subdir/ が path に設定されます。ほとんどの場合、同一ドメインの全てのリクエストでクッキーが送信されるようにしたいと思うので、多くの場合 path=/ を常に指定することになります。path=/ を指定するのをうっかり忘れると、<a class="reference external" href="http://example.com/2014/11/">http://example.com/2014/11/</a> で指定されたクッキーが <a class="reference external" href="http://example.com/2013/12/">http://example.com/2013/12/</a> には送信されません。</p>
@@ -186,14 +209,17 @@ domain を省略した場合と、domainに今接続しているホスト名を�
 <div class="section" id="max-age-expire">
 <h3>max-age と expire<a class="headerlink" href="#max-age-expire" title="Permalink to this headline">¶</a></h3>
 <p>max-age あるいは expire 属性でクッキーの寿命が指定できます。</p>
-<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: key=value; max-age=3600
-Set-Cookie: key=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
+<div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; max-age=3600
+Set-Cookie: name=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">max-age</span></tt> ではクッキーの寿命を秒数で指定します。負の値を指定すると、最も過去の日付を指定したことになります。
-<tt class="docutils literal"><span class="pre">expires</span></tt> では有効期限が切れる日付・時刻を指定します。
-<tt class="docutils literal"><span class="pre">max-age</span></tt> と <tt class="docutils literal"><span class="pre">expires</span></tt> の両方が指定された場合は <tt class="docutils literal"><span class="pre">max-age</span></tt> が使用されます。
-<tt class="docutils literal"><span class="pre">max-age</span></tt> は古いブラウザではサポートされない場合があります。</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">max-age</span></tt> ではクッキーの寿命を秒数で指定します。負の値を指定すると、最も過去の日付を指定したことになります。</li>
+<li><tt class="docutils literal"><span class="pre">expires</span></tt> では有効期限が切れる日付・時刻を指定します。</li>
+<li><tt class="docutils literal"><span class="pre">max-age</span></tt> と <tt class="docutils literal"><span class="pre">expires</span></tt> の両方が指定された場合は <tt class="docutils literal"><span class="pre">max-age</span></tt> が使用されます。</li>
+<li><tt class="docutils literal"><span class="pre">max-age</span></tt> は古いブラウザではサポートされない場合があります。</li>
+<li><tt class="docutils literal"><span class="pre">max-age</span></tt>, <tt class="docutils literal"><span class="pre">expires</span></tt> がなく寿命が指定されていない場合は、クッキーはブラウザが閉じられると削除されます。</li>
+</ul>
 </div>
 <div class="section" id="secure-httponly">
 <h3>Secure/HttpOnly<a class="headerlink" href="#secure-httponly" title="Permalink to this headline">¶</a></h3>
@@ -208,6 +234,12 @@ http で接続した場合にそのクッキーは送信されてしまい、通
 <p>ちなみに Secure 属性と HttpOnly 属性は現在の接続が http であろうが、 https であろうが関係なく指定できます。
 https 接続 HttpOnly をつけたり、 http 接続で Secure をつけたりしても動きます。
 ただ後者は Secure をつけている意味がないので絶対に行いませんが...</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>その他<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="port">
+<h3>クッキーとport番号<a class="headerlink" href="#port" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
