@@ -46,16 +46,17 @@
   <ul>
 <li><a class="reference internal" href="#">Cookie の仕様とセキュリティ</a><ul>
 <li><a class="reference internal" href="#set-cookie-cookie">Set-Cookie ヘッダを使って Cookie を保存する</a></li>
-<li><a class="reference internal" href="#id1">Cookie を参照する</a></li>
+<li><a class="reference internal" href="#id2">Cookie を参照する</a></li>
 <li><a class="reference internal" href="#javascript-cookie">JavaScript を使って Cookie を保存・参照する</a></li>
-<li><a class="reference internal" href="#id2">Cookie の属性</a><ul>
+<li><a class="reference internal" href="#id3">Cookie の属性</a><ul>
 <li><a class="reference internal" href="#domain">domain属性</a></li>
 <li><a class="reference internal" href="#path">path属性</a></li>
 <li><a class="reference internal" href="#max-age-expire">max-age と expire</a></li>
-<li><a class="reference internal" href="#secure-httponly">Secure/HttpOnly</a></li>
+<li><a class="reference internal" href="#secure">Secure</a></li>
+<li><a class="reference internal" href="#httponly">HttpOnly</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id3">その他</a><ul>
+<li><a class="reference internal" href="#id4">その他</a><ul>
 <li><a class="reference internal" href="#port">クッキーとport番号</a></li>
 </ul>
 </li>
@@ -96,11 +97,31 @@
 <h1>Cookie の仕様とセキュリティ<a class="headerlink" href="#cookie" title="Permalink to this headline">¶</a></h1>
 <div class="editdate container">
 更新 2015年4月11日</div>
+<div class="contents local topic" id="id1">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#set-cookie-cookie" id="id5">Set-Cookie ヘッダを使って Cookie を保存する</a></li>
+<li><a class="reference internal" href="#id2" id="id6">Cookie を参照する</a></li>
+<li><a class="reference internal" href="#javascript-cookie" id="id7">JavaScript を使って Cookie を保存・参照する</a></li>
+<li><a class="reference internal" href="#id3" id="id8">Cookie の属性</a><ul>
+<li><a class="reference internal" href="#domain" id="id9">domain属性</a></li>
+<li><a class="reference internal" href="#path" id="id10">path属性</a></li>
+<li><a class="reference internal" href="#max-age-expire" id="id11">max-age と expire</a></li>
+<li><a class="reference internal" href="#secure" id="id12">Secure</a></li>
+<li><a class="reference internal" href="#httponly" id="id13">HttpOnly</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4" id="id14">その他</a><ul>
+<li><a class="reference internal" href="#port" id="id15">クッキーとport番号</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <p>このドキュメントの目的は Cookie とは何かを一から説明することではないので、そもそもCookieとは何で何に使えるのかといった話は、
 <a class="reference external" href="http://ja.wikipedia.org/wiki/HTTP_cookie">Wikipedia の Cookie の記事</a> などを参考にして下さい。
 ここでは Cookie がどういうものかは大体理解しているという前提で、仕様の確認をしていきます。</p>
 <div class="section" id="set-cookie-cookie">
-<h2>Set-Cookie ヘッダを使って Cookie を保存する<a class="headerlink" href="#set-cookie-cookie" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5">Set-Cookie ヘッダを使って Cookie を保存する</a><a class="headerlink" href="#set-cookie-cookie" title="Permalink to this headline">¶</a></h2>
 <p>Cookie を設定する一番基本的な方法は HTTPヘッダ の Set-Cookie を使う方法です。</p>
 <div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value
 </pre></div>
@@ -121,8 +142,8 @@ Set-Cookie: name1=value1
 </pre></div>
 </div>
 </div>
-<div class="section" id="id1">
-<h2>Cookie を参照する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id6">Cookie を参照する</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> で保存された Cookie は、HTTP Request の Cookie ヘッダとしてブラウザからサーバーに送信されます。
 Cookie ヘッダは</p>
 <div class="highlight-python"><div class="highlight"><pre>Cookie: name=0=value0; name1=value1
@@ -151,7 +172,7 @@ Set-Cookie: myname=value1; www.example.com; path=/
 <p>のように同じ名前のCookieを２つサーバーに送るようになります。</p>
 </div>
 <div class="section" id="javascript-cookie">
-<h2>JavaScript を使って Cookie を保存・参照する<a class="headerlink" href="#javascript-cookie" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7">JavaScript を使って Cookie を保存・参照する</a><a class="headerlink" href="#javascript-cookie" title="Permalink to this headline">¶</a></h2>
 <p>document.cookie というプロパティを利用して JavaScript から cookie を設定したり参照することができます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">document</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&quot;name=value&quot;</span><span class="p">;</span>
 </pre></div>
@@ -177,10 +198,10 @@ Set-Cookie ヘッダとどうように、属性を付けることができます
 また、<tt class="docutils literal"><span class="pre">document.cookie</span></tt> に空文字を代入しても 空の <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt> を送ったのと同じことにしかならないので何も起こりません。
 クッキーは削除されず、<tt class="docutils literal"><span class="pre">document.cookie</span></tt> を読んだ時に得られる値も変化しません。</p>
 </div>
-<div class="section" id="id2">
-<h2>Cookie の属性<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id8">Cookie の属性</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="domain">
-<h3>domain属性<a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">domain属性</a><a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h3>
 <p>Set-Cookieでクッキーをブラウザに保存する際、domain という属性を付加することでクッキーが送信される
 (あるいはdocument.cookieでクッキーが読み取れる)ドメインを制御することができます。</p>
 <div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; domain=example.com
@@ -198,7 +219,7 @@ domain を省略した場合と、domainに今接続しているホスト名を�
 また念の為述べておくと domain に www.example あるいは www.example. などと指定しても www.example.co.jp と example.com にクッキーを送信されたりはしません。</p>
 </div>
 <div class="section" id="path">
-<h3>path属性<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">path属性</a><a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
 <p>クッキーには path 属性を指定することができます。</p>
 <div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; path=/mydir
 </pre></div>
@@ -207,7 +228,7 @@ domain を省略した場合と、domainに今接続しているホスト名を�
 <p>さて、path も domain と同じようにクッキーが送信される範囲を制御するので、セキュリティ上重要なように一見すると思えますが、実は pathはセキュリティ保護には利用できません。<a class="reference external" href="http://www.ipa.go.jp/security/awareness/vendor/programmingv2/contents/304.html">IPAの第4章 セッション対策</a> には path をなるべく限定しておいたほうがよいような記述がありますが、path を限定してもその他の path にあるリソースからクッキーを読む方法は存在するので気をつけて下さい。セッションIDなどを保存するのであれば、普通は <tt class="docutils literal"><span class="pre">path=/</span></tt> を指定すると思います。</p>
 </div>
 <div class="section" id="max-age-expire">
-<h3>max-age と expire<a class="headerlink" href="#max-age-expire" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">max-age と expire</a><a class="headerlink" href="#max-age-expire" title="Permalink to this headline">¶</a></h3>
 <p>max-age あるいは expire 属性でクッキーの寿命が指定できます。</p>
 <div class="highlight-python"><div class="highlight"><pre>Set-Cookie: name=value; max-age=3600
 Set-Cookie: name=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
@@ -221,25 +242,26 @@ Set-Cookie: name=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
 <li><tt class="docutils literal"><span class="pre">max-age</span></tt>, <tt class="docutils literal"><span class="pre">expires</span></tt> がなく寿命が指定されていない場合は、クッキーはブラウザが閉じられると削除されます。</li>
 </ul>
 </div>
-<div class="section" id="secure-httponly">
-<h3>Secure/HttpOnly<a class="headerlink" href="#secure-httponly" title="Permalink to this headline">¶</a></h3>
-<p>これは比較的忘れられがちですが、セキュリティ上とても大切な仕様です (特に Secure の方)。
+<div class="section" id="secure">
+<h3><a class="toc-backref" href="#id12">Secure</a><a class="headerlink" href="#secure" title="Permalink to this headline">¶</a></h3>
+<p>うっかり忘れられがちですが、セキュリティ上とても大切な仕様です。
 Secure 属性をつけた場合、そのクッキーは接続が https で保護されている場合のみに送信されます。
-逆に HttpOnly を付けた場合は接続が http の場合のみに送信されます。</p>
-<p>デフォルトではクッキーは接続が https の http なのかには関係なく動作します。
+Secure属性には値は必要ありません。</p>
+<p>デフォルトではクッキーは接続が <tt class="docutils literal"><span class="pre">https</span></tt> なのか <tt class="docutils literal"><span class="pre">http</span></tt> なのかには関係なく動作します。
 https 接続で設定されたクッキーであっても Secure 属性がなければ同じホスト名に
-http で接続した場合にそのクッキーは送信されてしまい、通信経路上にいる第三者に盗聴される可能性があります。
+http で接続した場合にもそのクッキーは送信されてしまい、通信経路上にいる第三者に盗聴される可能性があります。
 セッションID のような第三者に盗み見られてはならないクッキーは必ず Secure 属性をつけなくてはなりません。
 絶対に忘れないようにしましょう。</p>
-<p>ちなみに Secure 属性と HttpOnly 属性は現在の接続が http であろうが、 https であろうが関係なく指定できます。
-https 接続 HttpOnly をつけたり、 http 接続で Secure をつけたりしても動きます。
-ただ後者は Secure をつけている意味がないので絶対に行いませんが...</p>
+</div>
+<div class="section" id="httponly">
+<h3><a class="toc-backref" href="#id13">HttpOnly</a><a class="headerlink" href="#httponly" title="Permalink to this headline">¶</a></h3>
+<p>HttpOnly 属性をつけると、JavaScript などからしかそのクッキーは読めなくなります。</p>
 </div>
 </div>
-<div class="section" id="id3">
-<h2>その他<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id14">その他</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="port">
-<h3>クッキーとport番号<a class="headerlink" href="#port" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">クッキーとport番号</a><a class="headerlink" href="#port" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
