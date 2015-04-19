@@ -52,8 +52,8 @@
 <li><a class="reference internal" href="#domain">domain属性</a></li>
 <li><a class="reference internal" href="#path">path属性</a></li>
 <li><a class="reference internal" href="#max-age-expire">max-age と expire</a></li>
-<li><a class="reference internal" href="#secure">Secure</a></li>
-<li><a class="reference internal" href="#httponly">HttpOnly</a></li>
+<li><a class="reference internal" href="#secure">secure</a></li>
+<li><a class="reference internal" href="#httponly">httponly</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#id4">その他</a><ul>
@@ -107,8 +107,8 @@
 <li><a class="reference internal" href="#domain" id="id9">domain属性</a></li>
 <li><a class="reference internal" href="#path" id="id10">path属性</a></li>
 <li><a class="reference internal" href="#max-age-expire" id="id11">max-age と expire</a></li>
-<li><a class="reference internal" href="#secure" id="id12">Secure</a></li>
-<li><a class="reference internal" href="#httponly" id="id13">HttpOnly</a></li>
+<li><a class="reference internal" href="#secure" id="id12">secure</a></li>
+<li><a class="reference internal" href="#httponly" id="id13">httponly</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#id4" id="id14">その他</a><ul>
@@ -238,12 +238,12 @@ Set-Cookie: name=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
 <li><tt class="docutils literal"><span class="pre">max-age</span></tt> ではクッキーの寿命を秒数で指定します。負の値を指定すると、最も過去の日付を指定したことになります。</li>
 <li><tt class="docutils literal"><span class="pre">expires</span></tt> では有効期限が切れる日付・時刻を指定します。</li>
 <li><tt class="docutils literal"><span class="pre">max-age</span></tt> と <tt class="docutils literal"><span class="pre">expires</span></tt> の両方が指定された場合は <tt class="docutils literal"><span class="pre">max-age</span></tt> が使用されます。</li>
-<li><tt class="docutils literal"><span class="pre">max-age</span></tt> は古いブラウザではサポートされない場合があります。</li>
+<li><tt class="docutils literal"><span class="pre">max-age</span></tt> はかなり古いブラウザではサポートされない場合があります。</li>
 <li><tt class="docutils literal"><span class="pre">max-age</span></tt>, <tt class="docutils literal"><span class="pre">expires</span></tt> がなく寿命が指定されていない場合は、クッキーはブラウザが閉じられると削除されます。</li>
 </ul>
 </div>
 <div class="section" id="secure">
-<h3><a class="toc-backref" href="#id12">Secure</a><a class="headerlink" href="#secure" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">secure</a><a class="headerlink" href="#secure" title="Permalink to this headline">¶</a></h3>
 <p>うっかり忘れられがちですが、セキュリティ上とても大切な仕様です。
 Secure 属性をつけた場合、そのクッキーは接続が https で保護されている場合のみに送信されます。
 Secure属性には値は必要ありません。</p>
@@ -254,8 +254,14 @@ http で接続した場合にもそのクッキーは送信されてしまい、
 絶対に忘れないようにしましょう。</p>
 </div>
 <div class="section" id="httponly">
-<h3><a class="toc-backref" href="#id13">HttpOnly</a><a class="headerlink" href="#httponly" title="Permalink to this headline">¶</a></h3>
-<p>HttpOnly 属性をつけると、JavaScript などからしかそのクッキーは読めなくなります。</p>
+<h3><a class="toc-backref" href="#id13">httponly</a><a class="headerlink" href="#httponly" title="Permalink to this headline">¶</a></h3>
+<p>httponly 属性をつけると、そのクッキーは <tt class="docutils literal"><span class="pre">Cookie</span></tt> ヘッダ以外から読み取ることができなくなりなり、JavaScript から参照できなくなります。
+Secureの反対の意味、 <cite>http</cite> でしか送信されないCookieという意味では <strong>ない</strong> ので気をつけて下さい。</p>
+<p>このオプションはXSS脆弱性があった場合の被害を小さくします。
+XSS脆弱性によって攻撃者が任意のJavaScriptが実行できてしまうと、 <tt class="docutils literal"><span class="pre">document.cookie</span></tt> の値を読んで
+Session ID などのログイン情報などを盗み見れてしまう可能性がありますが、
+HttpOnly属性をつけておくとクッキーが XSS 脆弱性によって読み取られることがなくなります。
+Session ID などのように JavaScript から読み取る必要がないクッキーには HttpOnly を忘れずに付けておいたほうが良いでしょう。</p>
 </div>
 </div>
 <div class="section" id="id4">
