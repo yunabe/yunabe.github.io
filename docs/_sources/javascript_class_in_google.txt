@@ -3,11 +3,11 @@ Google流 JavaScript におけるクラス定義の実現方法
 
 .. container:: editdate
 
-  更新 2015年3月17日
+  更新 2015年4月22日
 
 他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
 代わりに C++, Java などにはない ``prototype`` や C++, Java のとは全く異なる ``new`` 演算子や ``this`` が用意されています。
-これらの機能はどれもかなり奇妙な仕様をしています。
+これらの機能は一見するとどれもかなり奇妙な仕様をしています。
 そのため、それぞれの機能の仕様を1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
 どのようにその機能を活用してプログラムを作ればよいのか全く理解できないと思います。
 
@@ -455,8 +455,8 @@ inherits の実際のコード
 -----------------------
 前述した継承用の関数 ``inherits`` は非常にシンプルでしたが、実際には ``setPrototypeOf`` が利用できない古いブラウザの互換性のために、
 同じことをもう少し複雑なコードで行う必要があります。
-Google Closure に定義されている `base.js <http://docs.closure-library.googlecode.com/git-history/15160ce901b70ac9df5e7d25ae4835835738f782/closure_goog_base.js.source.html>`_
-クラス継承用の ``inherits`` 関数はブラウザ互換性のために ``setPrototypeOf`` を使わず下のような少し複雑なコードになっています。
+Google Closure の `base.js に定義されている goog.inherits <https://github.com/google/closure-library/blob/master/closure/goog/base.js#L2170>`_
+はブラウザ互換性のために ``setPrototypeOf`` を使わず下のような少し複雑なコードになっています。
 
 ::
 
@@ -469,3 +469,37 @@ Google Closure に定義されている `base.js <http://docs.closure-library.go
    /** @override */
    childCtor.prototype.constructor = childCtor;
  };
+
+良くないクラス実現方法
+----------------------
+prototype = {}
+~~~~~~~~~~~~~~
+メソッドの定義方法として、
+
+::
+
+  var Person = function() {
+    ....
+  };
+
+  Person.prototype = {
+    sayHello: function() {
+      ....
+    },
+    getName: function() {
+      ....
+    }
+  }
+
+のように、``prototype`` を新しいオブジェクトで置き換えてしまうコードが揚げられている場合がありますが、
+この方法だと、そのクラスが他のクラスを継承している場合にプロトタイプチェーンが切れてしまって継承関係が失われてしまうので
+子クラスの定義では使えません。コードの一貫性を保つために、常に
+
+::
+
+  Person.prototype.sayHello = function() {..};
+  Person.prototype.getName = function() {..};
+
+のように１つずつメソッドを追加するスタイルのほうが好ましいかと思います。
+それと多くの場合問題になりませんが、``prototype`` を新しいオブジェクトで置き換えてしまうと、
+``Person.prototype.constructor == Person`` の関係は壊れてしまうのでそこも若干マイナスポイントです。
