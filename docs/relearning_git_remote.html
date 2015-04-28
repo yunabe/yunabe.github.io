@@ -1,231 +1,192 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>Git 再入門: リモートレポジトリを使った作業</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)" href="relearning_git_pull_default.html" />
-    <link rel="prev" title="Google流 JavaScript におけるクラス定義の実現方法" href="javascript_class_in_google.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Git 再入門 リモートレポジトリを使った作業</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/relearning_git_remote.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="relearning_git_pull_default.html" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="javascript_class_in_google.html" title="Google流 JavaScript におけるクラス定義の実現方法"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Git 再入門:  リモートレポジトリを使った作業</a><ul>
-<li><a class="reference internal" href="#id2">この文書の目的</a></li>
-<li><a class="reference internal" href="#id3">対象とする人</a></li>
-<li><a class="reference internal" href="#id6">下準備</a></li>
-<li><a class="reference internal" href="#remote">リモート (Remote)</a><ul>
-<li><a class="reference internal" href="#id7">リモートレポジトリの登録と読み込み</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id8">リモートトラキングブランチを扱う</a></li>
-<li><a class="reference internal" href="#id9">リモートトラッキングブランチとマージする</a></li>
-<li><a class="reference internal" href="#git-pull">git pull</a></li>
-<li><a class="reference internal" href="#id11">ここまでのまとめ</a></li>
-<li><a class="reference internal" href="#git-push">git push</a><ul>
-<li><a class="reference internal" href="#id13">共有用のレポジトリを作る</a></li>
-<li><a class="reference internal" href="#id15">git push でコミットを書き込む</a></li>
-<li><a class="reference internal" href="#push-fast-forward">push (fast-forward) に失敗した場合の対処法</a></li>
-</ul>
-</li>
-</ul>
-</li>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">Git 再入門 リモートレポジトリを使った作業</h1>
+          <p class="post-meta"><time datetime="2014-07-25T00:00:00+09:00" itemprop="datePublished">更新 Jul 25, 2014</time></p>
+        </header>
+        <h1 id="section">この文書の目的</h1>
+
+<ul>
+  <li>別の場所にある git レポジトリ（リモートレポジトリ）と連携する方法について再学習します。</li>
+  <li>はじめに git remote, git fetch, git merge
+を使ってリモートレポジトリの内容を手元のレポジトリ（ローカルレポジトリ）に取り込む方法について学習します。</li>
+  <li>次に git fetch, git merge を使った一連の作業を自動的に行なってくれる
+git pull について学習します。</li>
+  <li>次に git push を使ってローカルレポジトリの内容をリモートレポジトリに書き出す方法について
+学習します。</li>
+  <li>最後に, トラッキングブランチ (tracking branch) について理解し、 git
+pull, git push の引数を省略した際のデフォルトの挙動のルールについて学びます。</li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="javascript_class_in_google.html"
-                        title="previous chapter">Google流 JavaScript におけるクラス定義の実現方法</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="relearning_git_pull_default.html"
-                        title="next chapter">Git 再入門:  引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/relearning_git_remote.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+<h1 id="section-1">対象とする人</h1>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="git">
-<h1>Git 再入門:  リモートレポジトリを使った作業<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h1>
-<div class="editdate container">
-更新 2014年7月25日</div>
-<div class="contents local topic" id="id1">
-<p class="topic-title first">目次</p>
-<ul class="simple">
-<li><a class="reference internal" href="#id2" id="id16">この文書の目的</a></li>
-<li><a class="reference internal" href="#id3" id="id17">対象とする人</a></li>
-<li><a class="reference internal" href="#id6" id="id18">下準備</a></li>
-<li><a class="reference internal" href="#remote" id="id19">リモート (Remote)</a><ul>
-<li><a class="reference internal" href="#id7" id="id20">リモートレポジトリの登録と読み込み</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id8" id="id21">リモートトラキングブランチを扱う</a></li>
-<li><a class="reference internal" href="#id9" id="id22">リモートトラッキングブランチとマージする</a></li>
-<li><a class="reference internal" href="#git-pull" id="id23">git pull</a></li>
-<li><a class="reference internal" href="#id11" id="id24">ここまでのまとめ</a></li>
-<li><a class="reference internal" href="#git-push" id="id25">git push</a><ul>
-<li><a class="reference internal" href="#id13" id="id26">共有用のレポジトリを作る</a></li>
-<li><a class="reference internal" href="#id15" id="id27">git push でコミットを書き込む</a></li>
-<li><a class="reference internal" href="#push-fast-forward" id="id28">push (fast-forward) に失敗した場合の対処法</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id2">
-<h2><a class="toc-backref" href="#id16">この文書の目的</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>別の場所にある git レポジトリ（リモートレポジトリ）と連携する方法について再学習します。</li>
-<li>はじめに git remote, git fetch, git merge を使ってリモートレポジトリの内容を手元のレポジトリ（ローカルレポジトリ）に取り込む方法について学習します。</li>
-<li>次に git fetch, git merge を使った一連の作業を自動的に行なってくれる git pull について学習します。</li>
-<li>次に git push を使ってローカルレポジトリの内容をリモートレポジトリに書き出す方法について 学習します。</li>
-<li>最後に, トラッキングブランチ (tracking branch) について理解し、 git pull, git push の引数を省略した際のデフォルトの挙動のルールについて学びます。</li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h2><a class="toc-backref" href="#id17">対象とする人</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>入門本でリモート, push, pull について読んだけど何が「プッシュ」されてなにが「プル」されるのか、よく分からなかった人。</li>
-<li><a class="reference external" href="http://git-scm.com/book/ja/Git-%E3%81%AE%E5%9F%BA%E6%9C%AC-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%A7%E3%81%AE%E4%BD%9C%E6%A5%AD">2.5 Git の基本 - リモートでの作業</a> や
-<a class="reference external" href="http://git-scm.com/book/ja/Git-%E3%81%AE%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E6%A9%9F%E8%83%BD-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81">3.5 Git のブランチ機能 - リモートブランチ</a> を読んで何となく分かったけれど、理解を再確認したい人。</li>
-<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> と <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> を使って1人で github を使ってるけど、実は <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt>, <tt class="docutils literal"><span class="pre">push</span></tt> が何をしているのかよく理解していない人。</li>
-<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull/push</span></tt> と <tt class="docutils literal"><span class="pre">fetch/merge</span></tt> の関係を理解していない人</li>
-<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull/push</span></tt> で 「fast-forwardナンタラカンタラ」とかエラーが出てもそれが何なの分かっていない人。
-それの解決方法 （例えば git fetch &amp;&amp; git merge origin/master）が何故それでうまくいくのかきちんと説明できない人</li>
-<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">push/pull</span></tt> の引数が省略された場合のデフォルトの動作を厳密に説明出来ない人
+<ul>
+  <li>入門本でリモート, push, pull
+について読んだけど何が「プッシュ」されてなにが「プル」されるのか、よく分からなかった人。</li>
+  <li><a href="http://git-scm.com/book/ja/Git-%E3%81%AE%E5%9F%BA%E6%9C%AC-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%A7%E3%81%AE%E4%BD%9C%E6%A5%AD">2.5 Git の基本 -
+リモートでの作業</a>
+や <a href="http://git-scm.com/book/ja/Git-%E3%81%AE%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E6%A9%9F%E8%83%BD-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81">3.5 Git のブランチ機能 -
+リモートブランチ</a>
+を読んで何となく分かったけれど、理解を再確認したい人。</li>
+  <li><code>git pull</code> と <code>git push</code> を使って1人で github を使ってるけど、実は
+<code>git pull</code>, <code>push</code> が何をしているのかよく理解していない人。</li>
+  <li><code>git pull/push</code> と <code>fetch/merge</code> の関係を理解していない人</li>
+  <li><code>git pull/push</code> で
+「fast-forwardナンタラカンタラ」とかエラーが出てもそれが何なの分かっていない人。
+それの解決方法 （例えば git fetch &amp;&amp; git merge
+origin/master）が何故それでうまくいくのかきちんと説明できない人</li>
+  <li><code>git push/pull</code>
+の引数が省略された場合のデフォルトの動作を厳密に説明出来ない人
 「リモートトラッキングブランチ」と「トラキングブランチ」がそれぞれ何であるか説明できない人</li>
 </ul>
-</div>
-<div class="section" id="id6">
-<h2><a class="toc-backref" href="#id18">下準備</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-<p>アリスとボブが2人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは git レポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
-まずはアリスになったつもりでレポジトリーを作成して、紹介ページを作ってコミットしましょう （<tt class="docutils literal"><span class="pre">/tmp/my/workingdir</span></tt> は好きなディレクトリに置き換えて下さい）。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir
+
+<p>a</p>
+
+<ul id="markdown-toc">
+  <li><a href="#section">この文書の目的</a></li>
+  <li><a href="#section-1">対象とする人</a></li>
+  <li><a href="#section-2">下準備</a></li>
+  <li><a href="#remote">リモート (Remote)</a>    <ul>
+      <li><a href="#section-3">リモートレポジトリの登録と読み込み</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-4">リモートトラキングブランチを扱う</a></li>
+  <li><a href="#section-5">リモートトラッキングブランチとマージする</a></li>
+  <li><a href="#git-pull">git pull</a></li>
+  <li><a href="#section-6">ここまでのまとめ</a></li>
+  <li><a href="#git-push">git push</a>    <ul>
+      <li><a href="#section-7">共有用のレポジトリを作る</a></li>
+      <li><a href="#git-push-">git push でコミットを書き込む</a></li>
+      <li><a href="#push-fast-forward-">push (fast-forward) に失敗した場合の対処法</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="section-2">下準備</h1>
+
+<p>アリスとボブが2人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは
+git レポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
+まずはアリスになったつもりでレポジトリーを作成して、紹介ページを作ってコミットしましょう
+（<code>/tmp/my/workingdir</code> は好きなディレクトリに置き換えて下さい）。</p>
+
+<pre><code>$ cd /tmp/my/workingdir
 $ mkdir alice
 $ cd alice
 $ git init
 Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
-</pre></div>
-</div>
+</code></pre>
+
 <p>これでレポジトリができました。まず自分の紹介ページを作ってコミットしましょう。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ echo &quot;I’m Alice.&quot; &gt;&gt; alice.txt
+
+<pre><code>$ echo "I’m Alice." &gt;&gt; alice.txt
 $ git add alice.txt
-$ git commit -m &quot;Added alice.txt&quot;
+$ git commit -m "Added alice.txt"
 [master (root-commit) 8f6e1d0] Added alice.txt
  1 file changed, 1 insertion(+)
  create mode 100644 alice.txt
-</pre></div>
-</div>
+</code></pre>
+
 <p>次にメンバー一覧ページも作ってコミットします。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ echo &quot;Alice &lt;alice.txt&gt;&quot; &gt;&gt; members.txt
+
+<pre><code>$ echo "Alice &lt;alice.txt&gt;" &gt;&gt; members.txt
 $ git add members.txt
-$ git commit -m &quot;Added Alice to members.txt&quot;
+$ git commit -m "Added Alice to members.txt"
 [master 9e73b53] Added Alice to members.txt
  1 file changed, 1 insertion(+)
  create mode 100644 members.txt
-</pre></div>
-</div>
+</code></pre>
+
 <p>アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでレポジトリの作成とコミットを行います。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir
+
+<pre><code>$ cd /tmp/my/workingdir
 $ mkdir bob
 $ cd bob
 $ git init
 Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
 
-$ echo &quot;I’m Bob.&quot; &gt; bob.txt
+$ echo "I’m Bob." &gt; bob.txt
 $ git add bob.txt
-$ git commit -m &quot;Added bob.txt&quot;
+$ git commit -m "Added bob.txt"
 [master (root-commit) 527df0c] Added bob.txt
  1 file changed, 1 insertion(+)
  create mode 100644 bob.txt
 
-$ echo &quot;Bob &lt;bob.txt&gt;&quot; &gt; members.txt
+$ echo "Bob &lt;bob.txt&gt;" &gt; members.txt
 $ git add members.txt
-$ git commit -m &quot;Added Bob to members.txt&quot;
+$ git commit -m "Added Bob to members.txt"
 [master f3bc482] Added Bob to members.txt
  1 file changed, 1 insertion(+)
  create mode 100644 members.txt
-</pre></div>
-</div>
-<p>アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために git では「リモート」という仕組みと、<tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt>, <tt class="docutils literal"><span class="pre">pull</span></tt>, <tt class="docutils literal"><span class="pre">push</span></tt> といったコマンドが用意されています。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;amp;h=728"><img alt="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;amp;h=728" src="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;amp;h=728" style="width: 364px; height: 378px;" /></a>
-</div>
-<div class="section" id="remote">
-<h2><a class="toc-backref" href="#id19">リモート (Remote)</a><a class="headerlink" href="#remote" title="Permalink to this headline">¶</a></h2>
+</code></pre>
+
+<p>アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために
+git では「リモート」という仕組みと、<code>git fetch</code>, <code>pull</code>, <code>push</code>
+といったコマンドが用意されています。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;h=728" width="378" height="364" /></p>
+
+<h1 id="remote">リモート (Remote)</h1>
+
 <p>git では別の場所にあるレポジトリ（以下リモートレポジトリ）を手元のレポジトリ（以下ローカルレポジトリ）と連携させることができます。
 リモートレポジトリとローカルレポジトリの連携により、リモートレポジトリにあるコミットをローカルレポジトリに持ってきたり、
 逆にローカルレポジトリで行ったコミットをリモートレポジトリに書き出すことができます。</p>
-<div class="section" id="id7">
-<h3><a class="toc-backref" href="#id20">リモートレポジトリの登録と読み込み</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>リモートレポジトリ と連携するために、まずローカルレポジトリにリモートレポジトリを登録する必要があります。
-リモートレポジトリの登録には <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span></tt> を利用します。</p>
-<div class="highlight-python"><div class="highlight"><pre>git remote add &lt;name&gt; &lt;URL&gt;
-</pre></div>
-</div>
-<p>現在ローカルレポジトリに登録されているリモートレポジトリの一覧は <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span></tt> で確認することができます。
-各 remote の、例えばURLなどの、詳細な情報 は <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">show</span> <span class="pre">&lt;remote&gt;</span></tt> で確認できます。</p>
-<p>リモートレポジトリにあるコミットを読み込んでみましょう。リモートレポジトリにあるコミットは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span> <span class="pre">&lt;remote&gt;</span></tt> でローカルレポジトリにロードすることができます。
-git fetch でコミットをロードすると、リモートレポジトリ上のブランチに対応する「リモートトラキングブランチ」という特殊なブランチが自動的に作成されます（ブランチはコミットに対するポインタであることに注意して下さい）。
-リモートトラッキングブランチの名前は <tt class="docutils literal"><span class="pre">&lt;remote&gt;/&lt;branch&gt;</span></tt> という名前になります。現在のレポジトリにあるリモートトラッキングブランチの一覧は <tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-r</span></tt> で確認できます。</p>
+
+<h2 id="section-3">リモートレポジトリの登録と読み込み</h2>
+
+<p>リモートレポジトリ
+と連携するために、まずローカルレポジトリにリモートレポジトリを登録する必要があります。
+リモートレポジトリの登録には <code>git remote add</code> を利用します。</p>
+
+<pre><code>git remote add &lt;name&gt; &lt;URL&gt;
+</code></pre>
+
+<p>現在ローカルレポジトリに登録されているリモートレポジトリの一覧は
+<code>git remote</code> で確認することができます。 各 remote
+の、例えばURLなどの、詳細な情報 は <code>git remote show &lt;remote&gt;</code>
+で確認できます。</p>
+
+<p>リモートレポジトリにあるコミットを読み込んでみましょう。リモートレポジトリにあるコミットは
+<code>git fetch &lt;remote&gt;</code> でローカルレポジトリにロードすることができます。
+git fetch
+でコミットをロードすると、リモートレポジトリ上のブランチに対応する「リモートトラキングブランチ」という特殊なブランチが自動的に作成されます（ブランチはコミットに対するポインタであることに注意して下さい）。
+リモートトラッキングブランチの名前は <code>&lt;remote&gt;/&lt;branch&gt;</code>
+という名前になります。現在のレポジトリにあるリモートトラッキングブランチの一覧は
+<code>git branch -r</code> で確認できます。</p>
+
 <p>アリスとボブのケースに戻りましょう。ボブはアリスが紹介ページを自分の作っているものにマージすることにしました。
 ボブはアリスのレポジトリー上のコミットを取り込むために、まずアリスのレポジトリを自分のレポジトリに「リモートレポジトリ」として登録します。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/bob
+
+<pre><code>$ cd /tmp/my/workingdir/bob
 $ git remote add alice /tmp/my/workingdir/alice
 
 $ git remote
@@ -237,12 +198,13 @@ $ git remote show alice
   HEAD branch: master
   Remote branch:
     master new (next fetch will store in remotes/alice)
-  Local ref configured for &#39;git push&#39;:
+  Local ref configured for 'git push':
     master pushes to master (local out of date)
-</pre></div>
-</div>
+</code></pre>
+
 <p>次にアリスのレポジトリをフェッチします。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git fetch alice
+
+<pre><code>$ git fetch alice
 warning: no common commits
 remote: Counting objects: 6, done.
 remote: Compressing objects: 100% (3/3), done.
@@ -252,67 +214,94 @@ From /tmp/my/workingdir/alice
  * [new branch]      master     -&gt; alice/master
 $ git branch -r
   alice/master
-</pre></div>
-</div>
-<p>bob のレポジトリの状態を図を書くと次のようになります。
-レポジトリ alice からコミットがコピーされており、master ブランチの代わりに <tt class="docutils literal"><span class="pre">alice/master</span></tt> という「リモートトラッキングブランチ」が作成されていることに注意して下さい。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;amp;h=664"><img alt="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;amp;h=664" src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;amp;h=664" style="width: 660px; height: 332px;" /></a>
-</div>
-</div>
-<div class="section" id="id8">
-<h2><a class="toc-backref" href="#id21">リモートトラキングブランチを扱う</a><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
-<p>これで <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span></tt> と <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> で別の場所にあるレポジトリを登録し、そこからコミットを読み込むことができました。
-その際にリモートレポジトリ上のブランチに対応する <tt class="docutils literal"><span class="pre">&lt;remote&gt;/&lt;branch&gt;</span></tt> という名前の「リモートトラキングブランチ」が自動的に作られることが分かりました。</p>
-<p>「リモートトラッキングブランチ」(e.g. <tt class="docutils literal"><span class="pre">origin/master</span></tt>) は通常のブランチ (e.g. <tt class="docutils literal"><span class="pre">master</span></tt>) や <tt class="docutils literal"><span class="pre">HEAD</span></tt>, <tt class="docutils literal"><span class="pre">HEAD^</span></tt>, コミットのハッシュID (<tt class="docutils literal"><span class="pre">198bc17aade</span></tt>),
+</code></pre>
+
+<p>bob のレポジトリの状態を図を書くと次のようになります。 レポジトリ alice
+からコミットがコピーされており、master ブランチの代わりに <code>alice/master</code>
+という「リモートトラッキングブランチ」が作成されていることに注意して下さい。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;h=664" width="660" height="332" /></p>
+
+<h1 id="section-4">リモートトラキングブランチを扱う</h1>
+
+<p>これで <code>git remote add</code> と <code>git fetch</code>
+で別の場所にあるレポジトリを登録し、そこからコミットを読み込むことができました。
+その際にリモートレポジトリ上のブランチに対応する <code>&lt;remote&gt;/&lt;branch&gt;</code>
+という名前の「リモートトラキングブランチ」が自動的に作られることが分かりました。</p>
+
+<p>「リモートトラッキングブランチ」(e.g. <code>origin/master</code>) は通常のブランチ
+(e.g. <code>master</code>) や <code>HEAD</code>, <code>HEAD^</code>, コミットのハッシュID
+(<code>198bc17aade</code>),
 タグと同様に手元のレポジトリに保存されているコミットに対するポインタです。
-そのため前章で学んだような <tt class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span></tt>, <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt>, <tt class="docutils literal"><span class="pre">git</span> <span class="pre">branch</span></tt> のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。</p>
-<div class="highlight-python"><div class="highlight"><pre>git log alice/master
-</pre></div>
-</div>
-<p>でボブはリモートレポジトリ（アリスのレポジトリ）上の <tt class="docutils literal"><span class="pre">master</span></tt> ブランチのログを見ることができます。</p>
-<div class="highlight-python"><div class="highlight"><pre>git checkout alice/master
-</pre></div>
-</div>
-<p>とするとボブはアリスのレポジトリの <tt class="docutils literal"><span class="pre">master</span></tt> ブランチの最新の状態を再現することができます
-（ただし <tt class="docutils literal"><span class="pre">You</span> <span class="pre">are</span> <span class="pre">in</span> <span class="pre">'detached</span> <span class="pre">HEAD'</span> <span class="pre">state.</span></tt> と言われてこのままでは編集作業ができないことに注意）。</p>
-</div>
-<div class="section" id="id9">
-<h2><a class="toc-backref" href="#id22">リモートトラッキングブランチとマージする</a><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+そのため前章で学んだような <code>git checkout</code>, <code>git merge</code>, <code>git branch</code>
+のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。</p>
+
+<pre><code>git log alice/master
+</code></pre>
+
+<p>でボブはリモートレポジトリ（アリスのレポジトリ）上の <code>master</code>
+ブランチのログを見ることができます。</p>
+
+<pre><code>git checkout alice/master
+</code></pre>
+
+<p>とするとボブはアリスのレポジトリの <code>master</code>
+ブランチの最新の状態を再現することができます （ただし
+<code>You are in 'detached HEAD' state.</code>
+と言われてこのままでは編集作業ができないことに注意）。</p>
+
+<h1 id="section-5">リモートトラッキングブランチとマージする</h1>
+
 <p>次にリモートトラッキングブランチ（リモートレポジトリ上のブランチ）をローカルのブランチにマージしてみましょう。
 これはローカルでブランチをマージした場合と全く同じようにできます。</p>
-<p>ボブはアリスの master ブランチを自分の master ブランチにマージすることにしました。
+
+<p>ボブはアリスの master ブランチを自分の master
+ブランチにマージすることにしました。
 マージしようとしている2つのコミットに共通する先祖が存在しない点が、ローカルのみで作業していた場合と少し違いますが、
 これはファイルが何もない「初期状態」が共通の親として暗黙的存在すると考えれば特に問題はないかと思います。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git checkout master
+
+<pre><code>$ git checkout master
 $ git merge alice/master
 Auto-merging members.txt
 CONFLICT (add/add): Merge conflict in members.txt
 Automatic merge failed; fix conflicts and then commit the result.
-</pre></div>
-</div>
-<p>members.txt はアリスとボブ両方のレポジトリで編集されていたのでコンフリクトが発生します。
+</code></pre>
+
+<p>members.txt
+はアリスとボブ両方のレポジトリで編集されていたのでコンフリクトが発生します。
 適当にコンフリクトを解消します。このあたりの作業もローカルのブランチをマージする場合となにも変わりません。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ emacs members.txt # 適当なエディタで衝突を解消
+
+<pre><code>$ emacs members.txt # 適当なエディタで衝突を解消
 $ git add members.txt
 $ git commit
-[master 5de7b36] Merge remote-tracking branch &#39;alice/master&#39;
-</pre></div>
-</div>
+[master 5de7b36] Merge remote-tracking branch 'alice/master'
+</code></pre>
+
 <p>これで無事、ボブはアリスが行った変更を自分のレポジトリに取り込むことができました。ボブのレポジトリの状態は図で書くと以下のようになります</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;amp;h=644"><img alt="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;amp;h=644" src="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;amp;h=644" style="width: 503px; height: 322px;" /></a>
-</div>
-<div class="section" id="git-pull">
-<span id="id10"></span><h2><a class="toc-backref" href="#id23">git pull</a><a class="headerlink" href="#git-pull" title="Permalink to this headline">¶</a></h2>
-<p>今度はアリスの立場になってボブのレポジトリ上のmaster ブランチをローカルレポジトリの masterブランチにマージしましょう。
-ボブがアリスのコミットを読み込んだ時と同じようにまずはリモートレポジトリを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span></tt> で登録します。
-続いて、git fetch と git merge を実行すれば前述したようにボブのレポジトリ上のmasterブランチをローカルレポジトリの master ブランチにマージすることが出来ます。
-この fetch → merge という一連の処理は非常に頻繁に行われるので、これを一度に行う <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> というコマンドが用意されています。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git pull &lt;remote&gt; &lt;src&gt;
-</pre></div>
-</div>
-<p>このコマンドを実行すると <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span> <span class="pre">&lt;remote&gt;</span></tt> → <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">&lt;remote&gt;/&lt;src&gt;</span></tt> を実行した場合と同じようにリモートレポジトリ &lt;remote&gt; 上の &lt;src&gt; ブランチが
-現在のブランチにマージされます（厳密には git fetch &lt;remote&gt; &lt;src&gt; → git merge FETCHED_HEAD）。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/alice
+
+<p><img src="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;h=644" width="503" height="322" /></p>
+
+<h1 id="git-pull">git pull</h1>
+
+<p>今度はアリスの立場になってボブのレポジトリ上のmaster
+ブランチをローカルレポジトリの masterブランチにマージしましょう。
+ボブがアリスのコミットを読み込んだ時と同じようにまずはリモートレポジトリを
+<code>git remote add</code> で登録します。 続いて、git fetch と git merge
+を実行すれば前述したようにボブのレポジトリ上のmasterブランチをローカルレポジトリの
+master ブランチにマージすることが出来ます。 この fetch → merge
+という一連の処理は非常に頻繁に行われるので、これを一度に行う <code>git pull</code>
+というコマンドが用意されています。</p>
+
+<pre><code>$ git pull &lt;remote&gt; &lt;src&gt;
+</code></pre>
+
+<p>このコマンドを実行すると <code>git fetch &lt;remote&gt;</code> →
+<code>git merge &lt;remote&gt;/&lt;src&gt;</code> を実行した場合と同じようにリモートレポジトリ
+&lt;remote&gt; 上の &lt;src&gt; ブランチが
+現在のブランチにマージされます（厳密には git fetch &lt;remote&gt; &lt;src&gt; →
+git merge FETCHED_HEAD）。</p>
+
+<pre><code>$ cd /tmp/my/workingdir/alice
 $ git remote add bob /tmp/my/workingdir/bob
 $ git pull bob master
 remote: Counting objects: 11, done.
@@ -328,77 +317,114 @@ Fast-forward
  members.txt | 1 +
  2 files changed, 2 insertions(+)
  create mode 100644 bob.txt
-</pre></div>
-</div>
-<p>また後述するように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> は引数を省略することができるので、日常の業務で利用するには <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> と <tt class="docutils literal"><span class="pre">merge</span></tt> をばらばらに実行するよりも便利です。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;amp;h=545"><img alt="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;amp;h=545" src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;amp;h=545" style="width: 505px; height: 272px;" /></a>
-</div>
-<div class="section" id="id11">
-<h2><a class="toc-backref" href="#id24">ここまでのまとめ</a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>別の場所にあるgit レポジトリ（リモートレポジトリ）と連携するための仕組みとして git には「リモート」というものが用意されています。</li>
-<li>リモートレポジトリと連携するには、まずローカルレポジトリに登録するリモートレポジトリを登録します。これには <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;url&gt;</span></tt> を利用します。</li>
-<li>リモートレポジトリ上のコミットを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> でロードすることができます。
+</code></pre>
+
+<p>また後述するように <code>git pull</code>
+は引数を省略することができるので、日常の業務で利用するには <code>git fetch</code>
+と <code>merge</code> をばらばらに実行するよりも便利です。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545" width="505" height="272" /></p>
+
+<h1 id="section-6">ここまでのまとめ</h1>
+
+<ul>
+  <li>別の場所にあるgit
+レポジトリ（リモートレポジトリ）と連携するための仕組みとして git
+には「リモート」というものが用意されています。</li>
+  <li>リモートレポジトリと連携するには、まずローカルレポジトリに登録するリモートレポジトリを登録します。これには
+<code>git remote add &lt;name&gt; &lt;url&gt;</code> を利用します。</li>
+  <li>リモートレポジトリ上のコミットを <code>git fetch</code>
+でロードすることができます。
 この際、リモートレポジトリ上のブランチに対応する「リモートトラッキングブランチ」が自動的に作成されます。
-リモートトラッキングブランチの名前は <tt class="docutils literal"><span class="pre">&lt;remote&gt;/&lt;branch&gt;</span></tt> (e.g. <tt class="docutils literal"><span class="pre">alice/master</span></tt>) となります。</li>
-<li>git fetch で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のレポジトリで作業している場合全く同じように作業できる。 リモートレポジトリ上で行われたコミットを手元のブランチに取り込むには <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt> を行えば良い。</li>
-<li><tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> → <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt> の一連の流れは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> コマンドで行うことができる。</li>
+リモートトラッキングブランチの名前は <code>&lt;remote&gt;/&lt;branch&gt;</code> (e.g.
+<code>alice/master</code>) となります。</li>
+  <li>git fetch
+で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のレポジトリで作業している場合全く同じように作業できる。
+リモートレポジトリ上で行われたコミットを手元のブランチに取り込むには
+<code>git merge</code> を行えば良い。</li>
+  <li><code>git fetch</code> → <code>git merge</code> の一連の流れは <code>git pull</code>
+コマンドで行うことができる。</li>
 </ul>
-</div>
-<div class="section" id="git-push">
-<span id="id12"></span><h2><a class="toc-backref" href="#id25">git push</a><a class="headerlink" href="#git-push" title="Permalink to this headline">¶</a></h2>
+
+<h1 id="git-push">git push</h1>
+
 <p>ここまで紹介した方法で、異なる場所にあるレポジトリを連携させることができるようになりました。
 しかし今まで紹介した、お互いのレポジトリーからコミットを読み込んでマージするという方法は</p>
-<ul class="simple">
-<li>アリスのコンピュータの電源が落ちているなどの理由でアリスのレポジトリにアクセス出来ないと共同作業が出来ない。</li>
-<li>チャーリーが作業に参加するとアリスは、ボブとチャーリのレポジトリそれぞれからコミットを git pull しなければなりません。
+
+<ul>
+  <li>アリスのコンピュータの電源が落ちているなどの理由でアリスのレポジトリにアクセス出来ないと共同作業が出来ない。</li>
+  <li>チャーリーが作業に参加するとアリスは、ボブとチャーリのレポジトリそれぞれからコミットを
+git pull しなければなりません。
 更に参加者が増えると読み込むレポジトリが参加人数に比例して増えてしまい破綻してしまいます。</li>
 </ul>
+
 <p>のような問題があり実際に日常の業務で使うのには現実的でありません。
-この問題を解決する git の運用方法は複数存在しますが、1つの単純な解決方法は共有のレポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有レポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有レポジトリに書き込むことです。
+この問題を解決する git
+の運用方法は複数存在しますが、1つの単純な解決方法は共有のレポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有レポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有レポジトリに書き込むことです。
 これを実現するには今まで述べてきたリモートレポジトリからコミットを読み込む方法に加えて、リモートレポジトリに対して手元のコミットを書き込む方法も必要になります。
-このコミットをリモートレポジトリに書き込むための手段が <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> です。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;amp;h=499"><img alt="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;amp;h=499" src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;amp;h=499" style="width: 520px; height: 249px;" /></a>
-<div class="section" id="id13">
-<h3><a class="toc-backref" href="#id26">共有用のレポジトリを作る</a><a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<p>まず共有用のレポジトリを作成しましょう。各々のユーザがコミットの書き込み (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt>) を行うレポジトリは
-<a class="reference external" href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のレポジトリ（bare repository）</a> である必要があります。
-bare repository は作業ディレクトリのない（<tt class="docutils literal"><span class="pre">.git</span></tt> ディレクトリのみ存在する） git レポジトリです。
-bare レポジトリは git init に <tt class="docutils literal"><span class="pre">--bare</span></tt> オプションをつけて実行することで作成できます。
-あるいは、 git clone で既存のレポジトリを複製する際に <tt class="docutils literal"><span class="pre">--bare</span></tt> オプションを付けることで 既存のレポジトリを bare レポジトリとして複製することも出来ます。
-また bare レポジトリのディレクトリ名には <a class="reference external" href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git を末尾につけるのが慣習です</a>。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir
+このコミットをリモートレポジトリに書き込むための手段が <code>git push</code> です。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499" width="520" height="249" /></p>
+
+<h2 id="section-7">共有用のレポジトリを作る</h2>
+
+<p>まず共有用のレポジトリを作成しましょう。各々のユーザがコミットの書き込み
+(<code>git push</code>) を行うレポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のレポジトリ（bare
+repository）</a>
+である必要があります。 bare repository は作業ディレクトリのない（<code>.git</code>
+ディレクトリのみ存在する） git レポジトリです。 bare レポジトリは git
+init に <code>--bare</code> オプションをつけて実行することで作成できます。
+あるいは、 git clone で既存のレポジトリを複製する際に <code>--bare</code>
+オプションを付けることで 既存のレポジトリを bare
+レポジトリとして複製することも出来ます。 また bare
+レポジトリのディレクトリ名には <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git
+を末尾につけるのが慣習です</a>。</p>
+
+<pre><code>$ cd /tmp/my/workingdir
 $ mkdir shared.git
 $ cd shared.git
 $ git init --bare
 Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
-</pre></div>
-</div>
-<p><tt class="docutils literal"><span class="pre">ls</span></tt> で <tt class="docutils literal"><span class="pre">shared.git</span></tt> の中身を確認してみると、通常のレポジトリの <tt class="docutils literal"><span class="pre">.git</span></tt> ディレクトリの中身が保存されていることが分かります。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ ls
+</code></pre>
+
+<p><code>ls</code> で <code>shared.git</code> の中身を確認してみると、通常のレポジトリの <code>.git</code>
+ディレクトリの中身が保存されていることが分かります。</p>
+
+<pre><code>$ ls
 HEAD        branches    config      description hooks       info        objects     refs
-</pre></div>
-</div>
-</div>
-<div class="section" id="id15">
-<h3><a class="toc-backref" href="#id27">git push でコミットを書き込む</a><a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+</code></pre>
+
+<h2 id="git-push-">git push でコミットを書き込む</h2>
+
 <p>次にアリスの立場に手元のコミットを共有レポジトリに書き出してみましょう。まずは共有レポジトリをリモートとして登録します。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/alice
+
+<pre><code>$ cd /tmp/my/workingdir/alice
 $ git remote add shared /tmp/my/workingdir/shared.git
-</pre></div>
-</div>
-<p>次に shared に対してコミットを書き込みます。コミットの書き込みには git push を利用します。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
-</pre></div>
-</div>
-<p>このコマンドを実行するとローカルレポジトリの &lt;src&gt; が指すコミットとその先祖のコミットを &lt;remote&gt; に対して書き込み、
-同時に &lt;remote&gt; の &lt;dst&gt; が &lt;src&gt; と同じコミットを指すように変更します。</p>
-<ul class="simple">
-<li>&lt;dst&gt; ブランチが存在しない場合は &lt;dst&gt; ブランチが &lt;remote&gt; に作成されます。</li>
-<li>&lt;dst&gt; ブランチがすでに存在する場合には &lt;dst&gt; を &lt;src&gt; まで <strong>fast-forward</strong> します。fast-forward できない場合 （&lt;dst&gt; が &lt;src&gt; の祖先でない場合）には git push は <strong>失敗</strong> します。</li>
+</code></pre>
+
+<p>次に shared に対してコミットを書き込みます。コミットの書き込みには git
+push を利用します。</p>
+
+<pre><code>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
+</code></pre>
+
+<p>このコマンドを実行するとローカルレポジトリの &lt;src&gt;
+が指すコミットとその先祖のコミットを &lt;remote&gt; に対して書き込み、
+同時に &lt;remote&gt; の &lt;dst&gt; が &lt;src&gt;
+と同じコミットを指すように変更します。</p>
+
+<ul>
+  <li>&lt;dst&gt; ブランチが存在しない場合は &lt;dst&gt; ブランチが &lt;remote&gt;
+に作成されます。</li>
+  <li>&lt;dst&gt; ブランチがすでに存在する場合には &lt;dst&gt; を &lt;src&gt; まで
+<strong>fast-forward</strong> します。fast-forward できない場合 （&lt;dst&gt; が
+&lt;src&gt; の祖先でない場合）には git push は <strong>失敗</strong> します。</li>
 </ul>
-<p>アリスのレポジトリから共有レポジトリに対して、master ブランチを書き込んでみましょう</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+
+<p>アリスのレポジトリから共有レポジトリに対して、master
+ブランチを書き込んでみましょう</p>
+
+<pre><code>$ git push shared master:master
 ounting objects: 15, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (8/8), done.
@@ -406,13 +432,19 @@ Writing objects: 100% (15/15), 1.32 KiB | 0 bytes/s, done.
 Total 15 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
  * [new branch]      master -&gt; master
-</pre></div>
-</div>
-<p>これでアリスの master ブランチ（の指すコミットとその全ての先祖コミット）が shared に対して書き込まれ、shared に master ブランチが作成されます。図にすると以下な状態になります。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;amp;h=1073"><img alt="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;amp;h=1073" src="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;amp;h=1073" style="width: 507px; height: 536px;" /></a>
+</code></pre>
+
+<p>これでアリスの master
+ブランチ（の指すコミットとその全ての先祖コミット）が shared
+に対して書き込まれ、shared に master
+ブランチが作成されます。図にすると以下な状態になります。</p>
+
+<p><img src="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;h=1073" width="507" height="536" /></p>
+
 <p>続いて新しいコミットを作ってそれも shared に push してみましょう。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ echo &quot;Email: alice@example.com&quot; &gt;&gt; alice.txt
-$ git commit -a -m &quot;Added an email addr to alice.txt&quot;
+
+<pre><code>$ echo "Email: alice@example.com" &gt;&gt; alice.txt
+$ git commit -a -m "Added an email addr to alice.txt"
 [master c671712] Added an email addr to alice.txt
  1 file changed, 1 insertion(+)
 $ git push shared master:master
@@ -423,54 +455,67 @@ Writing objects: 100% (3/3), 357 bytes | 0 bytes/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
    77c39e3..c671712  master -&gt; master
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069"><img alt="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069" src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;amp;h=1069" style="width: 667px; height: 534px;" /></a>
-</div>
-<div class="section" id="push-fast-forward">
-<h3><a class="toc-backref" href="#id28">push (fast-forward) に失敗した場合の対処法</a><a class="headerlink" href="#push-fast-forward" title="Permalink to this headline">¶</a></h3>
-<p>次にボブの立場になって共有レポジトリに新しいコミットを push してみましょう。
-まず共有レポジトリを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span></tt> で登録します</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd /tmp/my/workingdir/bo
+</code></pre>
+
+<p><img src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069" width="667" height="534" /></p>
+
+<h2 id="push-fast-forward-">push (fast-forward) に失敗した場合の対処法</h2>
+
+<p>次にボブの立場になって共有レポジトリに新しいコミットを push
+してみましょう。 まず共有レポジトリを <code>git remote add</code> で登録します</p>
+
+<pre><code>$ cd /tmp/my/workingdir/bo
 $ git remote add shared /tmp/my/workingdir/shared
-</pre></div>
-</div>
+</code></pre>
+
 <p>続いて新しいコミットを作成します。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ echo &quot;Email: bob@example.com&quot; &gt;&gt; bob.txt
-$ git commit -a -m &quot;Added an email addr to bob.txt&quot;
+
+<pre><code>$ echo "Email: bob@example.com" &gt;&gt; bob.txt
+$ git commit -a -m "Added an email addr to bob.txt"
 [master 99af642] Added an email addr to bob.txt
  1 file changed, 1 insertion(+)
-</pre></div>
-</div>
-<p>これを <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> してみましょう。そうするとエラーが発生してしまいます。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+</code></pre>
+
+<p>これを <code>git push</code> してみましょう。そうするとエラーが発生してしまいます。</p>
+
+<pre><code>$ git push shared master:master
 To /tmp/my/workingdir/shared.git
  ! [rejected]        master -&gt; master (fetch first)
-error: failed to push some refs to &#39;/tmp/my/workingdir/shared.git&#39;
+error: failed to push some refs to '/tmp/my/workingdir/shared.git'
 hint: Updates were rejected because the remote contains work that you do
 hint: not have locally. This is usually caused by another repository pushing
 hint: to the same ref. You may want to first integrate the remote changes
-hint: (e.g., &#39;git pull ...&#39;) before pushing again.
-hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.
-</pre></div>
-</div>
-<p>前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;src&gt;:&lt;dst&gt;</span></tt> は <tt class="docutils literal"><span class="pre">&lt;remote&gt;</span></tt> 上の <tt class="docutils literal"><span class="pre">&lt;dst&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">shared</span></tt> 上の <tt class="docutils literal"><span class="pre">master</span></tt>) を
-<tt class="docutils literal"><span class="pre">&lt;src&gt;</span></tt> (今回は <tt class="docutils literal"><span class="pre">bob</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt>) が指しているコミットまで fast-forward します。
-fast-forward 出来ない場合は失敗してしまいます。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878"><img alt="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878" src="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;amp;h=878" style="width: 667px; height: 439px;" /></a>
-<p>fast-forward を可能にして <tt class="docutils literal"><span class="pre">push</span></tt> を行うためには、ローカルの <tt class="docutils literal"><span class="pre">master</span></tt> ブランチを <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> とマージしてあげる必要があります。
-前述したように <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> でマージしましょう (あるいは <tt class="docutils literal"><span class="pre">git</span> <span class="pre">fetch</span></tt> と <tt class="docutils literal"><span class="pre">git</span> <span class="pre">merge</span></tt> でもよい)。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git pull shared master
-Merge made by the &#39;recursive&#39; strategy.
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+</code></pre>
+
+<p>前述したように <code>git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code> は <code>&lt;remote&gt;</code> 上の
+<code>&lt;dst&gt;</code> (今回は <code>shared</code> 上の <code>master</code>) を <code>&lt;src&gt;</code> (今回は <code>bob</code> の
+<code>master</code>) が指しているコミットまで fast-forward します。 fast-forward
+出来ない場合は失敗してしまいます。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;h=878" width="671" height="439" /></p>
+
+<p>fast-forward を可能にして <code>push</code> を行うためには、ローカルの <code>master</code>
+ブランチを <code>shared</code> の <code>master</code> とマージしてあげる必要があります。
+前述したように <code>git pull</code> でマージしましょう (あるいは <code>git fetch</code> と
+<code>git merge</code> でもよい)。</p>
+
+<pre><code>$ git pull shared master
+Merge made by the 'recursive' strategy.
  alice.txt | 1 +
  1 file changed, 1 insertion(+)
-</pre></div>
-</div>
+</code></pre>
+
 <p>bob のレポジトリは図のような状態になります。</p>
-<a class="reference internal image-reference" href="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599"><img alt="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599" src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;amp;h=599" style="width: 758px; height: 300px;" /></a>
-<p>これで <tt class="docutils literal"><span class="pre">shared/master</span></tt> が bob の <tt class="docutils literal"><span class="pre">master</span></tt> の先祖になったので、 <tt class="docutils literal"><span class="pre">shared</span></tt> の <tt class="docutils literal"><span class="pre">master</span></tt> を bob の <tt class="docutils literal"><span class="pre">master</span></tt> にfast-forwardできるようになりました。
+
+<p><img src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;h=599" width="758" height="299" /></p>
+
+<p>これで <code>shared/master</code> が bob の <code>master</code> の先祖になったので、 <code>shared</code>
+の <code>master</code> を bob の <code>master</code> にfast-forwardできるようになりました。
 もう一度プッシュを行うと今度は成功するはずです。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git push shared master:master
+
+<pre><code>$ git push shared master:master
 Counting objects: 8, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (4/4), done.
@@ -478,49 +523,43 @@ Writing objects: 100% (5/5), 684 bytes | 0 bytes/s, done.
 Total 5 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared
    c671712..14245e3  master -&gt; master
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</code></pre>
 
-
-          </div>
-        </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="relearning_git_pull_default.html" title="Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="javascript_class_in_google.html" title="Google流 JavaScript におけるクラス定義の実現方法"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>

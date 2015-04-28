@@ -1,218 +1,178 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>C++ でデストラクタを virtual にしなくてはならない条件と理由</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="静的ライブラリ (.a) の作成と利用" href="static_library.html" />
-    <link rel="prev" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する" href="python_metaclass.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>C++ でデストラクタを virtual にしなくてはならない条件と理由</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/cpp_virtual_destructor.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="static_library.html" title="静的ライブラリ (.a) の作成と利用"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">C++ でデストラクタを virtual にしなくてはならない条件と理由</a><ul>
-<li><a class="reference internal" href="#id1">ルールの前提</a><ul>
-<li><a class="reference internal" href="#virtual">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</a></li>
-<li><a class="reference internal" href="#id2">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id3">結論</a></li>
-<li><a class="reference internal" href="#others">おまけ: 派生系のルール</a></li>
-</ul>
-</li>
-</ul>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">C++ でデストラクタを virtual にしなくてはならない条件と理由</h1>
+          <p class="post-meta"><time datetime="2015-02-06T00:00:00+09:00" itemprop="datePublished">更新 Feb 6, 2015</time></p>
+        </header>
+        <p><a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a>
+にも書かれているように、
+クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは
+virtual でなくてはなりません
+<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">(If your class has virtual methods,
+its destructor should be virtual.)</a>。</p>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="python_metaclass.html"
-                        title="previous chapter">Python の メタプログラミング (__metaclass__, メタクラス) を理解する</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="static_library.html"
-                        title="next chapter">静的ライブラリ (.a) の作成と利用</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/cpp_virtual_destructor.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="c-virtual">
-<h1>C++ でデストラクタを virtual にしなくてはならない条件と理由<a class="headerlink" href="#c-virtual" title="Permalink to this headline">¶</a></h1>
-<div class="editdate container">
-更新 2015年2月6日</div>
-<p><a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a> にも書かれているように、
-クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは virtual でなくてはなりません
-<a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">(If your class has virtual methods, its destructor should be virtual.)</a>。</p>
 <p>ただその理由は若干複雑です。
 理由が説明できないとコードレビューで問題を指摘する際に困りますし、
-逆に必要ないのに <a class="reference internal" href="#others"><em>「デストラクタには常に virtual をつけろ」</em></a> と言われた場合に反論できなくて困ることになります。</p>
-<div class="section" id="id1">
-<h2>ルールの前提<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="virtual">
-<h3>virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される<a class="headerlink" href="#virtual" title="Permalink to this headline">¶</a></h3>
-<p>そもそも virtual なメソッド (仮想メンバー関数) がクラスに定義されているということは、
-そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用するはずです (ポリモーフィズム) 。
-そうでないならば、メソッドを virtual にする意義がそもそもありません。
-virtual なメソッドがクラス定義されていると、<a class="reference external" href="https://www.google.co.jp/search?q=vtable&amp;hl=ja">vtable</a> へのポインタの分だけインスタンスのサイズが増えますし
-virtual なメソッドの呼び出しは vtable を利用する分遅くなります。
-そのためプリモーフィズムを利用しないクラスであれば、不必要に virtual をつけるべきではないでしょう。</p>
-</div>
-<div class="section" id="id2">
-<h3>子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>言い換えると、デストラクタが virtual でない場合、子クラスのポインタを親クラスのポインタにキャストして使用してはいけません。
-なぜならデストラクタが virtual でない場合、親クラスの型のポインタを <tt class="docutils literal"><span class="pre">delete</span></tt> した際には親クラスのデストラクタしか呼ばれないからです。
+逆に必要ないのに <a href="#others">「デストラクタには常に virtual をつけろ」</a>
+と言われた場合に反論できなくて困ることになります。</p>
+
+<h1 id="section">ルールの前提</h1>
+
+<h2 id="virtual-">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</h2>
+
+<p>そもそも virtual なメソッド (仮想メンバー関数)
+がクラスに定義されているということは、
+そのクラスは継承した子クラスを作成し、その子クラスのインスタンスは親クラスのポインタに格納して利用するはずです
+(ポリモーフィズム) 。 そうでないならば、メソッドを virtual
+にする意義がそもそもありません。 virtual
+なメソッドがクラス定義されていると、<a href="https://www.google.co.jp/search?q=vtable&amp;hl=ja">vtable</a>
+へのポインタの分だけインスタンスのサイズが増えますし virtual
+なメソッドの呼び出しは vtable を利用する分遅くなります。
+そのためプリモーフィズムを利用しないクラスであれば、不必要に virtual
+をつけるべきではないでしょう。</p>
+
+<h2 id="virtual--1">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</h2>
+
+<p>言い換えると、デストラクタが virtual
+でない場合、子クラスのポインタを親クラスのポインタにキャストして使用してはいけません。
+なぜならデストラクタが virtual でない場合、親クラスの型のポインタを
+<code>delete</code> した際には親クラスのデストラクタしか呼ばれないからです。
 たとえ親クラスの型のポインタが指している実体が子クラスだったとしても子クラスのデストラクタ
 (これは暗黙的に親クラスのデストラクタを呼ぶ) は呼び出されません。</p>
-<div class="highlight-python"><div class="highlight"><pre>// ~Parent is not virtual.
-Parent* parent = new Child();
-...
-delete parent;  // this always calls ~Parent(); ~Child() is never called.
-</pre></div>
-</div>
-<p>このコードでは <tt class="docutils literal"><span class="pre">Child</span></tt> のデストラクタが呼び出されないので Child のリソースの解放が行われません。
-もちろん <tt class="docutils literal"><span class="pre">delete</span> <span class="pre">parent;</span></tt> を呼ばなければ問題は起こらないので、 <tt class="docutils literal"><span class="pre">delete</span> <span class="pre">parent;</span></tt> しないように気をつけていれば
-Child のポインタを Parent* に代入すること自体は問題ないが、
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// ~Parent is not virtual.
+</span><span class="n">Parent</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Child</span><span class="p">();</span>
+<span class="p">...</span>
+<span class="k">delete</span> <span class="n">parent</span><span class="p">;</span>  <span class="o">//</span> <span class="k">this</span> <span class="n">always</span> <span class="n">calls</span> <span class="o">~</span><span class="n">Parent</span><span class="p">();</span> <span class="o">~</span><span class="n">Child</span><span class="p">()</span> <span class="n">is</span> <span class="n">never</span> <span class="n">called</span><span class="p">.</span></code></pre></div>
+
+<p>このコードでは <code>Child</code> のデストラクタが呼び出されないので Child
+のリソースの解放が行われません。 もちろん <code>delete parent;</code>
+を呼ばなければ問題は起こらないので、 <code>delete parent;</code>
+しないように気をつけていれば Child のポインタを Parent*
+に代入すること自体は問題ないが、
 間違えやすい上に間違えた場合にはメモリーリーク系の厄介なバグの原因になるので
 親クラスのポインタにキャストすること自体を避けるべきです。</p>
-<p>なお、暗黙的に作られるデストラクタは virtual ではないのでデストラクタが空の場合でも
-virtual なデストラクタを明示的に定義しなくてならない点に気をつけて下さい:</p>
-<div class="highlight-python"><div class="highlight"><pre>class Parent {
-  ...
 
-  // 例えデストラクタが空でも
-  // virtual なデストラクタは明示的に定義する
-  virtual ~Parent() {}
-}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="id3">
-<h2>結論<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>なお、暗黙的に作られるデストラクタは virtual
+ではないのでデストラクタが空の場合でも virtual
+なデストラクタを明示的に定義しなくてならない点に気をつけて下さい:</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">class</span> <span class="nc">Parent</span> <span class="p">{</span>
+  <span class="p">...</span>
+
+  <span class="c1">// 例えデストラクタが空でも
+</span>  <span class="c1">// virtual なデストラクタは明示的に定義する
+</span>  <span class="k">virtual</span> <span class="o">~</span><span class="n">Parent</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span></code></pre></div>
+
+<h1 id="section-1">結論</h1>
+
 <p>上で述べた2つの前提</p>
-<ul class="simple">
-<li>virtual なメソッドを持つクラスは、その子クラスのポインタを親クラスのポインタとして必ず利用するが、</li>
-<li>子クラスを親クラスのポインタとして利用する場合、デストラクタは virtual でなくてはならない</li>
+
+<ul>
+  <li>virtual
+なメソッドを持つクラスは、その子クラスのポインタを親クラスのポインタとして必ず利用するが、</li>
+  <li>子クラスを親クラスのポインタとして利用する場合、デストラクタは
+virtual でなくてはならない</li>
 </ul>
-<p>から <strong>「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」</strong> というルールが必要であることが分かります。</p>
-</div>
-<div class="section" id="others">
-<span id="id4"></span><h2>おまけ: 派生系のルール<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
-<p>「C++では常にデストラクタは virtual にすべき」というルールでないのは virtual 関数はvtableを使用するため、
-virtualのデストラクタは呼び出しが若干遅くなるのと、
-virtual があることでインスタンスのサイズが vtable へのポインタ分増えてしまい無駄だからです。そもそも
-<a class="reference external" href="http://www.stroustrup.com/bs_faq2.html#virtual-dtor">デストラクタがデフォルトで virtual でないのは意図的なものです</a>。
+
+<p>から <strong>「virtual なメソッドを持つクラスのデストラクタは virtual
+でなくてはならない」</strong> というルールが必要であることが分かります。</p>
+
+<h1 id="others">おまけ: 派生系のルール</h1>
+
+<p>「C++では常にデストラクタは virtual にすべき」というルールでないのは
+virtual 関数はvtableを使用するため、
+virtualのデストラクタは呼び出しが若干遅くなるのと、 virtual
+があることでインスタンスのサイズが vtable
+へのポインタ分増えてしまい無駄だからです。そもそも
+<a href="http://www.stroustrup.com/bs_faq2.html#virtual-dtor">デストラクタがデフォルトで virtual
+でないのは意図的なものです</a>。
 しかし多くのプログラムではこの2つによるパフォーマンスの劣化はそれほど深刻にはならないと思いますし、
 その点を理解した上で「常にデストラクタをvirtualにする」というシンプルで覚えやすいルールで運用するのはありえなくはないかと思います。
 でもそういうプログラムではC++をそもそも使わないかもしれません。</p>
-<p>また「継承される可能性のあるクラスのデストラクタは virtual にすべき」というルールが書かれていることもありますが、
+
+<p>また「継承される可能性のあるクラスのデストラクタは virtual
+にすべき」というルールが書かれていることもありますが、
 このルールだと継承はするけれど、親クラスのポインタへのキャストをしない場合には
 virtual をつけることで無駄なコストが発生してしまいます。
-一方で、このルールのほうが virtual なメソッドは無い (ポリモフィズムは使わない)
-が子クラスのポインタを親クラスのポインタとして利用することはある場合  (あまりないと思うが) にも対応できるので
-優れているとも言える。
+一方で、このルールのほうが virtual なメソッドは無い
+(ポリモフィズムは使わない)
+が子クラスのポインタを親クラスのポインタとして利用することはある場合
+(あまりないと思うが) にも対応できるので 優れているとも言える。
 いずれにせよ現実には、継承は多くの場合ポリモフィズムとセットで利用されるので、
-「継承される可能性のあるクラス」と「virtual なメソッドを持つクラス」は同義である場合が多いかと思いますし、
-個人的には
-「継承される可能性のあるクラスのデストラクタは virtual でなくてはならない」と
-「virtual なメソッドを持つクラスのデストラクタは virtual でなくてはならない」は
-実用上は差はないかと思います。</p>
-</div>
-</div>
+「継承される可能性のあるクラス」と「virtual
+なメソッドを持つクラス」は同義である場合が多いかと思いますし、
+個人的には 「継承される可能性のあるクラスのデストラクタは virtual
+でなくてはならない」と 「virtual なメソッドを持つクラスのデストラクタは
+virtual でなくてはならない」は 実用上は差はないかと思います。</p>
 
 
-          </div>
-        </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="static_library.html" title="静的ライブラリ (.a) の作成と利用"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>

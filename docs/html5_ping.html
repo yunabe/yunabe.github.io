@@ -1,163 +1,111 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>HTML5 ping 属性</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="Pysh: シェルスクリプトをPythonで書く" href="pysh_overview.html" />
-    <link rel="prev" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動" href="relearning_git_push_default.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HTML5 ping 属性</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/html5_ping.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="pysh_overview.html" title="Pysh: シェルスクリプトをPythonで書く"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="relearning_git_push_default.html" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">HTML5 ping 属性</a><ul>
-<li><a class="reference internal" href="#id1">対応ブラウザ</a></li>
-<li><a class="reference internal" href="#javascript-ping">JavaScript を使って ping を送る</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="relearning_git_push_default.html"
-                        title="previous chapter">Git 再入門:  引数がない場合の git push のデフォルトの挙動</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pysh_overview.html"
-                        title="next chapter">Pysh: シェルスクリプトをPythonで書く</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/html5_ping.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="html5-ping">
-<h1>HTML5 ping 属性<a class="headerlink" href="#html5-ping" title="Permalink to this headline">¶</a></h1>
-<div class="editdate container">
-更新 2014年7月25日</div>
-<p>HTML5 では &lt;a&gt; タグに ping という属性が定義されており、
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">HTML5 ping 属性</h1>
+          <p class="post-meta"><time datetime="2014-07-25T00:00:00+09:00" itemprop="datePublished">更新 Jul 25, 2014</time></p>
+        </header>
+        <p>HTML5 では &lt;a&gt; タグに ping という属性が定義されており、
 リンクが押された際にリンク先とは別にログ用のURLにリクエストを投げることがです。</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;a href=&quot;&lt;target_url&gt;&quot; ping=&quot;&lt;logging_url&gt;&quot;&gt;
-</pre></div>
-</div>
-<p>このように指定すると、ユーザがリンクをクリックした際に <tt class="docutils literal"><span class="pre">&lt;target_url&gt;</span></tt> にナビゲートされるだけでなく
-同時に <tt class="docutils literal"><span class="pre">&lt;logging_url&gt;</span></tt> に <strong>POST</strong> リクエストが飛ぶようになります (MIME type に text/ping)。
+
+<pre><code>&lt;a href="&lt;target_url&gt;" ping="&lt;logging_url&gt;"&gt;
+</code></pre>
+
+<p>このように指定すると、ユーザがリンクをクリックした際に <code>&lt;target_url&gt;</code>
+にナビゲートされるだけでなく 同時に <code>&lt;logging_url&gt;</code> に <strong>POST</strong>
+リクエストが飛ぶようになります (MIME type に text/ping)。
 この機能は検索エンジンやまとめサイトのようにユーザを外部のサイトへナビゲートすることが多く、
 その際にどのリンクが押されたのかをログしたい場合に非常に便利です。</p>
-<p>&quot;a ping&quot; ができるまでは外部サイトへのリンクがクリックされたことをログする方法は大きく分けると以下の2つがありました</p>
-<ul class="simple">
-<li>まずログ用のURLにユーザをナビゲートし、そこからユーザを目的の外部サイトへリダイレクトする</li>
-<li>リンクが押された際にログ用のURLを <tt class="docutils literal"><span class="pre">src</span></tt> 属性に指定した <tt class="docutils literal"><span class="pre">&lt;img&gt;</span></tt> タグに動的に作成したり、
-XMLHttpRequest によって非同期リクエストをログ用のURLに投げる</li>
+
+<p>“a ping”
+ができるまでは外部サイトへのリンクがクリックされたことをログする方法は大きく分けると以下の2つがありました</p>
+
+<ul>
+  <li>まずログ用のURLにユーザをナビゲートし、そこからユーザを目的の外部サイトへリダイレクトする</li>
+  <li>リンクが押された際にログ用のURLを <code>src</code> 属性に指定した <code>&lt;img&gt;</code>
+タグに動的に作成したり、 XMLHttpRequest
+によって非同期リクエストをログ用のURLに投げる</li>
 </ul>
+
 <p>しかし前者の方法には、URLリダイレクタにユーザを一度飛ばすため1ページロード分ユーザが目的のページに着くのが遅くなってしまうという問題があります。
-一方後者の方法では、<tt class="docutils literal"><span class="pre">&lt;img&gt;</span></tt> や <tt class="docutils literal"><span class="pre">XMLHttpRequest</span></tt> で指定したURLがロードされるよりも前に
+一方後者の方法では、<code>&lt;img&gt;</code> や <code>XMLHttpRequest</code>
+で指定したURLがロードされるよりも前に
 ページ遷移によって現在のページがアンロードされてしまい、ログ用のURLへのリクエストが行われない可能性があり問題があります。</p>
-<p>しかし &quot;a ping&quot; を使うとURLリダイレクタを挟む必要が無いのでユーザに余計な時間を使わせることもなく、
-<tt class="docutils literal"><span class="pre">&lt;img&gt;</span></tt> を使った非同期的な方法と違い現在のページがアンロードされてもログ用URLへのリクエストはブラウザが行ってくれるので
-より確実にログを取ることができるようになります。
-実際、<a class="reference external" href="https://plus.google.com/+IlyaGrigorik/posts/fPJNzUf76Nx">Google は 2013/10 から対応ブラウザでは &quot;a ping&quot; を使っていて、それによって1クリックにつき 200〜400 [ms] ユーザの時間を節約できています</a> 。</p>
-<div class="section" id="id1">
-<h2>対応ブラウザ<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="javascript-ping">
-<h2>JavaScript を使って ping を送る<a class="headerlink" href="#javascript-ping" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
 
+<p>しかし “a ping”
+を使うとURLリダイレクタを挟む必要が無いのでユーザに余計な時間を使わせることもなく、
+<code>&lt;img&gt;</code>
+を使った非同期的な方法と違い現在のページがアンロードされてもログ用URLへのリクエストはブラウザが行ってくれるので
+より確実にログを取ることができるようになります。 実際、<a href="https://plus.google.com/+IlyaGrigorik/posts/fPJNzUf76Nx">Google は
+2013/10 から対応ブラウザでは “a ping”
+を使っていて、それによって1クリックにつき 200〜400 [ms]
+ユーザの時間を節約できています</a>
+。</p>
 
-          </div>
-        </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="pysh_overview.html" title="Pysh: シェルスクリプトをPythonで書く"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="relearning_git_push_default.html" title="Git 再入門: 引数がない場合の git push のデフォルトの挙動"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>

@@ -1,530 +1,540 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する" href="python_metaclass.html" />
-    <link rel="prev" title="覚えておくと便利な Python 標準ライブラリ" href="python_useful_standard_modules.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/python_package_management.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="python_useful_standard_modules.html" title="覚えておくと便利な Python 標準ライブラリ"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</a><ul>
-<li><a class="reference internal" href="#keywords">キーワード</a></li>
-<li><a class="reference internal" href="#id3">事前知識</a><ul>
-<li><a class="reference internal" href="#site-packages">site-packages</a></li>
-<li><a class="reference internal" href="#user-site-directory">User site directory</a></li>
-<li><a class="reference internal" href="#pypi">PyPI</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils">distutils</a><ul>
-<li><a class="reference internal" href="#distutils-basic">基本</a></li>
-<li><a class="reference internal" href="#id7">distutils における依存関係の扱い</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distribute">distribute</a></li>
-<li><a class="reference internal" href="#setuptools">setuptools</a><ul>
-<li><a class="reference internal" href="#id10">インストール</a></li>
-<li><a class="reference internal" href="#id11">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#easy-install">easy_install</a><ul>
-<li><a class="reference internal" href="#id13">easy_install の使い方</a></li>
-<li><a class="reference internal" href="#id15">文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#python-eggs">Python Eggs</a></li>
-<li><a class="reference internal" href="#ez-setup-py">ez_setup.py</a></li>
-<li><a class="reference internal" href="#pip">pip</a><ul>
-<li><a class="reference internal" href="#id19">インストール &amp; アップグレード</a></li>
-<li><a class="reference internal" href="#id20">使い方</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#wheels">Wheels</a><ul>
-<li><a class="reference internal" href="#id21">インストール</a></li>
-<li><a class="reference internal" href="#id22">Wheelの作成</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id23">その他</a></li>
-<li><a class="reference internal" href="#id24">その他 参考文献</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="python_useful_standard_modules.html"
-                        title="previous chapter">覚えておくと便利な Python 標準ライブラリ</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="python_metaclass.html"
-                        title="next chapter">Python の メタプログラミング (__metaclass__, メタクラス) を理解する</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/python_package_management.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="python-pip-setuptools-easy-install-etc">
-<h1>Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)<a class="headerlink" href="#python-pip-setuptools-easy-install-etc" title="Permalink to this headline">¶</a></h1>
-<div class="editdate container">
-更新 2015年1月13日</div>
-<p>Python のパッケージ管理関係の情報がオフィシャルには整理されてなく、
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</h1>
+          <p class="post-meta"><time datetime="2015-01-13T00:00:00+09:00" itemprop="datePublished">更新 Jan 13, 2015</time></p>
+        </header>
+        <p>Python のパッケージ管理関係の情報がオフィシャルには整理されてなく、
 またパッケージ管理まわりででてくるキーワードもいくつもあって分かり難いので完結にまとめてみました。
 このドキュメント自体は少し長いですが、結論としては2015年1月時点では</p>
-<ul class="simple">
-<li>原則 pip を使ってパッケージの管理を行う</li>
-<li>setuptools も広く使われているので入れておくとよい。そもそも pip のインストール時に自動的ににインストールされる</li>
-<li>distribute は 2013年に setuptools にマージされたので不要</li>
-</ul>
-<p>という方針でよいと思います。</p>
-<p>ただ少し古い情報ソースやパッケージのドキュメントを読んでいると distribute の利用が勧められていたり、
-site-packages, easy_install, ez_setup.py, distutils, PyPI, Eggs, etc... と色々なキーワードが出て来て、
-それぞれが何なのかを理解していないと混乱してしまいます。
-そのため、それぞれの技術と技術同士の関係を理解しておくのは Python で正しくパッケージ管理を行う上で大切かと思います。</p>
-<div class="contents local topic" id="id1">
-<p class="topic-title first">目次</p>
-<ul class="simple">
-<li><a class="reference internal" href="#keywords" id="id25">キーワード</a></li>
-<li><a class="reference internal" href="#id3" id="id26">事前知識</a><ul>
-<li><a class="reference internal" href="#site-packages" id="id27">site-packages</a></li>
-<li><a class="reference internal" href="#user-site-directory" id="id28">User site directory</a></li>
-<li><a class="reference internal" href="#pypi" id="id29">PyPI</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils" id="id30">distutils</a><ul>
-<li><a class="reference internal" href="#distutils-basic" id="id31">基本</a></li>
-<li><a class="reference internal" href="#id7" id="id32">distutils における依存関係の扱い</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distribute" id="id33">distribute</a></li>
-<li><a class="reference internal" href="#setuptools" id="id34">setuptools</a><ul>
-<li><a class="reference internal" href="#id10" id="id35">インストール</a></li>
-<li><a class="reference internal" href="#id11" id="id36">参考文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#easy-install" id="id37">easy_install</a><ul>
-<li><a class="reference internal" href="#id13" id="id38">easy_install の使い方</a></li>
-<li><a class="reference internal" href="#id15" id="id39">文献</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#python-eggs" id="id40">Python Eggs</a></li>
-<li><a class="reference internal" href="#ez-setup-py" id="id41">ez_setup.py</a></li>
-<li><a class="reference internal" href="#pip" id="id42">pip</a><ul>
-<li><a class="reference internal" href="#id19" id="id43">インストール &amp; アップグレード</a></li>
-<li><a class="reference internal" href="#id20" id="id44">使い方</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#wheels" id="id45">Wheels</a><ul>
-<li><a class="reference internal" href="#id21" id="id46">インストール</a></li>
-<li><a class="reference internal" href="#id22" id="id47">Wheelの作成</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id23" id="id48">その他</a></li>
-<li><a class="reference internal" href="#id24" id="id49">その他 参考文献</a></li>
-</ul>
-</div>
-<div class="section" id="keywords">
-<span id="id2"></span><h2><a class="toc-backref" href="#id25">キーワード</a><a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
-<p>Python におけるパッケージ管理に関係のあるキーワードをアルファベット順に。</p>
-<ul class="simple">
-<li><a class="reference internal" href="#easy-install"><em>easy_install</em></a><ul>
-<li>setuptools に付属しているコマンドラインツール。easy_install を使うと簡単なコマンドで web 上 (e.g. PyPI) から
-パッケージをダウンロードしてインストールすることができる。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#ez-setup"><em>ez_setup.py</em></a><ul>
-<li>setuptools をインストールする際に利用されるスクリプトの名前。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distribute"><em>distribute</em></a><ul>
-<li>setuptools の更新が停滞していた時に発生した setuptools のクローン。
-2013年に setuptools とマージされたので、distribute のことは気にする必要はないはず。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils"><em>distutils</em></a><ul>
-<li>Python 標準のパッケージ管理の基本的な機能を提供するモジュール (import distutils)。
-setuptools が distutils の高機能版で広く使われているので setuptools を使うのが一般的。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#setuptools"><em>setuptools</em></a><ul>
-<li>distutils を強化したパッケージ管理用の setuptools というモジュールと、
-easy_install というコマンドラインツールのセット。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#distutils-basic"><em>setup.py</em></a><ul>
-<li>setuptools, distutils でパッケージの定義を記述するスクリプトに使われるファイル名。
-作成されたパッケージをインストールする際にも利用される。</li>
-</ul>
-</li>
-<li><em class="xref std std-ref">pip</em><ul>
-<li>easy_install の強化版ツール</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pypi"><em>PyPI</em></a><ul>
-<li>the Python Package Index。だれでも Python のパッケージが登録できる python.org のサイト。
-easy_install とか pip は基本的にここからパッケージを探してきてインストールしてくれる。</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#python-eggs"><em>Python Eggs</em></a><ul>
-<li>setuptools で定義された Python の配布形式。
-Python のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの (distutils の生成するzip/tar の拡張版)。
-setuptools を使って (つまり setuptools を使って setup.py を定義していれば) 作成することができる。</li>
-</ul>
-</li>
-<li><a class="reference external" href="https://www.python.org/dev/peps/pep-0427/">Python Wheels</a><ul>
-<li>Python Eggs の後継のフォーマット。</li>
-</ul>
-</li>
-<li>その他<ul>
-<li>buildout, virtualenv</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h2><a class="toc-backref" href="#id26">事前知識</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="site-packages">
-<h3><a class="toc-backref" href="#id27">site-packages</a><a class="headerlink" href="#site-packages" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Python には <tt class="docutils literal"><span class="pre">site-packages</span></tt> というディレクトリが存在し、そのサイト (マシン環境) 固有のモジュールは site-packages に保存されるようになっている。</li>
-<li>site-packages が モジュールの探索パス (sys.path) に足された後、sitecustomize というモジュールが暗黙的に Python に import される。 sitecustomize にサイト固有の設定を書いておくことができる。<tt class="docutils literal"><span class="pre">sys.setdefaultencoding('utf-8')</span></tt> でエンコーディングを設定するのによく使われる。</li>
-<li>sitecustomize.py は sys.path が通っているディレクトリならどこにおいてもよいけど、site-packages に置くのが自然である。</li>
-<li>ちなみに site-packages と似た、site-python というのも存在するらしいが、あまり使われていないし、 <a class="reference external" href="https://docs.python.org/3.4/library/site.html">site-pythonはPython 3.5で廃止される</a> ようなので気にしなくてよい。</li>
-<li>参考文献<ul>
-<li><a class="reference external" href="http://docs.python.org/2/install/#how-installation-works">http://docs.python.org/2/install/#how-installation-works</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/site.html">http://docs.python.org/2/library/site.html</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="user-site-directory">
-<h3><a class="toc-backref" href="#id28">User site directory</a><a class="headerlink" href="#user-site-directory" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Python 2.6 から <tt class="docutils literal"><span class="pre">per</span> <span class="pre">user</span> <span class="pre">site-packages</span></tt> というものが存在していて、ユーザ毎のモジュールを保存することができる。</li>
-<li><tt class="docutils literal"><span class="pre">per</span> <span class="pre">user</span> <span class="pre">site-packages</span></tt> を使えば site-packages にアクセス権がないユーザ (環境標準の Python を使っているならすべての非rootユーザ) も site-packages にモジュールが簡単にインストールできる。</li>
-<li>per user site-packages のパスは、 <tt class="docutils literal"><span class="pre">site.UER_SITE</span></tt> で参照できる。
-Linux だと <tt class="docutils literal"><span class="pre">$HOME/.local/lib/pythonX.Y/site-packages</span></tt>。 Macだと <tt class="docutils literal"><span class="pre">$HOME/Library/Python/X.Y/lib/python/site-packages</span></tt></li>
-<li>Python 2.6 以降は Virtual Python とかをユーザ毎の環境を作るためだけに使う必要はない。もちろん isolated な環境を作るのには依然として有益である。</li>
-<li>参考文献<ul>
-<li><a class="reference external" href="http://legacy.python.org/dev/peps/pep-0370/">PEP 0370 Per user site-packages directory</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/site.html">http://docs.python.org/2/library/site.html</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="pypi">
-<span id="id4"></span><h3><a class="toc-backref" href="#id29">PyPI</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://pypi.python.org/pypi">PyPI: the Python Package Index</a>。
-だれでも Python のパッケージが登録できる python.org のサイト。
-後述の easy_install とか pip はここからパッケージを探してきてインストールしてくれる。</p>
-</div>
-</div>
-<div class="section" id="distutils">
-<span id="id5"></span><h2><a class="toc-backref" href="#id30">distutils</a><a class="headerlink" href="#distutils" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Python 標準のパッケージ管理用のモジュール。パッケージ管理の基本的な機能を提供する。</li>
-<li>setuptools や pip などのその他のパッケージ管理システムは distutils に機能を拡張するものである。</li>
-<li>パッケージ管理について理解するにはまず distutils の基本は理解しておいたほうがよいかもしれない。</li>
-<li>しかしパッケージ作成に実際に使うのは distutils の拡張である setuptools だろうから、distutils の仕様をそこまで細かく理解しておく必要はあまりないかも。</li>
-</ul>
-<div class="section" id="distutils-basic">
-<span id="id6"></span><h3><a class="toc-backref" href="#id31">基本</a><a class="headerlink" href="#distutils-basic" title="Permalink to this headline">¶</a></h3>
-<p>Python のソースコードの入ったディレクトリに:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">,</span>
-      <span class="n">version</span><span class="o">=</span><span class="s">&#39;1.0&#39;</span><span class="p">,</span>
-      <span class="n">py_modules</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;foo&#39;</span><span class="p">],</span>
-      <span class="p">)</span>
-</pre></div>
-</div>
-<p>のような setup.py というファイルを用意する。
-この例では foo というモジュールがあるモジュール配布物 (module distribution) を定義している。
-setup.py ができたら、:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py sdist
-</pre></div>
-</div>
-<p>を実行する。そうすると、dist というディレクトリに module distribution の .zip や .tar.gz ファイルが作成される。これを配布すれば良い。</p>
-<p>配布されたパッケージをインストールするには、sdist で作成されたファイルをダウンロード・解凍して、展開先のディレクトリで:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py install
-</pre></div>
-</div>
+<ul>
+  <li>原則 pip を使ってパッケージの管理を行う</li>
+  <li>setuptools も広く使われているので入れておくとよい。そもそも pip
+のインストール時に自動的ににインストールされる</li>
+  <li>distribute は 2013年に setuptools にマージされたので不要</li>
+</ul>
+
+<p>という方針でよいと思います。</p>
+
+<p>ただ少し古い情報ソースやパッケージのドキュメントを読んでいると
+distribute の利用が勧められていたり、 site-packages, easy_install,
+ez_setup.py, distutils, PyPI, Eggs, etc…
+と色々なキーワードが出て来て、
+それぞれが何なのかを理解していないと混乱してしまいます。
+そのため、それぞれの技術と技術同士の関係を理解しておくのは Python
+で正しくパッケージ管理を行う上で大切かと思います。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#section">キーワード</a></li>
+  <li><a href="#section-1">事前知識</a>    <ul>
+      <li><a href="#site-packages">site-packages</a></li>
+      <li><a href="#user-site-directory">User site directory</a></li>
+      <li><a href="#pypi">PyPI</a></li>
+    </ul>
+  </li>
+  <li><a href="#distutils">distutils</a>    <ul>
+      <li><a href="#distutils-basic">基本</a></li>
+      <li><a href="#distutils-">distutils における依存関係の扱い</a></li>
+    </ul>
+  </li>
+  <li><a href="#distribute">distribute</a></li>
+  <li><a href="#setuptools">setuptools</a>    <ul>
+      <li><a href="#section-2">インストール</a></li>
+      <li><a href="#section-3">参考文献</a></li>
+    </ul>
+  </li>
+  <li><a href="#easy-install">easy_install</a>    <ul>
+      <li><a href="#easyinstall-">easy_install の使い方</a></li>
+      <li><a href="#section-4">文献</a></li>
+    </ul>
+  </li>
+  <li><a href="#python-eggs">Python Eggs</a></li>
+  <li><a href="#ez-setup">ez_setup.py</a></li>
+  <li><a href="#pip">pip</a>    <ul>
+      <li><a href="#section-5">インストール &amp; アップグレード</a></li>
+      <li><a href="#section-6">使い方</a></li>
+    </ul>
+  </li>
+  <li><a href="#wheels">Wheels</a>    <ul>
+      <li><a href="#section-7">インストール</a></li>
+      <li><a href="#wheel">Wheelの作成</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-8">その他</a></li>
+  <li><a href="#section-9">参考文献</a></li>
+</ul>
+
+<h1 id="section">キーワード</h1>
+
+<p>Python
+におけるパッケージ管理に関係のあるキーワードをアルファベット順に。</p>
+
+<ul>
+  <li><a href="#easy-install">easy_install</a>
+    <ul>
+      <li>setuptools に付属しているコマンドラインツール。easy_install
+を使うと簡単なコマンドで web 上 (e.g. PyPI) から
+パッケージをダウンロードしてインストールすることができる。</li>
+    </ul>
+  </li>
+  <li><a href="#ez-setup">ez_setup.py</a>
+    <ul>
+      <li>setuptools をインストールする際に利用されるスクリプトの名前。</li>
+    </ul>
+  </li>
+  <li><a href="#distribute">distribute</a>
+    <ul>
+      <li>setuptools の更新が停滞していた時に発生した setuptools
+のクローン。 2013年に setuptools とマージされたので、distribute
+のことは気にする必要はないはず。</li>
+    </ul>
+  </li>
+  <li><a href="#distutils">distutils</a>
+    <ul>
+      <li>Python 標準のパッケージ管理の基本的な機能を提供するモジュール
+(import distutils)。 setuptools が distutils
+の高機能版で広く使われているので setuptools を使うのが一般的。</li>
+    </ul>
+  </li>
+  <li><a href="#setuptools">setuptools</a>
+    <ul>
+      <li>distutils を強化したパッケージ管理用の setuptools
+というモジュールと、 easy_install
+というコマンドラインツールのセット。</li>
+    </ul>
+  </li>
+  <li><a href="#distutils-basic">setup.py</a>
+    <ul>
+      <li>setuptools, distutils
+でパッケージの定義を記述するスクリプトに使われるファイル名。
+作成されたパッケージをインストールする際にも利用される。</li>
+    </ul>
+  </li>
+  <li><a href="#pip">pip</a>
+    <ul>
+      <li>easy_install の強化版ツール</li>
+    </ul>
+  </li>
+  <li><a href="#pypi">PyPI</a>
+    <ul>
+      <li>the Python Package Index。だれでも Python
+のパッケージが登録できる python.org のサイト。 easy_install
+とか pip
+は基本的にここからパッケージを探してきてインストールしてくれる。</li>
+    </ul>
+  </li>
+  <li><a href="#python-eggs">Python Eggs</a>
+    <ul>
+      <li>setuptools で定義された Python の配布形式。 Python
+のコードやメタ情報その他を所定のフォーマットに従って zip
+で固めたもの (distutils の生成するzip/tar の拡張版)。 setuptools
+を使って (つまり setuptools を使って setup.py を定義していれば)
+作成することができる。</li>
+    </ul>
+  </li>
+  <li><a href="https://www.python.org/dev/peps/pep-0427/">Python Wheels</a>
+    <ul>
+      <li>Python Eggs の後継のフォーマット。</li>
+    </ul>
+  </li>
+  <li>その他
+    <ul>
+      <li>buildout, virtualenv</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="section-1">事前知識</h1>
+
+<h2 id="site-packages">site-packages</h2>
+
+<ul>
+  <li>Python には <code>site-packages</code> というディレクトリが存在し、そのサイト
+(マシン環境) 固有のモジュールは site-packages
+に保存されるようになっている。</li>
+  <li>site-packages が モジュールの探索パス (sys.path)
+に足された後、sitecustomize というモジュールが暗黙的に Python に
+import される。 sitecustomize
+にサイト固有の設定を書いておくことができる。<code>sys.setdefaultencoding('utf-8')</code>
+でエンコーディングを設定するのによく使われる。</li>
+  <li>sitecustomize.py は sys.path
+が通っているディレクトリならどこにおいてもよいけど、site-packages
+に置くのが自然である。</li>
+  <li>ちなみに site-packages と似た、site-python
+というのも存在するらしいが、あまり使われていないし、
+<a href="https://docs.python.org/3.4/library/site.html">site-pythonはPython
+3.5で廃止される</a>
+ようなので気にしなくてよい。</li>
+  <li>参考文献
+    <ul>
+      <li><a href="http://docs.python.org/2/install/#how-installation-works">http://docs.python.org/2/install/#how-installation-works</a></li>
+      <li><a href="http://docs.python.org/2/library/site.html">http://docs.python.org/2/library/site.html</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="user-site-directory">User site directory</h2>
+
+<ul>
+  <li>Python 2.6 から <code>per user site-packages</code>
+というものが存在していて、ユーザ毎のモジュールを保存することができる。</li>
+  <li><code>per user site-packages</code> を使えば site-packages
+にアクセス権がないユーザ (環境標準の Python
+を使っているならすべての非rootユーザ) も site-packages
+にモジュールが簡単にインストールできる。</li>
+  <li>per user site-packages のパスは、 <code>site.UER_SITE</code> で参照できる。
+Linux だと <code>$HOME/.local/lib/pythonX.Y/site-packages</code>。 Macだと
+<code>$HOME/Library/Python/X.Y/lib/python/site-packages</code></li>
+  <li>Python 2.6 以降は Virtual Python
+とかをユーザ毎の環境を作るためだけに使う必要はない。もちろん
+isolated な環境を作るのには依然として有益である。</li>
+  <li>参考文献
+    <ul>
+      <li><a href="http://legacy.python.org/dev/peps/pep-0370/">PEP 0370 Per user site-packages
+directory</a></li>
+      <li><a href="http://docs.python.org/2/library/site.html">http://docs.python.org/2/library/site.html</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="pypi">PyPI</h2>
+
+<p><a href="https://pypi.python.org/pypi">PyPI: the Python Package Index</a>。
+だれでも Python のパッケージが登録できる python.org のサイト。 後述の
+easy_install とか pip
+はここからパッケージを探してきてインストールしてくれる。</p>
+
+<h1 id="distutils">distutils</h1>
+
+<ul>
+  <li>Python
+標準のパッケージ管理用のモジュール。パッケージ管理の基本的な機能を提供する。</li>
+  <li>setuptools や pip などのその他のパッケージ管理システムは distutils
+に機能を拡張するものである。</li>
+  <li>パッケージ管理について理解するにはまず distutils
+の基本は理解しておいたほうがよいかもしれない。</li>
+  <li>しかしパッケージ作成に実際に使うのは distutils の拡張である
+setuptools だろうから、distutils
+の仕様をそこまで細かく理解しておく必要はあまりないかも。</li>
+</ul>
+
+<h2 id="distutils-basic">基本</h2>
+
+<p>Python のソースコードの入ったディレクトリに:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'foo'</span><span class="p">,</span>
+      <span class="n">version</span><span class="o">=</span><span class="s">'1.0'</span><span class="p">,</span>
+      <span class="n">py_modules</span><span class="o">=</span><span class="p">[</span><span class="s">'foo'</span><span class="p">],</span>
+      <span class="p">)</span></code></pre></div>
+
+<p>のような setup.py というファイルを用意する。 この例では foo
+というモジュールがあるモジュール配布物 (module distribution)
+を定義している。 setup.py ができたら、:</p>
+
+<pre><code>python setup.py sdist
+</code></pre>
+
+<p>を実行する。そうすると、dist というディレクトリに module distribution の
+.zip や .tar.gz ファイルが作成される。これを配布すれば良い。
+配布されたパッケージをインストールするには、sdist
+で作成されたファイルをダウンロード・解凍して、展開先のディレクトリで:</p>
+
+<pre><code>python setup.py install
+</code></pre>
+
 <p>を実行すればよい。site-packages にインストールが行われる。
-<tt class="docutils literal"><span class="pre">User</span> <span class="pre">site</span> <span class="pre">directory</span></tt> にインストールしたい場合には、
-<a class="reference external" href="https://docs.python.org/2/install/index.html#alternate-installation-the-user-scheme">install コマンドに --user オプションを付ける</a>。
-<tt class="docutils literal"><span class="pre">--user</span></tt> オプションを付ければ、非rootユーザも自分のホームディレクトリにモジュール配布物をインストールすることができる。 その他のコマンドの一覧は:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py --help-commands
-</pre></div>
-</div>
+<code>User site directory</code> にインストールしたい場合には、 <a href="https://docs.python.org/2/install/index.html#alternate-installation-the-user-scheme">install コマンドに
+–user
+オプションを付ける</a>。
+<code>--user</code>
+オプションを付ければ、非rootユーザも自分のホームディレクトリにモジュール配布物をインストールすることができる。
+その他のコマンドの一覧は:</p>
+
+<pre><code>python setup.py --help-commands
+</code></pre>
+
 <p>で表示できる。</p>
-</div>
-<div class="section" id="id7">
-<h3><a class="toc-backref" href="#id32">distutils における依存関係の扱い</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://docs.python.org/2/distutils/setupscript.html#relationships-between-distributions-and-packages">distutils ドキュメントには、setup に渡す requires パラメータで依存関係が定義できる</a> という下りがあるが、
-<a class="reference external" href="https://docs.python.org/2.7/distutils/apiref.html">setup のパラメータ一覧</a> には requires はないようにみえる。整合性が取れていなくてよく分からない。
-<a class="reference external" href="http://legacy.python.org/dev/peps/pep-0314/">PEP314</a> にはrequires に関する言及がある。
-おそらく現行(2.7)の distutils では依存関係の宣言とそれによるインストールはサポートされていない。</p>
-</div>
-</div>
-<div class="section" id="distribute">
-<span id="id8"></span><h2><a class="toc-backref" href="#id33">distribute</a><a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h2>
-<p>setuptoolsのクローン。setuptools の開発が進まないので、 distribute という setuptools のブランチが作成されていた。
-少し古いページでは distribute のインストールが勧められていることも多い。
-しかし、<a class="reference external" href="http://pythonhosted.org/setuptools/merge.html">2013年に distribute は setuptools にマージされた</a> ので今後は
-distribute を使う必要はないと思われる。</p>
-</div>
-<div class="section" id="setuptools">
-<span id="id9"></span><h2><a class="toc-backref" href="#id34">setuptools</a><a class="headerlink" href="#setuptools" title="Permalink to this headline">¶</a></h2>
-<p>distutils を拡張するライブラリと easy_install というモジュールのインストールを行う補助コマンドのセット。
+
+<h2 id="distutils-">distutils における依存関係の扱い</h2>
+
+<p><a href="https://docs.python.org/2/distutils/setupscript.html#relationships-between-distributions-and-packages">distutils ドキュメントには、setup に渡す requires
+パラメータで依存関係が定義できる</a>
+という下りがあるが、 <a href="https://docs.python.org/2.7/distutils/apiref.html">setup
+のパラメータ一覧</a>
+には requires はないようにみえる。整合性が取れていなくてよく分からない。
+<a href="http://legacy.python.org/dev/peps/pep-0314/">PEP314</a> にはrequires
+に関する言及がある。 おそらく現行(2.7)の distutils
+では依存関係の宣言とそれによるインストールはサポートされていない。</p>
+
+<h1 id="distribute">distribute</h1>
+
+<p>setuptoolsのクローン。setuptools の開発が進まないので、 distribute
+という setuptools のブランチが作成されていた。 少し古いページでは
+distribute のインストールが勧められていることも多い。 しかし、<a href="http://pythonhosted.org/setuptools/merge.html">2013年に
+distribute は setuptools
+にマージされた</a>
+ので今後は distribute を使う必要はないと思われる。</p>
+
+<h1 id="setuptools">setuptools</h1>
+
+<p>distutils を拡張するライブラリと easy_install
+というモジュールのインストールを行う補助コマンドのセット。
 更新が停止していたので、代替として distribute が開発されていたが
 distribute は2013年にマージされたので、今後はsetuptools を使えば良い。</p>
-<div class="section" id="id10">
-<h3><a class="toc-backref" href="#id35">インストール</a><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<p>ez_setup.py というブートストラップ用のスクリプトをダウンロードし実行する。:</p>
-<div class="highlight-python"><div class="highlight"><pre>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+
+<h2 id="section-2">インストール</h2>
+
+<p>ez_setup.py
+というブートストラップ用のスクリプトをダウンロードし実行する。:</p>
+
+<pre><code>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python ez_setup.py
-</pre></div>
-</div>
+</code></pre>
+
 <p>前述の User site directory にインストールする場合には、:</p>
-<div class="highlight-python"><div class="highlight"><pre>python ez_setup.py --user
-</pre></div>
-</div>
-<p>を実行する。
-Mac の Python には始めから入っているような気がする。:</p>
-<div class="highlight-python"><div class="highlight"><pre>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
-</pre></div>
-</div>
-</div>
-<div class="section" id="id11">
-<h3><a class="toc-backref" href="#id36">参考文献</a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://pypi.python.org/pypi/setuptools">https://pypi.python.org/pypi/setuptools</a></p>
-</div>
-</div>
-<div class="section" id="easy-install">
-<span id="id12"></span><h2><a class="toc-backref" href="#id37">easy_install</a><a class="headerlink" href="#easy-install" title="Permalink to this headline">¶</a></h2>
-<p>簡単に PyPI や指定されたURLにあるアーカイブからモジュールのインストールが行えるコマンド。
-setuptools に付随している。パッケージを自作しないユーザが setuptols を入れる直接的な理由のほとんどはこれをインストールするためであろう。</p>
-<div class="section" id="id13">
-<h3><a class="toc-backref" href="#id38">easy_install の使い方</a><a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>PyPI から最新版をダウンロードしてインストール<ul>
-<li>easy_install SQLObject</li>
+
+<pre><code>python ez_setup.py --user
+</code></pre>
+
+<p>を実行する。 Mac の Python には始めから入っているような気がする。:</p>
+
+<pre><code>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
+</code></pre>
+
+<h2 id="section-3">参考文献</h2>
+
+<p><a href="https://pypi.python.org/pypi/setuptools">https://pypi.python.org/pypi/setuptools</a></p>
+
+<h1 id="easy-install">easy_install</h1>
+
+<p>簡単に PyPI
+や指定されたURLにあるアーカイブからモジュールのインストールが行えるコマンド。
+setuptools に付随している。パッケージを自作しないユーザが setuptols
+を入れる直接的な理由のほとんどはこれをインストールするためであろう。</p>
+
+<h2 id="easyinstall-">easy_install の使い方</h2>
+
+<ul>
+  <li>PyPI から最新版をダウンロードしてインストール
+    <ul>
+      <li>easy_install SQLObject</li>
+    </ul>
+  </li>
+  <li>アーカイブをダウンロードしてインストール
+    <ul>
+      <li>easy_install <a href="http://example.com/path/to/MyPackage-1.2.3.tgz">http://example.com/path/to/MyPackage-1.2.3.tgz</a></li>
+    </ul>
+  </li>
+  <li><code>User site directory</code> へインストール
+    <ul>
+      <li>前述の ez_setup.py に –user を付けて setuptools
+とそれに付随する easy_install を User site directory
+にインストールした場合は、 easy_install
+によってインストールされるパッケージもデフォルトで User site
+directory にインストールされる。</li>
+      <li>/usr/bin/easy_install のような環境にインストールされている
+easy_install を利用してUser site directory
+にパッケージをインストールしたい場合には、 –user
+オプションをつければよい。 ただ、Mac OS に付随している
+setuptools は古いのか –user が何故か使えない…ので、
+easy_install 自体を User site directory
+に自分でインストールしてそちらを使うほうが良い模様。</li>
+      <li><a href="https://pythonhosted.org/setuptools/easy_install.html#downloading-and-installing-a-package">その他の使い方</a></li>
+    </ul>
+  </li>
 </ul>
-</li>
-<li>アーカイブをダウンロードしてインストール<ul>
-<li>easy_install <a class="reference external" href="http://example.com/path/to/MyPackage-1.2.3.tgz">http://example.com/path/to/MyPackage-1.2.3.tgz</a></li>
+
+<h2 id="section-4">文献</h2>
+
+<ul>
+  <li><a href="https://pythonhosted.org/setuptools/easy_install.html">easy_install
+documentation</a></li>
 </ul>
-</li>
-<li><tt class="docutils literal"><span class="pre">User</span> <span class="pre">site</span> <span class="pre">directory</span></tt> へインストール<ul>
-<li>前述の ez_setup.py に --user を付けて setuptools とそれに付随する easy_install を User site directory にインストールした場合は、
-easy_install によってインストールされるパッケージもデフォルトで User site directory にインストールされる。</li>
-<li>/usr/bin/easy_install のような環境にインストールされている easy_install を利用してUser site directory にパッケージをインストールしたい場合には、
---user オプションをつければよい。 ただ、Mac OS に付随している setuptools は古いのか
---user が何故か使えない...ので、 easy_install 自体を User site directory に自分でインストールしてそちらを使うほうが良い模様。</li>
-<li><a class="reference external" href="https://pythonhosted.org/setuptools/easy_install.html#downloading-and-installing-a-package">その他の使い方</a></li>
+
+<h1 id="python-eggs">Python Eggs</h1>
+
+<p><a href="http://peak.telecommunity.com/DevCenter/PythonEggs">setuptools で定義された Python
+の配布形式</a>。 Python
+のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの
+(distutils の生成するzip/tar の拡張版)。 setuptools を使って (つまり
+setuptools を使って setup.py を定義していれば) 作成することができる。</p>
+
+<h1 id="ez-setup">ez_setup.py</h1>
+
+<p>上述したように、setuptools
+のインストールに利用されるブートストラップ用のスクリプト。</p>
+
+<h1 id="pip">pip</h1>
+
+<p><a href="https://pip.pypa.io/en/latest/">pip</a> はeasy_install の強化版です。
+パッケージのアンインストールなど、easy_install
+にはない機能が提供されています。 2014年12月現在、pip を使うのが Python
+における最もモダンなパッケージ管理方法だと思います。</p>
+
+<h2 id="section-5">インストール &amp; アップグレード</h2>
+
+<ul>
+  <li>wget “<a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a>”</li>
+  <li>rootにインストールする場合
+    <ul>
+      <li>sudo python get-pip.py</li>
+    </ul>
+  </li>
+  <li>非rootで User site directory にインストール場合
+    <ul>
+      <li>python get-pip.py –user</li>
+    </ul>
+  </li>
+  <li>pip 自体をアップデートする
+    <ul>
+      <li>pip install -U pip</li>
+    </ul>
+  </li>
 </ul>
-</li>
+
+<h2 id="section-6">使い方</h2>
+
+<ul>
+  <li>PyPI から最新版をダウンロードしてインストール
+    <ul>
+      <li>pip install SQLObject</li>
+    </ul>
+  </li>
+  <li><code>User site directory</code> へインストール
+    <ul>
+      <li>pip install –user SQLObject</li>
+      <li>easy_install と違って –user 付きでインストールした pip
+もデフォルトでは root に
+パッケージをインストールしようとするので、 User site directory
+にインストールしたい場合は <code>--user</code> は省略できない。</li>
+    </ul>
+  </li>
 </ul>
-</div>
-<div class="section" id="id15">
-<h3><a class="toc-backref" href="#id39">文献</a><a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="https://pythonhosted.org/setuptools/easy_install.html">easy_install documentation</a></li>
+
+<h1 id="wheels">Wheels</h1>
+
+<ul>
+  <li><a href="https://wheel.readthedocs.org/en/latest/">Wheel</a></li>
 </ul>
-</div>
-</div>
-<div class="section" id="python-eggs">
-<span id="id16"></span><h2><a class="toc-backref" href="#id40">Python Eggs</a><a class="headerlink" href="#python-eggs" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="http://peak.telecommunity.com/DevCenter/PythonEggs">setuptools で定義された Python の配布形式</a>。
-Python のコードやメタ情報その他を所定のフォーマットに従って zip で固めたもの (distutils の生成するzip/tar の拡張版)。
-setuptools を使って (つまり setuptools を使って setup.py を定義していれば) 作成することができる。</p>
-</div>
-<div class="section" id="ez-setup-py">
-<span id="ez-setup"></span><h2><a class="toc-backref" href="#id41">ez_setup.py</a><a class="headerlink" href="#ez-setup-py" title="Permalink to this headline">¶</a></h2>
-<p>上述したように、setuptools のインストールに利用されるブートストラップ用のスクリプト。</p>
-</div>
-<div class="section" id="pip">
-<span id="id17"></span><h2><a class="toc-backref" href="#id42">pip</a><a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://pip.pypa.io/en/latest/">pip</a> はeasy_install の強化版です。
-パッケージのアンインストールなど、easy_install にはない機能が提供されています。
-2014年12月現在、pip を使うのが Python における最もモダンなパッケージ管理方法だと思います。</p>
-<div class="section" id="id19">
-<h3><a class="toc-backref" href="#id43">インストール &amp; アップグレード</a><a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>wget &quot;<a class="reference external" href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a>&quot;</li>
-<li>rootにインストールする場合<ul>
-<li>sudo python get-pip.py</li>
-</ul>
-</li>
-<li>非rootで User site directory にインストール場合<ul>
-<li>python get-pip.py --user</li>
-</ul>
-</li>
-<li>pip 自体をアップデートする<ul>
-<li>pip install -U pip</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id20">
-<h3><a class="toc-backref" href="#id44">使い方</a><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>PyPI から最新版をダウンロードしてインストール<ul>
-<li>pip install SQLObject</li>
-</ul>
-</li>
-<li><tt class="docutils literal"><span class="pre">User</span> <span class="pre">site</span> <span class="pre">directory</span></tt> へインストール<ul>
-<li>pip install --user SQLObject</li>
-<li>easy_install と違って --user 付きでインストールした pip もデフォルトでは root に
-パッケージをインストールしようとするので、 User site directory にインストールしたい場合は <tt class="docutils literal"><span class="pre">--user</span></tt> は省略できない。</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="wheels">
-<h2><a class="toc-backref" href="#id45">Wheels</a><a class="headerlink" href="#wheels" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://wheel.readthedocs.org/en/latest/">Wheel</a></li>
-</ul>
-<div class="section" id="id21">
-<h3><a class="toc-backref" href="#id46">インストール</a><a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre>pip install wheel
+
+<h2 id="section-7">インストール</h2>
+
+<pre><code>pip install wheel
 (必要ならば --user をつける)
-</pre></div>
-</div>
-</div>
-<div class="section" id="id22">
-<h3><a class="toc-backref" href="#id47">Wheelの作成</a><a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>setup.py が setuptools を使って書かれていれば、 wheel をインストールすることで <cite>bdist_wheel</cite> が使えるようになります。</li>
+</code></pre>
+
+<h2 id="wheel">Wheelの作成</h2>
+
+<ul>
+  <li>setup.py が setuptools を使って書かれていれば、 wheel
+をインストールすることで bdist_wheel が使えるようになります。</li>
 </ul>
-</div>
-</div>
-<div class="section" id="id23">
-<h2><a class="toc-backref" href="#id48">その他</a><a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a><ul>
-<li>Python の <cite>isolated</cite> な仮想環境を <tt class="docutils literal"><span class="pre">virtualenv</span> <span class="pre">ENV</span></tt> コマンド一発で作り出す超便利ツール。</li>
-<li>仮想環境毎に別々のパッケージがインストールできるので、クリーンな環境を作ったり、
+
+<h1 id="section-8">その他</h1>
+
+<ul>
+  <li><a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>
+    <ul>
+      <li>Python の isolated な仮想環境を <code>virtualenv ENV</code>
+コマンド一発で作り出す超便利ツール。</li>
+      <li>仮想環境毎に別々のパッケージがインストールできるので、クリーンな環境を作ったり、
 アプリケーションによって異なるバージョンのパッケージを使ったりするのに便利。</li>
-<li>root 権限がないユーザがパッケージを入れるのにも便利ではあるが、2.6以降は <tt class="docutils literal"><span class="pre">User</span> <span class="pre">site</span> <span class="pre">directory</span></tt> があるので
-virtualenv を使わなくても非rootユーザ毎にパッケージを入れるのは簡単。</li>
+      <li>root
+権限がないユーザがパッケージを入れるのにも便利ではあるが、2.6以降は
+<code>User site directory</code> があるので virtualenv
+を使わなくても非rootユーザ毎にパッケージを入れるのは簡単。</li>
+    </ul>
+  </li>
 </ul>
-</li>
-</ul>
-</div>
-<div class="section" id="id24">
-<h2><a class="toc-backref" href="#id49">その他 参考文献</a><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://www.freia.jp/taka/docs/pyhack4/index.html">Python Hack-a-thon 4 ハンズオン 中級コース</a> 日本語でよくまとまっていてわかりやすい。</li>
-<li><a class="reference external" href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a><ul>
-<li>ついに Python のパッケージ管理の情報が公式に整理され始めた？</li>
-</ul>
-</li>
-<li><a class="reference external" href="https://www.pypa.io/en/latest/">Python Packaging Authority</a><ul>
-<li><a class="reference external" href="https://www.pypa.io/en/latest/history/">Packaging History</a> とか2014になってからまとめ始めている</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 
+<h1 id="section-9">参考文献</h1>
 
-          </div>
-        </div>
+<ul>
+  <li><a href="http://www.freia.jp/taka/docs/pyhack4/index.html">Python Hack-a-thon 4 ハンズオン
+中級コース</a>
+日本語でよくまとまっていてわかりやすい。</li>
+  <li><a href="https://packaging.python.org/en/latest/">Python Packaging User
+Guide</a>
+    <ul>
+      <li>ついに Python のパッケージ管理の情報が公式に整理され始めた？</li>
+    </ul>
+  </li>
+  <li><a href="https://www.pypa.io/en/latest/">Python Packaging Authority</a>
+    <ul>
+      <li><a href="https://www.pypa.io/en/latest/history/">Packaging History</a>
+とか2014になってからまとめ始めている</li>
+    </ul>
+  </li>
+</ul>
+
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="python_metaclass.html" title="Python の メタプログラミング (__metaclass__, メタクラス) を理解する"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="python_useful_standard_modules.html" title="覚えておくと便利な Python 標準ライブラリ"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>

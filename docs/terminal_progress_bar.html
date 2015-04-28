@@ -1,221 +1,179 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>ターミナルにプログレスバーを表示する方法</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="Cookie の仕様とセキュリティ" href="cookie_and_security.html" />
-    <link rel="prev" title="Pysh: シェルスクリプトをPythonで書く" href="pysh_overview.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ターミナルにプログレスバーを表示する方法</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/terminal_progress_bar.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="cookie_and_security.html" title="Cookie の仕様とセキュリティ"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pysh_overview.html" title="Pysh: シェルスクリプトをPythonで書く"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">ターミナルにプログレスバーを表示する方法</a><ul>
-<li><a class="reference internal" href="#id2">仕組み</a></li>
-<li><a class="reference internal" href="#id5">実装</a><ul>
-<li><a class="reference internal" href="#python">Python</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id6">おまけ</a><ul>
-<li><a class="reference internal" href="#id7">色をつける</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">ターミナルにプログレスバーを表示する方法</h1>
+          <p class="post-meta"><time datetime="2015-04-25T00:00:00+09:00" itemprop="datePublished">更新 Apr 25, 2015</time></p>
+        </header>
+        <p>ターミナルに用意されている特殊な制御コード (エスケープシーケンス)
+を使用して、 Python, Ruby, C++, Java
+など言語に関係なく簡単にターミナルにプログレスバーを表示することができます。</p>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pysh_overview.html"
-                        title="previous chapter">Pysh: シェルスクリプトをPythonで書く</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="cookie_and_security.html"
-                        title="next chapter">Cookie の仕様とセキュリティ</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/terminal_progress_bar.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+<p><img src="/assets/progressbar.gif" width="344" height="60" /></p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="id1">
-<h1>ターミナルにプログレスバーを表示する方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<p>ターミナルに用意されている特殊な制御コード (エスケープシーケンス) を使用して、
-Python, Ruby, C++, Java など言語に関係なく簡単にターミナルにプログレスバーを表示することができます。</p>
-<a class="reference internal image-reference" href="_images/progressbar.gif"><img alt="_images/progressbar.gif" src="_images/progressbar.gif" style="width: 344px; height: 60px;" /></a>
-<div class="section" id="id2">
-<h2>仕組み<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>[=&gt;           ]  5.2%
-</pre></div>
-</div>
+<h2 id="section">仕組み</h2>
+
+<pre><code>[=&gt;           ]  5.2%
+</code></pre>
+
 <p>プログレスバーが更新されるたびに新しい行が表示されるのを防ぐために、
 プログレスバーを表示する前にカーソルを行頭に戻して行の内容を消してしまえればプログレスバーの完成です。
 カーソルの制御と行の削除には</p>
-<ul class="simple">
-<li><a class="reference external" href="http://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%AA%E3%83%83%E3%82%B8%E3%83%BB%E3%83%AA%E3%82%BF%E3%83%BC%E3%83%B3">キャリッジ・リターン (carriage return)</a></li>
-<li><a class="reference external" href="http://www.termsys.demon.co.uk/vtansi.htm">ターミナルのエスケープシーケンス</a> を利用します。</li>
+
+<ul>
+  <li><a href="http://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%AA%E3%83%83%E3%82%B8%E3%83%BB%E3%83%AA%E3%82%BF%E3%83%BC%E3%83%B3">キャリッジ・リターン (carriage
+return)</a></li>
+  <li><a href="http://www.termsys.demon.co.uk/vtansi.htm">ターミナルのエスケープシーケンス</a>
+を利用します。</li>
 </ul>
-<p>の２つを利用します。
-キャリッジ・リターンは Windows の改行文字 <tt class="docutils literal"><span class="pre">\r\n</span></tt> で出てくる <tt class="docutils literal"><span class="pre">\r</span></tt> です。
-普段 <tt class="docutils literal"><span class="pre">\n</span></tt> に余計についてくる邪魔な文字程度の認識しかないと思いますが、単体で利用するとカーソルの位置を行頭に移動します。
+
+<p>の２つを利用します。 キャリッジ・リターンは Windows の改行文字 <code>\r\n</code>
+で出てくる <code>\r</code> です。 普段 <code>\n</code>
+に余計についてくる邪魔な文字程度の認識しかないと思いますが、単体で利用するとカーソルの位置を行頭に移動します。
 移動した後文字を出力するとすでに表示されている文字を上書きして新しい文字を表示します。
-例えば <tt class="docutils literal"><span class="pre">&quot;abcdefg\r123&quot;</span></tt> のような文字列を出力すると <tt class="docutils literal"><span class="pre">\r</span></tt> でカーソルを行頭に戻した後 <tt class="docutils literal"><span class="pre">abc</span></tt> を <tt class="docutils literal"><span class="pre">123</span></tt> で上書きするので
-<tt class="docutils literal"><span class="pre">123defg</span></tt> が表示されます。
+例えば <code>"abcdefg\r123"</code> のような文字列を出力すると <code>\r</code>
+でカーソルを行頭に戻した後 <code>abc</code> を <code>123</code> で上書きするので <code>123defg</code>
+が表示されます。
 そのためプログレスバーの長さが短くならないなら実はキャリッジ・リターンだけで十分で、エスケープシーケンスは使わなくても問題ありません。</p>
-<p>次にエスケープシーケンス。GUIの時代になって馴染みがないと思いますが、<cite>&lt;ESC&gt;</cite> に続けて決められた特殊な文字列を出力することで文字の色の変更、
-表示されている文字の削除などの制御することができます。
-<cite>&lt;ESC&gt;</cite> は <a class="reference external" href="http://ja.wikipedia.org/wiki/ASCII">ASCII文字コード</a> の十進数で <tt class="docutils literal"><span class="pre">27</span></tt> のコードです (16進数で <tt class="docutils literal"><span class="pre">1b</span></tt>, 8進数で <tt class="docutils literal"><span class="pre">33</span></tt>)。
-この文字に続けて <tt class="docutils literal"><span class="pre">[K</span></tt> や <tt class="docutils literal"><span class="pre">[94m</span></tt> などの文字列を与えることでターミナルを制御することができます (<a class="reference external" href="http://www.termsys.demon.co.uk/vtansi.htm">エスケープシーケンスの一覧</a>)。
-行の削除のエスケープシーケンスは <cite>&lt;ESC&gt;[94m</cite> です。</p>
-</div>
-<div class="section" id="id5">
-<h2>実装<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>[======&gt;      ] 42.3%
-</pre></div>
-</div>
-<p>基本的には <tt class="docutils literal"><span class="pre">\r</span></tt> と <cite>&lt;ESC&gt;[94m</cite> を標準出力に書き出して、その後に <tt class="docutils literal"><span class="pre">&quot;[====&gt;</span>&nbsp; <span class="pre">]</span> <span class="pre">70%&quot;</span></tt> のようなプログレスバーを表す文字列を書くだけです。
+
+<p>次にエスケープシーケンス。GUIの時代になって馴染みがないと思いますが、`&lt;ESC&gt;`
+に続けて決められた特殊な文字列を出力することで文字の色の変更、
+表示されている文字の削除などの制御することができます。 &lt;ESC&gt; は
+<a href="http://ja.wikipedia.org/wiki/ASCII">ASCII文字コード</a> の十進数で <code>27</code>
+のコードです (16進数で <code>1b</code>, 8進数で <code>33</code>)。 この文字に続けて <code>[K</code> や
+<code>[94m</code> などの文字列を与えることでターミナルを制御することができます
+(<a href="http://www.termsys.demon.co.uk/vtansi.htm">エスケープシーケンスの一覧</a>)。
+行の削除のエスケープシーケンスは &lt;ESC&gt;[94m です。</p>
+
+<h2 id="section-1">実装</h2>
+
+<pre><code>[======&gt;      ] 42.3%
+</code></pre>
+
+<p>基本的には <code>\r</code> と &lt;ESC&gt;[94m を標準出力に書き出して、その後に
+<code>"[====&gt;  ] 70%"</code> のようなプログレスバーを表す文字列を書くだけです。
 ただし以下の点に気をつけて下さい</p>
-<ul class="simple">
-<li>プログレスバーの文字列の後で改行しない。<ul>
-<li>例えば、Python では <tt class="docutils literal"><span class="pre">print</span></tt> ではなくて <tt class="docutils literal"><span class="pre">sys.stdout.write</span></tt> を使わなくてはならないし、
-Javaでは <tt class="docutils literal"><span class="pre">println</span></tt> ではなくて <tt class="docutils literal"><span class="pre">print</span></tt> を使わなくてはなりません。</li>
-</ul>
-</li>
-<li>ファイルオブジェクトへの書き込みはバッファリングされてしまい、即座にターミナルに書き込まれない場合があるので
+
+<ul>
+  <li>プログレスバーの文字列の後で改行しない。
+    <ul>
+      <li>例えば、Python では <code>print</code> ではなくて <code>sys.stdout.write</code>
+を使わなくてはならないし、 Javaでは <code>println</code> ではなくて <code>print</code>
+を使わなくてはなりません。</li>
+    </ul>
+  </li>
+  <li>ファイルオブジェクトへの書き込みはバッファリングされてしまい、即座にターミナルに書き込まれない場合があるので
 プログレスバーを出力したらバッファをフラッシュする。</li>
 </ul>
-<p>これでそれっぽくプログレスバーが表示できるようになります (というか多くの解説がそこまでしか触れてない) が、
+
+<p>これでそれっぽくプログレスバーが表示できるようになります
+(というか多くの解説がそこまでしか触れてない) が、
 人に公開するようなプログラムなら以下の点も留意すべきです。</p>
-<ul class="simple">
-<li>標準出力ではなくて標準エラーに出力する。</li>
-<li>リダイレクトなどによって、出力先がファイルなどターミナル以外になっている場合はプログレスバーを表示しない。
+
+<ul>
+  <li>標準出力ではなくて標準エラーに出力する。</li>
+  <li>リダイレクトなどによって、出力先がファイルなどターミナル以外になっている場合はプログレスバーを表示しない。
 そうしないとリダイレクト先のファイルがプログレスバーと制御文字で埋め尽くされて読むときに困ります。</li>
 </ul>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r\033</span><span class="s">[K&#39;</span> <span class="o">+</span> <span class="n">get_progressbar_str</span><span class="p">(</span><span class="n">progress</span><span class="p">))</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="id6">
-<h2>おまけ<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>[===========&gt; ] 89.7%
-</pre></div>
-</div>
-<div class="section" id="id7">
-<h3>色をつける<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+
+<h3 id="python">Python</h3>
+
+<pre><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
+sys.stderr.flush()
+</code></pre>
+
+<h2 id="section-2">おまけ</h2>
+
+<pre><code>[===========&gt; ] 89.7%
+</code></pre>
+
+<h3 id="section-3">色をつける</h3>
+
 <p>プログレスバーがカラフルだと楽しいので余裕があったら色を付けてみましょう。
-<a class="reference external" href="http://www.termsys.demon.co.uk/vtansi.htm#colors">エスケープシーケンスを使って文字の色と背景色が制御できる</a> のでこれを使います。
-色の制御に使うエスケープシーケンスのフォーマットは <cite>&lt;ESC&gt;[n1;n2;n3;...]m</cite> です。
-n1, n2, ... の部分には <a class="reference external" href="http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes">Wikipedia の SGR (Select Graphic Rendition) parameters 表</a>
-にある数字が入ります。例えば、文字を明るい赤にするには <cite>&lt;ESC&gt;</cite> <tt class="docutils literal"><span class="pre">[1;31m</span></tt> を出力します。設定をリセットするのは <tt class="docutils literal"><span class="pre">0</span></tt> なので
-<cite>&lt;ESC&gt;</cite> <tt class="docutils literal"><span class="pre">[0m]</span></tt> を出力することで元に戻ります。例えば次の命令を Python で実行すると真ん中の <tt class="docutils literal"><span class="pre">*</span></tt> のみが明るい赤で表示されるはずです。
+<a href="http://www.termsys.demon.co.uk/vtansi.htm#colors">エスケープシーケンスを使って文字の色と背景色が制御できる</a>
+のでこれを使います。 色の制御に使うエスケープシーケンスのフォーマットは
+&lt;ESC&gt;[n1;n2;n3;…]m です。 n1, n2, … の部分には <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes">Wikipedia の SGR
+(Select Graphic Rendition) parameters
+表</a>
+にある数字が入ります。例えば、文字を明るい赤にするには &lt;ESC&gt; <code>[1;31m</code>
+を出力します。設定をリセットするのは <code>0</code> なので &lt;ESC&gt; <code>[0m]</code>
+を出力することで元に戻ります。例えば次の命令を Python
+で実行すると真ん中の <code>*</code> のみが明るい赤で表示されるはずです。
 いろいろ自分で試して遊んでみて下さい。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;*</span><span class="se">\x1b</span><span class="s">[1;31m*</span><span class="se">\x1b</span><span class="s">[0m*&quot;</span>
-</pre></div>
-</div>
-<p>エスケープシーケンスで指定できる <cite>Red</cite>, <cite>Blue</cite> などの色が実際のターミナルでどのような色になるかは、
-<a class="reference external" href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia にあるエスケープシーケンスで指定する色とターミナル上での色の対応表</a>
+
+<pre><code>print "*\x1b[1;31m*\x1b[0m*"
+</code></pre>
+
+<p>エスケープシーケンスで指定できる Red, Blue
+などの色が実際のターミナルでどのような色になるかは、 <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia
+にあるエスケープシーケンスで指定する色とターミナル上での色の対応表</a>
 が分かりやすいので参考にして下さい（ターミナル毎に微妙に色合いが異なります）。</p>
-</div>
-</div>
-</div>
 
 
-          </div>
-        </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="cookie_and_security.html" title="Cookie の仕様とセキュリティ"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pysh_overview.html" title="Pysh: シェルスクリプトをPythonで書く"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>

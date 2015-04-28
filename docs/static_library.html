@@ -1,142 +1,72 @@
-
 <!DOCTYPE html>
+<html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>静的ライブラリ (.a) の作成と利用</title>
-    
-    <link rel="stylesheet" href="_static/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="yunabe 0.1 documentation" href="index.html" />
-    <link rel="next" title="JavaScript プリミティブ型 (基本データ型)" href="javascript_primitive_types.html" />
-    <link rel="prev" title="C++ でデストラクタを virtual にしなくてはならない条件と理由" href="cpp_virtual_destructor.html" /> 
-  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>静的ライブラリ (.a) の作成と利用</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/static_library.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="javascript_primitive_types.html" title="JavaScript プリミティブ型 (基本データ型)"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">静的ライブラリ (.a) の作成と利用</a><ul>
-<li><a class="reference internal" href="#id2">静的ライブラリ (.a) の作成</a></li>
-<li><a class="reference internal" href="#id3">静的ライブラリをリンクする</a></li>
-<li><a class="reference internal" href="#id4">静的ライブラリの内容(シンボル)の確認</a></li>
-<li><a class="reference internal" href="#linker">リンカーの挙動</a><ul>
-<li><a class="reference internal" href="#id6">大雑把な流れ</a></li>
-<li><a class="reference internal" href="#whole-archive">whole-archive</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id8">文献</a></li>
-</ul>
-</li>
-</ul>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">静的ライブラリ (.a) の作成と利用</h1>
+          <p class="post-meta"><time datetime="2014-03-15T00:00:00+09:00" itemprop="datePublished">更新 Mar 15, 2014</time></p>
+        </header>
+        <h1 id="a-">静的ライブラリ (.a) の作成</h1>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="cpp_virtual_destructor.html"
-                        title="previous chapter">C++ でデストラクタを virtual にしなくてはならない条件と理由</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="javascript_primitive_types.html"
-                        title="next chapter">JavaScript プリミティブ型 (基本データ型)</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/static_library.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+<p><a href="http://linuxjm.sourceforge.jp/html/GNU_binutils/man1/ar.1.html">ar コマンド</a>
+で複数のオブジェクトファイル (<code>.o</code>) をまとめて静的ライブラリ (<code>.a</code>)
+を作成できます。</p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="a">
-<h1>静的ライブラリ (.a) の作成と利用<a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h1>
-<div class="editdate container">
-更新 2015年3月15日</div>
-<div class="contents local topic" id="id1">
-<p class="topic-title first">目次</p>
-<ul class="simple">
-<li><a class="reference internal" href="#id2" id="id9">静的ライブラリ (.a) の作成</a></li>
-<li><a class="reference internal" href="#id3" id="id10">静的ライブラリをリンクする</a></li>
-<li><a class="reference internal" href="#id4" id="id11">静的ライブラリの内容(シンボル)の確認</a></li>
-<li><a class="reference internal" href="#linker" id="id12">リンカーの挙動</a><ul>
-<li><a class="reference internal" href="#id6" id="id13">大雑把な流れ</a></li>
-<li><a class="reference internal" href="#whole-archive" id="id14">whole-archive</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id8" id="id15">文献</a></li>
-</ul>
-</div>
-<div class="section" id="id2">
-<h2><a class="toc-backref" href="#id9">静的ライブラリ (.a) の作成</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="http://linuxjm.sourceforge.jp/html/GNU_binutils/man1/ar.1.html">ar コマンド</a> で複数のオブジェクトファイル (<tt class="docutils literal"><span class="pre">.o</span></tt>) をまとめて静的ライブラリ (<tt class="docutils literal"><span class="pre">.a</span></tt>) を作成できます。</p>
-<div class="highlight-python"><div class="highlight"><pre>ar rcs libfoo.a foo.o bar.o baz.o
-</pre></div>
-</div>
-</div>
-<div class="section" id="id3">
-<h2><a class="toc-backref" href="#id10">静的ライブラリをリンクする</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>オブジェクトファイルをリンクするのと同じように gcc に引数を渡すとリンクされます</p>
-<div class="highlight-python"><div class="highlight"><pre>gcc(g++) -o program program.o libfoo.a
-</pre></div>
-</div>
-<p><tt class="docutils literal"><span class="pre">-L</span></tt> で指定したディレクトリにある <tt class="docutils literal"><span class="pre">libname.a</span></tt> という静的ライブラリは <tt class="docutils literal"><span class="pre">-lname</span></tt> として指定することもできる。
-たまにみる <tt class="docutils literal"><span class="pre">-lpthread</span></tt> とかは <tt class="docutils literal"><span class="pre">libpthread.a</span></tt> をリンクするという意味です。</p>
-<div class="highlight-python"><div class="highlight"><pre>gcc(g++) -o program program.o -L. -lfoo
-</pre></div>
-</div>
+<pre><code>ar rcs libfoo.a foo.o bar.o baz.o
+</code></pre>
+
+<h1 id="section">静的ライブラリをリンクする</h1>
+
+<p>オブジェクトファイルをリンクするのと同じように gcc
+に引数を渡すとリンクされます</p>
+
+<pre><code>gcc(g++) -o program program.o libfoo.a
+</code></pre>
+
+<p><code>-L</code> で指定したディレクトリにある <code>libname.a</code> という静的ライブラリは
+<code>-lname</code> として指定することもできる。 たまにみる <code>-lpthread</code> とかは
+<code>libpthread.a</code> をリンクするという意味です。</p>
+
+<pre><code>gcc(g++) -o program program.o -L. -lfoo
+</code></pre>
+
 <p>ただし後述するように、オブジェクトファイルをリンクする場合と違って
-<a class="reference internal" href="#linker"><em>静的ライブラリ (.a) をリンクする場合は引数の順序が重要になるので注意が必要です</em></a>。</p>
-</div>
-<div class="section" id="id4">
-<h2><a class="toc-backref" href="#id11">静的ライブラリの内容(シンボル)の確認</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p>nm コマンドで <tt class="docutils literal"><span class="pre">.o</span></tt> ファイルや <tt class="docutils literal"><span class="pre">.a</span></tt> ファイルに存在するシンボルを確認することができます。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ nm foo.o
+静的ライブラリ (.a) をリンクする場合は引数の順序が重要になるので注意が必要です &lt;linker&gt;。</p>
+
+<h1 id="section-1">静的ライブラリの内容(シンボル)の確認</h1>
+
+<p>nm コマンドで <code>.o</code> ファイルや <code>.a</code>
+ファイルに存在するシンボルを確認することができます。</p>
+
+<pre><code>$ nm foo.o 
                  U _Z7say_bari
 0000000000000000 T _Z7say_fooi
                  U __gxx_personality_v0
@@ -160,93 +90,96 @@ bar.o:
                  U _Z7say_fooi
                  U __gxx_personality_v0
                  U printf
-</pre></div>
-</div>
-</div>
-<div class="section" id="linker">
-<span id="id5"></span><h2><a class="toc-backref" href="#id12">リンカーの挙動</a><a class="headerlink" href="#linker" title="Permalink to this headline">¶</a></h2>
+</code></pre>
+
+<h1 id="section-2">リンカーの挙動</h1>
+
 <p>静的ライブラリをリンクする場合は、引数で与える静的ファイルやオブジェクトファイルの順序が重要になります。
 基本的にはAがBに依存しているなら、AをBの前に引数で与えなくてはなりません。
 このルールはリンカーが静的ライブラリ内のオブジェクトファイルを参照する際の挙動を理解していると分かりやすいです。</p>
-<div class="section" id="id6">
-<h3><a class="toc-backref" href="#id13">大雑把な流れ</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<p>リンカは未解決の参照のリストを保持している。はじめ、このリストにはmainが入っている <a class="footnote-reference" href="#f1" id="id7">[1]</a>。
+
+<h2 id="section-3">大雑把な流れ</h2>
+
+<p>リンカは未解決の参照のリストを保持している。はじめ、このリストにはmainが入っている<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>。
 リンカはオブジェクトファイル(.o)を受け取り、参照を解決し、新しい未解決の参照がみつかったらリストに追加する（リンクする）。
 静的ライブラリ(.a)を受け取った場合は、未解決の参照を定義しているオブジェクトファイルのみを静的ライブラリから抜き出し、リンクを行う。
-いままで処理したオブジェクトファイルから参照されていないオブジェクトファイルは 静的ライブラリに含まれていても無視される。
+いままで処理したオブジェクトファイルから参照されていないオブジェクトファイルは
+静的ライブラリに含まれていても無視される。
 そのため、main.oがlibfoo.a内のシンボルを参照している場合</p>
-<div class="highlight-python"><div class="highlight"><pre>gcc -o program main.o libfoo.a
-</pre></div>
-</div>
+
+<pre><code>gcc -o program main.o libfoo.a
+</code></pre>
+
 <p>は問題なく実行できるが</p>
-<div class="highlight-python"><div class="highlight"><pre>gcc -o program libfoo.a main.o
-</pre></div>
-</div>
+
+<pre><code>gcc -o program libfoo.a main.o
+</code></pre>
+
 <p>は、libfoo.aをリンカが読み込んだ時点ではlibfoo.a内のシンボルは「未解決の参照リスト」には含まれてないので
-libfoo.a内のオブジェクトファイルはリンカに無視されてしまい、 あとでmain.oを読み込んだ際に、参照の解決が行えなくなりエラーとなる。</p>
-</div>
-<div class="section" id="whole-archive">
-<h3><a class="toc-backref" href="#id14">whole-archive</a><a class="headerlink" href="#whole-archive" title="Permalink to this headline">¶</a></h3>
-<p>リンカ(ld)に <tt class="docutils literal"><span class="pre">--whole-archive</span></tt> を指定すると、それ以降の引数で与えらる静的ライブラリに含まれる全てのオブジェクトファイルがリンクされるようになる。
-<tt class="docutils literal"><span class="pre">--no-whole-archive</span></tt> で挙動を元に戻す。
-gcc(g++)の引数で指定する場合は <tt class="docutils literal"><span class="pre">-Wl,</span></tt> を前につける</p>
-<div class="highlight-python"><div class="highlight"><pre># これはコンパイルできる
+libfoo.a内のオブジェクトファイルはリンカに無視されてしまい、
+あとでmain.oを読み込んだ際に、参照の解決が行えなくなりエラーとなる。</p>
+
+<h2 id="whole-archive">whole-archive</h2>
+
+<p>リンカ(ld)に <code>--whole-archive</code>
+を指定すると、それ以降の引数で与えらる静的ライブラリに含まれる全てのオブジェクトファイルがリンクされるようになる。
+<code>--no-whole-archive</code> で挙動を元に戻す。 gcc(g++)の引数で指定する場合は
+<code>-Wl,</code> を前につける</p>
+
+<pre><code># これはコンパイルできる
 gcc -o program -Wl,--whole-archive libfoo.a -Wl,--no-whole-archive main.o
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="id8">
-<h2><a class="toc-backref" href="#id15">文献</a><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://groups.google.com/group/gnu.gcc.help/msg/c1ed29766d6a5a7d">linking problems and order</a></li>
+</code></pre>
+
+<h2 id="section-4">文献</h2>
+
+<ul>
+  <li><a href="http://groups.google.com/group/gnu.gcc.help/msg/c1ed29766d6a5a7d">linking problems and
+order</a></li>
 </ul>
-<table class="docutils footnote" frame="void" id="f1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id7">[1]</a></td><td>厳密にはmainへの参照をもつcrt0.oがリンカに渡されるというのが正しい？</td></tr>
-</tbody>
-</table>
-</div>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>厳密にはmainへの参照をもつcrt0.oがリンカに渡されるというのが正しい？ <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
 </div>
 
-
-          </div>
-        </div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="javascript_primitive_types.html" title="JavaScript プリミティブ型 (基本データ型)"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="cpp_virtual_destructor.html" title="C++ でデストラクタを virtual にしなくてはならない条件と理由"
-             >previous</a> |</li>
-        <li><a href="index.html">yunabe 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-<div class="footer">
-    &copy; Copyright 2014, Yu Watanabe.
-  Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-<script>
-  if(location.host=='www.yunabe.jp'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19477574-2', 'yunabe.jp');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-  }
-</script>
-<script type="text/javascript" src="_static/main.js"></script>
-</div>
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
   </body>
+
 </html>
