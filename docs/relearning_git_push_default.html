@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Git 再入門 引数がない場合の git push のデフォルトの挙動</title>
+  <title>Git 再入門:&nbsp;引数がない場合の git push のデフォルトの挙動（push.default の設定について）</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
@@ -31,7 +31,7 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Git 再入門 引数がない場合の git push のデフォルトの挙動</h1>
+          <h1 class="post-title" itemprop="name headline">Git 再入門:&nbsp;引数がない場合の git push のデフォルトの挙動（push.default の設定について）</h1>
           <p class="post-meta"><time datetime="2014-08-14T00:00:00+09:00" itemprop="datePublished">更新 Aug 14, 2014</time></p>
         </header>
         <div>
@@ -49,61 +49,35 @@
   </div>
 </div>
 
-        <p><a href="relearning_git_remote.html#git-push">前述</a> したように <code>git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code>
-を実行するとローカルブランチ <code>&lt;src&gt;</code> を リモートレポジトリ <code>&lt;remote&gt;</code>
-に対して書き込み、<code>&lt;remote&gt;</code> 上のブランチ <code>&lt;dst&gt;</code> が pushされた <code>&lt;src&gt;</code>
-を指すように first-forward します。 <code>git pull</code>
-の場合と同様にこの引数も省略することができます。</p>
-
-<pre><code>git push
-</code></pre>
-
-<p><code>git push</code> で引数を省略した場合のルールは <code>git pull</code>
+        <p><a href="relearning_git_remote.html#git-push">前述したように</a>、<code>git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code>
+を実行するとローカルブランチ <code>&lt;src&gt;</code> を リモートリポジトリ <code>&lt;remote&gt;</code>
+に対して書き込み、<code>&lt;remote&gt;</code> 上のブランチ <code>&lt;dst&gt;</code> を pushされた <code>&lt;src&gt;</code>
+を指すように first-forward します。
+<code>git pull</code> と同様に <code>git push</code> の引数も省略することができます。
+<code>git push</code> で引数を省略した場合のルールは <code>git pull</code>
 で引数を省略した場合のそれより複雑です。</p>
-
-<h1 id="remote-">&lt;remote&gt; が省略された時の挙動</h1>
-
-<p><code>&lt;remote&gt;</code> が省略された場合の挙動は
-<a href="http://git-scm.com/docs/git-push/1.9.2">git push の –repo=&lt;repository&gt; の項目</a>
-に書かれています。</p>
-
-<ul>
-  <li>現在のブランチ (<code>&lt;src&gt;</code> ではない点に注意！) が
-トラッキングブランチである場合 (upstream が設定されている場合)、
-トラックしているブランチ (== upstream) のリモートレポジトリが
-<code>&lt;remote&gt;</code> として利用される。</li>
-  <li>そうでない場合は、
-    <ul>
-      <li><code>--repository=&lt;repository&gt;</code>
-が設定されている場合は、指定された値が利用されます</li>
-      <li><code>--repository=&lt;repository&gt;</code> がない場合は <code>origin</code>
-が利用されます。</li>
-    </ul>
-  </li>
-</ul>
 
 <h1 id="srcdst-">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</h1>
 
 <p><code>&lt;src&gt;:&lt;dst&gt;</code> が省略された場合の挙動は、<a href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
-1.x系列では <code>matching</code> がデフォルト値ですが、<code>mathing</code>
-だと現在のブランチ以外も push してしまうという割りと
-危険な動作をするので2.x系からのデフォルト値の <code>simple</code>
-などに変更しておくことが推奨されます。</p>
+1.x系列では <code>matching</code> がデフォルト値ですが、<code>mathing</code>だと現在のブランチ以外も push してしまい危険なので<code>simple</code>などに変更しておくことが推奨されます。
+2.x系からはデフォルト値は <code>simple</code> に変更されています。</p>
 
 <pre><code>git config --global push.default simple
 </code></pre>
 
-<p>5つの値について簡単に説明しておきます。</p>
+<p>5つの値について簡単に説明しておきます。
+(<a href="relearning_git_pull_default.html">アップストリーム、トラッキングブランチが何だか分からない場合はこちらを参照して下さい</a>)</p>
 
 <ul>
   <li>nothing
     <ul>
-      <li>省略された場合何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
+      <li><code>&lt;src&gt;:&lt;dst&gt;</code>が省略された場合<code>git push</code>は何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
     </ul>
   </li>
   <li>current
     <ul>
-      <li>現在のブランチ <code>&lt;current&gt;</code> を同名のブランチとして push します。
+      <li>現在のブランチ<code>&lt;current&gt;</code>を同名のブランチとして push します。
 <code>&lt;current&gt;:&lt;current&gt;</code> を指定したことになります。</li>
     </ul>
   </li>
@@ -112,14 +86,14 @@
       <li>現在のブランチをその upstream に対して push します。
 現在のブランチに upstream がない場合は何もしません。 また
 <code>&lt;remote&gt;</code> が upstream
-に指定されたリモートトラキングブランチのレポジトリと異なる場合も何もしません。
+に指定されたリモートトラキングブランチのリポジトリと異なる場合も何もしません。
 個人的にはこれが自然かな？という気がします。</li>
     </ul>
   </li>
   <li>simple
     <ul>
       <li>現在のブランチに upstream が設定されており、upstream
-のレポジトリが <code>&lt;remote&gt;</code> と一致する場合
+のリポジトリが <code>&lt;remote&gt;</code> と一致する場合
         <ul>
           <li>現在のブランチと upstram のブランチが同名の場合 push
 を行います。</li>
@@ -132,7 +106,7 @@
   </li>
   <li>matching
     <ul>
-      <li>同じ名前のブランチがリモートレポジトリに存在する <strong>全て</strong>
+      <li>同じ名前のブランチがリモートリポジトリに存在する <strong>全て</strong>
 のブランチを push します。
 現在のブランチとは関係なく、同名のブランチがあればすべて push
 されてしまいます。 意図していないブランチをうっかり push
@@ -151,6 +125,26 @@
 <code>:&lt;dst&gt;</code> を省略した場合には <code>&lt;src&gt;:&lt;src&gt;</code>
 を指定したのと同じことになります。</p>
 
+<h1 id="remote-">&lt;remote&gt; が省略された時の挙動</h1>
+
+<p><code>&lt;remote&gt;</code> が省略された場合の挙動は
+<a href="http://git-scm.com/docs/git-push/1.9.2">git push の –repo=&lt;repository&gt; の項目</a>
+に書かれています。</p>
+
+<ul>
+  <li>現在のブランチ (<code>&lt;src&gt;</code> ではない点に注意！) が
+トラッキングブランチである場合 (upstream が設定されている場合)、
+トラックしているブランチ (== upstream) のリモートリポジトリが
+<code>&lt;remote&gt;</code> として利用される。</li>
+  <li>そうでない場合は、
+    <ul>
+      <li><code>--repository=&lt;repository&gt;</code>
+が設定されている場合は、指定された値が利用されます</li>
+      <li><code>--repository=&lt;repository&gt;</code> がない場合は <code>origin</code>
+が利用されます。</li>
+    </ul>
+  </li>
+</ul>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

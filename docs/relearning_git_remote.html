@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Git 再入門 リモートレポジトリを使った作業</title>
+  <title>Git 再入門 リモートリポジトリを使った作業</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
@@ -31,7 +31,7 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Git 再入門 リモートレポジトリを使った作業</h1>
+          <h1 class="post-title" itemprop="name headline">Git 再入門 リモートリポジトリを使った作業</h1>
           <p class="post-meta"><time datetime="2014-07-25T00:00:00+09:00" itemprop="datePublished">更新 Jul 25, 2014</time></p>
         </header>
         <div>
@@ -52,12 +52,12 @@
         <h1 id="section">この文書の目的</h1>
 
 <ul>
-  <li>別の場所にある git レポジトリ（リモートレポジトリ）と連携する方法について再学習します。</li>
+  <li>別の場所にある git リポジトリ（リモートリポジトリ）と連携する方法について再学習します。</li>
   <li>はじめに git remote, git fetch, git merge
-を使ってリモートレポジトリの内容を手元のレポジトリ（ローカルレポジトリ）に取り込む方法について学習します。</li>
+を使ってリモートリポジトリの内容を手元のリポジトリ（ローカルリポジトリ）に取り込む方法について学習します。</li>
   <li>次に git fetch, git merge を使った一連の作業を自動的に行なってくれる
 git pull について学習します。</li>
-  <li>次に git push を使ってローカルレポジトリの内容をリモートレポジトリに書き出す方法について
+  <li>次に git push を使ってローカルリポジトリの内容をリモートリポジトリに書き出す方法について
 学習します。</li>
   <li>最後に, トラッキングブランチ (tracking branch) について理解し、 git
 pull, git push の引数を省略した際のデフォルトの挙動のルールについて学びます。</li>
@@ -83,35 +83,36 @@ origin/master）が何故それでうまくいくのかきちんと説明でき�
   <li><code>git push/pull</code>
 の引数が省略された場合のデフォルトの動作を厳密に説明出来ない人
 「リモートトラッキングブランチ」と「トラキングブランチ」がそれぞれ何であるか説明できない人</li>
+  <li>というか少し前の自分のことです…</li>
 </ul>
 
-<p>a</p>
-
+<h1 id="section-2">目次</h1>
 <ul id="markdown-toc">
   <li><a href="#section">この文書の目的</a></li>
   <li><a href="#section-1">対象とする人</a></li>
-  <li><a href="#section-2">下準備</a></li>
+  <li><a href="#section-2">目次</a></li>
+  <li><a href="#section-3">下準備</a></li>
   <li><a href="#remote">リモート (Remote)</a>    <ul>
-      <li><a href="#section-3">リモートレポジトリの登録と読み込み</a></li>
+      <li><a href="#section-4">リモートリポジトリの登録と読み込み</a></li>
     </ul>
   </li>
-  <li><a href="#section-4">リモートトラキングブランチを扱う</a></li>
-  <li><a href="#section-5">リモートトラッキングブランチとマージする</a></li>
+  <li><a href="#section-5">リモートトラキングブランチを扱う</a></li>
+  <li><a href="#section-6">リモートトラッキングブランチとマージする</a></li>
   <li><a href="#git-pull">git pull</a></li>
-  <li><a href="#section-6">ここまでのまとめ</a></li>
+  <li><a href="#section-7">ここまでのまとめ</a></li>
   <li><a href="#git-push">git push</a>    <ul>
-      <li><a href="#section-7">共有用のレポジトリを作る</a></li>
+      <li><a href="#section-8">共有用のリポジトリを作る</a></li>
       <li><a href="#git-push-">git push でコミットを書き込む</a></li>
       <li><a href="#push-fast-forward-">push (fast-forward) に失敗した場合の対処法</a></li>
     </ul>
   </li>
 </ul>
 
-<h1 id="section-2">下準備</h1>
+<h1 id="section-3">下準備</h1>
 
 <p>アリスとボブが2人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは
-git レポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
-まずはアリスになったつもりでレポジトリーを作成して、紹介ページを作ってコミットしましょう
+git リポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
+まずはアリスになったつもりでリポジトリーを作成して、紹介ページを作ってコミットしましょう
 （<code>/tmp/my/workingdir</code> は好きなディレクトリに置き換えて下さい）。</p>
 
 <pre><code>$ cd /tmp/my/workingdir
@@ -121,7 +122,7 @@ $ git init
 Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
 </code></pre>
 
-<p>これでレポジトリができました。まず自分の紹介ページを作ってコミットしましょう。</p>
+<p>これでリポジトリができました。まず自分の紹介ページを作ってコミットしましょう。</p>
 
 <pre><code>$ echo "I’m Alice." &gt;&gt; alice.txt
 $ git add alice.txt
@@ -141,7 +142,7 @@ $ git commit -m "Added Alice to members.txt"
  create mode 100644 members.txt
 </code></pre>
 
-<p>アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでレポジトリの作成とコミットを行います。</p>
+<p>アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでリポジトリの作成とコミットを行います。</p>
 
 <pre><code>$ cd /tmp/my/workingdir
 $ mkdir bob
@@ -172,34 +173,34 @@ git では「リモート」という仕組みと、<code>git fetch</code>, <cod
 
 <h1 id="remote">リモート (Remote)</h1>
 
-<p>git では別の場所にあるレポジトリ（以下リモートレポジトリ）を手元のレポジトリ（以下ローカルレポジトリ）と連携させることができます。
-リモートレポジトリとローカルレポジトリの連携により、リモートレポジトリにあるコミットをローカルレポジトリに持ってきたり、
-逆にローカルレポジトリで行ったコミットをリモートレポジトリに書き出すことができます。</p>
+<p>git では別の場所にあるリポジトリ（以下リモートリポジトリ）を手元のリポジトリ（以下ローカルリポジトリ）と連携させることができます。
+リモートリポジトリとローカルリポジトリの連携により、リモートリポジトリにあるコミットをローカルリポジトリに持ってきたり、
+逆にローカルリポジトリで行ったコミットをリモートリポジトリに書き出すことができます。</p>
 
-<h2 id="section-3">リモートレポジトリの登録と読み込み</h2>
+<h2 id="section-4">リモートリポジトリの登録と読み込み</h2>
 
-<p>リモートレポジトリ
-と連携するために、まずローカルレポジトリにリモートレポジトリを登録する必要があります。
-リモートレポジトリの登録には <code>git remote add</code> を利用します。</p>
+<p>リモートリポジトリ
+と連携するために、まずローカルリポジトリにリモートリポジトリを登録する必要があります。
+リモートリポジトリの登録には <code>git remote add</code> を利用します。</p>
 
 <pre><code>git remote add &lt;name&gt; &lt;URL&gt;
 </code></pre>
 
-<p>現在ローカルレポジトリに登録されているリモートレポジトリの一覧は
+<p>現在ローカルリポジトリに登録されているリモートリポジトリの一覧は
 <code>git remote</code> で確認することができます。 各 remote
 の、例えばURLなどの、詳細な情報 は <code>git remote show &lt;remote&gt;</code>
 で確認できます。</p>
 
-<p>リモートレポジトリにあるコミットを読み込んでみましょう。リモートレポジトリにあるコミットは
-<code>git fetch &lt;remote&gt;</code> でローカルレポジトリにロードすることができます。
+<p>リモートリポジトリにあるコミットを読み込んでみましょう。リモートリポジトリにあるコミットは
+<code>git fetch &lt;remote&gt;</code> でローカルリポジトリにロードすることができます。
 git fetch
-でコミットをロードすると、リモートレポジトリ上のブランチに対応する「リモートトラキングブランチ」という特殊なブランチが自動的に作成されます（ブランチはコミットに対するポインタであることに注意して下さい）。
+でコミットをロードすると、リモートリポジトリ上のブランチに対応する「リモートトラキングブランチ」という特殊なブランチが自動的に作成されます（ブランチはコミットに対するポインタであることに注意して下さい）。
 リモートトラッキングブランチの名前は <code>&lt;remote&gt;/&lt;branch&gt;</code>
-という名前になります。現在のレポジトリにあるリモートトラッキングブランチの一覧は
+という名前になります。現在のリポジトリにあるリモートトラッキングブランチの一覧は
 <code>git branch -r</code> で確認できます。</p>
 
 <p>アリスとボブのケースに戻りましょう。ボブはアリスが紹介ページを自分の作っているものにマージすることにしました。
-ボブはアリスのレポジトリー上のコミットを取り込むために、まずアリスのレポジトリを自分のレポジトリに「リモートレポジトリ」として登録します。</p>
+ボブはアリスのリポジトリー上のコミットを取り込むために、まずアリスのリポジトリを自分のリポジトリに「リモートリポジトリ」として登録します。</p>
 
 <pre><code>$ cd /tmp/my/workingdir/bob
 $ git remote add alice /tmp/my/workingdir/alice
@@ -217,7 +218,7 @@ $ git remote show alice
     master pushes to master (local out of date)
 </code></pre>
 
-<p>次にアリスのレポジトリをフェッチします。</p>
+<p>次にアリスのリポジトリをフェッチします。</p>
 
 <pre><code>$ git fetch alice
 warning: no common commits
@@ -231,43 +232,43 @@ $ git branch -r
   alice/master
 </code></pre>
 
-<p>bob のレポジトリの状態を図を書くと次のようになります。 レポジトリ alice
+<p>bob のリポジトリの状態を図を書くと次のようになります。 リポジトリ alice
 からコミットがコピーされており、master ブランチの代わりに <code>alice/master</code>
 という「リモートトラッキングブランチ」が作成されていることに注意して下さい。</p>
 
 <p><img src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;h=664" width="660" height="332" /></p>
 
-<h1 id="section-4">リモートトラキングブランチを扱う</h1>
+<h1 id="section-5">リモートトラキングブランチを扱う</h1>
 
 <p>これで <code>git remote add</code> と <code>git fetch</code>
-で別の場所にあるレポジトリを登録し、そこからコミットを読み込むことができました。
-その際にリモートレポジトリ上のブランチに対応する <code>&lt;remote&gt;/&lt;branch&gt;</code>
+で別の場所にあるリポジトリを登録し、そこからコミットを読み込むことができました。
+その際にリモートリポジトリ上のブランチに対応する <code>&lt;remote&gt;/&lt;branch&gt;</code>
 という名前の「リモートトラキングブランチ」が自動的に作られることが分かりました。</p>
 
 <p>「リモートトラッキングブランチ」(e.g. <code>origin/master</code>) は通常のブランチ
 (e.g. <code>master</code>) や <code>HEAD</code>, <code>HEAD^</code>, コミットのハッシュID
 (<code>198bc17aade</code>),
-タグと同様に手元のレポジトリに保存されているコミットに対するポインタです。
+タグと同様に手元のリポジトリに保存されているコミットに対するポインタです。
 そのため前章で学んだような <code>git checkout</code>, <code>git merge</code>, <code>git branch</code>
 のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。</p>
 
 <pre><code>git log alice/master
 </code></pre>
 
-<p>でボブはリモートレポジトリ（アリスのレポジトリ）上の <code>master</code>
+<p>でボブはリモートリポジトリ（アリスのリポジトリ）上の <code>master</code>
 ブランチのログを見ることができます。</p>
 
 <pre><code>git checkout alice/master
 </code></pre>
 
-<p>とするとボブはアリスのレポジトリの <code>master</code>
+<p>とするとボブはアリスのリポジトリの <code>master</code>
 ブランチの最新の状態を再現することができます （ただし
 <code>You are in 'detached HEAD' state.</code>
 と言われてこのままでは編集作業ができないことに注意）。</p>
 
-<h1 id="section-5">リモートトラッキングブランチとマージする</h1>
+<h1 id="section-6">リモートトラッキングブランチとマージする</h1>
 
-<p>次にリモートトラッキングブランチ（リモートレポジトリ上のブランチ）をローカルのブランチにマージしてみましょう。
+<p>次にリモートトラッキングブランチ（リモートリポジトリ上のブランチ）をローカルのブランチにマージしてみましょう。
 これはローカルでブランチをマージした場合と全く同じようにできます。</p>
 
 <p>ボブはアリスの master ブランチを自分の master
@@ -283,7 +284,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 </code></pre>
 
 <p>members.txt
-はアリスとボブ両方のレポジトリで編集されていたのでコンフリクトが発生します。
+はアリスとボブ両方のリポジトリで編集されていたのでコンフリクトが発生します。
 適当にコンフリクトを解消します。このあたりの作業もローカルのブランチをマージする場合となにも変わりません。</p>
 
 <pre><code>$ emacs members.txt # 適当なエディタで衝突を解消
@@ -292,17 +293,17 @@ $ git commit
 [master 5de7b36] Merge remote-tracking branch 'alice/master'
 </code></pre>
 
-<p>これで無事、ボブはアリスが行った変更を自分のレポジトリに取り込むことができました。ボブのレポジトリの状態は図で書くと以下のようになります</p>
+<p>これで無事、ボブはアリスが行った変更を自分のリポジトリに取り込むことができました。ボブのリポジトリの状態は図で書くと以下のようになります</p>
 
 <p><img src="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;h=644" width="503" height="322" /></p>
 
 <h1 id="git-pull">git pull</h1>
 
-<p>今度はアリスの立場になってボブのレポジトリ上のmaster
-ブランチをローカルレポジトリの masterブランチにマージしましょう。
-ボブがアリスのコミットを読み込んだ時と同じようにまずはリモートレポジトリを
+<p>今度はアリスの立場になってボブのリポジトリ上のmaster
+ブランチをローカルリポジトリの masterブランチにマージしましょう。
+ボブがアリスのコミットを読み込んだ時と同じようにまずはリモートリポジトリを
 <code>git remote add</code> で登録します。 続いて、git fetch と git merge
-を実行すれば前述したようにボブのレポジトリ上のmasterブランチをローカルレポジトリの
+を実行すれば前述したようにボブのリポジトリ上のmasterブランチをローカルリポジトリの
 master ブランチにマージすることが出来ます。 この fetch → merge
 という一連の処理は非常に頻繁に行われるので、これを一度に行う <code>git pull</code>
 というコマンドが用意されています。</p>
@@ -311,7 +312,7 @@ master ブランチにマージすることが出来ます。 この fetch → m
 </code></pre>
 
 <p>このコマンドを実行すると <code>git fetch &lt;remote&gt;</code> →
-<code>git merge &lt;remote&gt;/&lt;src&gt;</code> を実行した場合と同じようにリモートレポジトリ
+<code>git merge &lt;remote&gt;/&lt;src&gt;</code> を実行した場合と同じようにリモートリポジトリ
 &lt;remote&gt; 上の &lt;src&gt; ブランチが
 現在のブランチにマージされます（厳密には git fetch &lt;remote&gt; &lt;src&gt; →
 git merge FETCHED_HEAD）。</p>
@@ -340,22 +341,22 @@ Fast-forward
 
 <p><img src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545" width="505" height="272" /></p>
 
-<h1 id="section-6">ここまでのまとめ</h1>
+<h1 id="section-7">ここまでのまとめ</h1>
 
 <ul>
   <li>別の場所にあるgit
-レポジトリ（リモートレポジトリ）と連携するための仕組みとして git
+リポジトリ（リモートリポジトリ）と連携するための仕組みとして git
 には「リモート」というものが用意されています。</li>
-  <li>リモートレポジトリと連携するには、まずローカルレポジトリに登録するリモートレポジトリを登録します。これには
+  <li>リモートリポジトリと連携するには、まずローカルリポジトリに登録するリモートリポジトリを登録します。これには
 <code>git remote add &lt;name&gt; &lt;url&gt;</code> を利用します。</li>
-  <li>リモートレポジトリ上のコミットを <code>git fetch</code>
+  <li>リモートリポジトリ上のコミットを <code>git fetch</code>
 でロードすることができます。
-この際、リモートレポジトリ上のブランチに対応する「リモートトラッキングブランチ」が自動的に作成されます。
+この際、リモートリポジトリ上のブランチに対応する「リモートトラッキングブランチ」が自動的に作成されます。
 リモートトラッキングブランチの名前は <code>&lt;remote&gt;/&lt;branch&gt;</code> (e.g.
 <code>alice/master</code>) となります。</li>
   <li>git fetch
-で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のレポジトリで作業している場合全く同じように作業できる。
-リモートレポジトリ上で行われたコミットを手元のブランチに取り込むには
+で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のリポジトリで作業している場合全く同じように作業できる。
+リモートリポジトリ上で行われたコミットを手元のブランチに取り込むには
 <code>git merge</code> を行えば良い。</li>
   <li><code>git fetch</code> → <code>git merge</code> の一連の流れは <code>git pull</code>
 コマンドで行うことができる。</li>
@@ -363,36 +364,36 @@ Fast-forward
 
 <h1 id="git-push">git push</h1>
 
-<p>ここまで紹介した方法で、異なる場所にあるレポジトリを連携させることができるようになりました。
-しかし今まで紹介した、お互いのレポジトリーからコミットを読み込んでマージするという方法は</p>
+<p>ここまで紹介した方法で、異なる場所にあるリポジトリを連携させることができるようになりました。
+しかし今まで紹介した、お互いのリポジトリーからコミットを読み込んでマージするという方法は</p>
 
 <ul>
-  <li>アリスのコンピュータの電源が落ちているなどの理由でアリスのレポジトリにアクセス出来ないと共同作業が出来ない。</li>
-  <li>チャーリーが作業に参加するとアリスは、ボブとチャーリのレポジトリそれぞれからコミットを
+  <li>アリスのコンピュータの電源が落ちているなどの理由でアリスのリポジトリにアクセス出来ないと共同作業が出来ない。</li>
+  <li>チャーリーが作業に参加するとアリスは、ボブとチャーリのリポジトリそれぞれからコミットを
 git pull しなければなりません。
-更に参加者が増えると読み込むレポジトリが参加人数に比例して増えてしまい破綻してしまいます。</li>
+更に参加者が増えると読み込むリポジトリが参加人数に比例して増えてしまい破綻してしまいます。</li>
 </ul>
 
 <p>のような問題があり実際に日常の業務で使うのには現実的でありません。
 この問題を解決する git
-の運用方法は複数存在しますが、1つの単純な解決方法は共有のレポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有レポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有レポジトリに書き込むことです。
-これを実現するには今まで述べてきたリモートレポジトリからコミットを読み込む方法に加えて、リモートレポジトリに対して手元のコミットを書き込む方法も必要になります。
-このコミットをリモートレポジトリに書き込むための手段が <code>git push</code> です。</p>
+の運用方法は複数存在しますが、1つの単純な解決方法は共有のリポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有リポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有リポジトリに書き込むことです。
+これを実現するには今まで述べてきたリモートリポジトリからコミットを読み込む方法に加えて、リモートリポジトリに対して手元のコミットを書き込む方法も必要になります。
+このコミットをリモートリポジトリに書き込むための手段が <code>git push</code> です。</p>
 
 <p><img src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499" width="520" height="249" /></p>
 
-<h2 id="section-7">共有用のレポジトリを作る</h2>
+<h2 id="section-8">共有用のリポジトリを作る</h2>
 
-<p>まず共有用のレポジトリを作成しましょう。各々のユーザがコミットの書き込み
-(<code>git push</code>) を行うレポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のレポジトリ（bare
+<p>まず共有用のリポジトリを作成しましょう。各々のユーザがコミットの書き込み
+(<code>git push</code>) を行うリポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のリポジトリ（bare
 repository）</a>
 である必要があります。 bare repository は作業ディレクトリのない（<code>.git</code>
-ディレクトリのみ存在する） git レポジトリです。 bare レポジトリは git
+ディレクトリのみ存在する） git リポジトリです。 bare リポジトリは git
 init に <code>--bare</code> オプションをつけて実行することで作成できます。
-あるいは、 git clone で既存のレポジトリを複製する際に <code>--bare</code>
-オプションを付けることで 既存のレポジトリを bare
-レポジトリとして複製することも出来ます。 また bare
-レポジトリのディレクトリ名には <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git
+あるいは、 git clone で既存のリポジトリを複製する際に <code>--bare</code>
+オプションを付けることで 既存のリポジトリを bare
+リポジトリとして複製することも出来ます。 また bare
+リポジトリのディレクトリ名には <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git
 を末尾につけるのが慣習です</a>。</p>
 
 <pre><code>$ cd /tmp/my/workingdir
@@ -402,7 +403,7 @@ $ git init --bare
 Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
 </code></pre>
 
-<p><code>ls</code> で <code>shared.git</code> の中身を確認してみると、通常のレポジトリの <code>.git</code>
+<p><code>ls</code> で <code>shared.git</code> の中身を確認してみると、通常のリポジトリの <code>.git</code>
 ディレクトリの中身が保存されていることが分かります。</p>
 
 <pre><code>$ ls
@@ -411,7 +412,7 @@ HEAD        branches    config      description hooks       info        objects 
 
 <h2 id="git-push-">git push でコミットを書き込む</h2>
 
-<p>次にアリスの立場に手元のコミットを共有レポジトリに書き出してみましょう。まずは共有レポジトリをリモートとして登録します。</p>
+<p>次にアリスの立場に手元のコミットを共有リポジトリに書き出してみましょう。まずは共有リポジトリをリモートとして登録します。</p>
 
 <pre><code>$ cd /tmp/my/workingdir/alice
 $ git remote add shared /tmp/my/workingdir/shared.git
@@ -423,7 +424,7 @@ push を利用します。</p>
 <pre><code>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
 </code></pre>
 
-<p>このコマンドを実行するとローカルレポジトリの &lt;src&gt;
+<p>このコマンドを実行するとローカルリポジトリの &lt;src&gt;
 が指すコミットとその先祖のコミットを &lt;remote&gt; に対して書き込み、
 同時に &lt;remote&gt; の &lt;dst&gt; が &lt;src&gt;
 と同じコミットを指すように変更します。</p>
@@ -436,7 +437,7 @@ push を利用します。</p>
 &lt;src&gt; の祖先でない場合）には git push は <strong>失敗</strong> します。</li>
 </ul>
 
-<p>アリスのレポジトリから共有レポジトリに対して、master
+<p>アリスのリポジトリから共有リポジトリに対して、master
 ブランチを書き込んでみましょう</p>
 
 <pre><code>$ git push shared master:master
@@ -476,8 +477,8 @@ To /tmp/my/workingdir/shared.git
 
 <h2 id="push-fast-forward-">push (fast-forward) に失敗した場合の対処法</h2>
 
-<p>次にボブの立場になって共有レポジトリに新しいコミットを push
-してみましょう。 まず共有レポジトリを <code>git remote add</code> で登録します</p>
+<p>次にボブの立場になって共有リポジトリに新しいコミットを push
+してみましょう。 まず共有リポジトリを <code>git remote add</code> で登録します</p>
 
 <pre><code>$ cd /tmp/my/workingdir/bo
 $ git remote add shared /tmp/my/workingdir/shared
@@ -522,7 +523,7 @@ Merge made by the 'recursive' strategy.
  1 file changed, 1 insertion(+)
 </code></pre>
 
-<p>bob のレポジトリは図のような状態になります。</p>
+<p>bob のリポジトリは図のような状態になります。</p>
 
 <p><img src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;h=599" width="758" height="299" /></p>
 
@@ -539,6 +540,19 @@ Total 5 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared
    c671712..14245e3  master -&gt; master
 </code></pre>
+
+<p>リモートリポジトリを使って作業を行うのに最低限必要な知識は以上です。
+あとはトラッキングブランチ、アップストリーム、そしてgit pull/push の引数を省略した場合に何が起こるかについて理解していれば、
+リモートレポジトリを使う上で困ることはあまり無いかと思います。
+それらについては</p>
+
+<ul>
+  <li><a href="relearning_git_pull_default.html">引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a></li>
+  <li><a href="relearning_git_push_default.html">引数がない場合の git push のデフォルトの挙動</a></li>
+</ul>
+
+<p>を参考にして下さい。</p>
+
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
