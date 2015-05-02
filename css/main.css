@@ -305,6 +305,9 @@ h1.post-title {
   line-height: 40px;
   padding: 45px 20px 35px 20px; }
 
+h1.tips-title {
+  background: -webkit-gradient(linear, left top, right top, from(#00838F), to(#00695C)); }
+
 .post-content {
   margin-bottom: 30px; }
   .post-content h2 {
