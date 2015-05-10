@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">ターミナルにプログレスバーを表示する方法</h1>
-          <p class="post-meta"><time datetime="2015-04-25T00:00:00+09:00" itemprop="datePublished">更新 Apr 25, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-05-03T00:00:00+09:00" itemprop="datePublished">更新 May 3, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -121,6 +121,7 @@ return)</a></li>
 </ul>
 
 <h3 id="python">Python</h3>
+<p><a href="https://github.com/yunabe/codelab/blob/master/misc/terminal_progressbar/progress.py">GitHub にPythonのサンプルがおいてあります</a></p>
 
 <pre><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
 sys.stderr.flush()
@@ -152,7 +153,6 @@ sys.stderr.flush()
 などの色が実際のターミナルでどのような色になるかは、 <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia
 にあるエスケープシーケンスで指定する色とターミナル上での色の対応表</a>
 が分かりやすいので参考にして下さい（ターミナル毎に微妙に色合いが異なります）。</p>
-
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
