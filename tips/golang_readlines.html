@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Go でファイルを一行ずつ読む</title>
+  <title>Go でファイルや標準入力からテキストを一行ずつ読む</title>
   <meta name="description" content="">
-
+  <meta property="fb:admins" content="yunabe">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.yunabe.jp/tips/golang_readlines.html">
   <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
@@ -31,20 +31,39 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title tips-title" itemprop="name headline">Go でファイルを一行ずつ読む</h1>
-          <p class="post-meta"><time datetime="2015-08-03T00:00:00+09:00" itemprop="datePublished">更新 Aug 3, 2015</time></p>
+          <h1 class="post-title tips-title" itemprop="name headline">Go でファイルや標準入力からテキストを一行ずつ読む</h1>
+          <p class="post-meta"><time datetime="2015-08-04T00:00:00+09:00" itemprop="datePublished">更新 Aug 4, 2015</time></p>
         </header>
-        <h1 id="go-">Go でファイルを一行ずつ読む</h1>
+        <h1 id="go-">Go でファイルや標準入力からテキストを一行ずつ読む</h1>
 
 <h2 id="bufioscanner">bufio.Scanner</h2>
-<p>Go言語 (golang) でファイルを一行ずつ読み込むのには、<code>bufio.Scanner</code> を使います。
-<code>bufio.NewScanner</code> で <code>*file.File</code> から <code>Scanner</code> を作成し、<code>Scan()</code> がファイルの末尾に達してfalseを返すまでforループを回します。
-行の内容は <code>Text()</code> で<code>stirng</code>として取得できます。<code>Text()</code>には改行文字(<code>\n</code>)は含まれないので、改行文字を削除するために<code>strings.Trim</code>を呼ぶ必要などもありません。
-ファイルの終端に達したかを念の為確かめたい場合は、<code>s.Err()</code>をチェックして下さい。
+<p>Go言語 (golang) では<code>bufio.Scanner</code>を使ってファイル/標準入力からテキストを一行ずつ読み込みます。
+<code>bufio.NewScanner</code> で <code>*file.File</code> から <code>Scanner</code> を作成し、<code>Scan()</code> がファイルの末尾に達して<code>false</code>を返すまで for ループを回します。
+行の内容は <code>Text()</code> で<code>stirng</code>として取得できます。<code>Text()</code>の返り値の末尾には改行文字(<code>'\n'</code>)は含まれないので改行文字を削除するために<code>strings.Trim</code>を呼ぶ必要などもありません。
+ファイルの終端に正常に到達したかを念の為に確かめたい場合は、<code>s.Err()</code>をチェックして下さい。
 正常にファイルの末尾まで読み込まれた場合は<code>s.Err()</code>は<code>nil</code>を返します。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">file</span><span class="o">.</span><span class="n">File</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">f</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">os</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+        </span><span class="k">return</span><span class="x">
+    </span><span class="p">}</span><span class="x">
     </span><span class="n">s</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">bufio</span><span class="o">.</span><span class="n">NewScanner</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="x">
+    </span><span class="k">for</span><span class="x"> </span><span class="n">s</span><span class="o">.</span><span class="n">Scan</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">Quote</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Text</span><span class="p">()))</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">s</span><span class="o">.</span><span class="n">Err</span><span class="p">()</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="c">// non-EOF error.</span><span class="x">
+        </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Err</span><span class="p">())</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<h2 id="section">標準入力から読む</h2>
+<p>標準入力から文字列を読み込む場合は、<code>os.Open(...)</code>の代わりに<code>os.Stdin</code>を利用します。</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">s</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">bufio</span><span class="o">.</span><span class="n">NewScanner</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">Stdin</span><span class="p">)</span><span class="x">
     </span><span class="k">for</span><span class="x"> </span><span class="n">s</span><span class="o">.</span><span class="n">Scan</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">Quote</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Text</span><span class="p">()))</span><span class="x">
     </span><span class="p">}</span><span class="x">
@@ -57,7 +76,7 @@
 <h2 id="bufioreader">bufio.Reader</h2>
 <p><code>bufio.Scanner</code>の方がシンプルですが、<code>bufio.Reader</code>を使って一行ずつファイルを読むことも出来ます。
 <code>bufio.Reader</code>を使う場合は<code>ReadLine()</code>ではなくて<code>ReadString('\n')</code>を使うという点に注意して下さい。
-<code>ReadString('\n')</code>を使い場合得られる<code>string</code>には改行文字<code>'\n'</code>が含まれるので必要に応じて除去する必要があるので気をつけて下さい。</p>
+<code>ReadString('\n')</code>の返り値の末尾には改行文字<code>'\n'</code>が含まれるので必要ない場合は<code>strings.TrimLeft</code>などで改行文字を取り除く必要があります。</p>
 
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">file</span><span class="o">.</span><span class="n">File</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">bufio</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="x">
@@ -89,6 +108,10 @@
   </div>
 </div>
 
+        <div class="fb-comments" data-href="http://www.yunabe.jp/tips/golang_readlines.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
       </div>
     </div>
 

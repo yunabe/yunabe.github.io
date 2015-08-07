@@ -1,3 +1,6 @@
+.fb-comments, .fb-comments iframe[style], .fb-comments span {
+  width: 100% !important; }
+
 /**
  * Reset some basic elements
  */
