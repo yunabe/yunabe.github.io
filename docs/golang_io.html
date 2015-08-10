@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Go言語 - 入出力(IO)処理の基本ライブラリ</title>
+  <title>Go言語 - I/O処理のよく使う基本ライブラリ</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
   <link rel="stylesheet" href="/css/main.css">
@@ -31,8 +31,8 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Go言語 - 入出力(IO)処理の基本ライブラリ</h1>
-          <p class="post-meta"><time datetime="2015-08-09T00:00:00+09:00" itemprop="datePublished">更新 Aug 9, 2015</time></p>
+          <h1 class="post-title" itemprop="name headline">Go言語 - I/O処理のよく使う基本ライブラリ</h1>
+          <p class="post-meta"><time datetime="2015-08-10T00:00:00+09:00" itemprop="datePublished">更新 Aug 10, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -52,9 +52,9 @@
         <p>Go言語でプログラムを書く際に欠かせないファイルなどの入出力(IO)関係の基本的なライブラリの一覧。この辺のライブラリはかなりよく使うのでパッケージ名や型名を覚えておくといちいちドキュメントを検索せずにすんで良いかも。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#section">早見表</a></li>
+  <li><a href="#section">備忘用早見表</a></li>
   <li><a href="#ioreader-iowriter">io.Reader, io.Writer</a></li>
-  <li><a href="#section-1">ファイルの読み書き</a></li>
+  <li><a href="#section-1">ファイルを読み書き用に開く</a></li>
   <li><a href="#section-2">標準入力/標準出力/標準エラー</a></li>
   <li><a href="#section-3">メモリからの読み込み・メモリへの書き込み</a></li>
   <li><a href="#reader-writer">Reader, Writerを効率よく使うためのライブラリ</a>    <ul>
@@ -68,7 +68,65 @@
   </li>
 </ul>
 
-<h1 id="section">早見表</h1>
+<h1 id="section">備忘用早見表</h1>
+
+<ul>
+  <li>io.Reader
+    <ul>
+      <li>全てのRead処理の基本となるinterface。<code>Read(p []byte) (n int, err error)</code>を持つ。ただReadを直接扱うことは少ない</li>
+    </ul>
+  </li>
+  <li>io.Writer
+    <ul>
+      <li>全てのWrite処理の基本となるinterface。<code>Write(p []byte) (n int, err error)</code>を持つ。ただWriteを直接扱うことは少ない</li>
+    </ul>
+  </li>
+  <li>os.Open
+    <ul>
+      <li>読み込み用にファイルを開く。*os.Fileを返す。*os.Fileはio.Reader, io.Writerとして利用できる。</li>
+    </ul>
+  </li>
+  <li>os.Create
+    <ul>
+      <li>書き込み用にファイルを開く。*os.Fileを返す。</li>
+    </ul>
+  </li>
+  <li>os.Stdin, os.Stdout, os.Stderr
+    <ul>
+      <li>標準入力、標準出力、標準エラー。*os.File型</li>
+    </ul>
+  </li>
+  <li>bytes.Buffer (struct)
+    <ul>
+      <li>ファイルではなくメモリへデータを書き込むのに使う。*bytes.Buffer が io.Writer として利用可能。</li>
+    </ul>
+  </li>
+  <li>bytes.Reader (struct)
+    <ul>
+      <li>ファイルではなくメモリ([]byte)からデータを読み込むのに使う。*bytes.Reader が io.Reader として利用可能。</li>
+    </ul>
+  </li>
+  <li>bufio.Scanner
+    <ul>
+      <li>ファイルや標準入力から作られたio.Readerから１行ずつ文字列を読み込む。</li>
+    </ul>
+  </li>
+  <li>io/ioutil.ReadAll
+    <ul>
+      <li>io.Readerから全てデータを読み込んで[]byteを作成する。stringにしたい場合は<code>string(b)</code>で型変換する。</li>
+    </ul>
+  </li>
+  <li>io/ioutil.ReadFile
+    <ul>
+      <li>指定されたファイル名から全てのデータを読み込んで[]byteを作成する。stringにしたい場合は<code>string(b)</code>で型変換する。</li>
+    </ul>
+  </li>
+  <li>io/ioutil.WriteFile
+    <ul>
+      <li>指定されたファイル名に[]byteを書き込む。os.Createに合わせるなら第三引数<code>perm</code>は<code>0666</code>を渡す。</li>
+    </ul>
+  </li>
+</ul>
 
 <h1 id="ioreader-iowriter">io.Reader, io.Writer</h1>
 
@@ -86,7 +144,7 @@
 標準ライブラリに用意されている便利なツールでラップして呼び出すことが多いと思います。
 Readerから全ての内容を１つの<code>string</code>として読み込んだり、一行ずつ読み込んだり、バッファリングして効率よくファイルに書き込んだりするための標準ライブラリが用意されています。</p>
 
-<h1 id="section-1">ファイルの読み書き</h1>
+<h1 id="section-1">ファイルを読み書き用に開く</h1>
 <p>Goでファイルを開く場合</p>
 
 <ul>
