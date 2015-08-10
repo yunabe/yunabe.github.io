@@ -148,21 +148,19 @@ Readerから全ての内容を１つの<code>string</code>として読み込ん�
 <p>Goでファイルを開く場合</p>
 
 <ul>
-  <li>ファイルを読み込み用に開く場合はos.Open</li>
-  <li>ファイルを書き込み用に開く場合はos.Create</li>
+  <li>ファイルを読み込み用に開く場合は<a href="https://golang.org/pkg/os/#Open">os.Open</a></li>
+  <li>ファイルを書き込み用に開く場合は<a href="https://golang.org/pkg/os/#Create">os.Create</a></li>
 </ul>
 
 <p>を使います。どちらの関数も*os.File(とerror)を返します。*os.FileはRead, Writeを実装しているのでio.Reader, io.Writerを引数に取る関数に渡すことができます。
-ちなみにosパッケージには os.OpenFile という関数も存在しますが、os.OpenFileはos.Open, os.Createの内部で使われる少しプリミティブな関数なので単純にファイルの読み書きをするだけなら普段はos.Open, os.Createを使えば十分です。
-Open, Createで開いたファイルは<code>defer f.Close()</code>で閉じるのを忘れないようにしましょう。</p>
+ちなみにosパッケージには <a href="https://golang.org/pkg/os/#OpenFile">os.OpenFile</a> という関数も存在しますが、os.OpenFileはos.Open, os.Createの内部で使われる少しプリミティブな関数なので単純にファイルの読み書きをするだけなら普段はos.Open, os.Createを使えば十分です。
+Open, Createで開いたファイルは<strong>必ず<code>defer f.Close()</code>を呼び出してファイルを閉じる</strong>のを忘れないようにしましょう。</p>
 
 <h1 id="section-2">標準入力/標準出力/標準エラー</h1>
-<p>ファイルの代わりに標準入力, 標準出力, 標準エラーを使いたい場合はos.Stdin, os.Stdout, os.Stderr(いずれも<code>*os.File</code>型)が用意されているのでファイルの代わりにこれを利用します。</p>
+<p>ファイルの代わりに標準入力, 標準出力, 標準エラーを使いたい場合は<a href="https://golang.org/pkg/os/#pkg-variables">os.Stdin, os.Stdout, os.Stderr</a>(いずれも<code>*os.File</code>型)が用意されているのでファイルの代わりにこれを利用します。</p>
 
 <h1 id="section-3">メモリからの読み込み・メモリへの書き込み</h1>
-<p>ファイル入出力などを行う関数のユニットテストを書く場合などに、ファイルの代わりにメモリからデータを読んだり
-逆にファイルの代わりにメモリにデータを書き込んだりしたい場合があります。
-Goではこのような場合にはbytes.Buffer(読み書き両用), bytes.Reader(読み込み専用)を利用します。</p>
+<p>ファイル入出力などを行う関数のユニットテストを書く場合などに、ファイルの代わりにメモリからデータを読んだり逆にファイルの代わりにメモリにデータを書き込んだりしたい場合があります。Goではこのような場合には<a href="https://golang.org/pkg/bytes/#Buffer">bytes.Buffer</a>(書き込み用。読み込みも可), <a href="https://golang.org/pkg/bytes/#Reader">bytes.Reader</a>(読み込み専用)を利用します。</p>
 
 <h1 id="reader-writer">Reader, Writerを効率よく使うためのライブラリ</h1>
 <p>ここからはファイルの読み書き定形処理を行ってくれる便利なライブラリを紹介していきます。
