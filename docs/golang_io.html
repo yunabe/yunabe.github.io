@@ -126,6 +126,11 @@
       <li>指定されたファイル名に[]byteを書き込む。os.Createに合わせるなら第三引数<code>perm</code>は<code>0666</code>を渡す。</li>
     </ul>
   </li>
+  <li>io.Copy
+    <ul>
+      <li>io.Reader から io.Writer にデータを全てコピーする便利関数</li>
+    </ul>
+  </li>
 </ul>
 
 <h1 id="ioreader-iowriter">io.Reader, io.Writer</h1>
@@ -161,6 +166,9 @@ Open, Createで開いたファイルは<strong>必ず<code>defer f.Close()</code
 
 <h1 id="section-3">メモリからの読み込み・メモリへの書き込み</h1>
 <p>ファイル入出力などを行う関数のユニットテストを書く場合などに、ファイルの代わりにメモリからデータを読んだり逆にファイルの代わりにメモリにデータを書き込んだりしたい場合があります。Goではこのような場合には<a href="https://golang.org/pkg/bytes/#Buffer">bytes.Buffer</a>(書き込み用。読み込みも可), <a href="https://golang.org/pkg/bytes/#Reader">bytes.Reader</a>(読み込み専用)を利用します。</p>
+
+<iframe src="http://play.golang.org/p/xURE66Vfs3" frameborder="0" style="width: 100%; height: 400px"><a href="http://play.golang.org/p/xURE66Vfs3">see this code in play.golang.org</a></iframe>
+<iframe src="http://play.golang.org/p/mYTMuFlQoS" frameborder="0" style="width: 100%; height: 400px"><a href="http://play.golang.org/p/mYTMuFlQoS">see this code in play.golang.org</a></iframe>
 
 <h1 id="reader-writer">Reader, Writerを効率よく使うためのライブラリ</h1>
 <p>ここからはファイルの読み書き定形処理を行ってくれる便利なライブラリを紹介していきます。
