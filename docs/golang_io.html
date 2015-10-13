@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語 - I/O処理のよく使う基本ライブラリ</h1>
-          <p class="post-meta"><time datetime="2015-08-10T00:00:00+09:00" itemprop="datePublished">更新 Aug 10, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-10-13T00:00:00+09:00" itemprop="datePublished">更新 Oct 13, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -60,10 +60,9 @@
   <li><a href="#reader-writer">Reader, Writerを効率よく使うためのライブラリ</a>    <ul>
       <li><a href="#bufioscanner-">bufio.Scanner: 文字列を一行ずつ読み込む</a></li>
       <li><a href="#bufioreader-writer-">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</a></li>
-      <li><a href="#ioioutilreadall-reader">io/ioutil.ReadAll: Readerから全てのデータを一度に読み込む</a></li>
-      <li><a href="#ioioutilreadfile-">io/ioutil.ReadFile: 指定した名前のファイルからデータを一度に読み込む</a></li>
+      <li><a href="#ioioutilreadall-reader">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</a></li>
+      <li><a href="#ioioutilreadfile-writefile-byte">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</a></li>
       <li><a href="#writebytes-vs-writestrings">Write([]byte(s)) v.s. WriteString(s)</a></li>
-      <li><a href="#ioioutilwritefile">“io/ioutil”.WriteFile</a></li>
     </ul>
   </li>
 </ul>
@@ -183,14 +182,21 @@ Open, Createで開いたファイルは<strong>必ず<code>defer f.Close()</code
 <h2 id="bufioreader-writer-">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</h2>
 <p>Javaの<a href="https://docs.oracle.com/javase/jp/6/api/java/io/BufferedReader.html">BuferredReader</a>, <a href="https://docs.oracle.com/javase/jp/6/api/java/io/BufferedWriter.html">BufferedWriter</a>のようにバッファリングすることで効率的にファイルに対するデータの読み書きを行うライブラリがGoにも用意されています。</p>
 
-<h2 id="ioioutilreadall-reader">io/ioutil.ReadAll: Readerから全てのデータを一度に読み込む</h2>
+<h2 id="ioioutilreadall-reader">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</h2>
+<p>io/utilパッケージの<a href="https://golang.org/pkg/io/ioutil/#ReadAll">ReadAll</a>を使うとio.Readerからデータを全て読み込んで、io.Readerの中身のバイト列(<code>[]byte</code>)を作成することができます。</p>
 
-<h2 id="ioioutilreadfile-">io/ioutil.ReadFile: 指定した名前のファイルからデータを一度に読み込む</h2>
+<h2 id="ioioutilreadfile-writefile-byte">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</h2>
+<p>io/utilパッケージの<a href="https://golang.org/src/io/ioutil/ioutil.go?s=1464:1510#L39">ReadFile</a>, <a href="https://golang.org/pkg/io/ioutil/#WriteFile">WriteFile</a>を使って、
+指定されたファイル名からファイルの中身をbyte[]として読み出す処理と、指定されたファイル名のファイルにbyte[]を書き込む処理が簡単に行なえます。</p>
+
+<ul>
+  <li><code>func ReadFile(filename string) ([]byte, error)</code></li>
+  <li><code>func WriteFile(filename string, data []byte, perm os.FileMode) error</code></li>
+</ul>
+
+<p><code>WriteFile</code>にはパーミッション<code>perm</code>を明示的に与えなければなりません。何を指定すればいいか迷ったらとりあえず<code>os.Create</code>に合わせてpermは<code>0666</code>を渡しておけばよいでしょう。</p>
 
 <h2 id="writebytes-vs-writestrings">Write([]byte(s)) v.s. WriteString(s)</h2>
-
-<h2 id="ioioutilwritefile">“io/ioutil”.WriteFile</h2>
-
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
