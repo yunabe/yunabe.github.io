@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Google流 JavaScript におけるクラス定義の実現方法</h1>
-          <p class="post-meta"><time datetime="2015-04-22T00:00:00+09:00" itemprop="datePublished">更新 Apr 22, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-10-15T00:00:00+09:00" itemprop="datePublished">更新 Oct 15, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -64,8 +64,7 @@ JavaScript で大規模なプログラミングを書こうとすると
 代わりにある <code>this</code> とか <code>prototype</code>
 とかは何に使えばよいか分からないしで途方に暮れてしまうと思います。</p>
 
-<p>しかし JavaScript
-には「クラス」という言語仕様は用意されていないものの、<code>this</code>,
+<p>しかし JavaScriptには「クラス」という言語仕様は用意されていないものの、<code>this</code>,
 <code>prototype</code> などを一定のルールに基づいて利用すれば
 他の言語のクラスほぼ同等のことは実現可能です。
 つまり他のクラスで行うようなクラスを使ったカプセル化、ポリモーフィズム、継承などを
@@ -104,6 +103,7 @@ Library</a>
       <li><a href="#prototype--">prototype = {}</a></li>
     </ul>
   </li>
+  <li><a href="#es6-">ES6 のクラス</a></li>
 </ul>
 
 <h1 id="javascript-">クラス実現のために必要な JavaScript の言語仕様</h1>
@@ -267,12 +267,10 @@ chain) と呼ばれるものです。</p>
 逆に <code>obj</code> のプロトタイプとして <code>proto</code> を設定するには
 <code>Object.setPrototypeOf(obj, proto)</code> を利用します。</p>
 
-<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code>__proto__</code>
-という特殊なプロパティが用意されていて、
+<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code>__proto__</code>という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
-ただしこれは
-<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a>
-なので今後はあまり利用しないほうがよいでしょう。</p>
+<del>ただしこれは<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a>なので今後はあまり利用しないほうがよいでしょう。</del>
+<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">ES6で__proto__が標準になりました</a>。ただ下位互換性の観点からあまり推奨されないことには変わりないかと思います。</p>
 
 <h2 id="prototype">プロパティ: prototype</h2>
 
@@ -616,6 +614,10 @@ goog.inherits</a>
 <code>Person.prototype.constructor == Person</code>
 の関係は壊れてしまうのでそこも若干マイナスポイントです。</p>
 
+<h1 id="es6-">ES6 のクラス</h1>
+<p>ECMAScript 6 でようやく<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Classes">JavaScriptにもクラスの構文が追加されています</a>。数年後、ユーザが使っているブラウザの大半がECMAScript 6 をサポートするようになれば(2015年10月時点では最新のFirefoxではサポートされていない)、新規のプロジェクトや単なる趣味であればここに書かれている文法を直接使う必要はなくなると思います。
+ただ下位互換性が非常に重要になるClosure Libraryのようなコアライブラリや既存のコード読む上で、あるいは<a href="https://github.com/google/traceur-compiler">ES6 to ES5 converter</a>の出力をデバッグする上で、今後少なくとも数年はもここに書かれている手段への理解は必要となるかと思います。
+また<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ES6のクラスがシンタックスシュガーに過ぎない</a>以上、ES6のクラスの挙動をきちんと理解したければプロトタイプを使ってどのようにクラスが実現できるのかを理解しておくのは今後も重要だと思います。ES6はあくまで既存のJavaScriptの上に作られた言語であり、JavaScriptがプロトタイプベースの言語であることは変わりません。</p>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
