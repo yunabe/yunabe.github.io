@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Go言語 ハマりどころ</title>
+  <title>Go言語 はまりどころと解決策</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
   <link rel="stylesheet" href="/css/main.css">
@@ -31,8 +31,8 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Go言語 ハマりどころ</h1>
-          <p class="post-meta"><time datetime="2015-08-10T00:00:00+09:00" itemprop="datePublished">更新 Aug 10, 2015</time></p>
+          <h1 class="post-title" itemprop="name headline">Go言語 はまりどころと解決策</h1>
+          <p class="post-meta"><time datetime="2015-10-17T00:00:00+09:00" itemprop="datePublished">更新 Oct 17, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -49,21 +49,108 @@
   </div>
 </div>
 
-        <h1 id="section">例外が(推奨され)ない</h1>
-<p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。個人的にはこのFAQにかかれていることには賛成で</p>
+        <h1 id="section">目次</h1>
+<ul id="markdown-toc">
+  <li><a href="#section">目次</a></li>
+  <li><a href="#section-1">例外が(推奨され)ない</a></li>
+  <li><a href="#if-err--nil-return-err">繰り返す if err != nil {return err}</a>    <ul>
+      <li><a href="#section-2">解決策</a></li>
+    </ul>
+  </li>
+  <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
+  <li><a href="#defer">関数より狭いスコープで defer</a></li>
+  <li><a href="#section-3">1.0 が浮動小数点型にならない(時がある)</a></li>
+</ul>
+
+<h1 id="section-1">例外が(推奨され)ない</h1>
+<p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
+例外で返されたエラーを <code>try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
+それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
+Goの例外は極力使わず、エラーを値として扱うポリシーはよいもの(特に大規模なプロジェクトで、エラーハンドリングが大切なプロジェクトでは)だと思います。</p>
 
 <p>ただ一方で、ちょっとした使い捨ての便利ツールを書く場合や、とりあえずプロトタイプで正常系だけ書きたい時、
 あるいは異常が発生したらプログラムを停止してしまって良いような起動時の初期化処理を書く時には、正直Goのエラーハンドリングはかなり面倒くさいです。
-こういうタイプのコードでは外部ライブラリの呼び出しやファイル、データベースなどの外部リソースへのアクセスが大きな割合を占めます。そして、そうした処理はほとんどの場合 error を出力しうるのでそれぞれの処理に対してエラーハンドリングを行う必要があります。
-場合によってはコードの半分の行が</p>
+こういうタイプのコードでは外部ライブラリの呼び出しやファイル、データベースなどの外部リソースへのアクセスが大きな割合を占めます。そして、そうした処理はほとんどの場合 error が発生しうるのでそれぞれの処理に対してエラーハンドリングを行う必要があります。
+場合によってはコードのかなりの割合の行が</p>
 
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
-<p>の繰り返しで占められてしまうこともあるでしょう。</p>
+<p>の繰り返しで占められてしまうこともあるでしょう。これに対しては根本的な解決策はないように思います。エラーが発生した場合はエラーメッセージを出力して処理を中断してしまって問題ない </p>
 
-<h1 id="section-1">1.0 が浮動小数点型にならない(時がある)</h1>
+<ul>
+  <li>使い捨てあるいは内部ツールでエラーハンドリングがあまり重要ではない時</li>
+  <li>正常系だけとりあえずプロトタイプしたい時</li>
+</ul>
+
+<p>には例外の方が便利であり、正直Go言語ではあまり効率的にコードが書けないような気がします。個人的にはそういう用途にはPythonなどを使うのが正しい解決策のように思えます。何でもGoで書く必要はないのですから。</p>
+
+<h1 id="if-err--nil-return-err">繰り返す if err != nil {return err}</h1>
+<p>Goでは例外が推奨されずエラー処理を常にきちんと書かなくてはならないので、Goでプログラムを書いていると</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="o">...</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="o">...</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="o">....</span></code></pre></div>
+
+<p>のように <code>if err != nil</code> によるエラーハンドリングを繰り返し繰り返し書かなくてはならないことがあります。
+<a href="https://blog.golang.org/errors-are-values">Go Blog</a>には<code>if err != nil { return err }</code>のパターンはあまり出現しない(once per page or two)と書かれていますが、
+プログラムのタイプによっては(例えばいろいろな外部リソースや外部ライブラリをつなぐようなコード)かなりの頻度で <code>if err != nil</code> を書かざるを得ないことがあるような気がします。
+<code>if err != nil</code> を入力するショートカット定義したほうがいいんじゃないのという気分になることがたまにあります。</p>
+
+<h2 id="section-2">解決策</h2>
+<p><code>...</code> の部分のコードが同じ処理の繰り返しであれば<a href="https://blog.golang.org/errors-are-values">前述のGo Blog</a>に書かれているように <code>if err != nil</code> の繰り返しを避けることが出来ます。<code>if err != nil</code>が繰り返しているなと思ったら、そもそも<code>if err != nil</code>以外の部分も繰り返しになっていないか、繰り返している処理をひとまとめにできないかを考えてみるべきでしょう。</p>
+
+<p>一方で、このテクニックが利用できるのは<code>...</code>の部分の処理が同じ型の処理の組み合わせでコードをまとめられる場合に限られます。そもそもコードが一定以上繰り返していたらまとめたほうが良いというのは、特に<code>if err != nil</code>とは関係なく行われるべきことでしょう。Goだと関数内の内部で更に関数を定義できるので、関数の一部の処理を気軽にまとめることができます、すばらしいことです。ただ<code>...</code>の処理に共通点があまりなく綺麗にまとめることができない場合は、<code>if err != nil</code> のコードの繰り返しは我慢する以外によい解決策はないようです。</p>
+
+<h1 id="return-nil-err--error">return nil, err → このerrorどこで発生したの？</h1>
+<p>Goではエラーハンドリングをきちんと書かなくてはなりません。とはいえ、きちんと書くと言ってもエラーが発生したら単に処理を中断してエラーを呼び出し元に返すことでエラー処理を呼び出し元に丸投げしてしまうことが多いでしょう。</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>そして最後に一番外側の処理でエラーを出力します</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="o">...</span><span class="x">
+  </span><span class="n">result</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="n">doSomething</span><span class="p">()</span><span class="x">
+  </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="o">...</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>プログラムを走らせたらエラーが発生してエラーが出力されました。</p>
+
+<pre><code>Invalid Argument
+</code></pre>
+
+<p>あれ…このエラーどこで発生したの…</p>
+
+<p>Goのエラーはただの値なのでJavaやPythonの例外などと違ってスタックトレースを含みません。
+Goのエラーには、そのエラーがどこで発生したかというコンテキストが自動的には含まれないのです。
+そのため、エラーハンドリングを呼び出し元に任せるからといってerrorを呼び出し元に何も考えずに返していると最終的にそのエラーがどこで発生したのかが分からなくなってしまいます。
+なので、errorを呼び出しに返すときは手動でエラーのコンテキストを残してあげましょう。</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Some context: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>これでエラーがどこで発生したのかが分かるようになります。ただこういうことしてると実は例外で良かったんじゃないかという気分にもなりますが。</p>
+
+<h1 id="defer">関数より狭いスコープで defer</h1>
+
+<h1 id="section-3">1.0 が浮動小数点型にならない(時がある)</h1>
 
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">type</span><span class="x"> </span><span class="n">Reader</span><span class="x"> </span><span class="k">interface</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="n">Read</span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">n</span><span class="x"> </span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
