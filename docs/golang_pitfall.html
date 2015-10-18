@@ -92,15 +92,15 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span><span class="o">...</span><span class="x">
+</span><span class="c">// ...</span><span class="x">
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span><span class="o">...</span><span class="x">
+</span><span class="c">// ...</span><span class="x">
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span><span class="o">....</span></code></pre></div>
+</span><span class="c">// ....</span></code></pre></div>
 
 <p>のように <code>if err != nil</code> によるエラーハンドリングを繰り返し繰り返し書かなくてはならないことがあります。
 <a href="https://blog.golang.org/errors-are-values">Go Blog</a>には<code>if err != nil { return err }</code>のパターンはあまり出現しない(once per page or two)と書かれていますが、
@@ -122,12 +122,12 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 <p>そして最後に一番外側の処理でエラーを出力します</p>
 
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-  </span><span class="o">...</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
   </span><span class="n">result</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="n">doSomething</span><span class="p">()</span><span class="x">
   </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
   </span><span class="p">}</span><span class="x">
-  </span><span class="o">...</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
 <p>プログラムを走らせたらエラーが発生してエラーが出力されました。</p>
@@ -149,6 +149,38 @@ Goのエラーには、そのエラーがどこで発生したかというコン
 <p>これでエラーがどこで発生したのかが分かるようになります。ただこういうことしてると実は例外で良かったんじゃないかという気分にもなりますが。</p>
 
 <h1 id="defer">関数より狭いスコープで defer</h1>
+<p>C#のusing, Pythonのwithのように他の人気のある言語ではあるスコープから処理が抜ける際に、リソースの解放処理を確実に実行するための機能がサポートされています。<a href="http://www.ne.jp/asahi/hishidama/home/tech/java/statement.html#try_with_resources_statement">Javaでも1.7からtry-with-resources</a>がサポートされています。
+Goではそういった解放処理は<code>defer</code>を使って行います。
+ただC#のusing, Pythonのwith, Javaのtry-with-resourcesと違ってGoの<code>defer</code>は一定のスコープを抜けた時ではなく、関数が終了する際に確実に指定した処理を実行する仕組みです。
+そのため、次のようなコードを書いても<code>r.Close()</code>が実行されるのは <code>if condition</code>のif文のブロックが終了した時ではなく<code>myFunc</code>全体が終了した時になってしまいます。</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">myFunc</span><span class="p">()</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
+  </span><span class="k">if</span><span class="x"> </span><span class="n">condition</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">os</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+      </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="c">// ...</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">myFunc</span><span class="p">()</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
+  </span><span class="k">if</span><span class="x"> </span><span class="n">condition</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">func</span><span class="p">(){</span><span class="x">
+      </span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">os</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="x">
+      </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+      </span><span class="p">}</span><span class="x">
+      </span><span class="k">defer</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+      </span><span class="c">// rを必要とする処理</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+  </span><span class="p">}</span><span class="x">
+  </span><span class="c">// ...</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
 
 <h1 id="section-3">1.0 が浮動小数点型にならない(時がある)</h1>
 
