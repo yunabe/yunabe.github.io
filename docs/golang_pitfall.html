@@ -52,42 +52,85 @@
         <h1 id="section">目次</h1>
 <ul id="markdown-toc">
   <li><a href="#section">目次</a></li>
-  <li><a href="#interface-nil">interface とnil</a></li>
+  <li><a href="#interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</a>    <ul>
+      <li><a href="#section-1">文献</a></li>
+    </ul>
+  </li>
   <li><a href="#goroutine-gc">goroutine はGCされない</a></li>
-  <li><a href="#goroutinegenerator-yield-">goroutineでgenerator (yield) は実装できない</a></li>
-  <li><a href="#section-1">例外が(推奨され)ない</a></li>
+  <li><a href="#goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</a></li>
+  <li><a href="#section-2">例外が(推奨され)ない</a></li>
   <li><a href="#if-err--nil-return-err">繰り返す if err != nil {return err}</a>    <ul>
-      <li><a href="#section-2">解決策</a></li>
+      <li><a href="#section-3">解決策</a></li>
     </ul>
   </li>
   <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
   <li><a href="#defer">関数より狭いスコープで defer</a></li>
-  <li><a href="#section-3">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-4">1.0 が浮動小数点型にならない(時がある)</a></li>
 </ul>
 
-<h1 id="interface-nil">interface とnil</h1>
-<p><a href="http://research.swtch.com/interfaces">Goのinterfaceの内部構造</a>を理解していれば当然の挙動なのですが、interfaceとnilはかなり驚くような動きをします。
-http://blog.golang.org/laws-of-reflection</p>
+<h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
+<p>JavaやC#あるいはC++の経験があり、ある程度クラスの内部構造への理解がある人はGoのinterfaceの実体もデータへの参照だと考えると思います。
+しかし実はそれは正しくありません。Goのinterfaceの実体は参照(ポインタ)ではありません。<a href="http://research.swtch.com/interfaces">Goのinterfaceの実体は参照と型情報のペアです</a>。</p>
+
+<p>さてこの内部構造の違いがGoにどういった影響をもたらすのでしょうか。
+実はこの内部構造の違い、意外と言語の挙動にはあまり大きな影響を与えません。そのためこの点を理解していなくてもGoでプログラムを書けてしまいます。ただしnilとinterfaceを扱う場合を除いて。</p>
 
 <iframe src="https://play.golang.org/p/jcdppBqiyC" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/jcdppBqiyC">see this code in play.golang.org</a></iframe>
 
-<h1 id="goroutine-gc">goroutine はGCされない</h1>
-<p><a href="https://groups.google.com/d/msg/golang-nuts/uiySuH8_3Y4/nvZoN7l0PxgJ">goroutine はガーベッジコレクションの対象ではありません</a>。
-goroutineはGCされないので、<code>go</code>で起動した関数は必ず終了するように気をつけてプログラムを書きましょう。JavaやPythonの実行中のスレッドがGCに回収されないのと同じですね、自然な仕様だと思います。ただgoroutineは割りと気軽に作成できてしまうので、うっかり忘れてしまうかも。</p>
-
-<h1 id="goroutinegenerator-yield-">goroutineでgenerator (yield) は実装できない</h1>
-<p>Go言語には<a href="https://docs.python.org/2/reference/simple_stmts.html#the-yield-statement">Pythonのyield</a>に相当する機能はありません。ただgoroutineとchannelを組み合わせればyieldに相当することができるのではと思うかもしれません。</p>
-
-<iframe src="https://play.golang.org/p/AeXaSlCuFc" frameborder="0" style="width: 100%; height: 500px"><a href="https://play.golang.org/p/H3xwBKICge">see this code in play.golang.org</a></iframe>
-
-<p>このコード自体はきちんと動きます。ただこのやり方には少なくとも2つ問題があります。</p>
-
+<h2 id="section-1">文献</h2>
 <ul>
-  <li>goroutine がGCされないので、channelが最後まで読み込まれないとリークする</li>
-  <li>channel は比較的遅いのでパフォーマンスが低下する</li>
+  <li><a href="http://blog.golang.org/laws-of-reflection">The Laws of Reflection - The Go Blog</a></li>
+  <li><a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a></li>
 </ul>
 
-<h1 id="section-1">例外が(推奨され)ない</h1>
+<h1 id="goroutine-gc">goroutine はGCされない</h1>
+<p><a href="https://groups.google.com/d/msg/golang-nuts/uiySuH8_3Y4/nvZoN7l0PxgJ">goroutine はガーベッジコレクションの対象ではありません</a>。
+goroutineはGCされないので、<code>go</code>で起動した関数は必ず終了するように気をつけてプログラムを書きましょう。JavaやPythonの実行中のスレッドがGCに回収されないのと同じですね、自然な仕様だと思います。ただgoroutineは割りと気軽に作成できてしまうので、うっかり新しいgoroutineもGCのルートになることを忘れてしまうかも。</p>
+
+<p>またこの制約のためGoで新しい読み込み専用channelだけを返す関数というのは呼び出し側がchannelからデータ最後まで読み込まないとメモリリークが発生する危険性があります。
+例えば標準ライブラリのtime.Tickはとても便利ですが<a href="https://golang.org/pkg/time/#Tick">リークします(「<em>it “leaks”.</em>」)</a>。
+そのため、次に述べるようにPythonのyieldに相当することを実現するのにchannelとgoroutineは使わないほうがよいでしょう。</p>
+
+<h1 id="goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</h1>
+<p>Go言語には<a href="https://docs.python.org/2/reference/simple_stmts.html#the-yield-statement">Pythonのyield</a>に相当する機能はありません。ただgoroutineとchannelを組み合わせればyieldに相当することができるのではと思うかもしれません(<a href="https://play.golang.org/p/AeXaSlCuFc">Go Playground</a>)。</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">squareGenerator</span><span class="p">(</span><span class="n">n</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="o">&lt;-</span><span class="k">chan</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">ch</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">make</span><span class="p">(</span><span class="k">chan</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x">
+    </span><span class="k">go</span><span class="x"> </span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">n</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">ch</span><span class="x"> </span><span class="o">&lt;-</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">i</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+        </span><span class="nb">close</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="x">
+    </span><span class="p">}()</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="n">ch</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">squareGenerator</span><span class="p">(</span><span class="m">100</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">if</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&gt;</span><span class="x"> </span><span class="m">100</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="k">break</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+        </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>このコードは意図した通り1, 4, 9…,81, 100を出力します。ただこのやり方には</p>
+
+<ul>
+  <li>channel は比較的(Goにしては)遅いのでパフォーマンスが低下する</li>
+  <li>goroutine がGCされないので、channelが最後まで読み込まれないとリークする</li>
+</ul>
+
+<p>という2つの問題があります。
+第二にchannelはGoの他の要素に比べるとかなり低速です。channelを通じてchannelの書き込み側のgoroutineと読み込み側のgoroutineの間でコンテキストスイッチを行うのは、関数呼び出しなどに比べると数十倍から百倍ぐらい時間がかかります(Go 1.5)。</p>
+
+<p>また上に書いたように、実行中のgoroutineはJavaやPythonのスレッドと同じで<a href="http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fgcroots.html">GCのルート</a>になります。channelへの書き込みでブロックされて停止中のgoroutineもGCの対象ではありません(少なくとも1.5時点では)。そのため、generatorが返したchannelが最後まで呼び出されないとchannelとgoroutineがリークすることになります。</p>
+
+<h1 id="section-2">例外が(推奨され)ない</h1>
 <p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
 例外で返されたエラーを <code>try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
 それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
@@ -99,7 +142,7 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 場合によってはコードのかなりの割合の行が</p>
 
 <div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
-  </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
 <p>の繰り返しで占められてしまうこともあるでしょう。これに対しては根本的な解決策はないように思います。エラーが発生した場合はエラーメッセージを出力して処理を中断してしまって問題ない </p>
@@ -132,7 +175,7 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 プログラムのタイプによっては(例えばいろいろな外部リソースや外部ライブラリをつなぐようなコード)かなりの頻度で <code>if err != nil</code> を書かざるを得ないことがあるような気がします。
 <code>if err != nil</code> を入力するショートカット定義したほうがいいんじゃないのという気分になることがたまにあります。</p>
 
-<h2 id="section-2">解決策</h2>
+<h2 id="section-3">解決策</h2>
 <p><code>// ...</code> の部分のコードが同じ処理の繰り返しであれば<a href="https://blog.golang.org/errors-are-values">前述のGo Blog</a>に書かれているように <code>if err != nil</code> の繰り返しを避けることが出来ます。<code>if err != nil</code>が繰り返しているなと思ったら、そもそも<code>if err != nil</code>以外の部分も繰り返しになっていないか、繰り返している処理をひとまとめにできないかを考えてみるべきでしょう。</p>
 
 <p>一方で、このテクニックが利用できるのは<code>...</code>の部分の処理が同じ型の処理の組み合わせでコードをまとめられる場合に限られます。そもそもコードが一定以上繰り返していたらまとめたほうが良いというのは、特に<code>if err != nil</code>とは関係なく行なうべきことでしょう。Goだと関数内の内部で更に関数を定義できるので、関数の一部の処理を気軽にまとめることができます、すばらしいことです。ただ<code>// ...</code>の処理に共通点があまりなく綺麗にまとめることができない場合は、<code>if err != nil</code> の繰り返しは我慢する以外によい解決策はないようです。</p>
@@ -193,9 +236,8 @@ Goではそういった解放処理は<code>defer</code>を使って行います
   </span><span class="c">// この時点でr.Close()を本当は呼びたいが、myFuncの終了まで呼び出されない。</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
-<h1 id="section-3">1.0 が浮動小数点型にならない(時がある)</h1>
-<p>https://play.golang.org/p/a1MiQFFnVq
-あれ、これ1.5でもしかして修正された？</p>
+<h1 id="section-4">1.0 が浮動小数点型にならない(時がある)</h1>
+<p>https://play.golang.org/p/JjB2WDohT3</p>
 
 
         <div>
