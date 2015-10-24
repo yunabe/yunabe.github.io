@@ -72,13 +72,65 @@
 <p>JavaやC#あるいはC++の経験があり、ある程度クラスの内部構造への理解がある人はGoのinterfaceの実体もデータへの参照だと考えると思います。
 しかし実はそれは正しくありません。Goのinterfaceの実体は参照(ポインタ)ではありません。<a href="http://research.swtch.com/interfaces">Goのinterfaceの実体は参照と型情報のペアです</a>。</p>
 
-<p>さてこの内部構造の違いがGoにどういった影響をもたらすのでしょうか。
-実はこの内部構造の違い、意外と言語の挙動にはあまり大きな影響を与えません。そのためこの点を理解していなくてもGoでプログラムを書けてしまいます。ただしnilとinterfaceを扱う場合を除いて。</p>
+<p>さてこの内部構造の違いがGoにどういった影響をもたらすのでしょうか。実はこの内部構造の違い、意外と言語の挙動にはあまり大きな影響を与えません。そのためこの点を理解していなくてもGoでプログラムを書けてしまいます。ただしnilを扱う場合にはGoは予想外の挙動をします。</p>
 
-<iframe src="https://play.golang.org/p/jcdppBqiyC" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/jcdppBqiyC">see this code in play.golang.org</a></iframe>
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">myError</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">message</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">e</span><span class="x"> </span><span class="o">*</span><span class="n">myError</span><span class="p">)</span><span class="x"> </span><span class="n">Error</span><span class="p">()</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="s">"myError: &lt;nil&gt;"</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="s">"myError: "</span><span class="x"> </span><span class="o">+</span><span class="x"> </span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">myFunc</span><span class="p">(</span><span class="n">x</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">var</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">*</span><span class="n">myError</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">x</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="m">0</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">err</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="o">&amp;</span><span class="n">myError</span><span class="p">{</span><span class="x">
+            </span><span class="n">message</span><span class="o">:</span><span class="x"> </span><span class="s">"x should be positive or zero."</span><span class="p">,</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">myFunc</span><span class="p">(</span><span class="m">10</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err is NOT nil."</span><span class="p">)</span><span class="x">
+    </span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err is nil."</span><span class="p">)</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p><a href="https://play.golang.org/p/ClzTEOs_P-">上のコード(Go Playground)</a>では、myFuncは<code>x &gt;= 0</code>の時には<code>var err *myError</code>の初期値<code>nil</code>を返すので、mainの最初の<code>fmt.Println(err)</code>は<code>myError: &lt;nil&gt;</code>を出力します。そして、次のif-elseはerrがnilだから”err is nil.”が表示されると思うかもしれません。JavaやC++ならそうなります。しかしGoでは”err is NOT nil”が表示されます。</p>
+
+<p>何故こうなるのかは、interfaceが型と値への参照のペアであること点を踏まえた上で、errのValueとTypeを<code>reflect.ValueOf</code>, <code>reflect.TypeOf</code>を使って表示してみると明らかです。
+err のTypeとValueを表示してみると、Typeが<code>*main.myError</code>で値がValueが<code>&lt;nil&gt;</code>であることが分かります。errの”値”は<code>nil</code>ですがerrは型情報を保持しているのです。
+型を持っているinterfaceはValueが<code>nil</code>でも<code>nil</code>ではないのです。</p>
+
+<pre><code>---- err ----
+is nil: false
+Type: *main.myError
+Value: &lt;nil&gt;
+---- trueNil ----
+is nil: true
+Type: &lt;nil&gt;
+Value: &lt;invalid reflect.Value&gt;
+</code></pre>
+
+<p>ちなみにこれは<a href="https://golang.org/doc/faq#nil_error">Frequently Asked Questions (FAQ)</a>に<a href="https://github.com/golang/go/commit/1e0f97ac6544ab3b7cf76e9c9d62e8c2a60bcdb6">2012年から</a>書いてある問題です。
+よくドキュメントを読まずに色々はまって時間をつぶすす前に(自分は数時間つぶしました)、まずFAQくらいは目を通しておいたほうがよいですね。</p>
 
 <h2 id="section-1">文献</h2>
 <ul>
+  <li><a href="https://golang.org/doc/faq#nil_error">Why is my nil error value not equal to nil?</a></li>
   <li><a href="http://blog.golang.org/laws-of-reflection">The Laws of Reflection - The Go Blog</a></li>
   <li><a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a></li>
 </ul>
@@ -238,7 +290,6 @@ Goではそういった解放処理は<code>defer</code>を使って行います
 
 <h1 id="section-4">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
-
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
