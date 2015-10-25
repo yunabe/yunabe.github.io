@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語 はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2015-10-17T00:00:00+09:00" itemprop="datePublished">更新 Oct 17, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-10-25T00:00:00+09:00" itemprop="datePublished">更新 Oct 25, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -50,6 +50,9 @@
 </div>
 
         <h1 id="section">目次</h1>
+<p><a href="https://golang.org/ref/spec">Goの言語仕様</a>はシンプルで他の言語に比べてはまりどころが少なくて学習コストが小さめな言語のように思います。
+しかし、それでもはまるところがないわけではないので、自分がはまって時間を無駄にしてしまったことを書き留めておきます。</p>
+
 <ul id="markdown-toc">
   <li><a href="#section">目次</a></li>
   <li><a href="#interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</a>    <ul>
@@ -178,7 +181,7 @@ goroutineはGCされないので、<code>go</code>で起動した関数は必ず
 </ul>
 
 <p>という2つの問題があります。
-第二にchannelはGoの他の要素に比べるとかなり低速です。channelを通じてchannelの書き込み側のgoroutineと読み込み側のgoroutineの間でコンテキストスイッチを行うのは、関数呼び出しなどに比べると数十倍から百倍ぐらい時間がかかります(Go 1.5)。</p>
+まずchannelはGoの他の要素に比べるとかなり低速です。channelを通じてchannelの書き込み側のgoroutineと読み込み側のgoroutineの間でコンテキストスイッチを行うのは、<a href="http://ja.stackoverflow.com/questions/2970/go%E3%81%A7%E3%82%B3%E3%83%AB%E3%83%BC%E3%83%81%E3%83%B3%E3%82%92%E5%86%8D%E7%8F%BE%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95">関数呼び出しなどに比べると数十倍から百倍ぐらい時間がかかります</a>(Go 1.5時点)。</p>
 
 <p>また上に書いたように、実行中のgoroutineはJavaやPythonのスレッドと同じで<a href="http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fgcroots.html">GCのルート</a>になります。channelへの書き込みでブロックされて停止中のgoroutineもGCの対象ではありません(少なくとも1.5時点では)。そのため、generatorが返したchannelが最後まで呼び出されないとchannelとgoroutineがリークすることになります。</p>
 
