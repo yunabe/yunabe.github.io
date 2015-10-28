@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">ES6 におけるJavaScriptのクラス定義</h1>
-          <p class="post-meta"><time datetime="2015-08-23T00:00:00+09:00" itemprop="datePublished">更新 Aug 23, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-10-27T00:00:00+09:00" itemprop="datePublished">更新 Oct 27, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -49,9 +49,8 @@
   </div>
 </div>
 
-        <p>JavaScript は<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Class-Based_vs._Prototype-Based_Languages">プロトタイプベースの言語</a>であり、Java, C++, Python などのクラスベースの言語とは異なりクラスというものが存在しませんでした。しかしクラスベースのオブジェクト指向の書き方は人間に理解しやすくプログラムが書きやすく、何より他の人気のある言語の経験者にとって分かりやすいので、<a href="/docs/javascript_class_in_google.html">プロトタイプを使ってクラスと同等なことを実現する</a>ということがJavaScriptでも行われていました。</p>
-
-<p>そして、ついに2015年6月に標準仕様が発行された<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ECMAScript 6(ES6)でJavaScriptにも「クラス」の文法が追加されました</a>。
+        <p>JavaScript は<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Class-Based_vs._Prototype-Based_Languages">プロトタイプベースの言語</a>であり、Java, C++, Python などのクラスベースの言語とは異なりクラスというものが存在しませんでした。しかしクラスベースのオブジェクト指向の書き方は人間に理解しやすくプログラムが書きやすく、何より他の人気のある言語の経験者にとって分かりやすいので、<a href="/docs/javascript_class_in_google.html">プロトタイプを使ってクラスと同等なことを実現する</a>ということがJavaScriptでも行われていました。
+そして、ついに2015年6月に標準仕様が発行された<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ECMAScript 6(ES6)でJavaScriptにも「クラス」の文法が追加されました</a>。
 プロトタイプベースのJavaScriptでクラスに相当することは割りと簡単に実現できるので、そういう意味ではプロトタイプベースはより柔軟でクラスベースよりも表現力に優れていたのかもしれませんが、結局はほとんどの場合においてはクラスベースの考え方の方が人間に理解しやすく利用しやすかった…といったところでしょうか。</p>
 
 <h1 id="section">実行環境</h1>
@@ -65,7 +64,47 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
   <li>(iOS) SafariはSafari9からサポートされている。strict modeなしで使える。</li>
 </ul>
 
-<h1 id="section-1">サンプル</h1>
+<h1 id="section-1">クラスとコンストラクタの定義</h1>
+<p>ES6では<code>class</code>キーワードを使ってクラスを定義します。<code>class</code>のブロックの中で<code>constructor</code>という名前の関数を定義するとそれがコンストラクタとして利用されます。</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>クラスのインスタンスの生成とコンストラクタの呼び出しには new 演算子を使います。</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></div>
+
+<p>ちなみに<code>new</code>はES6以前からJavaScriptに存在する機能です。<code>new</code>のJavaScript本来の仕様と使い方については</p>
+
+<h1 id="section-2">メンバ変数 (インスタンス変数)</h1>
+<p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには this.<プロパティ名> を使います。JavaScriptではJavaやC++ と違いthisを省略することは不可能なので注意してください。Python を知っている人はthisはselfに相当するものだと思うと分かりやすいかと思います。インスタンス変数やメソッド呼び出しの際に Python では self を付けなければならないように JavaScript では this が必ず必要です。</プロパティ名></p>
+
+<h1 id="section-3">メソッド定義と呼び出し</h1>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">sayHello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, I'm "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
+  <span class="p">}</span>
+
+  <span class="nx">getName</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>ES6ではclassブロックの中に<code>constructor</code>以外の名前の関数を定義するとメソッドになります。
+またメソッド内から他のメソッドの呼び出しを行う場合は this.<メソッド名>(引数) を使います。
+メンバ変数の場合と同様に、メソッド呼び出しの際に this を省略することは不可能 なので気をつけて下さい.</メソッド名></p>
+
+<h1 id="section-4">サンプル</h1>
 <iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
         <div>

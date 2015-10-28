@@ -65,6 +65,7 @@
       <li><a href="#port">クッキーとport番号</a></li>
     </ul>
   </li>
+  <li><a href="#cookie--2">Cookie が絡むセキュリティ関係の問題</a></li>
 </ul>
 
 <p>このドキュメントの目的は Cookie
@@ -85,7 +86,7 @@
 のペアがブラウザに保存されて、後からそれを参照することができます。
 Set-Cookie
 に属性をつけて保存期間やCookieが送信される条件などを制御することも可能です。
-属性をつけるには、 <code>" ;max-age=3600"</code> や <code>" ;Secure"</code> のように <code>" ;"</code> +
+属性をつけるには、 <code>" ;max-age=3600"</code> や <code>" ;Secure"</code> のように <code>"; "</code> +
 属性名 + <code>"="</code> + 属性の値を後ろに追加します。 (厳密には <code>;</code>
 の後ろには半角スペースが必要で末尾には <code>;</code> は付けません。
 多くのブラウザは半角スペースを削除したり末尾に不要な <code>;</code>
@@ -299,6 +300,8 @@ JavaScript から読み取る必要がないクッキーには HttpOnly
 <h1 id="section">その他</h1>
 
 <h2 id="port">クッキーとport番号</h2>
+
+<h1 id="cookie--2">Cookie が絡むセキュリティ関係の問題</h1>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
