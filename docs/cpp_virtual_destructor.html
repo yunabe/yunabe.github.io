@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">C++ でデストラクタを virtual にしなくてはならない条件と理由</h1>
-          <p class="post-meta"><time datetime="2015-02-06T00:00:00+09:00" itemprop="datePublished">更新 Feb 6, 2015</time></p>
+          <p class="post-meta"><time datetime="2015-11-01T00:00:00+09:00" itemprop="datePublished">更新 Nov 1, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -49,17 +49,10 @@
   </div>
 </div>
 
-        <p><a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a>
-にも書かれているように、
-クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタは
-virtual でなくてはなりません
-<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">(If your class has virtual methods,
-its destructor should be virtual.)</a>。</p>
-
-<p>ただその理由は若干複雑です。
-理由が説明できないとコードレビューで問題を指摘する際に困りますし、
-逆に必要ないのに <a href="#others">「デストラクタには常に virtual をつけろ」</a>
-と言われた場合に反論できなくて困ることになります。</p>
+        <p><a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml">Google C++ Style Guide</a>にも書かれているように、クラスに仮想メンバー関数が存在する場合、そのクラスのデストラクタはvirtualでなくてはなりません
+(<a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Inheritance#Inheritance">If your class has virtual methods,
+its destructor should be virtual.</a>)。
+ただその理由は若干複雑です。理由が説明できないとコードレビューで問題を指摘する際に困りますし、逆に必要ないのに <a href="#others">「デストラクタには常に virtual をつけろ」</a>と言われた場合に反論できなくて困ることになります。</p>
 
 <h1 id="section">ルールの前提</h1>
 
