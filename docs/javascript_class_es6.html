@@ -54,13 +54,19 @@
 <p>そして、ついに2015年6月に標準仕様が発行された<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ECMAScript 6(ES6)でJavaScriptにも「クラス」の文法が追加されました</a>。
 プロトタイプベースのJavaScriptでクラスに相当することは割りと簡単に実現できるので、そういう意味ではプロトタイプベースはより柔軟でクラスベースよりも表現力に優れていたのかもしれませんが、結局はほとんどの場合においてはクラスベースの考え方の方が人間に理解しやすく利用しやすかった…といったところでしょうか。</p>
 
-<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-
 <h1 id="section">実行環境</h1>
+<p><a href="https://kangax.github.io/compat-table/es6/">2015年10月現在サポートが進んでいる最中</a>で最新のブラウザでも完全にはサポートされていません。</p>
+
 <ul>
-  <li>Chromeではstrict modeでないとclassが利用できない.</li>
-  <li>本当は、<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Classes#Strict_mode">class の内部が strict mode になるというだけでは？</a></li>
+  <li>Firefoxはnightly buildsでのみ有効になっている</li>
+  <li>Chromeでは43からclassがサポートされている。ただし<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Strict_mode">strict mode</a>でないとclassが利用できません。
+<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Classes#Strict_mode">class の内部が strict mode になるという仕様</a>とは書いてあるけれど、
+class自体はstrict modeでなくても本来は使えるはず？</li>
+  <li>(iOS) SafariはSafari9からサポートされている。strict modeなしで使える。</li>
 </ul>
+
+<h1 id="section-1">サンプル</h1>
+<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
