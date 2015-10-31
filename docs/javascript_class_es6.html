@@ -78,10 +78,10 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></div>
 
-<p>ちなみに<code>new</code>はES6以前からJavaScriptに存在する機能です。<code>new</code>のJavaScript本来の仕様と使い方については</p>
+<p>ちなみに<code>new</code>はES6以前からJavaScriptに存在する機能です。<code>new</code>のJavaScript本来の仕様と使い方については<a href="/docs/javascript_class_in_google.html">ES6以前のJavaScriptにおけるクラスの実現方法を参考にしてください</a></p>
 
 <h1 id="section-2">メンバ変数 (インスタンス変数)</h1>
-<p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには this.<プロパティ名> を使います。JavaScriptではJavaやC++ と違いthisを省略することは不可能なので注意してください。Python を知っている人はthisはselfに相当するものだと思うと分かりやすいかと思います。インスタンス変数やメソッド呼び出しの際に Python では self を付けなければならないように JavaScript では this が必ず必要です。</プロパティ名></p>
+<p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには<code>this.&lt;プロパティ名&gt;</code>を使います。JavaScriptではJavaやC++ と違い<strong>thisを省略することは不可能</strong>なので注意してください。Python を知っている人は<code>this</code>は<code>self</code>に相当するものだと思うと分かりやすいかと思います。インスタンス変数やメソッド呼び出しの際にPythonでは<code>self</code>を付けなければならないようにJavaScriptでは<code>this</code>が必ず必要です。</p>
 
 <h1 id="section-3">メソッド定義と呼び出し</h1>
 
@@ -101,11 +101,45 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
 <span class="p">}</span></code></pre></div>
 
 <p>ES6ではclassブロックの中に<code>constructor</code>以外の名前の関数を定義するとメソッドになります。
-またメソッド内から他のメソッドの呼び出しを行う場合は this.<メソッド名>(引数) を使います。
-メンバ変数の場合と同様に、メソッド呼び出しの際に this を省略することは不可能 なので気をつけて下さい.</メソッド名></p>
+またメソッド内から他のメソッドの呼び出しを行う場合は<code>this.&lt;メソッド名&gt;(引数)</code>を使います。
+メンバ変数の場合と同様に、メソッド呼び出しの際に<strong>this を省略することは不可能</strong>なので気をつけて下さい.</p>
 
-<h1 id="section-4">サンプル</h1>
-<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<h2 id="private-protected">private, protected</h2>
+<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code>private</code> や
+<code>protected</code> にすることはできません。 ただし名前規約で <code>private</code>
+なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
+<a href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming">Google の JavaScript
+のスタイルガイド</a>
+では private なメソッド, メンバ変数は名前の末尾に <code>_</code>
+をつけることが求められています。</p>
+
+<h1 id="section-4">継承</h1>
+<p>クラスの継承はES6では以下のように行います。</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Child</span> <span class="kr">extends</span> <span class="nx">Parent</span> <span class="p">{</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 親クラスのコンストラクタ呼び出し</span>
+    <span class="kr">super</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+
+  <span class="c1">// オーバーライド</span>
+  <span class="nx">doSomething</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 親クラスのメソッド呼び出し</span>
+    <span class="kr">super</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<ul>
+  <li>ES6 JavaScriptでクラスを継承するには<code>extends</code>を使います。<code>class Child extends Parent {...}</code></li>
+  <li>小クラスのコンストラクタの中で親クラスのコンストラクタを呼び出すには<code>super(...)</code>を使います。</li>
+  <li>子クラスで親クラスと同名のメソッドを定義すればメソッドがオーバーライドされます。
+子クラスから親クラスのメソッドを呼び出すには<code>super.methodName(...)</code>のようにします。</li>
+</ul>
+
+<h1 id="section-5">サンプル</h1>
+<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/5/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
