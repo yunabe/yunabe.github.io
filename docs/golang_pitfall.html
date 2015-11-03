@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Go言語 はまりどころと解決策</title>
+  <title>Go言語(Golang) はまりどころと解決策</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
   <link rel="stylesheet" href="/css/main.css">
@@ -31,8 +31,8 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Go言語 はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2015-10-25T00:00:00+09:00" itemprop="datePublished">更新 Oct 25, 2015</time></p>
+          <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
+          <p class="post-meta"><time datetime="2015-11-04T00:00:00+09:00" itemprop="datePublished">更新 Nov 4, 2015</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -59,16 +59,21 @@
       <li><a href="#section-1">文献</a></li>
     </ul>
   </li>
+  <li><a href="#section-2">基本型がメソッドを持たない</a></li>
+  <li><a href="#string">stringが単なるバイト列</a></li>
+  <li><a href="#section-3">継承がない</a></li>
+  <li><a href="#generics">Genericsがない</a></li>
   <li><a href="#goroutine-gc">goroutine はGCされない</a></li>
   <li><a href="#goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</a></li>
-  <li><a href="#section-2">例外が(推奨され)ない</a></li>
+  <li><a href="#section-4">例外が(推奨され)ない</a></li>
   <li><a href="#if-err--nil-return-err">繰り返す if err != nil {return err}</a>    <ul>
-      <li><a href="#section-3">解決策</a></li>
+      <li><a href="#section-5">解決策</a></li>
     </ul>
   </li>
   <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
   <li><a href="#defer">関数より狭いスコープで defer</a></li>
-  <li><a href="#section-4">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-6">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-7">名前が…</a></li>
 </ul>
 
 <h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
@@ -138,6 +143,38 @@ Value: &lt;invalid reflect.Value&gt;
   <li><a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a></li>
 </ul>
 
+<h1 id="section-2">基本型がメソッドを持たない</h1>
+<p><a href="https://golang.org/doc/faq#methods_on_basics">例えばstringがlenをメソッドとして持ちません</a>。これは<a href="https://msdn.microsoft.com/ja-jp/library/system.int32.aspx">C#とかではintですらメソッドを持つ</a>のと真逆を行くように思える。
+Goのインターフェースで宣言されているメソッドが実装されていれば、そのインターフェースを実装していることになるという仕様と関係している？</p>
+
+<h1 id="string">stringが単なるバイト列</h1>
+<p>Java, C#やPython3などのモダンな言語では文字列(string)はUnicode文字の列ですが、<a href="https://blog.golang.org/strings">Go言語のstringは単なるimmutable(書き換え不可能)なバイト列に過ぎません</a>。Goのstringは中身がUTF-8でエンコードされた文字列かも知れませんし、Shift_JISでエンコードされた文字列かもしれません。</p>
+
+<p><a href="https://docs.python.org/3.0/whatsnew/3.0.html#text-vs-data-instead-of-unicode-vs-8-bit">これは文字列をUnicodeにしたPython3</a>の真逆を行く感じで正直本当に正しいのかはよく分かりません。</p>
+
+<ul>
+  <li>Goではファイルなどから<code>string</code>を読み込む際にエンコードを指定したりはしません。
+<a href="https://docs.oracle.com/javase/jp/6/api/java/io/FileReader.html">これは他の言語のようにデフォルトの文字エンコーディングで暗黙的にデコードされている</a>のではなく、
+そもそもGoは<code>string</code>を作る際にデコードを行わないからです。</li>
+  <li><code>len(s)</code>は<code>s</code>の文字列のバイナリ列としての長さを返します。<strong>文字の数ではない</strong>の注意して下さい。</li>
+  <li><a href="https://golang.org/ref/spec#Source_code_representation">Goのソースコードは必ずUTF-8でなくてはならない</a>ので、
+ソースコード中に文字列リテラルとして定義された文字列はUTF-8の文字列です。</li>
+  <li><a href="https://blog.golang.org/strings#TOC_6.">stringに対するrange-loop(for range)の場合だけ特別に文字列がUTF-8としてデコードされて”一文字”ずつ処理される</a>という少し歪な仕様になっている</li>
+  <li><a href="https://play.golang.org/p/KS0JzQ-T8m">A sample on Go Playground</a></li>
+</ul>
+
+<h1 id="section-3">継承がない</h1>
+<p><a href="https://golang.org/doc/faq#inheritance">Goには継承はありません</a>。
+<a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">そもそも継承はプログラミング言語にあまり必要ない機能だと思います</a>。
+継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっているなと思うのでそもそも継承がないというのは良いことなのかなと思います。</p>
+
+<p><a href="https://golang.org/doc/effective_go.html#embedding">Embedding</a>という機能で複数の型を合成することはできます。多重継承に少し似ていますね。</p>
+
+<h1 id="generics">Genericsがない</h1>
+<p><a href="https://golang.org/doc/faq#generics">GoにはGenericsはありません</a>。
+<a href="https://docs.oracle.com/javase/tutorial/java/generics/types.html">JavaのGeneric Types</a>とか<a href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88_(%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0)">C++のテンプレート</a>で書けるようなことはGoでは書けません。
+ただ配列(スライス), mapについては特別に言語でサポートされているのでJavaやC++で総称型を使うケースの大半はカバーされるとは思います。</p>
+
 <h1 id="goroutine-gc">goroutine はGCされない</h1>
 <p><a href="https://groups.google.com/d/msg/golang-nuts/uiySuH8_3Y4/nvZoN7l0PxgJ">goroutine はガーベッジコレクションの対象ではありません</a>。
 goroutineはGCされないので、<code>go</code>で起動した関数は必ず終了するように気をつけてプログラムを書きましょう。JavaやPythonの実行中のスレッドがGCに回収されないのと同じですね、自然な仕様だと思います。ただgoroutineは割りと気軽に作成できてしまうので、うっかり新しいgoroutineもGCのルートになることを忘れてしまうかも。</p>
@@ -185,7 +222,7 @@ goroutineはGCされないので、<code>go</code>で起動した関数は必ず
 
 <p>また上に書いたように、実行中のgoroutineはJavaやPythonのスレッドと同じで<a href="http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.mat.ui.help%2Fconcepts%2Fgcroots.html">GCのルート</a>になります。channelへの書き込みでブロックされて停止中のgoroutineもGCの対象ではありません(少なくとも1.5時点では)。そのため、generatorが返したchannelが最後まで呼び出されないとchannelとgoroutineがリークすることになります。</p>
 
-<h1 id="section-2">例外が(推奨され)ない</h1>
+<h1 id="section-4">例外が(推奨され)ない</h1>
 <p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
 例外で返されたエラーを <code>try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
 それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
@@ -230,7 +267,7 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 プログラムのタイプによっては(例えばいろいろな外部リソースや外部ライブラリをつなぐようなコード)かなりの頻度で <code>if err != nil</code> を書かざるを得ないことがあるような気がします。
 <code>if err != nil</code> を入力するショートカット定義したほうがいいんじゃないのという気分になることがたまにあります。</p>
 
-<h2 id="section-3">解決策</h2>
+<h2 id="section-5">解決策</h2>
 <p><code>// ...</code> の部分のコードが同じ処理の繰り返しであれば<a href="https://blog.golang.org/errors-are-values">前述のGo Blog</a>に書かれているように <code>if err != nil</code> の繰り返しを避けることが出来ます。<code>if err != nil</code>が繰り返しているなと思ったら、そもそも<code>if err != nil</code>以外の部分も繰り返しになっていないか、繰り返している処理をひとまとめにできないかを考えてみるべきでしょう。</p>
 
 <p>一方で、このテクニックが利用できるのは<code>...</code>の部分の処理が同じ型の処理の組み合わせでコードをまとめられる場合に限られます。そもそもコードが一定以上繰り返していたらまとめたほうが良いというのは、特に<code>if err != nil</code>とは関係なく行なうべきことでしょう。Goだと関数内の内部で更に関数を定義できるので、関数の一部の処理を気軽にまとめることができます、すばらしいことです。ただ<code>// ...</code>の処理に共通点があまりなく綺麗にまとめることができない場合は、<code>if err != nil</code> の繰り返しは我慢する以外によい解決策はないようです。</p>
@@ -291,8 +328,11 @@ Goではそういった解放処理は<code>defer</code>を使って行います
   </span><span class="c">// この時点でr.Close()を本当は呼びたいが、myFuncの終了まで呼び出されない。</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
-<h1 id="section-4">1.0 が浮動小数点型にならない(時がある)</h1>
+<h1 id="section-6">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
+
+<h1 id="section-7">名前が…</h1>
+<p>何でこんな検索しにくい名前なの…</p>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
