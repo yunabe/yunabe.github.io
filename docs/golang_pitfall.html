@@ -59,6 +59,7 @@
       <li><a href="#section-1">文献</a></li>
     </ul>
   </li>
+  <li><a href="#errorerror">errorしか引数がない関数でerrorを処理し忘れる</a></li>
   <li><a href="#section-2">基本型がメソッドを持たない</a></li>
   <li><a href="#string">stringが単なるバイト列</a></li>
   <li><a href="#section-3">継承がない</a></li>
@@ -73,7 +74,8 @@
   <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
   <li><a href="#defer">関数より狭いスコープで defer</a></li>
   <li><a href="#section-6">1.0 が浮動小数点型にならない(時がある)</a></li>
-  <li><a href="#section-7">名前が…</a></li>
+  <li><a href="#section-7">型が後置</a></li>
+  <li><a href="#section-8">名前が…</a></li>
 </ul>
 
 <h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
@@ -143,12 +145,19 @@ Value: &lt;invalid reflect.Value&gt;
   <li><a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a></li>
 </ul>
 
+<h1 id="errorerror">errorしか引数がない関数でerrorを処理し忘れる</h1>
+<p>Goではエラーは通常、最後の返り値として呼び出し元に返されます。関数が何か重要な値を返す場合であれば、<code>_</code>を利用しないかぎりはerrorは無視できないのでerrorを処理し忘れることはあまりないと思います。ただ<a href="https://golang.org/pkg/encoding/json/#Unmarshal">json.Unmarshal</a>のようなerror以外に重要な情報を返さない関数は、エラー以外に返り値がないからといって、うっかり返り値を受け取るのを忘れるとerrorが失われます。</p>
+
+<iframe src="https://play.golang.org/p/E9UM39VxQx" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/E9UM39VxQx">see this code in play.golang.org</a></iframe>
+
+<p>例えば上のコードは<code>"not json"</code>はjsonとしてパース出来ないのでエラーが発生しますが、コンパイル時にはエラーが無視されていることは検出されません。これに関しては気をつける以外に解決策はないと思います。</p>
+
 <h1 id="section-2">基本型がメソッドを持たない</h1>
 <p><a href="https://golang.org/doc/faq#methods_on_basics">例えばstringがlenをメソッドとして持ちません</a>。これは<a href="https://msdn.microsoft.com/ja-jp/library/system.int32.aspx">C#とかではintですらメソッドを持つ</a>のと真逆を行くように思える。
 Goのインターフェースで宣言されているメソッドが実装されていれば、そのインターフェースを実装していることになるという仕様と関係している？</p>
 
 <h1 id="string">stringが単なるバイト列</h1>
-<p>Java, C#やPython3などのモダンな言語では文字列(string)はUnicode文字の列ですが、<a href="https://blog.golang.org/strings">Go言語のstringは単なるimmutable(書き換え不可能)なバイト列に過ぎません</a>。Goのstringは中身がUTF-8でエンコードされた文字列かも知れませんし、Shift_JISでエンコードされた文字列かもしれません。</p>
+<p>Java, C#やPython3などのモダンな言語では文字列(string)はUnicode文字の列ですが、<a href="https://blog.golang.org/strings">Go言語のstringは単なるimmutable(書き換え不可能)なバイト列に過ぎません(In Go, a string is in effect a read-only slice of bytes.)</a>。Goのstringは中身がUTF-8でエンコードされた文字列かも知れませんし、Shift_JISでエンコードされた文字列かもしれません。</p>
 
 <p><a href="https://docs.python.org/3.0/whatsnew/3.0.html#text-vs-data-instead-of-unicode-vs-8-bit">これは文字列をUnicodeにしたPython3</a>の真逆を行く感じで正直本当に正しいのかはよく分かりません。</p>
 
@@ -331,7 +340,9 @@ Goではそういった解放処理は<code>defer</code>を使って行います
 <h1 id="section-6">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
 
-<h1 id="section-7">名前が…</h1>
+<h1 id="section-7">型が後置</h1>
+
+<h1 id="section-8">名前が…</h1>
 <p>何でこんな検索しにくい名前なの…</p>
 
         <div>
