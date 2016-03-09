@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2015-11-17T00:00:00+09:00" itemprop="datePublished">更新 Nov 17, 2015</time></p>
+          <p class="post-meta"><time datetime="2016-03-10T00:00:00+09:00" itemprop="datePublished">更新 Mar 10, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -50,8 +50,7 @@
 </div>
 
         <h1 id="section">目次</h1>
-<p><a href="https://golang.org/ref/spec">Goの言語仕様</a>はシンプルで他の言語に比べてはまりどころが少なくて学習コストが小さめな言語のように思います。
-しかし、それでもはまるところがないわけではないので、自分がはまって時間を無駄にしてしまったことを書き留めておきます。</p>
+<p><a href="https://golang.org/ref/spec">Goの言語仕様</a>はシンプルで他の言語に比べてはまりどころが少なくて学習コストが小さめな言語のように思います。しかし、それでもはまるところがないわけではないので、自分がはまって時間を無駄にしてしまったことを書き留めておきます。</p>
 
 <ul id="markdown-toc">
   <li><a href="#section">目次</a></li>
@@ -59,6 +58,7 @@
       <li><a href="#section-1">文献</a></li>
     </ul>
   </li>
+  <li><a href="#this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</a></li>
   <li><a href="#errorerror">errorしか引数がない関数でerrorを処理し忘れる</a></li>
   <li><a href="#section-2">基本型がメソッドを持たない</a></li>
   <li><a href="#string">stringが単なるバイト列</a></li>
@@ -144,6 +144,39 @@ Value: &lt;invalid reflect.Value&gt;
   <li><a href="http://blog.golang.org/laws-of-reflection">The Laws of Reflection - The Go Blog</a></li>
   <li><a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a></li>
 </ul>
+
+<h1 id="this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</h1>
+<p>これははまりどころというより、Goだと<code>nil</code>に大してメソッド呼び出しを行った場合の挙動が他の人気のある言語と少し異なるので、メソッド側の書き方次第では呼び出し側の<code>nil</code>チェックをすこし緩和できるよという話ですが。あるいはこの点を理解していないと、呼び出し側で<code>nil</code>チェックしなくてなぜ大丈夫なのか困惑するという話です。</p>
+
+<p>C++, Java, Python, JavaScript などの他の人気のある言語では</p>
+
+<pre><code>person.sayHello()
+</code></pre>
+
+<p>のようにメソッド呼び出しをする場合は(C++の場合は<code>.</code>でなく<code>-&gt;</code>)、<code>person</code>が<code>null</code>でないことを確認しなくてはなりません(C++で<code>sayHello</code>がnon-virtualの場合も挙動は未定義)。
+しかしGoの場合は<code>person</code>が<code>struct</code>のポインタである場合には<code>person</code>が<code>nil</code>でも関数の呼び出しは問題なく行えます。
+また<code>person</code>がインターフェイスでその値が<code>nil</code>で型情報が<code>struct</code>のポインタである(つまり上述したようにインターフェイスそのものは<code>nil</code>ではない)場合にも、問題なく関数は呼び出されます。</p>
+
+<p>そのため、Goではメソッド内部でレシーバのポインタが<code>nil</code>であるかを確認することには意味があります。
+メソッド内で<code>nil</code>のチェックが適切に行われている場合、そのメッソドは呼び出し側で<code>nil</code>チェックをすることなしに呼び出せるようになります。
+例えば<a href="https://github.com/golang/protobuf">Goのprotobufの実装</a>はレシーバが<code>nil</code>の場合でもgetterメッソドは問題なく実行できるように実装されています
+(<em>There are getters that return a field’s value if set, and return the field’s default value if unset. The getters work even if the receiver is a nil message.</em>)。
+そのためGoのprotobufを利用する場合、例え<code>GetDoc()</code>の返り値が<code>nil</code>だったとしても</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">url</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="n">doc</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">response</span><span class="o">.</span><span class="n">GetDoc</span><span class="p">()</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">doc</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+   </span><span class="n">url</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">doc</span><span class="o">.</span><span class="n">GetURL</span><span class="p">()</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>のように書かずに単純に</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">response</span><span class="o">.</span><span class="n">GetDoc</span><span class="p">()</span><span class="o">.</span><span class="n">GetURL</span><span class="p">()</span></code></pre></div>
+
+<p>のように書くことが出来ます(GetURLの内部でdocが<code>nil</code>かどうかがチェックされている)。呼び出し側での<code>nil</code>チェックの必要性は細かいことですが、<code>protobuf</code>のようなライブラリの使い勝手には大きく影響します。
+メソッド内部でレシーバの<code>nil</code>チェックが行われていない場合は、レシーバ内で<code>recv.field</code>を参照した時点、値を代入しようとした時点で<code>panic</code>が発生します。</p>
+
+<iframe src="https://play.golang.org/p/fQ_0Jzu8M6" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/fQ_0Jzu8M6">see this code in play.golang.org</a></iframe>
 
 <h1 id="errorerror">errorしか引数がない関数でerrorを処理し忘れる</h1>
 <p>Goではエラーは通常、最後の返り値として呼び出し元に返されます。関数が何か重要な値を返す場合であれば、<code>_</code>を利用しないかぎりはerrorは無視できないのでerrorを処理し忘れることはあまりないと思います。ただ<a href="https://golang.org/pkg/encoding/json/#Unmarshal">json.Unmarshal</a>のようなerror以外に重要な情報を返さない関数は、エラー以外に返り値がないからといって、うっかり返り値を受け取るのを忘れるとerrorが失われます。</p>
