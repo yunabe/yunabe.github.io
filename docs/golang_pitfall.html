@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2016-03-10T00:00:00+09:00" itemprop="datePublished">更新 Mar 10, 2016</time></p>
+          <p class="post-meta"><time datetime="2016-03-16T00:00:00+09:00" itemprop="datePublished">更新 Mar 16, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -59,7 +59,7 @@
     </ul>
   </li>
   <li><a href="#this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</a></li>
-  <li><a href="#errorerror">errorしか引数がない関数でerrorを処理し忘れる</a></li>
+  <li><a href="#errorerror">errorしか返り値がない関数でerrorを処理し忘れる</a></li>
   <li><a href="#section-2">基本型がメソッドを持たない</a></li>
   <li><a href="#string">stringが単なるバイト列</a></li>
   <li><a href="#section-3">継承がない</a></li>
@@ -178,7 +178,7 @@ Value: &lt;invalid reflect.Value&gt;
 
 <iframe src="https://play.golang.org/p/fQ_0Jzu8M6" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/fQ_0Jzu8M6">see this code in play.golang.org</a></iframe>
 
-<h1 id="errorerror">errorしか引数がない関数でerrorを処理し忘れる</h1>
+<h1 id="errorerror">errorしか返り値がない関数でerrorを処理し忘れる</h1>
 <p>Goではエラーは通常、最後の返り値として呼び出し元に返されます。関数が何か重要な値を返す場合であれば、<code>_</code>を利用しないかぎりはerrorは無視できないのでerrorを処理し忘れることはあまりないと思います。ただ<a href="https://golang.org/pkg/encoding/json/#Unmarshal">json.Unmarshal</a>のようなerror以外に重要な情報を返さない関数は、エラー以外に返り値がないからといって、うっかり返り値を受け取るのを忘れるとerrorが失われます。</p>
 
 <iframe src="https://play.golang.org/p/E9UM39VxQx" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/E9UM39VxQx">see this code in play.golang.org</a></iframe>
@@ -208,7 +208,9 @@ Goのインターフェースで宣言されているメソッドが実装され
 <h1 id="section-3">継承がない</h1>
 <p><a href="https://golang.org/doc/faq#inheritance">Goには継承はありません</a>。
 <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">そもそも継承はプログラミング言語にあまり必要ない機能だと思います</a>。
-継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっているなと思うのでそもそも継承がないというのは良いことなのかなと思います。</p>
+継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっていることが多いと思います。<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B9%E3%82%B3%E3%83%95%E3%81%AE%E7%BD%AE%E6%8F%9B%E5%8E%9F%E5%89%87">リスコフの置換原則</a>のような基本的な原則が守られておらず(そもそも多くの人は名前すら知らない)、単に一部のコードをクラス間で共有するために継承が使われていて可読性が著しく低いコードもよく目にします。
+そのため、そもそもプログラミング言語が継承をサポートしないというのは良いことなのかなと思います。
+たまに継承が非常に有益なのも分かりますが。</p>
 
 <p><a href="https://golang.org/doc/effective_go.html#embedding">Embedding</a>という機能で複数の型を合成することはできます。多重継承に少し似ていますね。</p>
 
