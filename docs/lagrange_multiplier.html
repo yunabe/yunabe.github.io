@@ -138,7 +138,7 @@
 \right)</script>
 は平行であるということを意味しているのです。</p>
 
-<h2 id="gradient">偏微分と法線ベクトルあるいは勾配 (gradient)</h2>
+<h2 id="gradient">偏微分，勾配 (gradient)，法線ベクトル</h2>
 <p>つまりラグランジュ未定乗数法は<script type="math/tex">f(x,y)</script>を最大化する点<script type="math/tex">(x_0,y_0)</script>において、
 <script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>を偏微分して得られるベクトル<script type="math/tex">\left(
   \begin{array}{c}
@@ -167,6 +167,57 @@
   \frac{\partial f}{\partial y}
   \end{array}
 \right)</script>を<script type="math/tex">\nabla f</script>と表記します。</p>
+
+<p>ある点<script type="math/tex">(x,y)</script>から<script type="math/tex">x,y</script>を微小に<script type="math/tex">(\Delta x,\Delta y)</script>だけ変化させた場合、<script type="math/tex">g(x,y)</script>は</p>
+
+<script type="math/tex; mode=display">g(x+\Delta x,y+\Delta y)\simeq g(x,y)+\frac{\partial g}{\partial x}\Delta x+\frac{\partial g}{\partial y}\Delta y</script>
+
+<script type="math/tex; mode=display">\frac{\partial g}{\partial x}dx+\frac{\partial g}{\partial y}dy=0</script>
+
+<script type="math/tex; mode=display">\frac{\partial g}{\partial x}dx+\frac{\partial g}{\partial y}dy=0</script>
+
+<script type="math/tex; mode=display">
+\left(
+  \begin{array}{c}
+  \frac{\partial g}{\partial x} \\
+  \frac{\partial g}{\partial y}
+  \end{array}
+\right)
+\cdot
+\left(
+  \begin{array}{c}
+  \Delta x \\
+  \Delta y
+  \end{array}
+\right)=0
+</script>
+
+<p>(ゼロではない)2つのベクトルの内積が0になるのは、2つのベクトルが直交する時です。
+そして<script type="math/tex">\left(
+  \begin{array}{c}
+  \Delta x \\
+  \Delta y
+  \end{array}
+\right)</script>は<script type="math/tex">g(x,y)=0</script>の接線方向の微小なベクトルです。その接線方向のベクトルと直交する<script type="math/tex">\left(
+  \begin{array}{c}
+  \frac{\partial g}{\partial x} \\
+  \frac{\partial g}{\partial y}
+  \end{array}
+\right)</script>は、すなわち、<script type="math/tex">g(x,y)=0</script>の<a href="https://ja.wikipedia.org/wiki/%E6%B3%95%E7%B7%9A%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB">法線ベクトル</a>に他なりません。</p>
+
+<p>そしてラグランジュ未定乗数法の<script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0\Leftrightarrow\exists\nabla f=\lambda \nabla g</script>は
+曲線<script type="math/tex">f(x,y)=f_0</script>と曲線<script type="math/tex">g(x,y)=0</script>のそれぞれの法線ベクトルが平行であることを意味しています。
+つまりはそれぞれの曲線が接しているということです。</p>
+
+<h2 id="section-3">解説・証明まとめ</h2>
+<p>ラグランジュ未定乗数法の式</p>
+
+<script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>
+
+<p>の<script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>の部分は単に束縛条件<script type="math/tex">g(x,y)=0</script>を言い換えたものです。
+<script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>の部分は<script type="math/tex">f</script>, <script type="math/tex">g</script>の勾配(gradient)<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行であることと意味しています。
+勾配<script type="math/tex">\nabla f</script>は<script type="math/tex">f(x,y)</script>の等高線の法線ベクトルであるので、<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行であるというのは要するに<script type="math/tex">f(x,y)</script>の等高線と<script type="math/tex">g(x,y)</script>の等高線が接していることと同義です。</p>
+
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
