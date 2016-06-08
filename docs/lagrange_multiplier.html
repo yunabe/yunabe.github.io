@@ -55,7 +55,7 @@
 <h1 id="section">ラグランジュの未定乗数法</h1>
 
 <h2 id="section-1">2次元の場合</h2>
-<p>束縛条件<script type="math/tex">g(x,y)=0</script>の元で（<script type="math/tex">(x,y)</script> が <script type="math/tex">g(x,y)=0</script>をみたす条件下で）ある関数 <script type="math/tex">f(x, y)</script> を最大化（最小化）することを考える。
+<p><script type="math/tex">(x,y)</script> が束縛条件 <script type="math/tex">g(x,y)=0</script>をみたす条件下で、ある関数 <script type="math/tex">f(x, y)</script> を最大化（最小化）することを考える。
 変数<script type="math/tex">\lambda</script>を導入して関数<script type="math/tex">L(x,y,\lambda)</script>を次のように定義する。</p>
 
 <script type="math/tex; mode=display">L(x,y,\lambda)=f(x,y)-{\lambda}g(x,y)</script>
@@ -65,6 +65,18 @@
 <script type="math/tex">(x_0,y_0,\lambda_0)</script>において</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>
+
+<p>が成立する。</p>
+
+<h2 id="n"><script type="math/tex">n</script>次元の場合</h2>
+<p><script type="math/tex">n</script>個の変数<script type="math/tex">x_1,x_2,\ldots,x_n</script> が 束縛条件 <script type="math/tex">g(x_1,x_2,\ldots,x_n)=0</script> をみたしている場合に、
+関数<script type="math/tex">f(x_1,x_2,\ldots,x_n)</script>を最大化する<script type="math/tex">(x_1,x_2,\ldots,x_n)</script>を求めたい。</p>
+
+<script type="math/tex; mode=display">L(x_0,x_1,\ldots,x_n,\lambda)=f(x_1,x_2,\ldots,x_n)-\lambda g(x_1,x_2,\ldots,x_n)</script>
+
+<p>で定義される<script type="math/tex">L</script>対して、<script type="math/tex">f</script>が束縛条件<script type="math/tex">g=0</script>の元で最大化される時</p>
+
+<script type="math/tex; mode=display">\frac{\partial L}{\partial x_0}=\frac{\partial L}{\partial x_1}=\ldots=\frac{\partial L}{\partial x_n}=\frac{\partial L}{\partial \lambda}=0</script>
 
 <p>が成立する。</p>
 
@@ -78,7 +90,7 @@
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial \lambda}=\frac{\partial({f(x,y)-{\lambda}g(x,y)})}{\partial \lambda}=\frac{\partial{f(x,y)}}{\partial \lambda}-\frac{\partial(\lambda g(x,y))}{\partial \lambda}=-g(x,y)=0</script>
 
-<p>そもそも、束縛条件<script type="math/tex">g(x,y)=0</script>の元での話をしているので、<script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>がなりたつのは当たり前であり、<script type="math/tex">f(x,y)</script>を最大化する点<script type="math/tex">(x_0,y_0)</script>を求める上では何の訳にも立ちません。この部分のことは忘れてしまってよいでしょう。ここから先この部分については触れません。</p>
+<p><script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>は束縛条件<script type="math/tex">g(x,y)=0</script>を別の方法で表現したものに過ぎないので、<script type="math/tex">(x,y)</script>を解析的に求める上では特に訳には立ちません。</p>
 
 <h2 id="fracpartial-lpartial-xfracpartial-lpartial-y0">(2) <script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>の意味</h2>
 <p>ラグランジュ未定乗数法において本当に意味のある部分は</p>
@@ -138,8 +150,7 @@
 \right)</script>
 は平行であるということを意味しているのです。</p>
 
-<h2 id="gradient">偏微分，勾配 (gradient)，法線ベクトル</h2>
-<p>つまりラグランジュ未定乗数法は<script type="math/tex">f(x,y)</script>を最大化する点<script type="math/tex">(x_0,y_0)</script>において、
+<p>つまりラグランジュ未定乗数法は<script type="math/tex">f(x,y)</script>を最大化する点<script type="math/tex">(x,y)</script>において、
 <script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>を偏微分して得られるベクトル<script type="math/tex">\left(
   \begin{array}{c}
   \frac{\partial f}{\partial x} \\
@@ -158,15 +169,19 @@
   \frac{\partial f}{\partial y}
   \end{array}
 \right)</script>
-が何を意味しているかを理解すればラグランジュの未定乗数法が何を意味していて何故それを使って<script type="math/tex">f(x,y)</script>を最大化する<script type="math/tex">(x_0, y_0)</script>を求めることができるのかが理解できます。</p>
+が何を意味しているかを理解すればラグランジュの未定乗数法が何を意味していて何故それを使って<script type="math/tex">f(x,y)</script>を最大化する<script type="math/tex">(x, y)</script>を求めることができるのかが理解できます。</p>
 
-<p>なおここから先はスペース節約のために
-<script type="math/tex">\left(
+<h2 id="gradient">勾配 (gradient)，法線ベクトル</h2>
+<p><script type="math/tex">\left(
   \begin{array}{c}
   \frac{\partial f}{\partial x} \\
   \frac{\partial f}{\partial y}
   \end{array}
-\right)</script>を<script type="math/tex">\nabla f</script>と表記します。</p>
+\right)</script> のことを専門用語で<a href="https://ja.wikipedia.org/wiki/%E5%8B%BE%E9%85%8D_(%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB%E8%A7%A3%E6%9E%90)">勾配 (Gradient)</a>と呼び、
+<script type="math/tex">\nabla f</script>と表記します。
+つまりラグランジュの未定乗数法は、<script type="math/tex">f(x,y)</script>を最大化する点において<script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>のそれぞれの勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行になるということを意味しています。</p>
+
+<p>では勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>はどのようなベクトルなのでしょうか。</p>
 
 <p>ある点<script type="math/tex">(x,y)</script>から<script type="math/tex">x,y</script>を微小に<script type="math/tex">(\Delta x,\Delta y)</script>だけ変化させた場合、<script type="math/tex">g(x,y)</script>は</p>
 
