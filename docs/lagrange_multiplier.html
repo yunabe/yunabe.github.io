@@ -179,25 +179,44 @@
   \end{array}
 \right)</script> のことを専門用語で<a href="https://ja.wikipedia.org/wiki/%E5%8B%BE%E9%85%8D_(%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB%E8%A7%A3%E6%9E%90)">勾配 (Gradient)</a>と呼び、
 <script type="math/tex">\nabla f</script>と表記します。
-つまりラグランジュの未定乗数法は、<script type="math/tex">f(x,y)</script>を最大化する点において<script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>のそれぞれの勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行になるということを意味しています。</p>
+つまりラグランジュの未定乗数法は、<script type="math/tex">f(x,y)</script>を最大化する点において<script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>のそれぞれの勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行になるということを意味しています。
+では勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>はどのようなベクトルなのでしょうか。</p>
 
-<p>では勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>はどのようなベクトルなのでしょうか。</p>
+<p>ある一定値<script type="math/tex">c</script>に対して<script type="math/tex">f(x,y)=c</script>をみたす<script type="math/tex">(x,y)</script>について考えます。
+この<script type="math/tex">(x,y)</script>は<script type="math/tex">(x,y)</script>平面上の曲線となり、<script type="math/tex">f</script>を高さだと思うと関数<script type="math/tex">f(x,y)</script>の等高線に相当するものになります。</p>
 
-<p>ある点<script type="math/tex">(x,y)</script>から<script type="math/tex">x,y</script>を微小に<script type="math/tex">(\Delta x,\Delta y)</script>だけ変化させた場合、<script type="math/tex">g(x,y)</script>は</p>
+<p>曲線<script type="math/tex">f(x,y)=c</script>上のある点<script type="math/tex">(x,y)</script>から、<script type="math/tex">x,y</script>を微小に<script type="math/tex">(\Delta x,\Delta y)</script>だけ変化させたることを考えます。
+<script type="math/tex">(x,y)</script>を微小に変化させた場合の<script type="math/tex">f</script>の変化は偏微分に比例するので</p>
 
-<script type="math/tex; mode=display">g(x+\Delta x,y+\Delta y)\simeq g(x,y)+\frac{\partial g}{\partial x}\Delta x+\frac{\partial g}{\partial y}\Delta y</script>
+<script type="math/tex; mode=display">f(x+\Delta x,y+\Delta y)\simeq f(x,y)+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=c+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y</script>
 
-<script type="math/tex; mode=display">\frac{\partial g}{\partial x}dx+\frac{\partial g}{\partial y}dy=0</script>
+<p>いま <script type="math/tex">(\Delta x,\Delta y)</script> が曲線 <script type="math/tex">f(x,y)=c</script> の接線方向のベクトルだとすると、
+<script type="math/tex">x+\Delta x,y+\Delta y</script>も曲線上の点になるので<script type="math/tex">f(x+\Delta x,y+\Delta y)=c</script>。そのため</p>
 
-<script type="math/tex; mode=display">\frac{\partial g}{\partial x}dx+\frac{\partial g}{\partial y}dy=0</script>
+<script type="math/tex; mode=display">f(x+\Delta x,y+\Delta y)=c+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=c</script>
+
+<p>両辺から<script type="math/tex">c</script>を引いて</p>
+
+<script type="math/tex; mode=display">\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=0</script>
+
+<p>ベクトルの内積で表現すると</p>
 
 <script type="math/tex; mode=display">
 \left(
   \begin{array}{c}
-  \frac{\partial g}{\partial x} \\
-  \frac{\partial g}{\partial y}
+  \frac{\partial f}{\partial x} \\
+  \frac{\partial f}{\partial y}
   \end{array}
 \right)
+\cdot
+\left(
+  \begin{array}{c}
+  \Delta x \\
+  \Delta y
+  \end{array}
+\right)
+=
+\nabla f
 \cdot
 \left(
   \begin{array}{c}
@@ -207,22 +226,18 @@
 \right)=0
 </script>
 
-<p>(ゼロではない)2つのベクトルの内積が0になるのは、2つのベクトルが直交する時です。
+<p>(ゼロではない) 2つのベクトルの内積が0になるのは、2つのベクトルが直交する時です。
 そして<script type="math/tex">\left(
   \begin{array}{c}
   \Delta x \\
   \Delta y
   \end{array}
-\right)</script>は<script type="math/tex">g(x,y)=0</script>の接線方向の微小なベクトルです。その接線方向のベクトルと直交する<script type="math/tex">\left(
-  \begin{array}{c}
-  \frac{\partial g}{\partial x} \\
-  \frac{\partial g}{\partial y}
-  \end{array}
-\right)</script>は、すなわち、<script type="math/tex">g(x,y)=0</script>の<a href="https://ja.wikipedia.org/wiki/%E6%B3%95%E7%B7%9A%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB">法線ベクトル</a>に他なりません。</p>
+\right)</script> は曲線 <script type="math/tex">f(x,y)=c</script> の接線方向の微小なベクトルです。その接線方向のベクトルと直交する勾配<script type="math/tex">\nabla f</script>は、すなわち、
+<script type="math/tex">f(x,y)=c</script>の<a href="https://ja.wikipedia.org/wiki/%E6%B3%95%E7%B7%9A%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB">法線ベクトル</a>に他なりません。</p>
 
 <p>そしてラグランジュ未定乗数法の<script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0\Leftrightarrow\exists\nabla f=\lambda \nabla g</script>は
-曲線<script type="math/tex">f(x,y)=f_0</script>と曲線<script type="math/tex">g(x,y)=0</script>のそれぞれの法線ベクトルが平行であることを意味しています。
-つまりはそれぞれの曲線が接しているということです。</p>
+<script type="math/tex">f</script> の等高線 <script type="math/tex">f(x,y)=c</script> と束縛条件の曲線 <script type="math/tex">g(x,y)=0</script> のそれぞれの法線ベクトルが平行であることを意味しています。
+つまりは2つの曲線が接しているということです。</p>
 
 <h2 id="section-3">解説・証明まとめ</h2>
 <p>ラグランジュ未定乗数法の式</p>
