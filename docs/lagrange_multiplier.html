@@ -182,20 +182,20 @@
 つまりラグランジュの未定乗数法は、<script type="math/tex">f(x,y)</script>を最大化する点において<script type="math/tex">f(x,y)</script>, <script type="math/tex">g(x,y)</script>のそれぞれの勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行になるということを意味しています。
 では勾配<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>はどのようなベクトルなのでしょうか。</p>
 
-<p>ある一定値<script type="math/tex">c</script>に対して<script type="math/tex">f(x,y)=c</script>をみたす<script type="math/tex">(x,y)</script>について考えます。
-この<script type="math/tex">(x,y)</script>は<script type="math/tex">(x,y)</script>平面上の曲線となり、<script type="math/tex">f</script>を高さだと思うと関数<script type="math/tex">f(x,y)</script>の等高線に相当するものになります。</p>
+<p>ある一定値 <script type="math/tex">c</script> に対して <script type="math/tex">f(x,y)=c</script> をみたす<script type="math/tex">(x,y)</script>について考えます。
+この<script type="math/tex">(x,y)</script> は <script type="math/tex">(x,y)</script> 平面上の曲線となり、<script type="math/tex">f</script> を山の高さだと思うと関数 <script type="math/tex">f(x,y)</script> の等高線に相当するものになります。</p>
 
 <p>曲線<script type="math/tex">f(x,y)=c</script>上のある点<script type="math/tex">(x,y)</script>から、<script type="math/tex">x,y</script>を微小に<script type="math/tex">(\Delta x,\Delta y)</script>だけ変化させたることを考えます。
 <script type="math/tex">(x,y)</script>を微小に変化させた場合の<script type="math/tex">f</script>の変化は偏微分に比例するので</p>
 
 <script type="math/tex; mode=display">f(x+\Delta x,y+\Delta y)\simeq f(x,y)+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=c+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y</script>
 
-<p>いま <script type="math/tex">(\Delta x,\Delta y)</script> が曲線 <script type="math/tex">f(x,y)=c</script> の接線方向のベクトルだとすると、
-<script type="math/tex">x+\Delta x,y+\Delta y</script>も曲線上の点になるので<script type="math/tex">f(x+\Delta x,y+\Delta y)=c</script>。そのため</p>
+<p>いま <script type="math/tex">(\Delta x,\Delta y)</script> が曲線 <script type="math/tex">f(x,y)=c</script> の接線方向のベクトルだとすると、<script type="math/tex">(\Delta x,\Delta y)</script>だけ移動した点
+<script type="math/tex">(x+\Delta x,y+\Delta y)</script>も曲線上の点になるので<script type="math/tex">f(x+\Delta x,y+\Delta y)=c</script>。そのため</p>
 
 <script type="math/tex; mode=display">f(x+\Delta x,y+\Delta y)=c+\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=c</script>
 
-<p>両辺から<script type="math/tex">c</script>を引いて</p>
+<p>となります。両辺から<script type="math/tex">c</script>を引いて</p>
 
 <script type="math/tex; mode=display">\frac{\partial f}{\partial x}\Delta x+\frac{\partial f}{\partial y}\Delta y=0</script>
 
@@ -235,9 +235,13 @@
 \right)</script> は曲線 <script type="math/tex">f(x,y)=c</script> の接線方向の微小なベクトルです。その接線方向のベクトルと直交する勾配<script type="math/tex">\nabla f</script>は、すなわち、
 <script type="math/tex">f(x,y)=c</script>の<a href="https://ja.wikipedia.org/wiki/%E6%B3%95%E7%B7%9A%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB">法線ベクトル</a>に他なりません。</p>
 
+<p><img src="https://docs.google.com/drawings/d/1XESUU--lehuEyL6Hm9D_N2BFl9BlJkdMqoh-aJjtUjk/pub?w=555&amp;h=416" width="277" height="208" /></p>
+
 <p>そしてラグランジュ未定乗数法の<script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0\Leftrightarrow\exists\nabla f=\lambda \nabla g</script>は
 <script type="math/tex">f</script> の等高線 <script type="math/tex">f(x,y)=c</script> と束縛条件の曲線 <script type="math/tex">g(x,y)=0</script> のそれぞれの法線ベクトルが平行であることを意味しています。
 つまりは2つの曲線が接しているということです。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1Ydac4y9UM-0bodV9Z5mXZYj-hjRRs24Jl0mTiqRXJlQ/pub?w=555&amp;h=416" width="277" height="208" /></p>
 
 <h2 id="section-3">解説・証明まとめ</h2>
 <p>ラグランジュ未定乗数法の式</p>
