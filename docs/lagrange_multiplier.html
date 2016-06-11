@@ -252,7 +252,20 @@
 
 <p><img src="https://docs.google.com/drawings/d/1Ydac4y9UM-0bodV9Z5mXZYj-hjRRs24Jl0mTiqRXJlQ/pub?w=555&amp;h=416" width="277" height="208" /></p>
 
-<h2 id="section-3">解説・証明まとめ</h2>
+<h2 id="fxyc-gxy0-">なぜ <script type="math/tex">f(x,y)=c</script>, <script type="math/tex">g(x,y)=0</script> が接する必要があるか</h2>
+<p>以上より、ラグランジュの未定乗数法が述べていることは言い換えれば、束縛条件 <script type="math/tex">g(x,y)</script> の元で <script type="math/tex">f(x,y)</script> が最大値(あるいは最小値)となる点<script type="math/tex">(x,y)</script>において曲線
+<script type="math/tex">g(x,y)=0</script> と <script type="math/tex">f(x,y)=c</script> （<script type="math/tex">c</script>は点<script type="math/tex">(x,y)</script>における<script type="math/tex">f(x,y)</script>の値）が接するということです。</p>
+
+<p>これは逆に考えて(対偶を考えて)、<script type="math/tex">g(x,y)=0</script> と <script type="math/tex">f(x,y)=c</script> が点<script type="math/tex">(x,y)</script>において交差しているならばその点で <script type="math/tex">f(x,y)</script> は最大・最小にはならないと考えれば、直感的に理解できます。</p>
+
+<p><img src="https://docs.google.com/drawings/d/1G-DeP1tVUAcHj8mx-e7Jv30DNyRMq7LFxTm4fdgBVKQ/pub?w=555&amp;h=416" width="277" height="208" /></p>
+
+<p><script type="math/tex">f(x,y)=c</script>で分割された2つの領域の片側は<script type="math/tex">f(x,y)>c</script>となるエリア、もう片側は <script type="math/tex">% <![CDATA[
+f(x,y)<c %]]></script> となるエリアです。
+上の図のようにもし点<script type="math/tex">(x,y)</script> で <script type="math/tex">g(x,y)=0</script> と <script type="math/tex">f(x,y)=c</script> が交差しているのならば、<script type="math/tex">g(x,y)=0</script>の曲線上に <script type="math/tex">f(x,y) > c</script> となる点と <script type="math/tex">% <![CDATA[
+f(x,y) < c %]]></script> となる点が必ず存在することになります。つまり束縛条件 <script type="math/tex">g(x,y)=0</script> をみたしつつ、 <script type="math/tex">f(x,y)</script> を <script type="math/tex">c</script> よりも大きくする点と小さくする点が存在するわけですから、その点においては <script type="math/tex">f(x,y)</script> は最大・最小いずれにもなることはありません。</p>
+
+<h1 id="section-3">解説・証明まとめ</h1>
 <p>ラグランジュ未定乗数法の式</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>
@@ -260,7 +273,6 @@
 <p>の<script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>の部分は単に束縛条件<script type="math/tex">g(x,y)=0</script>を言い換えたものです。
 <script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>の部分は<script type="math/tex">f</script>, <script type="math/tex">g</script>の勾配(gradient)<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行であることと意味しています。
 勾配<script type="math/tex">\nabla f</script>は<script type="math/tex">f(x,y)</script>の等高線の法線ベクトルであるので、<script type="math/tex">\nabla f</script>, <script type="math/tex">\nabla g</script>が平行であるというのは要するに<script type="math/tex">f(x,y)</script>の等高線と<script type="math/tex">g(x,y)</script>の等高線が接していることと同義です。</p>
-
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
