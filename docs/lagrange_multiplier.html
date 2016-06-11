@@ -50,7 +50,16 @@
 </div>
 
         <p>ある関数 <script type="math/tex">f(x,y)</script> を束縛条件 <script type="math/tex">g(x,y)=0</script> の元で最大化あるいは最小化する <script type="math/tex">(x,y)</script> を求める際に用いられるのがラグランジュの未定乗数法(Lagrange Multipliers)です。
-微分、ベクトルに関して高校レベルの数学を理解している必要があります。</p>
+ラグランジュの未定乗数法の式</p>
+
+<script type="math/tex; mode=display">L(x,y)=f(x,y)-\lambda g(x,y)</script>
+
+<script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>
+
+<p>は一見複雑な見た目をしており特に <script type="math/tex">L(x,y)</script> が何を意味しているのかが分かりにくいと思います。
+この文書ではラグランジュの未定乗数法の式が何を意味していて、なぜこれによって束縛条件 <script type="math/tex">g(x,y)=0</script> の元での <script type="math/tex">f(x,y)</script> の最大値（あるいは最小値）を求めることができるのかを直感的に分かりやすいように説明します。</p>
+
+<p>ただし微分、ベクトルに関して高校レベルの数学を理解している必要があります。</p>
 
 <h1 id="section">ラグランジュの未定乗数法</h1>
 
