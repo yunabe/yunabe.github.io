@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>pandas 入門 - pandasによるデータ処理の基礎</title>
+  <meta name="description" content="">
+  <meta property="fb:admins" content="yunabe">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/pandas_basics.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">pandas 入門 - pandasによるデータ処理の基礎</h1>
+          <p class="post-meta"><time datetime="2016-06-07T00:00:00+09:00" itemprop="datePublished">更新 Jun 7, 2016</time></p>
+        </header>
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <h1 id="pandas-dataframe--series">pandasの基礎: DataFrame と Series</h1>
+<p>pandas の基本的なデータ構造に DataFrame と Serries があります。この2つが何を表すのかを始めに理解しましょう。</p>
+
+<h2 id="dataframe">DataFrame</h2>
+<p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。DataFrame が pandasのメインとなるデータ構造で二次元のテーブルを表します。
+上の図のような二次元のテーブルがDataFrameです。</p>
+
+<p>DataFrameは単なる二次元の<code>list</code>ではなく、各行・各列に対して”平均気温”, “日照時間”や”1月”, “2月”のような「ラベル」を付与することができます。Excelなどの一般的な2次元データのように横方向のデータが行(row)、縦方向のデータを列(column)です。
+基本的には各列が”気温”や”降水量”などの特徴に対応し、各行が1つ1つのデータとするのが慣習です。この辺りもExcelなどと変わらないと思います。</p>
+
+<p><img src="/assets/pandas_dataframe.png" width="363" height="243" /></p>
+
+<h2 id="series">Series</h2>
+<p>pandas のもう1つの重要なデータがSeriesです。Seriesは1次元の配列で、2次元テーブルの列(column), 行(row)に相当します。
+Seriesも単なる1次元の<code>list</code>ではなく、各要素に「ラベル」を付与することができます。</p>
+
+<p>上のDataFrameから”日照時間”の列(赤い範囲)をSeriesとして取り出すと、</p>
+
+<p><img src="/assets/pandas_column_series.png" width="541" height="59" /></p>
+
+<p>青い”11月”の行をSeriesとして取り出すと</p>
+
+<p><img src="/assets/pandas_row_series.png" width="312" height="59" /></p>
+
+<p>のようになります。</p>
+
+<h1 id="dataframe--series-">DataFrame と Series からデータを取り出す</h1>
+<p>まず pandas を初めて使った時に必要になるのが各要素の参照の仕方だと思います。pandasのDataFrameもPythonの他のデータと同じく<code>[]</code>で要素にアクセスすることができますが、<code>[]</code>のルールがかなり風変わり(というか正直かなり変だと思う…)のでルールを理解しておく必要があります。</p>
+
+
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/pandas_basics.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  console.log(fjs);
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+    
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+  </body>
+
+</html>
