@@ -69,15 +69,62 @@ Seriesも単なる1次元の<code>list</code>ではなく、各要素に「ラ�
 
 <p><img src="/assets/pandas_column_series.png" width="541" height="59" /></p>
 
-<p>青い”11月”の行をSeriesとして取り出すと</p>
+<p>“11月”の行(青)をSeriesとして取り出すと</p>
 
 <p><img src="/assets/pandas_row_series.png" width="312" height="59" /></p>
 
 <p>のようになります。</p>
 
 <h1 id="dataframe--series-">DataFrame と Series からデータを取り出す</h1>
-<p>まず pandas を初めて使った時に必要になるのが各要素の参照の仕方だと思います。pandasのDataFrameもPythonの他のデータと同じく<code>[]</code>で要素にアクセスすることができますが、<code>[]</code>のルールがかなり風変わり(というか正直かなり変だと思う…)のでルールを理解しておく必要があります。</p>
+<p>まず pandas を初めて使った時に必要になり困惑するのが、要素の参照の仕方だと思います。pandasのDataFrameもPythonの他のデータと同じく<code>[]</code>で要素にアクセスすることができますが、<code>[]</code>のルールが不規則なのでルールを理解しておく必要があります。</p>
 
+<h2 id="dataframe-">DataFrameと[ ]</h2>
+<p>DataFrameに対して、<code>df[key]</code>のようにアクセスするとDataFrameはラベルが<code>key</code>の<strong>列(column)</strong>をSeriesとして返します。
+多くのライブラリでは行列の<script type="math/tex">X</script>の<script type="math/tex">i</script>行, <script type="math/tex">j</script>列の要素<script type="math/tex">x_{ij}</script>には<code>X[i][j]</code>のようにアクセスするので<code>X[i]</code>は普通は<strong>行</strong>(横方向の1行)を返しますが、pandasは<strong>列</strong>を返すので注意が必要です。</p>
+
+<p>次は<code>slice</code>です。DataFrameに対して <code>df[begin:end]</code>のようにsliceでアクセスするとDataFrameは今度は<strong>行(row)</strong>のsliceを返します。
+<code>begin</code>, <code>end</code>は行のラベルではなく行のオフセット(先頭からの位置)を渡します。
+単に<code>df[key]</code>としたときは<code>key</code>は<strong>列</strong>を指定するものであるにもかかわらず、<code>df[begin,end]</code>としたときは<code>begin</code>, <code>end</code>は<strong>行</strong>を指定するのです。
+このようにDataFrameに対する<code>[]</code>によるアクセスのルールはかなり不規則なので注意が必要です。</p>
+
+<p><a href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#indexing-selection">DataFrameのアクセス方法を表にまとめておきます</a>。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operation</th>
+      <th style="text-align: left">Syntax</th>
+      <th style="text-align: left">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Select column</td>
+      <td style="text-align: left">df[col]</td>
+      <td style="text-align: left">Series</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Select row by label</td>
+      <td style="text-align: left">df.loc[label]</td>
+      <td style="text-align: left">Series</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Select row by integer location</td>
+      <td style="text-align: left">df.iloc[loc]</td>
+      <td style="text-align: left">Series</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Slice rows</td>
+      <td style="text-align: left">df[5:10]</td>
+      <td style="text-align: left">DataFrame</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Select rows by boolean vector</td>
+      <td style="text-align: left">df[bool_vec]</td>
+      <td style="text-align: left">DataFrame</td>
+    </tr>
+  </tbody>
+</table>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
