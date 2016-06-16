@@ -52,6 +52,27 @@
         <h1 id="pandas-dataframe--series">pandasの基礎: DataFrame と Series</h1>
 <p>pandas の基本的なデータ構造に DataFrame と Serries があります。この2つが何を表すのかを始めに理解しましょう。</p>
 
+<h2 id="import">インストールとimport</h2>
+
+<pre><code>pip install pandas
+</code></pre>
+
+<p>インストールは[pip]を使って行います。<a href="/docs/python_package_management.html">pipを使ったことがない場合はPythonパッケージ管理に関するドキュメントを参照して下さい</a>。</p>
+
+<pre><code>import pandas as pd
+</code></pre>
+
+<p>pandasは<code>pd</code>としてimportするのが慣習なので<code>pd</code>としてimportしましょう。ついでに他の数値ライブラリと一緒にimportしておきましょう。</p>
+
+<pre><code>import math
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Jupyter notebookでグラフを出す場合
+%matplotlib inline
+</code></pre>
+
 <h2 id="dataframe">DataFrame</h2>
 <p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。DataFrame が pandasのメインとなるデータ構造で二次元のテーブルを表します。
 上の図のような二次元のテーブルがDataFrameです。</p>
