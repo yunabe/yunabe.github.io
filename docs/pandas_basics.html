@@ -49,10 +49,9 @@
   </div>
 </div>
 
-        <h1 id="pandas-dataframe--series">pandasの基礎: DataFrame と Series</h1>
-<p>pandas の基本的なデータ構造に DataFrame と Serries があります。この2つが何を表すのかを始めに理解しましょう。</p>
+        <p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。Pythonで数値処理や統計処理、機械学習を行う際に<code>numpy</code>などと共によく利用されます。</p>
 
-<h2 id="import">インストールとimport</h2>
+<h1 id="import">インストールとimport</h1>
 
 <pre><code>pip install pandas
 </code></pre>
@@ -73,18 +72,22 @@ import matplotlib.pyplot as plt
 %matplotlib inline
 </code></pre>
 
+<h1 id="pandas-dataframe--series">pandasの基礎: DataFrame と Series</h1>
+<p>pandas の基本的なデータ構造に DataFrame と Serries があります。この2つが何を表すのかを始めに理解しましょう。</p>
+
 <h2 id="dataframe">DataFrame</h2>
-<p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。DataFrame が pandasのメインとなるデータ構造で二次元のテーブルを表します。
-上の図のような二次元のテーブルがDataFrameです。</p>
+<p>DataFrame が pandasのメインとなるデータ構造で二次元のテーブルを表します。図のような二次元のテーブルがDataFrameです。</p>
+
+<p><img src="/assets/pandas_dataframe.png" width="363" height="243" /></p>
 
 <p>DataFrameは単なる二次元の<code>list</code>ではなく、各行・各列に対して”平均気温”, “日照時間”や”1月”, “2月”のような「ラベル」を付与することができます。Excelなどの一般的な2次元データのように横方向のデータが行(row)、縦方向のデータを列(column)です。
 基本的には各列が”気温”や”降水量”などの特徴に対応し、各行が1つ1つのデータとするのが慣習です。この辺りもExcelなどと変わらないと思います。</p>
 
-<p><img src="/assets/pandas_dataframe.png" width="363" height="243" /></p>
-
 <h2 id="series">Series</h2>
 <p>pandas のもう1つの重要なデータがSeriesです。Seriesは1次元の配列で、2次元テーブルの列(column), 行(row)に相当します。
 Seriesも単なる1次元の<code>list</code>ではなく、各要素に「ラベル」を付与することができます。</p>
+
+<p><img src="/assets/pandas_dataframe_series.png" width="363" height="243" /></p>
 
 <p>上のDataFrameから”日照時間”の列(赤い範囲)をSeriesとして取り出すと、</p>
 
