@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2016-03-16T00:00:00+09:00" itemprop="datePublished">更新 Mar 16, 2016</time></p>
+          <p class="post-meta"><time datetime="2016-06-21T00:00:00+09:00" itemprop="datePublished">更新 Jun 21, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -73,9 +73,15 @@
   </li>
   <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
   <li><a href="#defer">関数より狭いスコープで defer</a></li>
-  <li><a href="#section-6">1.0 が浮動小数点型にならない(時がある)</a></li>
-  <li><a href="#section-7">型が後置</a></li>
-  <li><a href="#section-8">名前が…</a></li>
+  <li><a href="#structcjava">structとC++/Javaのクラスとの違い</a>    <ul>
+      <li><a href="#section-6">コンストラクタがない</a></li>
+      <li><a href="#section-7">ゼロ初期化が避けられない</a></li>
+      <li><a href="#section-8">コピーされるのが避けられない</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-9">型が後置</a></li>
+  <li><a href="#section-10">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-11">名前が…</a></li>
 </ul>
 
 <h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
@@ -372,13 +378,46 @@ Goではそういった解放処理は<code>defer</code>を使って行います
   </span><span class="c">// この時点でr.Close()を本当は呼びたいが、myFuncの終了まで呼び出されない。</span><span class="x">
 </span><span class="p">}</span></code></pre></div>
 
-<h1 id="section-6">1.0 が浮動小数点型にならない(時がある)</h1>
+<h1 id="structcjava">structとC++/Javaのクラスとの違い</h1>
+<p>これもはまりどころというよりは、Goでコードを書く上で理解しておきたいポイントの整理ですが。
+GoのstructとC++/Javaのクラスの、コードを書く上での理解しておくべき大きな違いは、struct (class) の初期化の方法の違い(コンストラクタがない)から来ます。</p>
+
+<h2 id="section-6">コンストラクタがない</h2>
+<p>Goにはコンストラクタがありません。GoではC++、Javaのコンストラクタに相当する関数を単なる関数として定義します。ただこれは定義方法がC++, Javaと違うというだけで、実際にコードを書くときには大した違いはないように思います。</p>
+
+<p>Goではstructは通常</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span><span class="x">
+</span><span class="n">mydata</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="o">&amp;</span><span class="n">MyData</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">X</span><span class="o">:</span><span class="x"> </span><span class="m">10</span><span class="p">,</span><span class="x">
+    </span><span class="n">Y</span><span class="o">:</span><span class="x"> </span><span class="m">20</span><span class="p">,</span><span class="x">
+</span><span class="p">}</span></code></pre></div>
+
+<p>のように<a href="https://golang.org/ref/spec#Composite_literals">StructType{name: value,…}</a>で初期化します。{name: value}が省略された場合はゼロ初期化されます。Goにはコンストラクタは存在しません。Goであるstructの初期化関数を用意したい場合には、パッケージに生成用の関数を用意します。通常、関数の名前はNew+struct名(+付加情報)のようになります。例えば、bytes.Bufferには []byteからbytes.Bufferを生成する bytes.NewBuffer と string からbytes.Bufferを生成するbytes.NewBufferStringが用意されています。</p>
+
+<h2 id="section-7">ゼロ初期化が避けられない</h2>
+<p>Goでは、structのメンバー変数をパッケージ外に非公開にすることができます。非公開になっているメンバーは他のパッケージから直接編集することはできません。ただし、structがパッケージ外に公開されている場合、例え全ての変数が非公開だったとしても</p>
+
+<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span></code></pre></div>
+
+<p>のように書かれてしまうと、MyDataの中身は全てゼロ値で初期化されてしまいます。C++/やJavaではコンストラクタに書かれているようにしか非公開のメンバーは変更できないので、メンバーがどのように初期化されるかは明示することができます。しかしGoではそのようなことはできません。structが外部に公開されるのならばstructは全てがゼロ初期化された場合にも正しく動くように常に設計しなくてはならないのです。</p>
+
+<h2 id="section-8">コピーされるのが避けられない</h2>
+<p>GoではC++のコピーコンストラクタのような仕組みはないので、structのコピーを防止することは不可能です。公開されているstructは他のパッケージのコードで自由にコピーができてしまいます。実はGoははじめのころは非公開のメンバーがあるstructはパッケージ外部ではコピーすることはできませんでした。しかし、<a href="https://go.googlesource.com/go/+/d03611f628c65321b572ab0d4ce85cc61b759fc6">2011年に仕様が変更</a>されて非公開のメンバーが存在してもコピー可能なようになりました。</p>
+
+<p>そのためパッケージ外部に公開されているstructはコピーされても不都合が(あまり)起こらないようにすべきです。コピーされると非常に不都合なstructはinterfaceだけを公開して実際の実装であるstructを隠すか、あるいはコピーされたくないフィールドを別のstructに分離して公開するstructではそのstructへのポインタを保持するようにします。
+例えば<a href="https://golang.org/pkg/os/#File">標準ライブラリのos.File</a>は、ソースコードを見るとファイルディスクリプタなどを管理する private な <code>os.file struct</code> へのポインタとなっています。これはファイルの実体に対応する構造体<code>os.file</code>がコピーされて同じファイルが2回閉じられたりするようなことが起こらないように配慮された結果です。</p>
+
+<p>ちなみにos.Fileは<code>*os.file</code>を1つ持つだけの<code>struct</code>ですが、これを<code>type File *file</code>としては意味がありません。なぜなら<code>type File *file</code>としてしまうと、<code>os.File</code>はポインタなので例え<code>os.file</code>が非公開だとしても<code>*</code>演算でポインタの実体が参照できてしまい、<code>*file0 = *file1</code>のように書くことで<code>os.file</code>のコピーがパッケージ外部でもできてしまうからです。</p>
+
+<h1 id="section-9">型が後置</h1>
+<p>これは慣れです。C, Java系をメインで使っている多くのプログラマには最初は違和感がありますが、まあ割とどちらでもいいなという気分になります。多分。</p>
+
+<h1 id="section-10">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
 
-<h1 id="section-7">型が後置</h1>
-
-<h1 id="section-8">名前が…</h1>
-<p>何でこんな検索しにくい名前なの…</p>
+<h1 id="section-11">名前が…</h1>
+<p>何でこんな検索しにくい名前なのだろうな…</p>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -449,7 +488,7 @@ Goではそういった解放処理は<code>defer</code>を使って行います
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>
