@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Python パッケージ管理技術まとめ (pip, setuptools, easy_install, etc)</h1>
-          <p class="post-meta"><time datetime="2015-10-15T00:00:00+09:00" itemprop="datePublished">更新 Oct 15, 2015</time></p>
+          <p class="post-meta"><time datetime="2016-06-29T00:00:00+09:00" itemprop="datePublished">更新 Jun 29, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -445,16 +445,26 @@ setuptools を使って setup.py を定義していれば) 作成することが
 <ul>
   <li>PyPI から最新版をダウンロードしてインストール
     <ul>
-      <li>pip install SQLObject</li>
+      <li><code>pip install SQLObject</code></li>
     </ul>
   </li>
-  <li><code>User site directory</code> へインストール
+  <li>User site directory へインストール
     <ul>
-      <li>pip install –user SQLObject</li>
+      <li><code>pip install --user SQLObject</code></li>
       <li>easy_install と違って –user 付きでインストールした pip
 もデフォルトでは root に
 パッケージをインストールしようとするので、 User site directory
 にインストールしたい場合は <code>--user</code> は省略できない。</li>
+    </ul>
+  </li>
+  <li>パッケージを更新
+    <ul>
+      <li><code>pip install &lt;packagename&gt; --update</code></li>
+    </ul>
+  </li>
+  <li>更新があるパッケージを表示
+    <ul>
+      <li><code>pip list --outdated</code></li>
     </ul>
   </li>
 </ul>
@@ -514,7 +524,6 @@ Guide</a>
     </ul>
   </li>
 </ul>
-
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -585,7 +594,7 @@ Guide</a>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>
