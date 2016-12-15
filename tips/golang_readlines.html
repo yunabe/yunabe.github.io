@@ -37,13 +37,13 @@
         <h1 id="go-">Go でファイルや標準入力からテキストを一行ずつ読む</h1>
 
 <h2 id="bufioscanner">bufio.Scanner</h2>
-<p>Go言語 (golang) では<code>bufio.Scanner</code>を使ってファイル/標準入力からテキストを一行ずつ読み込みます。
-<code>bufio.NewScanner</code> で <code>*file.File</code> から <code>Scanner</code> を作成し、<code>Scan()</code> がファイルの末尾に達して<code>false</code>を返すまで for ループを回します。
-行の内容は <code>Text()</code> で<code>stirng</code>として取得できます。<code>Text()</code>の返り値の末尾には改行文字(<code>'\n'</code>)は含まれないので改行文字を削除するために<code>strings.Trim</code>を呼ぶ必要などもありません。
-ファイルの終端に正常に到達したかを念の為に確かめたい場合は、<code>s.Err()</code>をチェックして下さい。
-正常にファイルの末尾まで読み込まれた場合は<code>s.Err()</code>は<code>nil</code>を返します。</p>
+<p>Go言語 (golang) では<code class="highlighter-rouge">bufio.Scanner</code>を使ってファイル/標準入力からテキストを一行ずつ読み込みます。
+<code class="highlighter-rouge">bufio.NewScanner</code> で <code class="highlighter-rouge">*file.File</code> から <code class="highlighter-rouge">Scanner</code> を作成し、<code class="highlighter-rouge">Scan()</code> がファイルの末尾に達して<code class="highlighter-rouge">false</code>を返すまで for ループを回します。
+行の内容は <code class="highlighter-rouge">Text()</code> で<code class="highlighter-rouge">stirng</code>として取得できます。<code class="highlighter-rouge">Text()</code>の返り値の末尾には改行文字(<code class="highlighter-rouge">'\n'</code>)は含まれないので改行文字を削除するために<code class="highlighter-rouge">strings.Trim</code>を呼ぶ必要などもありません。
+ファイルの終端に正常に到達したかを念の為に確かめたい場合は、<code class="highlighter-rouge">s.Err()</code>をチェックして下さい。
+正常にファイルの末尾まで読み込まれた場合は<code class="highlighter-rouge">s.Err()</code>は<code class="highlighter-rouge">nil</code>を返します。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">f</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">os</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="x">
     </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
@@ -57,12 +57,12 @@
         </span><span class="c">// non-EOF error.</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Err</span><span class="p">())</span><span class="x">
     </span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <h2 id="section">標準入力から読む</h2>
-<p>標準入力から文字列を読み込む場合は、<code>os.Open(...)</code>の代わりに<code>os.Stdin</code>を利用します。</p>
+<p>標準入力から文字列を読み込む場合は、<code class="highlighter-rouge">os.Open(...)</code>の代わりに<code class="highlighter-rouge">os.Stdin</code>を利用します。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">path</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">s</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">bufio</span><span class="o">.</span><span class="n">NewScanner</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">Stdin</span><span class="p">)</span><span class="x">
     </span><span class="k">for</span><span class="x"> </span><span class="n">s</span><span class="o">.</span><span class="n">Scan</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">Quote</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Text</span><span class="p">()))</span><span class="x">
@@ -71,14 +71,14 @@
         </span><span class="c">// non-EOF error.</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Err</span><span class="p">())</span><span class="x">
     </span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <h2 id="bufioreader">bufio.Reader</h2>
-<p><code>bufio.Scanner</code>の方がシンプルですが、<code>bufio.Reader</code>を使って一行ずつファイルを読むことも出来ます。
-<code>bufio.Reader</code>を使う場合は<code>ReadLine()</code>ではなくて<code>ReadString('\n')</code>を使うという点に注意して下さい。
-<code>ReadString('\n')</code>の返り値の末尾には改行文字<code>'\n'</code>が含まれるので必要ない場合は<code>strings.TrimLeft</code>などで改行文字を取り除く必要があります。</p>
+<p><code class="highlighter-rouge">bufio.Scanner</code>の方がシンプルですが、<code class="highlighter-rouge">bufio.Reader</code>を使って一行ずつファイルを読むことも出来ます。
+<code class="highlighter-rouge">bufio.Reader</code>を使う場合は<code class="highlighter-rouge">ReadLine()</code>ではなくて<code class="highlighter-rouge">ReadString('\n')</code>を使うという点に注意して下さい。
+<code class="highlighter-rouge">ReadString('\n')</code>の返り値の末尾には改行文字<code class="highlighter-rouge">'\n'</code>が含まれるので必要ない場合は<code class="highlighter-rouge">strings.TrimLeft</code>などで改行文字を取り除く必要があります。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">file</span><span class="o">.</span><span class="n">File</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">readLines</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">file</span><span class="o">.</span><span class="n">File</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">bufio</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="x">
     </span><span class="k">for</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="c">// line includes '\n'.</span><span class="x">
@@ -90,7 +90,7 @@
         </span><span class="p">}</span><span class="x">
         </span><span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">Quote</span><span class="p">(</span><span class="n">line</span><span class="p">))</span><span class="x">
     </span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 
         <div>

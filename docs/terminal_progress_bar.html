@@ -57,8 +57,9 @@
 
 <h2 id="section">仕組み</h2>
 
-<pre><code>[=&gt;           ]  5.2%
+<div class="highlighter-rouge"><pre class="highlight"><code>[=&gt;           ]  5.2%
 </code></pre>
+</div>
 
 <p>プログレスバーが更新されるたびに新しい行が表示されるのを防ぐために、
 プログレスバーを表示する前にカーソルを行頭に戻して行の内容を消してしまえればプログレスバーの完成です。
@@ -71,38 +72,39 @@ return)</a></li>
 を利用します。</li>
 </ul>
 
-<p>の２つを利用します。 キャリッジ・リターンは Windows の改行文字 <code>\r\n</code>
-で出てくる <code>\r</code> です。 普段 <code>\n</code>
+<p>の２つを利用します。 キャリッジ・リターンは Windows の改行文字 <code class="highlighter-rouge">\r\n</code>
+で出てくる <code class="highlighter-rouge">\r</code> です。 普段 <code class="highlighter-rouge">\n</code>
 に余計についてくる邪魔な文字程度の認識しかないと思いますが、単体で利用するとカーソルの位置を行頭に移動します。
 移動した後文字を出力するとすでに表示されている文字を上書きして新しい文字を表示します。
-例えば <code>"abcdefg\r123"</code> のような文字列を出力すると <code>\r</code>
-でカーソルを行頭に戻した後 <code>abc</code> を <code>123</code> で上書きするので <code>123defg</code>
+例えば <code class="highlighter-rouge">"abcdefg\r123"</code> のような文字列を出力すると <code class="highlighter-rouge">\r</code>
+でカーソルを行頭に戻した後 <code class="highlighter-rouge">abc</code> を <code class="highlighter-rouge">123</code> で上書きするので <code class="highlighter-rouge">123defg</code>
 が表示されます。
 そのためプログレスバーの長さが短くならないなら実はキャリッジ・リターンだけで十分で、エスケープシーケンスは使わなくても問題ありません。</p>
 
 <p>次にエスケープシーケンス。GUIの時代になって馴染みがないと思いますが、`&lt;ESC&gt;`
 に続けて決められた特殊な文字列を出力することで文字の色の変更、
 表示されている文字の削除などの制御することができます。 &lt;ESC&gt; は
-<a href="http://ja.wikipedia.org/wiki/ASCII">ASCII文字コード</a> の十進数で <code>27</code>
-のコードです (16進数で <code>1b</code>, 8進数で <code>33</code>)。 この文字に続けて <code>[K</code> や
-<code>[94m</code> などの文字列を与えることでターミナルを制御することができます
+<a href="http://ja.wikipedia.org/wiki/ASCII">ASCII文字コード</a> の十進数で <code class="highlighter-rouge">27</code>
+のコードです (16進数で <code class="highlighter-rouge">1b</code>, 8進数で <code class="highlighter-rouge">33</code>)。 この文字に続けて <code class="highlighter-rouge">[K</code> や
+<code class="highlighter-rouge">[94m</code> などの文字列を与えることでターミナルを制御することができます
 (<a href="http://www.termsys.demon.co.uk/vtansi.htm">エスケープシーケンスの一覧</a>)。
 行の削除のエスケープシーケンスは &lt;ESC&gt;[94m です。</p>
 
 <h2 id="section-1">実装</h2>
 
-<pre><code>[======&gt;      ] 42.3%
+<div class="highlighter-rouge"><pre class="highlight"><code>[======&gt;      ] 42.3%
 </code></pre>
+</div>
 
-<p>基本的には <code>\r</code> と &lt;ESC&gt;[94m を標準出力に書き出して、その後に
-<code>"[====&gt;  ] 70%"</code> のようなプログレスバーを表す文字列を書くだけです。
+<p>基本的には <code class="highlighter-rouge">\r</code> と &lt;ESC&gt;[94m を標準出力に書き出して、その後に
+<code class="highlighter-rouge">"[====&gt;  ] 70%"</code> のようなプログレスバーを表す文字列を書くだけです。
 ただし以下の点に気をつけて下さい</p>
 
 <ul>
   <li>プログレスバーの文字列の後で改行しない。
     <ul>
-      <li>例えば、Python では <code>print</code> ではなくて <code>sys.stdout.write</code>
-を使わなくてはならないし、 Javaでは <code>println</code> ではなくて <code>print</code>
+      <li>例えば、Python では <code class="highlighter-rouge">print</code> ではなくて <code class="highlighter-rouge">sys.stdout.write</code>
+を使わなくてはならないし、 Javaでは <code class="highlighter-rouge">println</code> ではなくて <code class="highlighter-rouge">print</code>
 を使わなくてはなりません。</li>
     </ul>
   </li>
@@ -123,14 +125,16 @@ return)</a></li>
 <h3 id="python">Python</h3>
 <p><a href="https://github.com/yunabe/codelab/blob/master/misc/terminal_progressbar/progress.py">GitHub にPythonのサンプルがおいてあります</a></p>
 
-<pre><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
+<div class="highlighter-rouge"><pre class="highlight"><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
 sys.stderr.flush()
 </code></pre>
+</div>
 
 <h2 id="section-2">おまけ</h2>
 
-<pre><code>[===========&gt; ] 89.7%
+<div class="highlighter-rouge"><pre class="highlight"><code>[===========&gt; ] 89.7%
 </code></pre>
+</div>
 
 <h3 id="section-3">色をつける</h3>
 
@@ -140,14 +144,15 @@ sys.stderr.flush()
 &lt;ESC&gt;[n1;n2;n3;…]m です。 n1, n2, … の部分には <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes">Wikipedia の SGR
 (Select Graphic Rendition) parameters
 表</a>
-にある数字が入ります。例えば、文字を明るい赤にするには &lt;ESC&gt; <code>[1;31m</code>
-を出力します。設定をリセットするのは <code>0</code> なので &lt;ESC&gt; <code>[0m]</code>
+にある数字が入ります。例えば、文字を明るい赤にするには &lt;ESC&gt; <code class="highlighter-rouge">[1;31m</code>
+を出力します。設定をリセットするのは <code class="highlighter-rouge">0</code> なので &lt;ESC&gt; <code class="highlighter-rouge">[0m]</code>
 を出力することで元に戻ります。例えば次の命令を Python
-で実行すると真ん中の <code>*</code> のみが明るい赤で表示されるはずです。
+で実行すると真ん中の <code class="highlighter-rouge">*</code> のみが明るい赤で表示されるはずです。
 いろいろ自分で試して遊んでみて下さい。</p>
 
-<pre><code>print "*\x1b[1;31m*\x1b[0m*"
+<div class="highlighter-rouge"><pre class="highlight"><code>print "*\x1b[1;31m*\x1b[0m*"
 </code></pre>
+</div>
 
 <p>エスケープシーケンスで指定できる Red, Blue
 などの色が実際のターミナルでどのような色になるかは、 <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia
@@ -223,7 +228,7 @@ sys.stderr.flush()
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

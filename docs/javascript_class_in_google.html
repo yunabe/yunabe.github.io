@@ -50,7 +50,7 @@
 </div>
 
         <p>他のメジャーなオブジェクト指向プログラミング言語と異なりJavaScriptには「クラス」が存在しません。
-代わりに C++, Java などにはない <code>prototype</code> や C++, Java のとは全く異なる <code>new</code> 演算子や <code>this</code> が用意されています。
+代わりに C++, Java などにはない <code class="highlighter-rouge">prototype</code> や C++, Java のとは全く異なる <code class="highlighter-rouge">new</code> 演算子や <code class="highlighter-rouge">this</code> が用意されています。
 これらの機能は一見するとどれもかなり奇妙な仕様をしています。
 そのため、それぞれの機能の仕様を1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
 どのようにその機能を活用してプログラムを作ればよいのか全く理解できないと思います。</p>
@@ -59,11 +59,11 @@
 などの「まともな」オブジェクト指向プログラミング言語の経験のあるプログラマが
 JavaScript で大規模なプログラミングを書こうとすると
 クラスがないのにプログラムをどうやってモジュール化したらよいのか分からないし、
-代わりにある <code>this</code> とか <code>prototype</code>
+代わりにある <code class="highlighter-rouge">this</code> とか <code class="highlighter-rouge">prototype</code>
 とかは何に使えばよいか分からないしで途方に暮れてしまうと思います。</p>
 
-<p>しかし JavaScriptには「クラス」という言語仕様は用意されていないものの、<code>this</code>,
-<code>prototype</code> などを一定のルールに基づいて利用すれば
+<p>しかし JavaScriptには「クラス」という言語仕様は用意されていないものの、<code class="highlighter-rouge">this</code>,
+<code class="highlighter-rouge">prototype</code> などを一定のルールに基づいて利用すれば
 他の言語のクラスほぼ同等のことは実現可能です。
 つまり他のクラスで行うようなクラスを使ったカプセル化、ポリモーフィズム、継承などを
 JavaScript でも実現することができます。 このドキュメントでは Google
@@ -72,52 +72,52 @@ Library</a>
 を参考にしてどのように JavaScript でクラスを実現すればよいかを学びます。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#javascript-">クラス実現のために必要な JavaScript の言語仕様</a>    <ul>
-      <li><a href="#function">function</a></li>
-      <li><a href="#this">this</a></li>
-      <li><a href="#call">call</a></li>
-      <li><a href="#new-">new 演算子</a></li>
-      <li><a href="#prototype-">prototype チェーン</a></li>
-      <li><a href="#prototype">プロパティ: prototype</a></li>
+  <li><a href="#javascript-" id="markdown-toc-javascript-">クラス実現のために必要な JavaScript の言語仕様</a>    <ul>
+      <li><a href="#function" id="markdown-toc-function">function</a></li>
+      <li><a href="#this" id="markdown-toc-this">this</a></li>
+      <li><a href="#call" id="markdown-toc-call">call</a></li>
+      <li><a href="#new-" id="markdown-toc-new-">new 演算子</a></li>
+      <li><a href="#prototype-" id="markdown-toc-prototype-">prototype チェーン</a></li>
+      <li><a href="#prototype" id="markdown-toc-prototype">プロパティ: prototype</a></li>
     </ul>
   </li>
-  <li><a href="#google-closure-">Google Closure 流のクラスの実現方法の概要</a></li>
-  <li><a href="#section">クラスの宣言とコンストラクタの定義</a></li>
-  <li><a href="#section-1">メンバ変数 (インスタンス変数)</a></li>
-  <li><a href="#section-2">メソッド定義と呼び出し</a>    <ul>
-      <li><a href="#private-protected">private, protected</a></li>
+  <li><a href="#google-closure-" id="markdown-toc-google-closure-">Google Closure 流のクラスの実現方法の概要</a></li>
+  <li><a href="#section" id="markdown-toc-section">クラスの宣言とコンストラクタの定義</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">メンバ変数 (インスタンス変数)</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">メソッド定義と呼び出し</a>    <ul>
+      <li><a href="#private-protected" id="markdown-toc-private-protected">private, protected</a></li>
     </ul>
   </li>
-  <li><a href="#section-3">継承</a>    <ul>
-      <li><a href="#section-4">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
-      <li><a href="#section-5">親クラスのコンストラクタの呼び出し</a></li>
-      <li><a href="#section-6">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
-      <li><a href="#section-7">多重継承</a></li>
-      <li><a href="#abstract-interface">abstract, interface</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">継承</a>    <ul>
+      <li><a href="#section-4" id="markdown-toc-section-4">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">親クラスのコンストラクタの呼び出し</a></li>
+      <li><a href="#section-6" id="markdown-toc-section-6">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
+      <li><a href="#section-7" id="markdown-toc-section-7">多重継承</a></li>
+      <li><a href="#abstract-interface" id="markdown-toc-abstract-interface">abstract, interface</a></li>
     </ul>
   </li>
-  <li><a href="#inherits-">inherits の実際のコード</a></li>
-  <li><a href="#section-8">良くないクラス実現方法</a>    <ul>
-      <li><a href="#prototype--">prototype = {}</a></li>
+  <li><a href="#inherits-" id="markdown-toc-inherits-">inherits の実際のコード</a></li>
+  <li><a href="#section-8" id="markdown-toc-section-8">良くないクラス実現方法</a>    <ul>
+      <li><a href="#prototype--" id="markdown-toc-prototype--">prototype = {}</a></li>
     </ul>
   </li>
-  <li><a href="#es6-">ES6 のクラス</a></li>
+  <li><a href="#es6-" id="markdown-toc-es6-">ES6 のクラス</a></li>
 </ul>
 
 <h1 id="javascript-">クラス実現のために必要な JavaScript の言語仕様</h1>
 
-<p>JavaScript でのクラスの実現方法を理解するためには <code>this</code>, <code>new</code>,
-<code>prototype</code>
+<p>JavaScript でのクラスの実現方法を理解するためには <code class="highlighter-rouge">this</code>, <code class="highlighter-rouge">new</code>,
+<code class="highlighter-rouge">prototype</code>
 などのJavaScriptの特殊な言語仕様を理解している必要があります。
 まずはそうした JavaScript の言語仕様から復習しておきます。</p>
 
 <h2 id="function">function</h2>
 
-<p>JavaScript では <code>function</code> で関数を定義します。</p>
+<p>JavaScript では <code class="highlighter-rouge">function</code> で関数を定義します。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>JavaScript
 における関数の定義方法を知らない場合はクラスの実現方法を学ぶ前に、まず
@@ -127,20 +127,20 @@ JavaScript の入門書や
 
 <h2 id="this">this</h2>
 
-<p>JavaScript では <code>this</code> という特殊な変数が関数の中で利用可能です。
+<p>JavaScript では <code class="highlighter-rouge">this</code> という特殊な変数が関数の中で利用可能です。
 JavaScript の this は <strong>Java, C++ の this とは全く挙動が異なる</strong>
-ので注意してください。 JavaScript の <code>this</code>
-はある関数が呼び出された際にその関数を格納していた <code>object</code> を指します。
+ので注意してください。 JavaScript の <code class="highlighter-rouge">this</code>
+はある関数が呼び出された際にその関数を格納していた <code class="highlighter-rouge">object</code> を指します。
 例えば</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sayHelloShared</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sayHelloShared</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, I'm "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<p>という関数があり、それが alice, bob というオブジェクトの <code>sayHello</code>
+<p>という関数があり、それが alice, bob というオブジェクトの <code class="highlighter-rouge">sayHello</code>
 として登録されていたとします。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">sayHello</span><span class="p">:</span> <span class="nx">sayHelloShared</span><span class="p">,</span>
   <span class="na">name</span><span class="p">:</span> <span class="s1">'Alice'</span>
 <span class="p">};</span>
@@ -149,98 +149,99 @@ JavaScript の this は <strong>Java, C++ の this とは全く挙動が異な�
   <span class="na">sayHello</span><span class="p">:</span> <span class="nx">sayHelloShared</span><span class="p">,</span>
   <span class="na">name</span><span class="p">:</span> <span class="s1">'Bob'</span><span class="p">,</span>
   <span class="na">child</span><span class="p">:</span> <span class="nx">alice</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>これを</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span>
-<span class="nx">bob</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span>
+<span class="nx">bob</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></figure>
 
-<p>のように呼び出すと前者の場合では <code>this</code> は <code>alice</code> を, 後者の場合では
-<code>bob</code> を指すので それぞれの実行で <code>I'm Alice</code> と <code>I'm Bob</code>
-が表示されます。 また下の例のように <code>.</code> が複数存在する場合は <code>this</code>
-はその関数を直接格納していたオブジェクト <code>child</code> を参照します。</p>
+<p>のように呼び出すと前者の場合では <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">alice</code> を, 後者の場合では
+<code class="highlighter-rouge">bob</code> を指すので それぞれの実行で <code class="highlighter-rouge">I'm Alice</code> と <code class="highlighter-rouge">I'm Bob</code>
+が表示されます。 また下の例のように <code class="highlighter-rouge">.</code> が複数存在する場合は <code class="highlighter-rouge">this</code>
+はその関数を直接格納していたオブジェクト <code class="highlighter-rouge">child</code> を参照します。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">bob</span><span class="p">.</span><span class="nx">child</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">bob</span><span class="p">.</span><span class="nx">child</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span></code></pre></figure>
 
 <p>なおクラスを実現する上ではあまり重要なことではないですが、 関数を単に
-<code>method();</code> という形で単体で実行した場合には <code>this</code> は <code>window</code>
+<code class="highlighter-rouge">method();</code> という形で単体で実行した場合には <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">window</code>
 を指します。</p>
 
 <h2 id="call">call</h2>
 
-<p>関数呼び出しの際に <code>this</code> の明示的に指定することも可能です。 それには
+<p>関数呼び出しの際に <code class="highlighter-rouge">this</code> の明示的に指定することも可能です。 それには
 <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/call">call</a>
-を利用します。 <code>call</code>
+を利用します。 <code class="highlighter-rouge">call</code>
 は全ての関数が暗黙的に持っているプロパティで、関数として呼び出すことができます。
-<code>call</code> を呼ぶと <code>call</code> の第一引数として渡されたオブジェクトが <code>this</code>
+<code class="highlighter-rouge">call</code> を呼ぶと <code class="highlighter-rouge">call</code> の第一引数として渡されたオブジェクトが <code class="highlighter-rouge">this</code>
 にセットされて元の関数が呼び出されます。
 第二引数移行は元の関数の引数として利用されます。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">alice</span><span class="p">);</span>  <span class="c1">// Hello, I'm Alice</span>
-<span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">bob</span><span class="p">);</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">alice</span><span class="p">);</span>  <span class="c1">// Hello, I'm Alice</span>
+<span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">bob</span><span class="p">);</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></figure>
 
 <h2 id="new-">new 演算子</h2>
 
-<p>JavaScript にも <code>new</code> 演算子が存在します。 ただし JavaScript の new も
+<p>JavaScript にも <code class="highlighter-rouge">new</code> 演算子が存在します。 ただし JavaScript の new も
 <strong>Java や C++ でクラスのインスタンス化を行う new
-とは全く動きが異なります。</strong> C++, Java では <code>new</code>
-はクラスと共に利用しますが JavaScript の <code>new</code>
+とは全く動きが異なります。</strong> C++, Java では <code class="highlighter-rouge">new</code>
+はクラスと共に利用しますが JavaScript の <code class="highlighter-rouge">new</code>
 は任意の関数と一緒に呼び出します。</p>
 
-<pre><code>new &lt;関数&gt;(&lt;引数&gt;);
+<div class="highlighter-rouge"><pre class="highlight"><code>new &lt;関数&gt;(&lt;引数&gt;);
 </code></pre>
+</div>
 
-<p><code>new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code>{}</code>)
-が生成されます。 次に関数が呼び出されますが、その際に関数内の <code>this</code>
+<p><code class="highlighter-rouge">new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code class="highlighter-rouge"><span class="p">{}</span></code>)
+が生成されます。 次に関数が呼び出されますが、その際に関数内の <code class="highlighter-rouge">this</code>
 が生成されたオブジェクトを指すようになります。
-関数が実行された後、生成されたオブジェクトが <code>new</code>
+関数が実行された後、生成されたオブジェクトが <code class="highlighter-rouge">new</code>
 の実行結果として返されます。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></div>
+<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
 
-<p>例えばこの例では、<code>new Person...</code>
-によって新しいオブジェクトが生成され、それが <code>this</code> に格納されて
-<code>Person</code> が実行され、 <code>name</code>, <code>age</code>
-がオブジェクトにセットされます。そして生成されたオブジェクトは <code>alice</code>
-に代入されます。 そのため、<code>alice.name</code>, <code>alice.age</code> は <code>Person</code>
-に渡された引数 <code>name</code>, <code>age</code> になります。</p>
+<p>例えばこの例では、<code class="highlighter-rouge">new Person...</code>
+によって新しいオブジェクトが生成され、それが <code class="highlighter-rouge">this</code> に格納されて
+<code class="highlighter-rouge">Person</code> が実行され、 <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">age</code>
+がオブジェクトにセットされます。そして生成されたオブジェクトは <code class="highlighter-rouge">alice</code>
+に代入されます。 そのため、<code class="highlighter-rouge">alice.name</code>, <code class="highlighter-rouge">alice.age</code> は <code class="highlighter-rouge">Person</code>
+に渡された引数 <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">age</code> になります。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// Alice</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>  <span class="c1">// 7</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// Alice</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>  <span class="c1">// 7</span></code></pre></figure>
 
-<p>もうお気づきのように、<code>new</code> 演算子を使うことで <code>JavaScript</code>
-では関数を「コンストラクタ」として利用することができます。 実際 <code>new</code>
-で生成されたオブジェクトは <code>constructor</code>
+<p>もうお気づきのように、<code class="highlighter-rouge">new</code> 演算子を使うことで <code class="highlighter-rouge">JavaScript</code>
+では関数を「コンストラクタ」として利用することができます。 実際 <code class="highlighter-rouge">new</code>
+で生成されたオブジェクトは <code class="highlighter-rouge">constructor</code>
 というプロパティで生成時に利用された関数への参照を保持しています。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nx">Person</span><span class="p">);</span>  <span class="c1">// true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nx">Person</span><span class="p">);</span>  <span class="c1">// true</span></code></pre></figure>
 
 <h2 id="prototype-">prototype チェーン</h2>
 
 <p>JavaScript のオブジェクトは基本的には key と value
-のペアを保持する単なるマップ (連想配列) です。 <code>obj['prop'] = value;</code>
-あるいは <code>obj.prop = value;</code>
+のペアを保持する単なるマップ (連想配列) です。 <code class="highlighter-rouge">obj['prop'] = value;</code>
+あるいは <code class="highlighter-rouge">obj.prop = value;</code>
 のようにキーと値のペアを代入するとオブジェクトが内部的に保持しているマップにキーと値が保存されます。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">name</span><span class="p">:</span> <span class="s1">'Alice'</span><span class="p">,</span>  <span class="c1">// 'name': 'Alice' と同義</span>
 <span class="p">};</span>
-<span class="nx">alice</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>  <span class="c1">// alice['age'] = 7; と同義</span></code></pre></div>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>  <span class="c1">// alice['age'] = 7; と同義</span></code></pre></figure>
 
-<p>登録した値は <code>obj['prop']</code> あるいは <code>obj.prop</code>
-のように参照できます。参照されたキーが存在しない場合は <code>undefined</code>
+<p>登録した値は <code class="highlighter-rouge">obj['prop']</code> あるいは <code class="highlighter-rouge">obj.prop</code>
+のように参照できます。参照されたキーが存在しない場合は <code class="highlighter-rouge">undefined</code>
 が返されます。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// alice['name'] と alice.name は同義</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// alice['name'] と alice.name は同義</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// Alice</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>  <span class="c1">// 7</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span>  <span class="c1">// undefined</span></code></pre></div>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span>  <span class="c1">// undefined</span></code></pre></figure>
 
 <p>これがオブジェクトの基本動作です。しかし実は参照されたプロパティをオブジェクトが持っていなかった場合に、
 他のオブジェクトからプロパティを探してきて参照するための仕組みが
@@ -260,45 +261,45 @@ chain) と呼ばれるものです。</p>
 プロトタイプ を表す内部的なプロパティを obj[[Prototype]]
 のように記述します。
 ただしこれは仕様書の中でのみ現れる表現であって、JavaScript
-のコードの中では利用できません。 JavaScript で <code>obj</code>
-のプロトタイプを参照するには <code>Object.getPrototypeOf(obj)</code> を使用します。
-逆に <code>obj</code> のプロトタイプとして <code>proto</code> を設定するには
-<code>Object.setPrototypeOf(obj, proto)</code> を利用します。</p>
+のコードの中では利用できません。 JavaScript で <code class="highlighter-rouge">obj</code>
+のプロトタイプを参照するには <code class="highlighter-rouge">Object.getPrototypeOf(obj)</code> を使用します。
+逆に <code class="highlighter-rouge">obj</code> のプロトタイプとして <code class="highlighter-rouge">proto</code> を設定するには
+<code class="highlighter-rouge">Object.setPrototypeOf(obj, proto)</code> を利用します。</p>
 
-<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code>__proto__</code>という特殊なプロパティが用意されていて、
+<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code class="highlighter-rouge">__proto__</code>という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
 <del>ただしこれは<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a>なので今後はあまり利用しないほうがよいでしょう。</del>
 <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">ES6で__proto__が標準になりました</a>。ただ下位互換性の観点からあまり推奨されないことには変わりないかと思います。</p>
 
 <h2 id="prototype">プロパティ: prototype</h2>
 
-<p>プロトタイプの設定の方法はもう1つ存在します。それが関数の <code>prototype</code>
-プロパティを使う方法です。 実は <code>function</code>
-で作られた関数オブジェクトには <code>prototype</code>
+<p>プロトタイプの設定の方法はもう1つ存在します。それが関数の <code class="highlighter-rouge">prototype</code>
+プロパティを使う方法です。 実は <code class="highlighter-rouge">function</code>
+で作られた関数オブジェクトには <code class="highlighter-rouge">prototype</code>
 というプロパティが存在し、空のオブジェクトが格納されています。
-そしてその関数が <code>new</code>
-演算子とともにコンストラクタとして実行された際に、<code>new</code>
-で作成されたオブジェクト（つまり関数内では <code>this</code> が表すオブジェクト)
-のプロトタイプとして関数の <code>prototype</code>
+そしてその関数が <code class="highlighter-rouge">new</code>
+演算子とともにコンストラクタとして実行された際に、<code class="highlighter-rouge">new</code>
+で作成されたオブジェクト（つまり関数内では <code class="highlighter-rouge">this</code> が表すオブジェクト)
+のプロトタイプとして関数の <code class="highlighter-rouge">prototype</code>
 プロパティのオブジェクトが設定されます。</p>
 
 <p>名前が非常に紛らわしいですが、 <strong>prototype
 はオブジェクトのプロトタイプを表すプロパティではありません</strong>。
-<code>prototype</code>
+<code class="highlighter-rouge">prototype</code>
 プロパティは「そのオブジェクトがコンストラクタとして利用された際に作成される新しいオブジェクト」のプロトタイプを決めるものです。
-オブジェクトのプロトタイプを表すプロパティは <code>__proto__</code>
-あるいは言語仕様書で [[Prototype]] と表されるもので <code>prototype</code>
+オブジェクトのプロトタイプを表すプロパティは <code class="highlighter-rouge">__proto__</code>
+あるいは言語仕様書で [[Prototype]] と表されるもので <code class="highlighter-rouge">prototype</code>
 プロパティとは異なります。
 ここを勘違いしてしまうと混乱のもとになるので自分で図を書いたりコードを実行してよく違いを理解しておいて下さい。</p>
 
-<p>さてこの <code>prototype</code>
+<p>さてこの <code class="highlighter-rouge">prototype</code>
 というプロパティ、オブジェクトの直接のプロトタイプを表さないので一見非常に使いにくように思えます。
 しかしこの特殊な仕様が JavaScript
 でクラスを実現するにはとても重要になります。 実際、JavaScript
-でプロトタイプを利用する場合 <code>setPrototypeOf</code>
+でプロトタイプを利用する場合 <code class="highlighter-rouge">setPrototypeOf</code>
 よりもこちらを使うのが一般的です。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Constructor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Constructor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
 <span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">'Apple'</span><span class="p">;</span>
 <span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">'Banana'</span><span class="p">;</span>
 
@@ -306,14 +307,14 @@ chain) と呼ばれるものです。</p>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">instance</span><span class="p">)</span> <span class="o">==</span> <span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>  <span class="c1">// true</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>  <span class="c1">// 'Apple';</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>  <span class="c1">// 'Banana';</span></code></pre></div>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>  <span class="c1">// 'Banana';</span></code></pre></figure>
 
 <h1 id="google-closure-">Google Closure 流のクラスの実現方法の概要</h1>
 
 <p>まずクラスの実現方法の例を示して、それから各要素について解説します。
 クラスの定義は次のような形になります。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラスとコンストラクタは関数を使って定義します</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラスとコンストラクタは関数を使って定義します</span>
 <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// this はインスタンスを表します。</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
@@ -331,16 +332,16 @@ chain) と呼ばれるものです。</p>
   <span class="c1">// メソッド内から他のメソッドを呼ぶ場合も this.&lt;メソッド&gt; を使います。</span>
   <span class="c1">// C++, Java と違い this は省略できません。</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Hello I\'m '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<p>クラスをインスタンス化する際には <code>new</code> を使います。</p>
+<p>クラスをインスタンス化する際には <code class="highlighter-rouge">new</code> を使います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
-<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></figure>
 
-<p>継承は <code>inherits</code> という関数を用意して次のように行います。</p>
+<p>継承は <code class="highlighter-rouge">inherits</code> という関数を用意して次のように行います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 子クラスの prototype のプロトタイプとして 親クラスの</span>
   <span class="c1">// prototype を指定することで継承が実現される</span>
   <span class="nb">Object</span><span class="p">.</span><span class="nx">setPrototypeOf</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
@@ -367,48 +368,48 @@ chain) と呼ばれるものです。</p>
   <span class="c1">// 定義されているメソッドを call を使って呼び出す。</span>
   <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">.</span><span class="nx">call</span><span class="p">();</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Salary is '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">salary</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>ではそれぞれの要素について解説していきましょう。</p>
 
 <h1 id="section">クラスの宣言とコンストラクタの定義</h1>
 
-<p>上で述べたように <code>new</code>
+<p>上で述べたように <code class="highlighter-rouge">new</code>
 演算子をつかうと関数をクラスのコンストラクタのように利用することができます。
 そのため JavaScript
 では関数を使ってクラスとコンストラクタを同時に定義します。
-クラスのインスタンスの生成とコンストラクタの呼び出しには <code>new</code>
-演算子を使います。 上述したように JavaScript の <code>new</code> と C++/Javaの
-<code>new</code>
+クラスのインスタンスの生成とコンストラクタの呼び出しには <code class="highlighter-rouge">new</code>
+演算子を使います。 上述したように JavaScript の <code class="highlighter-rouge">new</code> と C++/Javaの
+<code class="highlighter-rouge">new</code>
 の仕様は大きく異なりますが、結果的には似たような使い方をすることになります。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラス Person とそのコンストラクタを定義。インスタンス変数の設定にはコンストラクタ中で ``this.`` を使う。</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラス Person とそのコンストラクタを定義。インスタンス変数の設定にはコンストラクタ中で ``this.`` を使う。</span>
 <span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// コンストラクタの中身</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></div>
+<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
 
 <h1 id="section-1">メンバ変数 (インスタンス変数)</h1>
 
 <p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには
-<code>this.&lt;プロパティ名&gt;</code> を使います。 JavaScript では Java や C++ と違い
+<code class="highlighter-rouge">this.&lt;プロパティ名&gt;</code> を使います。 JavaScript では Java や C++ と違い
 <strong>this を省略することは不可能</strong> なので注意してください。 Python
-を知っている人は <code>this</code> は <code>self</code>
+を知っている人は <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">self</code>
 に相当するものだと思うと分かりやすいかと思います。
-インスタンス変数やメソッド呼び出しの際に Python では <code>self</code>
-を付けなければならないように JavaScript では <code>this</code> が必ず必要です。</p>
+インスタンス変数やメソッド呼び出しの際に Python では <code class="highlighter-rouge">self</code>
+を付けなければならないように JavaScript では <code class="highlighter-rouge">this</code> が必ず必要です。</p>
 
 <h1 id="section-2">メソッド定義と呼び出し</h1>
 
-<p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <code>prototype</code>
+<p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <code class="highlighter-rouge">prototype</code>
 オブジェクトに関数を定義します。
 またメソッド内から他のメソッドの呼び出しを行う場合は
-<code>this.&lt;メソッド名&gt;(引数)</code> を使います。
+<code class="highlighter-rouge">this.&lt;メソッド名&gt;(引数)</code> を使います。
 メンバ変数の場合と同様に、メソッド呼び出しの際に <strong>this
 を省略することは不可能</strong> なので気をつけて下さい。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, I'm "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
 <span class="p">};</span>
 
@@ -417,36 +418,36 @@ chain) と呼ばれるものです。</p>
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
-<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></div>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></figure>
 
-<p>まず上述したように <code>alice</code> のコンストラクタ <code>Person</code> の <code>prototype</code>
-プロパティ <code>Person.prototype</code> が alice のプロトタイプとなります。 つまり
-<code>alice</code> に存在しないプロパティがアクセスされた場合、JavaScript は
-<code>Person.prototype</code> から同名のプロパティを探してきます。 そのため、
-<code>alice.sayHello</code> は <code>Person.prototype.sayHello</code>
-になります(プロトタイプチェーン)。 さらに JavaScript では <code>this</code>
+<p>まず上述したように <code class="highlighter-rouge">alice</code> のコンストラクタ <code class="highlighter-rouge">Person</code> の <code class="highlighter-rouge">prototype</code>
+プロパティ <code class="highlighter-rouge">Person.prototype</code> が alice のプロトタイプとなります。 つまり
+<code class="highlighter-rouge">alice</code> に存在しないプロパティがアクセスされた場合、JavaScript は
+<code class="highlighter-rouge">Person.prototype</code> から同名のプロパティを探してきます。 そのため、
+<code class="highlighter-rouge">alice.sayHello</code> は <code class="highlighter-rouge">Person.prototype.sayHello</code>
+になります(プロトタイプチェーン)。 さらに JavaScript では <code class="highlighter-rouge">this</code>
 は関数が呼び出された際にその関数を保持していたオブジェクトがセットされるので、
-<code>alice.sayHello();</code> という形で <code>sayHello</code> を呼び出した際には <code>this</code> は
-<code>alice</code> となります。</p>
+<code class="highlighter-rouge">alice.sayHello();</code> という形で <code class="highlighter-rouge">sayHello</code> を呼び出した際には <code class="highlighter-rouge">this</code> は
+<code class="highlighter-rouge">alice</code> となります。</p>
 
-<p>このように <code>prototype</code> と <code>this</code>
+<p>このように <code class="highlighter-rouge">prototype</code> と <code class="highlighter-rouge">this</code>
 の単体だと何のためにあるのか分からない奇妙な仕様がこのように。</p>
 
-<p>上のメソッド定義の例をみると <code>this</code> が <code>prototype</code>
+<p>上のメソッド定義の例をみると <code class="highlighter-rouge">this</code> が <code class="highlighter-rouge">prototype</code>
 を指すのではないか？心配になるかもしれませんが前節で述べたように
-JavaScript の <code>this</code>
+JavaScript の <code class="highlighter-rouge">this</code>
 は関数が呼び出された際にその関数をプロパティ保持していたオブジェクトを指します。そのため、
-<code>alice.sayHello();</code> という形で <code>sayHello</code> を呼び出した場合は <code>this</code> は
-<code>alice</code> を指すことになるのです。</p>
+<code class="highlighter-rouge">alice.sayHello();</code> という形で <code class="highlighter-rouge">sayHello</code> を呼び出した場合は <code class="highlighter-rouge">this</code> は
+<code class="highlighter-rouge">alice</code> を指すことになるのです。</p>
 
 <h2 id="private-protected">private, protected</h2>
 
-<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code>private</code> や
-<code>protected</code> にすることはできません。 ただし名前規約で <code>private</code>
+<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code class="highlighter-rouge">private</code> や
+<code class="highlighter-rouge">protected</code> にすることはできません。 ただし名前規約で <code class="highlighter-rouge">private</code>
 なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
 <a href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming">Google の JavaScript
 のスタイルガイド</a>
-では private なメソッド, メンバ変数は名前の末尾に <code>_</code>
+では private なメソッド, メンバ変数は名前の末尾に <code class="highlighter-rouge">_</code>
 をつけることが求められています。</p>
 
 <h1 id="section-3">継承</h1>
@@ -454,26 +455,27 @@ JavaScript の <code>this</code>
 <h2 id="section-4">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</h2>
 
 <p>子クラスから親クラスのメソッドが引き継がれるようにするには、 子クラスの
-<code>prototype</code> にメソッドが見つからなかった場合に、親クラスの <code>prototype</code>
-に定義されてるメソッドが参照されれば良いので、 親クラスの <code>prototype</code>
-が子クラスの <code>prototype</code> のプロトタイプ (<code>__proto__</code>, あるいは
+<code class="highlighter-rouge">prototype</code> にメソッドが見つからなかった場合に、親クラスの <code class="highlighter-rouge">prototype</code>
+に定義されてるメソッドが参照されれば良いので、 親クラスの <code class="highlighter-rouge">prototype</code>
+が子クラスの <code class="highlighter-rouge">prototype</code> のプロトタイプ (<code class="highlighter-rouge">__proto__</code>, あるいは
 [[Prototype]])になるようにします。</p>
 
-<pre><code>&lt;figure&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;figure&gt;
 </code></pre>
+</div>
 
-<p>前述したように、<code>setPrototypeOf</code>
+<p>前述したように、<code class="highlighter-rouge">setPrototypeOf</code>
 であるオブジェクトを他のオブジェクトのプロトタイプに設定できるので、次のような継承用の関数を事前に用意しておきます。
 (Google Closure の実際の inherits は互換性のためにもう少し複雑です)</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
   <span class="nb">Object</span><span class="p">.</span><span class="nx">setPrototypeOf</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<p>子クラスのコンストラクタを定義した後に、 <code>inherits(Child, Parent);</code>
+<p>子クラスのコンストラクタを定義した後に、 <code class="highlighter-rouge">inherits(Child, Parent);</code>
 のように呼び出して使います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Parent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Parent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// Parent のコンストラクタ実装</span>
 <span class="p">};</span>
 
@@ -493,7 +495,7 @@ JavaScript の <code>this</code>
 
 <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Child</span><span class="p">();</span>
 <span class="nx">child</span><span class="p">.</span><span class="nx">method0</span><span class="p">();</span>
-<span class="nx">child</span><span class="p">.</span><span class="nx">method1</span><span class="p">();</span></code></pre></div>
+<span class="nx">child</span><span class="p">.</span><span class="nx">method1</span><span class="p">();</span></code></pre></figure>
 
 <h2 id="section-5">親クラスのコンストラクタの呼び出し</h2>
 
@@ -502,38 +504,39 @@ JavaScript の <code>this</code>
 親クラスのコンストラクタを呼びださなくてはなりません。</p>
 
 <p>親クラスのコンストラクタを呼び出す際には、親クラスのコンストラクタ内の
-<code>this</code> が子クラスのコンストラクタ内の <code>this</code> (つまり <code>new</code>
+<code class="highlighter-rouge">this</code> が子クラスのコンストラクタ内の <code class="highlighter-rouge">this</code> (つまり <code class="highlighter-rouge">new</code>
 で生成された初期化対象のインスタンス)
-になるようにしなくてはなりません。<code>this</code>
-を明示的に指定して関数を呼び出すには前述したように <code>call</code> を使います。
+になるようにしなくてはなりません。<code class="highlighter-rouge">this</code>
+を明示的に指定して関数を呼び出すには前述したように <code class="highlighter-rouge">call</code> を使います。
 そのため親クラスのコンストラクタの呼び出しは
-<code>Parent.call(this, 引数...)</code> のように行います。</p>
+<code class="highlighter-rouge">Parent.call(this, 引数...)</code> のように行います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Child</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Child</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">Parent</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arg</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <h2 id="section-6">メソッドオーバーライドと親クラスのメソッドの呼び出し</h2>
 
-<p>前述したように、<code>child.method0()</code> のようにメソッド呼び出しが行われると、
-JavaScript はまず <code>child</code> のプロトタイプである <code>Child.prototype</code> から
-<code>method</code> を探します。 <code>Child.prototype</code> に <code>method</code>
+<p>前述したように、<code class="highlighter-rouge">child.method0()</code> のようにメソッド呼び出しが行われると、
+JavaScript はまず <code class="highlighter-rouge">child</code> のプロトタイプである <code class="highlighter-rouge">Child.prototype</code> から
+<code class="highlighter-rouge">method</code> を探します。 <code class="highlighter-rouge">Child.prototype</code> に <code class="highlighter-rouge">method</code>
 が見つからない場合は、さらにプロトタイプチェーンをたどって
-<code>Parent.prototype</code> から <code>method</code> を探してきて呼び出します。</p>
+<code class="highlighter-rouge">Parent.prototype</code> から <code class="highlighter-rouge">method</code> を探してきて呼び出します。</p>
 
-<p>仕組み上、<code>C++</code> のようにオーバーライドする関数に <code>virtual</code>
-などの特殊な修飾子を付ける必要はありません。 また <code>Java</code>
-のようにメソッドに <code>final</code>
+<p>仕組み上、<code class="highlighter-rouge">C++</code> のようにオーバーライドする関数に <code class="highlighter-rouge">virtual</code>
+などの特殊な修飾子を付ける必要はありません。 また <code class="highlighter-rouge">Java</code>
+のようにメソッドに <code class="highlighter-rouge">final</code>
 をつけてオーバーライドを禁止することもできません。
 子クラスで同名のメソッドを定義されてしまえば問答無用でオーバーライドされてしまいます。
 これは大規模なプログラムでは問題になってしまいますが、純粋な JavaScript
 では解決する手段がありません。</p>
 
 <p>また親クラスのメソッドを明示的に呼び出すには、親クラスのコンストラクタの呼び出しの場合と同様に
-<code>call</code> を使用します。</p>
+<code class="highlighter-rouge">call</code> を使用します。</p>
 
-<pre><code>Parent.proto.sayHello(this);
+<div class="highlighter-rouge"><pre class="highlight"><code>Parent.proto.sayHello(this);
 </code></pre>
+</div>
 
 <h2 id="section-7">多重継承</h2>
 
@@ -541,7 +544,7 @@ JavaScript はまず <code>child</code> のプロトタイプである <code>Chi
 
 <h2 id="abstract-interface">abstract, interface</h2>
 
-<p>JavaScript には <code>interface</code> や <code>abstract</code>
+<p>JavaScript には <code class="highlighter-rouge">interface</code> や <code class="highlighter-rouge">abstract</code>
 に相当する言語仕様は用意されていません。 Java, C++ の抽象メソッド
 (abstract method) はメソッドの実体は定義せずに、
 子クラスあるいはインターフェースを実装するクラスが実装しなくてはならないメソッドを宣言するものです。
@@ -555,21 +558,21 @@ JavaScript
 Python でも同じです。 Java の interface
 に相当することをしたい場合はすべてのメソッドが例外を投げるだけのクラスを作成すればよいでしょう。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">()</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">()</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not Implemented'</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <h1 id="inherits-">inherits の実際のコード</h1>
 
-<p>前述した継承用の関数 <code>inherits</code> は非常にシンプルでしたが、実際には
-<code>setPrototypeOf</code> が利用できない古いブラウザの互換性のために、
+<p>前述した継承用の関数 <code class="highlighter-rouge">inherits</code> は非常にシンプルでしたが、実際には
+<code class="highlighter-rouge">setPrototypeOf</code> が利用できない古いブラウザの互換性のために、
 同じことをもう少し複雑なコードで行う必要があります。 Google Closure の
 <a href="https://github.com/google/closure-library/blob/master/closure/goog/base.js#L2170">base.js に定義されている
 goog.inherits</a>
-はブラウザ互換性のために <code>setPrototypeOf</code>
+はブラウザ互換性のために <code class="highlighter-rouge">setPrototypeOf</code>
 を使わず下のような少し複雑なコードになっています。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">goog</span><span class="p">.</span><span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">goog</span><span class="p">.</span><span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
   <span class="cm">/** @constructor */</span>
   <span class="kd">function</span> <span class="nx">tempCtor</span><span class="p">()</span> <span class="p">{};</span>
   <span class="nx">tempCtor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
@@ -577,7 +580,7 @@ goog.inherits</a>
   <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">tempCtor</span><span class="p">();</span>
   <span class="cm">/** @override */</span>
   <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">childCtor</span><span class="p">;</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <h1 id="section-8">良くないクラス実現方法</h1>
 
@@ -585,7 +588,7 @@ goog.inherits</a>
 
 <p>メソッドの定義方法として、</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// ....</span>
 <span class="p">};</span>
 
@@ -596,20 +599,20 @@ goog.inherits</a>
   <span class="na">getName</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// ....</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
-<p>のように、<code>prototype</code>
+<p>のように、<code class="highlighter-rouge">prototype</code>
 を新しいオブジェクトで置き換えてしまうコードが揚げられている場合がありますが、
 この方法だと、そのクラスが他のクラスを継承している場合にプロトタイプチェーンが切れてしまって継承関係が失われてしまうので
 子クラスの定義では使えません。コードの一貫性を保つために、常に</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
-<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span></code></pre></figure>
 
 <p>のように１つずつメソッドを追加するスタイルのほうが好ましいかと思います。
-それと多くの場合問題になりませんが、<code>prototype</code>
+それと多くの場合問題になりませんが、<code class="highlighter-rouge">prototype</code>
 を新しいオブジェクトで置き換えてしまうと、
-<code>Person.prototype.constructor == Person</code>
+<code class="highlighter-rouge">Person.prototype.constructor == Person</code>
 の関係は壊れてしまうのでそこも若干マイナスポイントです。</p>
 
 <h1 id="es6-">ES6 のクラス</h1>
@@ -686,7 +689,7 @@ goog.inherits</a>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

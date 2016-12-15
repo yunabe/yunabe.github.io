@@ -74,18 +74,18 @@ its destructor should be virtual.</a>)。
 <p>言い換えると、デストラクタが virtual
 でない場合、子クラスのポインタを親クラスのポインタにキャストして使用してはいけません。
 なぜならデストラクタが virtual でない場合、親クラスの型のポインタを
-<code>delete</code> した際には親クラスのデストラクタしか呼ばれないからです。
+<code class="highlighter-rouge">delete</code> した際には親クラスのデストラクタしか呼ばれないからです。
 たとえ親クラスの型のポインタが指している実体が子クラスだったとしても子クラスのデストラクタ
 (これは暗黙的に親クラスのデストラクタを呼ぶ) は呼び出されません。</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// ~Parent is not virtual.
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// ~Parent is not virtual.
 </span><span class="n">Parent</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Child</span><span class="p">();</span>
 <span class="p">...</span>
-<span class="k">delete</span> <span class="n">parent</span><span class="p">;</span>  <span class="o">//</span> <span class="k">this</span> <span class="n">always</span> <span class="n">calls</span> <span class="o">~</span><span class="n">Parent</span><span class="p">();</span> <span class="o">~</span><span class="n">Child</span><span class="p">()</span> <span class="n">is</span> <span class="n">never</span> <span class="n">called</span><span class="p">.</span></code></pre></div>
+<span class="k">delete</span> <span class="n">parent</span><span class="p">;</span>  <span class="o">//</span> <span class="k">this</span> <span class="n">always</span> <span class="n">calls</span> <span class="o">~</span><span class="n">Parent</span><span class="p">();</span> <span class="o">~</span><span class="n">Child</span><span class="p">()</span> <span class="n">is</span> <span class="n">never</span> <span class="n">called</span><span class="p">.</span></code></pre></figure>
 
-<p>このコードでは <code>Child</code> のデストラクタが呼び出されないので Child
-のリソースの解放が行われません。 もちろん <code>delete parent;</code>
-を呼ばなければ問題は起こらないので、 <code>delete parent;</code>
+<p>このコードでは <code class="highlighter-rouge">Child</code> のデストラクタが呼び出されないので Child
+のリソースの解放が行われません。 もちろん <code class="highlighter-rouge">delete parent;</code>
+を呼ばなければ問題は起こらないので、 <code class="highlighter-rouge">delete parent;</code>
 しないように気をつけていれば Child のポインタを Parent*
 に代入すること自体は問題ないが、
 間違えやすい上に間違えた場合にはメモリーリーク系の厄介なバグの原因になるので
@@ -95,13 +95,13 @@ its destructor should be virtual.</a>)。
 ではないのでデストラクタが空の場合でも virtual
 なデストラクタを明示的に定義しなくてならない点に気をつけて下さい:</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">class</span> <span class="nc">Parent</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">class</span> <span class="nc">Parent</span> <span class="p">{</span>
   <span class="p">...</span>
 
   <span class="c1">// 例えデストラクタが空でも
 </span>  <span class="c1">// virtual なデストラクタは明示的に定義する
 </span>  <span class="k">virtual</span> <span class="o">~</span><span class="n">Parent</span><span class="p">()</span> <span class="p">{}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <h1 id="section-1">結論</h1>
 
@@ -214,7 +214,7 @@ virtual でなくてはならない」は 実用上は差はないかと思い�
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

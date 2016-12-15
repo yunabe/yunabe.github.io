@@ -52,11 +52,12 @@
         <p>HTML5 では &lt;a&gt; タグに ping という属性が定義されており、
 リンクが押された際にリンク先とは別にログ用のURLにリクエストを投げることがです。</p>
 
-<pre><code>&lt;a href="&lt;target_url&gt;" ping="&lt;logging_url&gt;"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;a href="&lt;target_url&gt;" ping="&lt;logging_url&gt;"&gt;
 </code></pre>
+</div>
 
-<p>このように指定すると、ユーザがリンクをクリックした際に <code>&lt;target_url&gt;</code>
-にナビゲートされるだけでなく 同時に <code>&lt;logging_url&gt;</code> に <strong>POST</strong>
+<p>このように指定すると、ユーザがリンクをクリックした際に <code class="highlighter-rouge">&lt;target_url&gt;</code>
+にナビゲートされるだけでなく 同時に <code class="highlighter-rouge">&lt;logging_url&gt;</code> に <strong>POST</strong>
 リクエストが飛ぶようになります (MIME type に text/ping)。
 この機能は検索エンジンやまとめサイトのようにユーザを外部のサイトへナビゲートすることが多く、
 その際にどのリンクが押されたのかをログしたい場合に非常に便利です。</p>
@@ -66,19 +67,19 @@
 
 <ul>
   <li>まずログ用のURLにユーザをナビゲートし、そこからユーザを目的の外部サイトへリダイレクトする</li>
-  <li>リンクが押された際にログ用のURLを <code>src</code> 属性に指定した <code>&lt;img&gt;</code>
+  <li>リンクが押された際にログ用のURLを <code class="highlighter-rouge">src</code> 属性に指定した <code class="highlighter-rouge">&lt;img&gt;</code>
 タグに動的に作成したり、 XMLHttpRequest
 によって非同期リクエストをログ用のURLに投げる</li>
 </ul>
 
 <p>しかし前者の方法には、URLリダイレクタにユーザを一度飛ばすため1ページロード分ユーザが目的のページに着くのが遅くなってしまうという問題があります。
-一方後者の方法では、<code>&lt;img&gt;</code> や <code>XMLHttpRequest</code>
+一方後者の方法では、<code class="highlighter-rouge">&lt;img&gt;</code> や <code class="highlighter-rouge">XMLHttpRequest</code>
 で指定したURLがロードされるよりも前に
 ページ遷移によって現在のページがアンロードされてしまい、ログ用のURLへのリクエストが行われない可能性があり問題があります。</p>
 
 <p>しかし “a ping”
 を使うとURLリダイレクタを挟む必要が無いのでユーザに余計な時間を使わせることもなく、
-<code>&lt;img&gt;</code>
+<code class="highlighter-rouge">&lt;img&gt;</code>
 を使った非同期的な方法と違い現在のページがアンロードされてもログ用URLへのリクエストはブラウザが行ってくれるので
 より確実にログを取ることができるようになります。 実際、<a href="https://plus.google.com/+IlyaGrigorik/posts/fPJNzUf76Nx">Google は
 2013/10 から対応ブラウザでは “a ping”
@@ -155,7 +156,7 @@
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

@@ -86,8 +86,8 @@ Booleanという対応するオブジェクト型(ラッパーオブジェクト
 <p>プリミティブ型からラッパーオブジェクトへの変換は
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Description">Objectを使って行うことができる</a>。:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//newは省略可能</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">obj</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">//true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//newは省略可能</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">obj</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">//true</span></code></pre></figure>
 
 <p>ただ、ラッパーオブジェクトのメソッドやプロパティ（文字列のlengthなど）はプリミティブ型からも利用可能なので、
 ラッパーオブジェクトを拡張して新しいメソッドを追加する場合を除いて、
@@ -96,21 +96,21 @@ Booleanという対応するオブジェクト型(ラッパーオブジェクト
 なおラッパーオブジェクトからプリミティブ型への変換を行うには、
 各ラッパーオブジェクトが持つvalueOfメソッドを利用すればよい。:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">);</span> <span class="c1">//object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">());</span> <span class="c1">//number</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">());</span> <span class="c1">//number</span></code></pre></figure>
 
 <h1 id="section-1">ラッパーオブジェクトのインスタンスと論理値</h1>
 
-<p>ラッパーオブジェクトのインスタンスはすべて <code>true</code> として解釈される
+<p>ラッパーオブジェクトのインスタンスはすべて <code class="highlighter-rouge">true</code> として解釈される
 (参考: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">Boolean -
 MDN</a>)。
-そのため、<code>0</code> や <code>false</code>, <code>''</code> (空文字列) が <code>false</code>
-として扱われるにも関わらず、 それをラップしたインスタンスは <code>true</code>
+そのため、<code class="highlighter-rouge">0</code> や <code class="highlighter-rouge">false</code>, <code class="highlighter-rouge">''</code> (空文字列) が <code class="highlighter-rouge">false</code>
+として扱われるにも関わらず、 それをラップしたインスタンスは <code class="highlighter-rouge">true</code>
 として取り扱われる。
 これはすこし直感に反しているので、注意が必要な挙動。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//!!（否定2回)でbooleanへの変換が行える</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//!!（否定2回)でbooleanへの変換が行える</span>
 <span class="kd">var</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
 <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -126,54 +126,54 @@ MDN</a>)。
 <span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">s</span><span class="p">);</span> <span class="c1">//true</span>
 <span class="c1">// Booleanはfalseに対応するラッパーオブジェクトをtrueと解釈する</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//true</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//false</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//false</span></code></pre></figure>
 
 <h1 id="section-2">型変換</h1>
 
 <p>ラッパーオブジェクトは関数として利用すると、
 対応するプリミティブ型へのコンバーターとして機能する:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span><span class="p">);</span> <span class="c1">// number</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// false</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// false</span></code></pre></figure>
 
 <p>また、newをつけて呼び出すと、ラッパーオブジェクトのインスタンスが作成される。(あまりこれを使うことはないと思うが):</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// true</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
 
 <h1 id="section-3">ラッパーオブジェクトの演算</h1>
 
 <p>ラッパーオブジェクトのインスタンスを演算子で処理した結果は、
 プリミティブ型となる。:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">);</span> <span class="c1">// number</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">);</span> <span class="c1">// number</span></code></pre></figure>
 
 <p>ラッパーオブジェクトの関数の演算結果は基本的にプリミティブ型が返る。:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="s1">'Hello world'</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="s1">'Hello world'</span><span class="p">);</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">s</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span> <span class="c1">// string</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span> <span class="c1">// string</span></code></pre></figure>
 
 <p>このように何かしら処理を行うと、結果は簡単にプリミティブ型になってしまうので
-<code>new String('Hello world')</code>
+<code class="highlighter-rouge">new String('Hello world')</code>
 のようにして積極的にラッパーオブジェクトを利用するのは避けた方がよさそうである。</p>
 
 <h1 id="section-4">プリミティブ型のプロパティへのアクセス</h1>
 
-<p>プリミティブ型の値に対して、<code>x.key</code> や <code>x['key']</code>
+<p>プリミティブ型の値に対して、<code class="highlighter-rouge">x.key</code> や <code class="highlighter-rouge">x['key']</code>
 でプロパティのアクセスを行うと
 対応するラッパーオブジェクトへ自動変換されてからプロパティのアクセスが実行される（FirefoxのString.lengthなど）。</p>
 
 <p>そのため、ラッパーオブジェクトのメソッドやプロパティはプリミティブ型からも利用可能。
-またラッパーオブジェクトの <code>prototype</code>
+またラッパーオブジェクトの <code class="highlighter-rouge">prototype</code>
 を拡張しておけば、プリミティブ型からも利用することができる。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Boolean</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">invert</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Boolean</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">invert</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="cm">/*
    * thisはラッパーオブジェクトBooleanのインスタンスであり、
    * ラッパークラスのインスタンスは常にtrueとして扱われることに注意
@@ -184,38 +184,38 @@ MDN</a>)。
 <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 <span class="nx">alert</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">invert</span><span class="p">());</span> <span class="c1">// false</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">invert</span><span class="p">());</span> <span class="c1">// true</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">invert</span><span class="p">());</span> <span class="c1">// true</span></code></pre></figure>
 
 <p>またプロパティに値を代入しても、プリミティブ型に対しては反映されない。:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="nx">i</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="s1">'i.x'</span><span class="p">;</span>
 <span class="nx">alert</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// undefined</span>
 <span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="nx">j</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="s1">'j.x'</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// j.x</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// j.x</span></code></pre></figure>
 
 <h2 id="google-chrome">Google Chromeの場合</h2>
 
 <p>Firefox, Safariは上のように動いていると思って問題なさそうだが、Chromeは若干動作が違うようである。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getType</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getType</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">typeof</span> <span class="k">this</span><span class="p">;</span>
 <span class="p">};</span>
 <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">getType</span><span class="p">());</span></code></pre></div>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">getType</span><span class="p">());</span></code></pre></figure>
 
 <p>上で述べたように、プリミティブ型（number）のプロパティを参照すると、対応するラッパーオブジェクト（Number）に変換され、
 そこからprototypeをたどってgetTypeを呼び出しているとすれば、最後の文は:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">getType</span><span class="p">());</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">getType</span><span class="p">());</span></code></pre></figure>
 
-<p>と等価となり <code>this</code>
+<p>と等価となり <code class="highlighter-rouge">this</code>
 はラッパーオブジェクトのインスタンスになるはずなので、 実行結果は
-<code>"object"</code> となるはずである。 実際、このスクリプトを実行するとSafari,
-Firefoxでは <code>"object"</code> が表示される。</p>
+<code class="highlighter-rouge">"object"</code> となるはずである。 実際、このスクリプトを実行するとSafari,
+Firefoxでは <code class="highlighter-rouge">"object"</code> が表示される。</p>
 
-<p>しかしChromeでは <code>"number"</code> が表示される。
+<p>しかしChromeでは <code class="highlighter-rouge">"number"</code> が表示される。
 つまりChromeではラッパーオブジェクトへの変換は行われず、thisには元々のプリミティブ型がそのまま格納されるようである。
 なお、プリミティブ型のプロパティに値の代入を行っても反映されないのはChromeでも同じである。</p>
 
@@ -223,12 +223,12 @@ Firefoxでは <code>"object"</code> が表示される。</p>
 
 <p>if, whileなどの条件式や、!演算にfalseとして解釈される値:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kc">false</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kc">false</span>
 <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">0</span>
 <span class="kc">NaN</span>
 <span class="s1">''</span>
 <span class="kc">null</span>
-<span class="kc">undefined</span></code></pre></div>
+<span class="kc">undefined</span></code></pre></figure>
 
 <p>ほかにあるのかな？ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">new Boolean(false)や、new
 Number(0)はfalseとしては扱われないので注意が必要</a>。</p>
@@ -303,7 +303,7 @@ Number(0)はfalseとしては扱われないので注意が必要</a>。</p>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

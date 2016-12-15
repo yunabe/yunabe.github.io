@@ -49,22 +49,23 @@
   </div>
 </div>
 
-        <p><a href="relearning_git_remote.html#git-push">前述したように</a>、<code>git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code>
-を実行するとローカルブランチ <code>&lt;src&gt;</code> を リモートリポジトリ <code>&lt;remote&gt;</code>
-に対して書き込み、<code>&lt;remote&gt;</code> 上のブランチ <code>&lt;dst&gt;</code> を pushされた <code>&lt;src&gt;</code>
+        <p><a href="relearning_git_remote.html#git-push">前述したように</a>、<code class="highlighter-rouge">git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code>
+を実行するとローカルブランチ <code class="highlighter-rouge">&lt;src&gt;</code> を リモートリポジトリ <code class="highlighter-rouge">&lt;remote&gt;</code>
+に対して書き込み、<code class="highlighter-rouge">&lt;remote&gt;</code> 上のブランチ <code class="highlighter-rouge">&lt;dst&gt;</code> を pushされた <code class="highlighter-rouge">&lt;src&gt;</code>
 を指すように first-forward します。
-<code>git pull</code> と同様に <code>git push</code> の引数も省略することができます。
-<code>git push</code> で引数を省略した場合のルールは <code>git pull</code>
+<code class="highlighter-rouge">git pull</code> と同様に <code class="highlighter-rouge">git push</code> の引数も省略することができます。
+<code class="highlighter-rouge">git push</code> で引数を省略した場合のルールは <code class="highlighter-rouge">git pull</code>
 で引数を省略した場合のそれより複雑です。</p>
 
 <h1 id="srcdst-">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</h1>
 
-<p><code>&lt;src&gt;:&lt;dst&gt;</code> が省略された場合の挙動は、<a href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
-1.x系列では <code>matching</code> がデフォルト値ですが、<code>mathing</code>だと現在のブランチ以外も push してしまい危険なので<code>simple</code>などに変更しておくことが推奨されます。
-2.x系からはデフォルト値は <code>simple</code> に変更されています。</p>
+<p><code class="highlighter-rouge">&lt;src&gt;:&lt;dst&gt;</code> が省略された場合の挙動は、<a href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
+1.x系列では <code class="highlighter-rouge">matching</code> がデフォルト値ですが、<code class="highlighter-rouge">mathing</code>だと現在のブランチ以外も push してしまい危険なので<code class="highlighter-rouge">simple</code>などに変更しておくことが推奨されます。
+2.x系からはデフォルト値は <code class="highlighter-rouge">simple</code> に変更されています。</p>
 
-<pre><code>git config --global push.default simple
+<div class="highlighter-rouge"><pre class="highlight"><code>git config --global push.default simple
 </code></pre>
+</div>
 
 <p>5つの値について簡単に説明しておきます。
 (<a href="relearning_git_pull_default.html">アップストリーム、トラッキングブランチが何だか分からない場合はこちらを参照して下さい</a>)</p>
@@ -72,20 +73,20 @@
 <ul>
   <li>nothing
     <ul>
-      <li><code>&lt;src&gt;:&lt;dst&gt;</code>が省略された場合<code>git push</code>は何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
+      <li><code class="highlighter-rouge">&lt;src&gt;:&lt;dst&gt;</code>が省略された場合<code class="highlighter-rouge">git push</code>は何もしません。一番安全ですし、これに設定するのも悪く無いかと思います。</li>
     </ul>
   </li>
   <li>current
     <ul>
-      <li>現在のブランチ<code>&lt;current&gt;</code>を同名のブランチとして push します。
-<code>&lt;current&gt;:&lt;current&gt;</code> を指定したことになります。</li>
+      <li>現在のブランチ<code class="highlighter-rouge">&lt;current&gt;</code>を同名のブランチとして push します。
+<code class="highlighter-rouge">&lt;current&gt;:&lt;current&gt;</code> を指定したことになります。</li>
     </ul>
   </li>
   <li>upstream
     <ul>
       <li>現在のブランチをその upstream に対して push します。
 現在のブランチに upstream がない場合は何もしません。 また
-<code>&lt;remote&gt;</code> が upstream
+<code class="highlighter-rouge">&lt;remote&gt;</code> が upstream
 に指定されたリモートトラキングブランチのリポジトリと異なる場合も何もしません。
 個人的にはこれが自然かな？という気がします。</li>
     </ul>
@@ -93,14 +94,14 @@
   <li>simple
     <ul>
       <li>現在のブランチに upstream が設定されており、upstream
-のリポジトリが <code>&lt;remote&gt;</code> と一致する場合
+のリポジトリが <code class="highlighter-rouge">&lt;remote&gt;</code> と一致する場合
         <ul>
           <li>現在のブランチと upstram のブランチが同名の場合 push
 を行います。</li>
           <li>名前が異なる場合は何もしません。</li>
         </ul>
       </li>
-      <li>そうでない場合は <code>current</code> と同じように動作します。</li>
+      <li>そうでない場合は <code class="highlighter-rouge">current</code> と同じように動作します。</li>
       <li>デフォルトの割には動作が少し複雑…</li>
     </ul>
   </li>
@@ -113,7 +114,7 @@
 しかねない、恐ろしいオプションです。 しかも 1.x
 系列では何故かこれがデフォルト値になっています。
 1.x系を使っている人は失敗する前に今すぐ
-<code>git config --global push.default simple</code>
+<code class="highlighter-rouge">git config --global push.default simple</code>
 で設定を変更しておきましょう。</li>
     </ul>
   </li>
@@ -121,26 +122,26 @@
 
 <h1 id="dst-">:&lt;dst&gt; が省略された時の挙動</h1>
 
-<p><code>git push</code> に渡す <code>&lt;src&gt;:&lt;dst&gt;</code> の <code>:&lt;dst&gt;</code> の部分は省略可能です。
-<code>:&lt;dst&gt;</code> を省略した場合には <code>&lt;src&gt;:&lt;src&gt;</code>
+<p><code class="highlighter-rouge">git push</code> に渡す <code class="highlighter-rouge">&lt;src&gt;:&lt;dst&gt;</code> の <code class="highlighter-rouge">:&lt;dst&gt;</code> の部分は省略可能です。
+<code class="highlighter-rouge">:&lt;dst&gt;</code> を省略した場合には <code class="highlighter-rouge">&lt;src&gt;:&lt;src&gt;</code>
 を指定したのと同じことになります。</p>
 
 <h1 id="remote-">&lt;remote&gt; が省略された時の挙動</h1>
 
-<p><code>&lt;remote&gt;</code> が省略された場合の挙動は
+<p><code class="highlighter-rouge">&lt;remote&gt;</code> が省略された場合の挙動は
 <a href="http://git-scm.com/docs/git-push/1.9.2">git push の –repo=&lt;repository&gt; の項目</a>
 に書かれています。</p>
 
 <ul>
-  <li>現在のブランチ (<code>&lt;src&gt;</code> ではない点に注意！) が
+  <li>現在のブランチ (<code class="highlighter-rouge">&lt;src&gt;</code> ではない点に注意！) が
 トラッキングブランチである場合 (upstream が設定されている場合)、
 トラックしているブランチ (== upstream) のリモートリポジトリが
-<code>&lt;remote&gt;</code> として利用される。</li>
+<code class="highlighter-rouge">&lt;remote&gt;</code> として利用される。</li>
   <li>そうでない場合は、
     <ul>
-      <li><code>--repository=&lt;repository&gt;</code>
+      <li><code class="highlighter-rouge">--repository=&lt;repository&gt;</code>
 が設定されている場合は、指定された値が利用されます</li>
-      <li><code>--repository=&lt;repository&gt;</code> がない場合は <code>origin</code>
+      <li><code class="highlighter-rouge">--repository=&lt;repository&gt;</code> がない場合は <code class="highlighter-rouge">origin</code>
 が利用されます。</li>
     </ul>
   </li>
@@ -215,7 +216,7 @@
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

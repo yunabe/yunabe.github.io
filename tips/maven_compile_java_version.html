@@ -35,16 +35,17 @@
           <p class="post-meta"><time datetime="2015-05-10T00:00:00+09:00" itemprop="datePublished">更新 May 10, 2015</time></p>
         </header>
         <p>Maven でコンパイル時に指定されるJavaのバージョンを変更するには、
-<code>pom.xml</code> ファイルの <code>&lt;project&gt;&lt;/project&gt;</code> ルールの直下に以下のルールを指定します。</p>
+<code class="highlighter-rouge">pom.xml</code> ファイルの <code class="highlighter-rouge">&lt;project&gt;&lt;/project&gt;</code> ルールの直下に以下のルールを指定します。</p>
 
 <p>未だに<a href="http://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#source">デフォルト値が1.5</a>になっているため、
 これを指定しないとJava6からの機能であるアノテーションなどすら利用できません。</p>
 
-<pre><code>&lt;properties&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;properties&gt;
   &lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;
   &lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;
 &lt;/properties&gt;
 </code></pre>
+</div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

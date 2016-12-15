@@ -65,27 +65,27 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
 </ul>
 
 <h1 id="section-1">クラスとコンストラクタの定義</h1>
-<p>ES6では<code>class</code>キーワードを使ってクラスを定義します。<code>class</code>のブロックの中で<code>constructor</code>という名前の関数を定義するとそれがコンストラクタとして利用されます。</p>
+<p>ES6では<code class="highlighter-rouge">class</code>キーワードを使ってクラスを定義します。<code class="highlighter-rouge">class</code>のブロックの中で<code class="highlighter-rouge">constructor</code>という名前の関数を定義するとそれがコンストラクタとして利用されます。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
   <span class="nx">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>クラスのインスタンスの生成とコンストラクタの呼び出しには new 演算子を使います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
 
-<p>ちなみに<code>new</code>はES6以前からJavaScriptに存在する機能です。<code>new</code>のJavaScript本来の仕様と使い方については<a href="/docs/javascript_class_in_google.html">ES6以前のJavaScriptにおけるクラスの実現方法を参考にしてください</a></p>
+<p>ちなみに<code class="highlighter-rouge">new</code>はES6以前からJavaScriptに存在する機能です。<code class="highlighter-rouge">new</code>のJavaScript本来の仕様と使い方については<a href="/docs/javascript_class_in_google.html">ES6以前のJavaScriptにおけるクラスの実現方法を参考にしてください</a></p>
 
 <h1 id="section-2">メンバ変数 (インスタンス変数)</h1>
-<p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには<code>this.&lt;プロパティ名&gt;</code>を使います。JavaScriptではJavaやC++ と違い<strong>thisを省略することは不可能</strong>なので注意してください。Python を知っている人は<code>this</code>は<code>self</code>に相当するものだと思うと分かりやすいかと思います。インスタンス変数やメソッド呼び出しの際にPythonでは<code>self</code>を付けなければならないようにJavaScriptでは<code>this</code>が必ず必要です。</p>
+<p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには<code class="highlighter-rouge">this.&lt;プロパティ名&gt;</code>を使います。JavaScriptではJavaやC++ と違い<strong>thisを省略することは不可能</strong>なので注意してください。Python を知っている人は<code class="highlighter-rouge">this</code>は<code class="highlighter-rouge">self</code>に相当するものだと思うと分かりやすいかと思います。インスタンス変数やメソッド呼び出しの際にPythonでは<code class="highlighter-rouge">self</code>を付けなければならないようにJavaScriptでは<code class="highlighter-rouge">this</code>が必ず必要です。</p>
 
 <h1 id="section-3">メソッド定義と呼び出し</h1>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Person</span> <span class="p">{</span>
   <span class="nx">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
@@ -98,25 +98,25 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
   <span class="nx">getName</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
-<p>ES6ではclassブロックの中に<code>constructor</code>以外の名前の関数を定義するとメソッドになります。
-またメソッド内から他のメソッドの呼び出しを行う場合は<code>this.&lt;メソッド名&gt;(引数)</code>を使います。
+<p>ES6ではclassブロックの中に<code class="highlighter-rouge">constructor</code>以外の名前の関数を定義するとメソッドになります。
+またメソッド内から他のメソッドの呼び出しを行う場合は<code class="highlighter-rouge">this.&lt;メソッド名&gt;(引数)</code>を使います。
 メンバ変数の場合と同様に、メソッド呼び出しの際に<strong>this を省略することは不可能</strong>なので気をつけて下さい.</p>
 
 <h2 id="private-protected">private, protected</h2>
-<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code>private</code> や
-<code>protected</code> にすることはできません。 ただし名前規約で <code>private</code>
+<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code class="highlighter-rouge">private</code> や
+<code class="highlighter-rouge">protected</code> にすることはできません。 ただし名前規約で <code class="highlighter-rouge">private</code>
 なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
 <a href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming">Google の JavaScript
 のスタイルガイド</a>
-では private なメソッド, メンバ変数は名前の末尾に <code>_</code>
+では private なメソッド, メンバ変数は名前の末尾に <code class="highlighter-rouge">_</code>
 をつけることが求められています。</p>
 
 <h1 id="section-4">継承</h1>
 <p>クラスの継承はES6では以下のように行います。</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Child</span> <span class="kr">extends</span> <span class="nx">Parent</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">class</span> <span class="nx">Child</span> <span class="kr">extends</span> <span class="nx">Parent</span> <span class="p">{</span>
   <span class="nx">constructor</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// 親クラスのコンストラクタ呼び出し</span>
     <span class="kr">super</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
@@ -129,17 +129,17 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
     <span class="kr">super</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
     <span class="c1">// ...</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <ul>
-  <li>ES6 JavaScriptでクラスを継承するには<code>extends</code>を使います。<code>class Child extends Parent {...}</code></li>
-  <li>小クラスのコンストラクタの中で親クラスのコンストラクタを呼び出すには<code>super(...)</code>を使います。</li>
+  <li>ES6 JavaScriptでクラスを継承するには<code class="highlighter-rouge">extends</code>を使います。<code class="highlighter-rouge">class Child extends Parent {...}</code></li>
+  <li>小クラスのコンストラクタの中で親クラスのコンストラクタを呼び出すには<code class="highlighter-rouge">super(...)</code>を使います。</li>
   <li>子クラスで親クラスと同名のメソッドを定義すればメソッドがオーバーライドされます。
-子クラスから親クラスのメソッドを呼び出すには<code>super.methodName(...)</code>のようにします。</li>
+子クラスから親クラスのメソッドを呼び出すには<code class="highlighter-rouge">super.methodName(...)</code>のようにします。</li>
 </ul>
 
 <h1 id="section-5">サンプル</h1>
-<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/5/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/tkaj9ggz/6/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -210,7 +210,7 @@ class自体はstrict modeでなくても本来は使えるはず？</li>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

@@ -36,16 +36,16 @@
         </header>
         <h1 id="python-numpy--">Python (numpy) で出てくるコロン,カンマ [:,]</h1>
 
-<p>Python (というよりnumpy) のコードを読んでて突然 <code>x[:,0]</code> みたいな表記がでてきて、
-Python2.x系はかなり長いこと使っているのに <code>:,</code>何てPythonにあったっけ…何だこれ…これシンタックスエラーじゃないんだな…と困惑してしまった。</p>
+<p>Python (というよりnumpy) のコードを読んでて突然 <code class="highlighter-rouge">x[:,0]</code> みたいな表記がでてきて、
+Python2.x系はかなり長いこと使っているのに <code class="highlighter-rouge">:,</code>何てPythonにあったっけ…何だこれ…これシンタックスエラーじゃないんだな…と困惑してしまった。</p>
 
-<p>調べたところ、まず最初のコロン<code>:</code>はスライシングの<code>:</code> (<code>x[1:]</code>とかの<code>:</code>)だった。
-そしてPythonでは実はスライシングはカンマ<code>,</code>で区切って複数<code>[]</code>の中に書くことができる(全く知らなかった)。
+<p>調べたところ、まず最初のコロン<code class="highlighter-rouge">:</code>はスライシングの<code class="highlighter-rouge">:</code> (<code class="highlighter-rouge">x[1:]</code>とかの<code class="highlighter-rouge">:</code>)だった。
+そしてPythonでは実はスライシングはカンマ<code class="highlighter-rouge">,</code>で区切って複数<code class="highlighter-rouge">[]</code>の中に書くことができる(全く知らなかった)。
 言語仕様の<a href="https://docs.python.org/2/reference/expressions.html#slicings">Slicing</a>に書かれている<a href="https://docs.python.org/2/reference/expressions.html#grammar-token-extended_slicing">extended_slicing</a>というもののようである。</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
-<span class="k">print</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c"># array([1, 3])</span></code></pre></div>
+<span class="k">print</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c"># array([1, 3])</span></code></pre></figure>
 
 
         <div>

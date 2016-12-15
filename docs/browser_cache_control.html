@@ -53,10 +53,10 @@
 <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html">RFC 2616 - 13. Caching in HTTP</a></p>
 
 <h1 id="last-modified-and-if-modified-since">Last-Modified and If-Modified-Since</h1>
-<p>HTTPレスポンスヘッダーに <code>Last-Modified</code> が付いていると、リクエストに <code>If-Modified-Since</code> が付くようになって、（サーバーが対応していれば）更新されていない場合は <code>304 Not Modified</code> が返ってくる。このキャッシュメカニズムを利用する場合はサーバーと通信する必要はある。 <code>Cache-Control: no-cache</code> や <code>max-age=0</code> はこの動作には影響しないので注意。</p>
+<p>HTTPレスポンスヘッダーに <code class="highlighter-rouge">Last-Modified</code> が付いていると、リクエストに <code class="highlighter-rouge">If-Modified-Since</code> が付くようになって、（サーバーが対応していれば）更新されていない場合は <code class="highlighter-rouge">304 Not Modified</code> が返ってくる。このキャッシュメカニズムを利用する場合はサーバーと通信する必要はある。 <code class="highlighter-rouge">Cache-Control: no-cache</code> や <code class="highlighter-rouge">max-age=0</code> はこの動作には影響しないので注意。</p>
 
 <h1 id="etag-and-if-none-match">ETag and If-None-Match</h1>
-<p>レスポンスに <code>ETag</code> が付いていると、リクエストに <code>If-None-Match</code> が付与されるようになる。のはずなんだけど、Chrome も Safari も動かないよ… Firefox では動く。 ETag の周りには “” をつけるのかね、普通は。これも罠だな…. ちなみに ETag はユーザのトラッキングにも使えたりする。</p>
+<p>レスポンスに <code class="highlighter-rouge">ETag</code> が付いていると、リクエストに <code class="highlighter-rouge">If-None-Match</code> が付与されるようになる。のはずなんだけど、Chrome も Safari も動かないよ… Firefox では動く。 ETag の周りには “” をつけるのかね、普通は。これも罠だな…. ちなみに ETag はユーザのトラッキングにも使えたりする。</p>
 
 <h1 id="cache-control">Cache-Control</h1>
 <p>(HTTP 1.1 以降) public だとか private だとか max-age だとかをカンマ区切りで指定する。</p>
@@ -156,7 +156,7 @@
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

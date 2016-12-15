@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Cookie の仕様とセキュリティ</h1>
-          <p class="post-meta"><time datetime="2015-04-22T00:00:00+09:00" itemprop="datePublished">更新 Apr 22, 2015</time></p>
+          <p class="post-meta"><time datetime="2016-03-16T00:00:00+09:00" itemprop="datePublished">更新 Mar 16, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -50,22 +50,13 @@
 </div>
 
         <ul id="markdown-toc">
-  <li><a href="#set-cookie--cookie-">Set-Cookie ヘッダを使って Cookie を保存する</a></li>
-  <li><a href="#cookie-">Cookie を参照する</a></li>
-  <li><a href="#javascript--cookie-">JavaScript を使って Cookie を保存・参照する</a></li>
-  <li><a href="#cookie--1">Cookie の属性</a>    <ul>
-      <li><a href="#domain">domain属性</a></li>
-      <li><a href="#path">path属性</a></li>
-      <li><a href="#max-age--expire">max-age と expire</a></li>
-      <li><a href="#secure">secure</a></li>
-      <li><a href="#httponly">httponly</a></li>
-    </ul>
-  </li>
-  <li><a href="#section">その他</a>    <ul>
-      <li><a href="#port">クッキーとport番号</a></li>
-    </ul>
-  </li>
-  <li><a href="#cookie--2">Cookie が絡むセキュリティ関係の問題</a></li>
+  <li><a href="#domain" id="markdown-toc-domain">domain属性</a></li>
+  <li><a href="#path" id="markdown-toc-path">path属性</a></li>
+  <li><a href="#max-age--expire" id="markdown-toc-max-age--expire">max-age と expire</a></li>
+  <li><a href="#secure" id="markdown-toc-secure">secure</a></li>
+  <li><a href="#httponly" id="markdown-toc-httponly">httponly</a></li>
+  <li><a href="#port" id="markdown-toc-port">クッキーとport番号</a></li>
+  <li><a href="#cookie-" id="markdown-toc-cookie-">Cookie が絡むセキュリティ関係の問題</a></li>
 </ul>
 
 <p>このドキュメントの目的は Cookie
@@ -74,26 +65,28 @@
 などを参考にして下さい。 ここでは Cookie
 がどういうものかは大体理解しているという前提で、仕様の確認をしていきます。</p>
 
-<h1 id="set-cookie--cookie-">Set-Cookie ヘッダを使って Cookie を保存する</h1>
+<p>#Set-Cookie ヘッダを使って Cookie を保存する</p>
 
 <p>Cookie を設定する一番基本的な方法は HTTPヘッダ の Set-Cookie
 を使う方法です。</p>
 
-<pre><code>Set-Cookie: name=value
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name=value
 </code></pre>
+</div>
 
 <p>のような HTTP header をサーバから返すと name と value
 のペアがブラウザに保存されて、後からそれを参照することができます。
 Set-Cookie
 に属性をつけて保存期間やCookieが送信される条件などを制御することも可能です。
-属性をつけるには、 <code>" ;max-age=3600"</code> や <code>" ;Secure"</code> のように <code>"; "</code> +
-属性名 + <code>"="</code> + 属性の値を後ろに追加します。 (厳密には <code>;</code>
-の後ろには半角スペースが必要で末尾には <code>;</code> は付けません。
-多くのブラウザは半角スペースを削除したり末尾に不要な <code>;</code>
+属性をつけるには、 <code class="highlighter-rouge">" ;max-age=3600"</code> や <code class="highlighter-rouge">" ;Secure"</code> のように <code class="highlighter-rouge">"; "</code> +
+属性名 + <code class="highlighter-rouge">"="</code> + 属性の値を後ろに追加します。 (厳密には <code class="highlighter-rouge">;</code>
+の後ろには半角スペースが必要で末尾には <code class="highlighter-rouge">;</code> は付けません。
+多くのブラウザは半角スペースを削除したり末尾に不要な <code class="highlighter-rouge">;</code>
 をつけても問題なく動くでしょうが)</p>
 
-<pre><code>Set-Cookie: name=value; max-age=3600; Secure
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name=value; max-age=3600; Secure
 </code></pre>
+</div>
 
 <p>これは、name=value
 というクッキーを3600秒間保存しておきなさい、ただしそのクッキーが利用できるのはhttps
@@ -102,19 +95,21 @@ Set-Cookie
 <p>複数の name-value のペアを設定したい場合は Set-Cookie
 ヘッダを複数送ります。</p>
 
-<pre><code>Set-Cookie: name0=value0
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name0=value0
 Set-Cookie: name1=value1
 </code></pre>
+</div>
 
-<h1 id="cookie-">Cookie を参照する</h1>
+<p>#Cookie を参照する</p>
 
-<p><code>Set-Cookie</code> で保存された Cookie は、HTTP Request の Cookie
+<p><code class="highlighter-rouge">Set-Cookie</code> で保存された Cookie は、HTTP Request の Cookie
 ヘッダとしてブラウザからサーバーに送信されます。 Cookie ヘッダは</p>
 
-<pre><code>Cookie: name=0=value0; name1=value1
+<div class="highlighter-rouge"><pre class="highlight"><code>Cookie: name=0=value0; name1=value1
 </code></pre>
+</div>
 
-<p>のように、ブラウザに保存されているクッキーの name=value のペアを <code>"; "</code>
+<p>のように、ブラウザに保存されているクッキーの name=value のペアを <code class="highlighter-rouge">"; "</code>
 で連結したものものになります。
 どのクッキーがサーバーに対して送信されるかは、Set-Cookie で指定した
 max-age や Secure などの属性によって制御することができます。 Secure
@@ -128,61 +123,67 @@ max-age や Secure などの属性によって制御することができます�
   <li>path 属性の長さが同じ場合は、最近作られたものが前に来る</li>
 </ul>
 
-<p>また後述するように、クッキーはnameが同一でも <code>domain</code>, <code>path</code>
+<p>また後述するように、クッキーはnameが同一でも <code class="highlighter-rouge">domain</code>, <code class="highlighter-rouge">path</code>
 属性の値が異なれば別のものとして扱われるので、 <strong>同じ name
 のクッキーが複数 Cookieヘッダの中に現れることがありうる</strong>
 ので注意してください。 例えば、www.example.com にあるサーバーが</p>
 
-<pre><code>Set-Cookie: myname=value0; example.com; path=/
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: myname=value0; example.com; path=/
 Set-Cookie: myname=value1; www.example.com; path=/
 </code></pre>
+</div>
 
 <p>という Set-Cookie でクッキーを設定した場合、ブラウザは</p>
 
-<pre><code>Set-Cookie: myname=value1; myname=value0
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: myname=value1; myname=value0
 </code></pre>
+</div>
 
 <p>のように同じ名前のCookieを２つサーバーに送るようになります。</p>
 
-<h1 id="javascript--cookie-">JavaScript を使って Cookie を保存・参照する</h1>
+<p>#JavaScript を使って Cookie を保存・参照する</p>
 
 <p>document.cookie というプロパティを利用して JavaScript から cookie
 を設定したり参照することができます。</p>
 
-<pre><code>document.cookie = "name=value";
+<div class="highlighter-rouge"><pre class="highlight"><code>document.cookie = "name=value";
 </code></pre>
+</div>
 
 <p>のように document.cookie に対して文字列を代入すると、
-<code>Set-Cookkie: name=value</code>
+<code class="highlighter-rouge">Set-Cookkie: name=value</code>
 ヘッダをサーバーからブラウザに送信した場合と同じことが起こります。
 Set-Cookie ヘッダとどうように、属性を付けることができます。</p>
 
-<pre><code>document.cookie = "name=value; max-age=3600; Secure"
+<div class="highlighter-rouge"><pre class="highlight"><code>document.cookie = "name=value; max-age=3600; Secure"
 </code></pre>
+</div>
 
 <p>復数のクッキーを指定した場合は、Set-Cookieヘッダと似たような感じに1つずつ代入します。</p>
 
-<pre><code>document.cookie = "name0=value0";
+<div class="highlighter-rouge"><pre class="highlight"><code>document.cookie = "name0=value0";
 document.cookie = "name1=value1";
 </code></pre>
+</div>
 
-<p>クッキーの値を参照するには、 <code>document.cookie</code> プロパティを参照します。
-<code>document.cookie</code> プロパティは参照すると <code>Cookie</code>
+<p>クッキーの値を参照するには、 <code class="highlighter-rouge">document.cookie</code> プロパティを参照します。
+<code class="highlighter-rouge">document.cookie</code> プロパティは参照すると <code class="highlighter-rouge">Cookie</code>
 ヘッダで送信されるのと同じ文字列を得ることができます。</p>
 
-<pre><code>console.log(document.cookie);  // “name=0=value0; name1=value1”
+<div class="highlighter-rouge"><pre class="highlight"><code>console.log(document.cookie);  // “name=0=value0; name1=value1”
 </code></pre>
+</div>
 
-<p><code>document.cookie</code> は一見すると string
+<p><code class="highlighter-rouge">document.cookie</code> は一見すると string
 型のプロパティのように見えますが、そうではないことに注意して下さい。
-<code>document.cookie</code> へ代入した文字列と <code>document.cookie</code>
-を読んだ時に得られる文字列はまったく異なります。 また、<code>document.cookie</code>
-に空文字を代入しても 空の <code>Set-Cookie</code>
+<code class="highlighter-rouge">document.cookie</code> へ代入した文字列と <code class="highlighter-rouge">document.cookie</code>
+を読んだ時に得られる文字列はまったく異なります。 また、<code class="highlighter-rouge">document.cookie</code>
+に空文字を代入しても 空の <code class="highlighter-rouge">Set-Cookie</code>
 を送ったのと同じことにしかならないので何も起こりません。
-クッキーは削除されず、<code>document.cookie</code>
+クッキーは削除されず、<code class="highlighter-rouge">document.cookie</code>
 を読んだ時に得られる値も変化しません。</p>
 
-<h1 id="cookie--1">Cookie の属性</h1>
+<p>#Cookie の属性</p>
 
 <h2 id="domain">domain属性</h2>
 
@@ -190,8 +191,9 @@ document.cookie = "name1=value1";
 という属性を付加することでクッキーが送信される
 (あるいはdocument.cookieでクッキーが読み取れる)ドメインを制御することができます。</p>
 
-<pre><code>Set-Cookie: name=value; domain=example.com
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name=value; domain=example.com
 </code></pre>
+</div>
 
 <p>domain属性が指定されている場合、そのクッキーは domain で指定された
 domain 自体とそのサブドメインに対して送信されます。
@@ -224,8 +226,9 @@ www.example. などと指定しても www.example.co.jp と example.com
 
 <p>クッキーには path 属性を指定することができます。</p>
 
-<pre><code>Set-Cookie: name=value; path=/mydir
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name=value; path=/mydir
 </code></pre>
+</div>
 
 <p>のように path属性を指定するとクッキーは /mydir/ に含まれるURL (e.g.
 <a href="http://example.com/mydir/">http://example.com/mydir/</a>, <a href="http://example.com/mydir/index.html">http://example.com/mydir/index.html</a>,
@@ -246,35 +249,33 @@ pathはセキュリティ保護には利用できません。<a href="http://www
 には path をなるべく限定しておいたほうがよいような記述がありますが、path
 を限定してもその他の path
 にあるリソースからクッキーを読む方法は存在するので気をつけて下さい。セッションIDなどを保存するのであれば、普通は
-<code>path=/</code> を指定すると思います。</p>
+<code class="highlighter-rouge">path=/</code> を指定すると思います。</p>
 
 <h2 id="max-age--expire">max-age と expire</h2>
 
 <p>max-age あるいは expire 属性でクッキーの寿命が指定できます。</p>
 
-<pre><code>Set-Cookie: name=value; max-age=3600
+<div class="highlighter-rouge"><pre class="highlight"><code>Set-Cookie: name=value; max-age=3600
 Set-Cookie: name=value; expires=Tue, 19 Jan 2038 03:14:07 GMT
 </code></pre>
+</div>
 
 <ul>
-  <li><code>max-age</code>
+  <li><code class="highlighter-rouge">max-age</code>
 ではクッキーの寿命を秒数で指定します。負の値を指定すると、最も過去の日付を指定したことになります。</li>
-  <li><code>expires</code> では有効期限が切れる日付・時刻を指定します。</li>
-  <li><code>max-age</code> と <code>expires</code> の両方が指定された場合は <code>max-age</code>
+  <li><code class="highlighter-rouge">expires</code> では有効期限が切れる日付・時刻を指定します。</li>
+  <li><code class="highlighter-rouge">max-age</code> と <code class="highlighter-rouge">expires</code> の両方が指定された場合は <code class="highlighter-rouge">max-age</code>
 が使用されます。</li>
-  <li><code>max-age</code> はかなり古いブラウザではサポートされない場合があります。</li>
-  <li><code>max-age</code>, <code>expires</code>
+  <li><code class="highlighter-rouge">max-age</code> はかなり古いブラウザではサポートされない場合があります。</li>
+  <li><code class="highlighter-rouge">max-age</code>, <code class="highlighter-rouge">expires</code>
 がなく寿命が指定されていない場合は、クッキーはブラウザが閉じられると削除されます。</li>
 </ul>
 
 <h2 id="secure">secure</h2>
 
-<p>うっかり忘れられがちですが、セキュリティ上とても大切な仕様です。 Secure
-属性をつけた場合、そのクッキーは接続が https
-で保護されている場合のみに送信されます。
-Secure属性には値は必要ありません。</p>
+<p>うっかり忘れられがちですが、セキュリティ上とても大切な仕様です。 Secure属性をつけた場合、そのクッキーは接続がhttpsで保護されている場合のみに送信されます。Secure属性には値は必要ありません。</p>
 
-<p>デフォルトではクッキーは接続が <code>https</code> なのか <code>http</code>
+<p>デフォルトではクッキーは接続が <code class="highlighter-rouge">https</code> なのか <code class="highlighter-rouge">http</code>
 なのかには関係なく動作します。 https 接続で設定されたクッキーであっても
 Secure 属性がなければ同じホスト名に http
 で接続した場合にもそのクッキーは送信されてしまい、通信経路上にいる第三者に盗聴される可能性があります。
@@ -283,25 +284,23 @@ Secure 属性がなければ同じホスト名に http
 
 <h2 id="httponly">httponly</h2>
 
-<p>httponly 属性をつけると、そのクッキーは <code>Cookie</code>
-ヘッダ以外から読み取ることができなくなりなり、JavaScript
-から参照できなくなります。 Secureの反対の意味、 http
-でしか送信されないCookieという意味では <strong>ない</strong> ので気をつけて下さい。</p>
+<p>httponly 属性をつけると、そのクッキーは <code class="highlighter-rouge">Cookie</code>ヘッダ以外から読み取ることができなくなりなり、JavaScriptから参照できなくなります。
+Secureの反対の意味、 httpでしか送信されないCookieという意味では <strong>ない</strong> ので気をつけて下さい。</p>
 
 <p>このオプションはXSS脆弱性があった場合の被害を小さくします。
 XSS脆弱性によって攻撃者が任意のJavaScriptが実行できてしまうと、
-<code>document.cookie</code> の値を読んで Session ID
+<code class="highlighter-rouge">document.cookie</code> の値を読んで Session ID
 などのログイン情報などを盗み見れてしまう可能性がありますが、
 HttpOnly属性をつけておくとクッキーが XSS
 脆弱性によって読み取られることがなくなります。 Session ID などのように
 JavaScript から読み取る必要がないクッキーには HttpOnly
 を忘れずに付けておいたほうが良いでしょう。</p>
 
-<h1 id="section">その他</h1>
+<p>#その他</p>
 
 <h2 id="port">クッキーとport番号</h2>
 
-<h1 id="cookie--2">Cookie が絡むセキュリティ関係の問題</h1>
+<h1 id="cookie-">Cookie が絡むセキュリティ関係の問題</h1>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -372,7 +371,7 @@ JavaScript から読み取る必要がないクッキーには HttpOnly
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

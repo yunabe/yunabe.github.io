@@ -49,31 +49,31 @@
   </div>
 </div>
 
-        <p><code>sys</code> や <code>os</code> のように知らないと Python でプログラム書けないというほど重要ではないし、
-<code>datetime</code>, <code>url</code> や <code>hashlib</code> のように特定の機能に特化しているわけではないので意識して覚えておかないと使うのは難しい。
+        <p><code class="highlighter-rouge">sys</code> や <code class="highlighter-rouge">os</code> のように知らないと Python でプログラム書けないというほど重要ではないし、
+<code class="highlighter-rouge">datetime</code>, <code class="highlighter-rouge">url</code> や <code class="highlighter-rouge">hashlib</code> のように特定の機能に特化しているわけではないので意識して覚えておかないと使うのは難しい。
 ただ知っているとたまにとても便利 (で忘れがち) な標準ライブラリをまとめてみました。</p>
 
 <p>標準ライブラリにあることを知らないで自分で実装しても比較的簡単に実装できてしまうけれど、
 さっと使えると時間の短縮になるし、ちょっと Python 慣れしている感じがするはずです。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#collections">collections</a>    <ul>
-      <li><a href="#namedtuple">namedtuple</a></li>
-      <li><a href="#counter">Counter</a></li>
-      <li><a href="#ordereddict">OrderedDict</a></li>
-      <li><a href="#defaultdict">defaultdict</a></li>
-      <li><a href="#section">その他</a></li>
+  <li><a href="#collections" id="markdown-toc-collections">collections</a>    <ul>
+      <li><a href="#namedtuple" id="markdown-toc-namedtuple">namedtuple</a></li>
+      <li><a href="#counter" id="markdown-toc-counter">Counter</a></li>
+      <li><a href="#ordereddict" id="markdown-toc-ordereddict">OrderedDict</a></li>
+      <li><a href="#defaultdict" id="markdown-toc-defaultdict">defaultdict</a></li>
+      <li><a href="#section" id="markdown-toc-section">その他</a></li>
     </ul>
   </li>
-  <li><a href="#heapq">heapq</a>    <ul>
-      <li><a href="#section-1">ヒープ用の関数群</a></li>
-      <li><a href="#section-2">その他の便利関数</a></li>
+  <li><a href="#heapq" id="markdown-toc-heapq">heapq</a>    <ul>
+      <li><a href="#section-1" id="markdown-toc-section-1">ヒープ用の関数群</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">その他の便利関数</a></li>
     </ul>
   </li>
-  <li><a href="#code">code</a></li>
-  <li><a href="#contextlib">contextlib</a></li>
-  <li><a href="#functools">functools</a>    <ul>
-      <li><a href="#functoolswraps">functools.wraps</a></li>
+  <li><a href="#code" id="markdown-toc-code">code</a></li>
+  <li><a href="#contextlib" id="markdown-toc-contextlib">contextlib</a></li>
+  <li><a href="#functools" id="markdown-toc-functools">functools</a>    <ul>
+      <li><a href="#functoolswraps" id="markdown-toc-functoolswraps">functools.wraps</a></li>
     </ul>
   </li>
 </ul>
@@ -85,8 +85,8 @@ collections</a></p>
 
 <h2 id="namedtuple">namedtuple</h2>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Point</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">'Point'</span><span class="p">,</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y'</span><span class="p">])</span>
-<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Point</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">'Point'</span><span class="p">,</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y'</span><span class="p">])</span>
+<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span></code></pre></figure>
 
 <p>のようにして、readonly の attribute を持つクラス (tupleの子クラス)
 を簡単に定義できる．</p>
@@ -109,11 +109,11 @@ collections</a></p>
 それ以外の引数は dict の引数として渡される。get の挙動は dict
 と変わらないので注意！</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">default_factory</span><span class="p">():</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">default_factory</span><span class="p">():</span>
     <span class="k">return</span> <span class="s">'default'</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="n">default_factory</span><span class="p">,</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="k">assert</span> <span class="n">d</span><span class="p">[</span><span class="s">'c'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'default'</span>
-<span class="k">assert</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'d'</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span></code></pre></div>
+<span class="k">assert</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'d'</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span></code></pre></figure>
 
 <h2 id="section">その他</h2>
 
@@ -165,7 +165,7 @@ heapの内部構造として利用されるリストをそのまま使う。</li
 <h3 id="section-2">その他の便利関数</h3>
 
 <ul>
-  <li><code>merge(*iterable)</code>
+  <li><code class="highlighter-rouge">merge(*iterable)</code>
     <ul>
       <li>ソート済みのiterableを複数受け取り、マージして１つのソート済み
 iterable を返す。
@@ -174,29 +174,29 @@ iterable を返す。
   </li>
 </ul>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">itertools</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">heapq</span>
-<span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">heapq</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">),</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)),</span> <span class="mi">10</span><span class="p">))</span></code></pre></div>
+<span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">heapq</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">),</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)),</span> <span class="mi">10</span><span class="p">))</span></code></pre></figure>
 
 <h1 id="code">code</h1>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">code</span>
-<span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">code</span>
+<span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span></code></pre></figure>
 
 <p>あるいは</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">code</span>
-<span class="n">code</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">code</span>
+<span class="n">code</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span></code></pre></figure>
 
 <p>デバッグのお供に</p>
 
 <h1 id="contextlib">contextlib</h1>
 
 <p><a href="https://docs.python.org/2/library/contextlib.html#contextlib.contextmanager">contextlib.contextmanager</a>
-を用いると <code>__enter__</code>, <code>__exit__</code> を定義せずに、 <code>yield</code> を使って
-<code>with</code> 文で利用する関数を作成することができる。</p>
+を用いると <code class="highlighter-rouge">__enter__</code>, <code class="highlighter-rouge">__exit__</code> を定義せずに、 <code class="highlighter-rouge">yield</code> を使って
+<code class="highlighter-rouge">with</code> 文で利用する関数を作成することができる。</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@contextlib.contextmanager</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@contextlib.contextmanager</span>
 <span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
   <span class="k">print</span> <span class="s">'start with-stmt'</span>
   <span class="k">yield</span> <span class="n">val</span>
@@ -205,7 +205,7 @@ iterable を返す。
 <span class="o">...</span>
 
 <span class="k">with</span> <span class="n">myfunc</span> <span class="k">as</span> <span class="n">val</span><span class="p">:</span>
-  <span class="k">print</span> <span class="s">'in with-stmt'</span></code></pre></div>
+  <span class="k">print</span> <span class="s">'in with-stmt'</span></code></pre></figure>
 
 <p>とすると、 yield の前が with文の開始時に、 yield の後ろが
 with文の終了時に実行される。 myfunc の yield の返り値が with-as の val に格納される。
@@ -216,12 +216,12 @@ __enter__ と __exit__ で呼び出すクラスである</a>。</p>
 
 <h2 id="functoolswraps">functools.wraps</h2>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">wrapper_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
   <span class="k">print</span> <span class="s">'wrapper_f...'</span>
-  <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></code></pre></div>
+  <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></code></pre></figure>
 
-<p>のようにラッパー関数のデコレータに <code>@functools.wraps(original)</code>
+<p>のようにラッパー関数のデコレータに <code class="highlighter-rouge">@functools.wraps(original)</code>
 をつけると元の関数のドキュメンテーション文字列とかが保持される。</p>
 
         <div>
@@ -293,7 +293,7 @@ __enter__ と __exit__ で呼び出すクラスである</a>。</p>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

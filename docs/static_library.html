@@ -52,36 +52,39 @@
         <h1 id="a-">静的ライブラリ (.a) の作成</h1>
 
 <p><a href="http://linuxjm.sourceforge.jp/html/GNU_binutils/man1/ar.1.html">ar コマンド</a>
-で複数のオブジェクトファイル (<code>.o</code>) をまとめて静的ライブラリ (<code>.a</code>)
+で複数のオブジェクトファイル (<code class="highlighter-rouge">.o</code>) をまとめて静的ライブラリ (<code class="highlighter-rouge">.a</code>)
 を作成できます。</p>
 
-<pre><code>ar rcs libfoo.a foo.o bar.o baz.o
+<div class="highlighter-rouge"><pre class="highlight"><code>ar rcs libfoo.a foo.o bar.o baz.o
 </code></pre>
+</div>
 
 <h1 id="section">静的ライブラリをリンクする</h1>
 
 <p>オブジェクトファイルをリンクするのと同じように gcc
 に引数を渡すとリンクされます</p>
 
-<pre><code>gcc(g++) -o program program.o libfoo.a
+<div class="highlighter-rouge"><pre class="highlight"><code>gcc(g++) -o program program.o libfoo.a
 </code></pre>
+</div>
 
-<p><code>-L</code> で指定したディレクトリにある <code>libname.a</code> という静的ライブラリは
-<code>-lname</code> として指定することもできる。 たまにみる <code>-lpthread</code> とかは
-<code>libpthread.a</code> をリンクするという意味です。</p>
+<p><code class="highlighter-rouge">-L</code> で指定したディレクトリにある <code class="highlighter-rouge">libname.a</code> という静的ライブラリは
+<code class="highlighter-rouge">-lname</code> として指定することもできる。 たまにみる <code class="highlighter-rouge">-lpthread</code> とかは
+<code class="highlighter-rouge">libpthread.a</code> をリンクするという意味です。</p>
 
-<pre><code>gcc(g++) -o program program.o -L. -lfoo
+<div class="highlighter-rouge"><pre class="highlight"><code>gcc(g++) -o program program.o -L. -lfoo
 </code></pre>
+</div>
 
 <p>ただし後述するように、オブジェクトファイルをリンクする場合と違って
 静的ライブラリ (.a) をリンクする場合は引数の順序が重要になるので注意が必要です &lt;linker&gt;。</p>
 
 <h1 id="section-1">静的ライブラリの内容(シンボル)の確認</h1>
 
-<p>nm コマンドで <code>.o</code> ファイルや <code>.a</code>
+<p>nm コマンドで <code class="highlighter-rouge">.o</code> ファイルや <code class="highlighter-rouge">.a</code>
 ファイルに存在するシンボルを確認することができます。</p>
 
-<pre><code>$ nm foo.o 
+<div class="highlighter-rouge"><pre class="highlight"><code>$ nm foo.o 
                  U _Z7say_bari
 0000000000000000 T _Z7say_fooi
                  U __gxx_personality_v0
@@ -106,6 +109,7 @@ bar.o:
                  U __gxx_personality_v0
                  U printf
 </code></pre>
+</div>
 
 <h1 id="section-2">リンカーの挙動</h1>
 
@@ -122,13 +126,15 @@ bar.o:
 静的ライブラリに含まれていても無視される。
 そのため、main.oがlibfoo.a内のシンボルを参照している場合</p>
 
-<pre><code>gcc -o program main.o libfoo.a
+<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o program main.o libfoo.a
 </code></pre>
+</div>
 
 <p>は問題なく実行できるが</p>
 
-<pre><code>gcc -o program libfoo.a main.o
+<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o program libfoo.a main.o
 </code></pre>
+</div>
 
 <p>は、libfoo.aをリンカが読み込んだ時点ではlibfoo.a内のシンボルは「未解決の参照リスト」には含まれてないので
 libfoo.a内のオブジェクトファイルはリンカに無視されてしまい、
@@ -136,14 +142,15 @@ libfoo.a内のオブジェクトファイルはリンカに無視されてしま
 
 <h2 id="whole-archive">whole-archive</h2>
 
-<p>リンカ(ld)に <code>--whole-archive</code>
+<p>リンカ(ld)に <code class="highlighter-rouge">--whole-archive</code>
 を指定すると、それ以降の引数で与えらる静的ライブラリに含まれる全てのオブジェクトファイルがリンクされるようになる。
-<code>--no-whole-archive</code> で挙動を元に戻す。 gcc(g++)の引数で指定する場合は
-<code>-Wl,</code> を前につける</p>
+<code class="highlighter-rouge">--no-whole-archive</code> で挙動を元に戻す。 gcc(g++)の引数で指定する場合は
+<code class="highlighter-rouge">-Wl,</code> を前につける</p>
 
-<pre><code># これはコンパイルできる
+<div class="highlighter-rouge"><pre class="highlight"><code># これはコンパイルできる
 gcc -o program -Wl,--whole-archive libfoo.a -Wl,--no-whole-archive main.o
 </code></pre>
+</div>
 
 <h2 id="section-4">文献</h2>
 
@@ -229,7 +236,7 @@ order</a></li>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

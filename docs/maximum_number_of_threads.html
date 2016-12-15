@@ -77,34 +77,38 @@ github</a>
 
 <p>ユーザ毎に起動できるプロセス数の制限が存在します。
 スレッドもプロセスの一種なのでこの上限を超えてスレッドを作成することはできません。
-この上限は <code>ulimit -u</code> で確認できます。</p>
+この上限は <code class="highlighter-rouge">ulimit -u</code> で確認できます。</p>
 
-<pre><code>$ ulimit -u
+<div class="highlighter-rouge"><pre class="highlight"><code>$ ulimit -u
 unlimited
 </code></pre>
+</div>
 
-<p>この上限は <code>/etc/security/limits.conf</code> をで設定できます。例えば</p>
+<p>この上限は <code class="highlighter-rouge">/etc/security/limits.conf</code> をで設定できます。例えば</p>
 
-<pre><code>yunabe      soft    nproc     10000
+<div class="highlighter-rouge"><pre class="highlight"><code>yunabe      soft    nproc     10000
 yunabe      hard    nproc     unlimited
 </code></pre>
+</div>
 
-<p>みたいなエントリを足せばよいです。編集後は再ログインか <code>ulimit -a</code>
+<p>みたいなエントリを足せばよいです。編集後は再ログインか <code class="highlighter-rouge">ulimit -a</code>
 の実行が必要。</p>
 
 <h1 id="section">システム全体でのスレッド数の上限</h1>
 
 <p>Linux にはシステム全体でのスレッド数の上限が設定されています。この値は</p>
 
-<pre><code>cat /proc/sys/kernel/threads-max
+<div class="highlighter-rouge"><pre class="highlight"><code>cat /proc/sys/kernel/threads-max
 </code></pre>
+</div>
 
-<p>で確認できます。 この上限値を挙げるには <code>/etc/sysctl.conf</code> に</p>
+<p>で確認できます。 この上限値を挙げるには <code class="highlighter-rouge">/etc/sysctl.conf</code> に</p>
 
-<pre><code>kernel.threads-max = 100000
+<div class="highlighter-rouge"><pre class="highlight"><code>kernel.threads-max = 100000
 </code></pre>
+</div>
 
-<p>のようなエントリを追加して、<code>sudo sysctl -p</code>
+<p>のようなエントリを追加して、<code class="highlighter-rouge">sudo sysctl -p</code>
 を実行してシステムに反映します。</p>
 
 <h1 id="procsysvmmaxmapcount">/proc/sys/vm/max_map_count</h1>
@@ -112,10 +116,10 @@ yunabe      hard    nproc     unlimited
 <ul>
   <li>pthread は 1スレッドあたり、2つのメモリマップを必要とするようです。</li>
   <li>1つのプロセスで使えるメモリマップの数には上限があります。</li>
-  <li>この上限値は <code>cat /proc/sys/vm/max_map_count</code>
+  <li>この上限値は <code class="highlighter-rouge">cat /proc/sys/vm/max_map_count</code>
 で確認可能。これを半分にした数を超えてスレッドを作ることはできません。</li>
-  <li>この値も <code>/etc/sysctl.conf</code> に <code>vm.max_map_count = 200000</code>
-みたいなエントリを足すことで増やすことができる。<code>sudo sysctl -p</code>
+  <li>この値も <code class="highlighter-rouge">/etc/sysctl.conf</code> に <code class="highlighter-rouge">vm.max_map_count = 200000</code>
+みたいなエントリを足すことで増やすことができる。<code class="highlighter-rouge">sudo sysctl -p</code>
 で反映。</li>
   <li>参考:<a href="https://listman.redhat.com/archives/phil-list/2003-August/msg00005.html">https://listman.redhat.com/archives/phil-list/2003-August/msg00005.html</a></li>
 </ul>
@@ -123,10 +127,10 @@ yunabe      hard    nproc     unlimited
 <h1 id="section-1">プロセス番号の最大値</h1>
 
 <ul>
-  <li>プロセス番号の最大値 <code>cat /proc/sys/kernel/pid_max</code></li>
+  <li>プロセス番号の最大値 <code class="highlighter-rouge">cat /proc/sys/kernel/pid_max</code></li>
   <li>デフォルト値は 32768 (1 &lt;&lt; 15)。32 bit 環境では上げられない。 64
 bit 環境では 2\^22 (4Mぐらい) まで上げることが可能。</li>
-  <li><code>man 5 proc</code></li>
+  <li><code class="highlighter-rouge">man 5 proc</code></li>
 </ul>
 
 <h1 id="bit">スタックと仮想メモリサイズ制限 (32bit環境限定)</h1>
@@ -210,7 +214,7 @@ bit 環境では 2\^22 (4Mぐらい) まで上げることが可能。</li>
 </script>
 <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
 
-
+    
   </body>
 
 </html>

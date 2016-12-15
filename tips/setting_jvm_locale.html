@@ -42,13 +42,15 @@
 user.language に指定できるのは<a href="http://ja.wikipedia.org/wiki/ISO_639-1%E3%82%B3%E3%83%BC%E3%83%89%E4%B8%80%E8%A6%A7">ISO 639 の2桁の小文字</a>、
 user.country に指定できるのは<a href="http://ja.wikipedia.org/wiki/ISO_3166-1">ISO 3166 の2桁の大文字</a>です。</p>
 
-<pre><code>java -Duser.language=ja -Duser.country=JP ...
+<div class="highlighter-rouge"><pre class="highlight"><code>java -Duser.language=ja -Duser.country=JP ...
 </code></pre>
+</div>
 
-<p>環境変数 <code>_JAVA_OPTIONS</code> に設定しておけば、java, javac 起動時に自動的に引数が渡されます。</p>
+<p>環境変数 <code class="highlighter-rouge">_JAVA_OPTIONS</code> に設定しておけば、java, javac 起動時に自動的に引数が渡されます。</p>
 
-<pre><code>export _JAVA_OPTIONS="-Duser.language=ja -Duser.country=JP"
+<div class="highlighter-rouge"><pre class="highlight"><code>export _JAVA_OPTIONS="-Duser.language=ja -Duser.country=JP"
 </code></pre>
+</div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

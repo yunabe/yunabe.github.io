@@ -71,43 +71,43 @@ ez_setup.py, distutils, PyPI, Eggs, etc…
 で正しくパッケージ管理を行う上で大切かと思います。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#section">キーワード</a></li>
-  <li><a href="#section-1">事前知識</a>    <ul>
-      <li><a href="#site-packages">site-packages</a></li>
-      <li><a href="#user-site-directory">User site directory</a></li>
-      <li><a href="#pypi">PyPI</a></li>
+  <li><a href="#section" id="markdown-toc-section">キーワード</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">事前知識</a>    <ul>
+      <li><a href="#site-packages" id="markdown-toc-site-packages">site-packages</a></li>
+      <li><a href="#user-site-directory" id="markdown-toc-user-site-directory">User site directory</a></li>
+      <li><a href="#pypi" id="markdown-toc-pypi">PyPI</a></li>
     </ul>
   </li>
-  <li><a href="#distutils">distutils</a>    <ul>
-      <li><a href="#distutils-basic">基本</a></li>
-      <li><a href="#distutils-">distutils における依存関係の扱い</a></li>
+  <li><a href="#distutils" id="markdown-toc-distutils">distutils</a>    <ul>
+      <li><a href="#distutils-basic" id="markdown-toc-distutils-basic">基本</a></li>
+      <li><a href="#distutils-" id="markdown-toc-distutils-">distutils における依存関係の扱い</a></li>
     </ul>
   </li>
-  <li><a href="#distribute">distribute</a></li>
-  <li><a href="#setuptools">setuptools</a>    <ul>
-      <li><a href="#section-2">インストール</a></li>
-      <li><a href="#section-3">参考文献</a></li>
+  <li><a href="#distribute" id="markdown-toc-distribute">distribute</a></li>
+  <li><a href="#setuptools" id="markdown-toc-setuptools">setuptools</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">インストール</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">参考文献</a></li>
     </ul>
   </li>
-  <li><a href="#easy-install">easy_install</a>    <ul>
-      <li><a href="#easyinstall-">easy_install の使い方</a></li>
-      <li><a href="#section-4">文献</a></li>
+  <li><a href="#easy-install" id="markdown-toc-easy-install">easy_install</a>    <ul>
+      <li><a href="#easyinstall-" id="markdown-toc-easyinstall-">easy_install の使い方</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">文献</a></li>
     </ul>
   </li>
-  <li><a href="#python-eggs">Python Eggs</a></li>
-  <li><a href="#ez-setup">ez_setup.py</a></li>
-  <li><a href="#pip">pip</a>    <ul>
-      <li><a href="#section-5">インストール &amp; アップグレード</a></li>
-      <li><a href="#section-6">使い方</a></li>
+  <li><a href="#python-eggs" id="markdown-toc-python-eggs">Python Eggs</a></li>
+  <li><a href="#ez-setup" id="markdown-toc-ez-setup">ez_setup.py</a></li>
+  <li><a href="#pip" id="markdown-toc-pip">pip</a>    <ul>
+      <li><a href="#section-5" id="markdown-toc-section-5">インストール &amp; アップグレード</a></li>
+      <li><a href="#section-6" id="markdown-toc-section-6">使い方</a></li>
     </ul>
   </li>
-  <li><a href="#wheels">Wheels</a>    <ul>
-      <li><a href="#section-7">インストール</a></li>
-      <li><a href="#wheel">Wheelの作成</a></li>
+  <li><a href="#wheels" id="markdown-toc-wheels">Wheels</a>    <ul>
+      <li><a href="#section-7" id="markdown-toc-section-7">インストール</a></li>
+      <li><a href="#wheel" id="markdown-toc-wheel">Wheelの作成</a></li>
     </ul>
   </li>
-  <li><a href="#section-8">その他</a></li>
-  <li><a href="#section-9">参考文献</a></li>
+  <li><a href="#section-8" id="markdown-toc-section-8">その他</a></li>
+  <li><a href="#section-9" id="markdown-toc-section-9">参考文献</a></li>
 </ul>
 
 <h1 id="section">キーワード</h1>
@@ -195,13 +195,13 @@ ez_setup.py, distutils, PyPI, Eggs, etc…
 <h2 id="site-packages">site-packages</h2>
 
 <ul>
-  <li>Python には <code>site-packages</code> というディレクトリが存在し、そのサイト
+  <li>Python には <code class="highlighter-rouge">site-packages</code> というディレクトリが存在し、そのサイト
 (マシン環境) 固有のモジュールは site-packages
 に保存されるようになっている。</li>
   <li>site-packages が モジュールの探索パス (sys.path)
 に足された後、sitecustomize というモジュールが暗黙的に Python に
 import される。 sitecustomize
-にサイト固有の設定を書いておくことができる。<code>sys.setdefaultencoding('utf-8')</code>
+にサイト固有の設定を書いておくことができる。<code class="highlighter-rouge">sys.setdefaultencoding('utf-8')</code>
 でエンコーディングを設定するのによく使われる。</li>
   <li>sitecustomize.py は sys.path
 が通っているディレクトリならどこにおいてもよいけど、site-packages
@@ -222,15 +222,15 @@ import される。 sitecustomize
 <h2 id="user-site-directory">User site directory</h2>
 
 <ul>
-  <li>Python 2.6 から <code>per user site-packages</code>
+  <li>Python 2.6 から <code class="highlighter-rouge">per user site-packages</code>
 というものが存在していて、ユーザ毎のモジュールを保存することができる。</li>
-  <li><code>per user site-packages</code> を使えば site-packages
+  <li><code class="highlighter-rouge">per user site-packages</code> を使えば site-packages
 にアクセス権がないユーザ (環境標準の Python
 を使っているならすべての非rootユーザ) も site-packages
 にモジュールが簡単にインストールできる。</li>
-  <li>per user site-packages のパスは、 <code>site.UER_SITE</code> で参照できる。
-Linux だと <code>$HOME/.local/lib/pythonX.Y/site-packages</code>。 Macだと
-<code>$HOME/Library/Python/X.Y/lib/python/site-packages</code></li>
+  <li>per user site-packages のパスは、 <code class="highlighter-rouge">site.UER_SITE</code> で参照できる。
+Linux だと <code class="highlighter-rouge">$HOME/.local/lib/pythonX.Y/site-packages</code>。 Macだと
+<code class="highlighter-rouge">$HOME/Library/Python/X.Y/lib/python/site-packages</code></li>
   <li>Python 2.6 以降は Virtual Python
 とかをユーザ毎の環境を作るためだけに使う必要はない。もちろん
 isolated な環境を作るのには依然として有益である。</li>
@@ -268,38 +268,41 @@ setuptools だろうから、distutils
 
 <p>Python のソースコードの入ったディレクトリに:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 
 <span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'foo'</span><span class="p">,</span>
       <span class="n">version</span><span class="o">=</span><span class="s">'1.0'</span><span class="p">,</span>
       <span class="n">py_modules</span><span class="o">=</span><span class="p">[</span><span class="s">'foo'</span><span class="p">],</span>
-      <span class="p">)</span></code></pre></div>
+      <span class="p">)</span></code></pre></figure>
 
 <p>のような setup.py というファイルを用意する。 この例では foo
 というモジュールがあるモジュール配布物 (module distribution)
 を定義している。 setup.py ができたら、:</p>
 
-<pre><code>python setup.py sdist
+<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py sdist
 </code></pre>
+</div>
 
 <p>を実行する。そうすると、dist というディレクトリに module distribution の
 .zip や .tar.gz ファイルが作成される。これを配布すれば良い。
 配布されたパッケージをインストールするには、sdist
 で作成されたファイルをダウンロード・解凍して、展開先のディレクトリで:</p>
 
-<pre><code>python setup.py install
+<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py install
 </code></pre>
+</div>
 
 <p>を実行すればよい。site-packages にインストールが行われる。
-<code>User site directory</code> にインストールしたい場合には、 <a href="https://docs.python.org/2/install/index.html#alternate-installation-the-user-scheme">install コマンドに
+<code class="highlighter-rouge">User site directory</code> にインストールしたい場合には、 <a href="https://docs.python.org/2/install/index.html#alternate-installation-the-user-scheme">install コマンドに
 –user
 オプションを付ける</a>。
-<code>--user</code>
+<code class="highlighter-rouge">--user</code>
 オプションを付ければ、非rootユーザも自分のホームディレクトリにモジュール配布物をインストールすることができる。
 その他のコマンドの一覧は:</p>
 
-<pre><code>python setup.py --help-commands
+<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py --help-commands
 </code></pre>
+</div>
 
 <p>で表示できる。</p>
 
@@ -335,19 +338,22 @@ distribute は2013年にマージされたので、今後はsetuptools を使え
 <p>ez_setup.py
 というブートストラップ用のスクリプトをダウンロードし実行する。:</p>
 
-<pre><code>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+<div class="highlighter-rouge"><pre class="highlight"><code>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python ez_setup.py
 </code></pre>
+</div>
 
 <p>前述の User site directory にインストールする場合には、:</p>
 
-<pre><code>python ez_setup.py --user
+<div class="highlighter-rouge"><pre class="highlight"><code>python ez_setup.py --user
 </code></pre>
+</div>
 
 <p>を実行する。 Mac の Python には始めから入っているような気がする。:</p>
 
-<pre><code>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
+<div class="highlighter-rouge"><pre class="highlight"><code>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
 </code></pre>
+</div>
 
 <h2 id="section-3">参考文献</h2>
 
@@ -373,7 +379,7 @@ setuptools に付随している。パッケージを自作しないユーザが
       <li>easy_install <a href="http://example.com/path/to/MyPackage-1.2.3.tgz">http://example.com/path/to/MyPackage-1.2.3.tgz</a></li>
     </ul>
   </li>
-  <li><code>User site directory</code> へインストール
+  <li><code class="highlighter-rouge">User site directory</code> へインストール
     <ul>
       <li>前述の ez_setup.py に –user を付けて setuptools
 とそれに付随する easy_install を User site directory
@@ -445,26 +451,26 @@ setuptools を使って setup.py を定義していれば) 作成することが
 <ul>
   <li>PyPI から最新版をダウンロードしてインストール
     <ul>
-      <li><code>pip install SQLObject</code></li>
+      <li><code class="highlighter-rouge">pip install SQLObject</code></li>
     </ul>
   </li>
   <li>User site directory へインストール
     <ul>
-      <li><code>pip install --user SQLObject</code></li>
+      <li><code class="highlighter-rouge">pip install --user SQLObject</code></li>
       <li>easy_install と違って –user 付きでインストールした pip
 もデフォルトでは root に
 パッケージをインストールしようとするので、 User site directory
-にインストールしたい場合は <code>--user</code> は省略できない。</li>
+にインストールしたい場合は <code class="highlighter-rouge">--user</code> は省略できない。</li>
     </ul>
   </li>
   <li>パッケージを更新
     <ul>
-      <li><code>pip install &lt;packagename&gt; --update</code></li>
+      <li><code class="highlighter-rouge">pip install &lt;packagename&gt; --update</code></li>
     </ul>
   </li>
   <li>更新があるパッケージを表示
     <ul>
-      <li><code>pip list --outdated</code></li>
+      <li><code class="highlighter-rouge">pip list --outdated</code></li>
     </ul>
   </li>
 </ul>
@@ -477,9 +483,10 @@ setuptools を使って setup.py を定義していれば) 作成することが
 
 <h2 id="section-7">インストール</h2>
 
-<pre><code>pip install wheel
+<div class="highlighter-rouge"><pre class="highlight"><code>pip install wheel
 (必要ならば --user をつける)
 </code></pre>
+</div>
 
 <h2 id="wheel">Wheelの作成</h2>
 
@@ -493,13 +500,13 @@ setuptools を使って setup.py を定義していれば) 作成することが
 <ul>
   <li><a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>
     <ul>
-      <li>Python の isolated な仮想環境を <code>virtualenv ENV</code>
+      <li>Python の isolated な仮想環境を <code class="highlighter-rouge">virtualenv ENV</code>
 コマンド一発で作り出す超便利ツール。</li>
       <li>仮想環境毎に別々のパッケージがインストールできるので、クリーンな環境を作ったり、
 アプリケーションによって異なるバージョンのパッケージを使ったりするのに便利。</li>
       <li>root
 権限がないユーザがパッケージを入れるのにも便利ではあるが、2.6以降は
-<code>User site directory</code> があるので virtualenv
+<code class="highlighter-rouge">User site directory</code> があるので virtualenv
 を使わなくても非rootユーザ毎にパッケージを入れるのは簡単。</li>
     </ul>
   </li>
