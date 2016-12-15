@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>なぜGo言語(golang)はよい言語なのか・Goでプログラムを書くべきなのか</title>
+  <meta name="description" content="">
+  <meta property="fb:admins" content="yunabe">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/why_golang_is_good.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">なぜGo言語(golang)はよい言語なのか・Goでプログラムを書くべきなのか</h1>
+          <p class="post-meta"><time datetime="2016-09-23T00:00:00+09:00" itemprop="datePublished">更新 Sep 23, 2016</time></p>
+        </header>
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <h1 id="go-golang">Go言語 (golang)の良い点</h1>
+<p>結論としてはGo言語には以下のようないくつかの長所があり、現実路線で非常にバランスがとれた言語だと思います。
+これらの長所のために失われたメリットも当然いくつもありますが、一定程度以上の規模のプロジェクトで利用する言語の選択肢としては現存するプログラミング言語の中では一番か二番目によいのではないかと思います。</p>
+
+<ul>
+  <li>コンパイルが速い (vs. C++)</li>
+  <li>GCとメモリ安全性 (vs. C++)</li>
+  <li>妥当で現実的なレベルの型安全性 (vs. Python/Ruby)</li>
+  <li>実行時パフォーマンスが良さ (vs. Python/Ruby)
+    <ul>
+      <li>現実問題、ある程度の規模と期間のプロジェクトになると型検証があるとリファクタリングなどがだいぶ楽になるのでありがたい。</li>
+      <li>型があるので自然と実行時パフォーマンスも良い</li>
+    </ul>
+  </li>
+  <li>シンプルでバランスの取れた言語仕様。習得が比較的容易 (vs. C++, Haskell)
+    <ul>
+      <li>すでに１つ手続き型言語をそれなりに使えている人ならば、軽く仕様を読めば何となく使えてしまえると思います。</li>
+      <li><a href="golang_pitfall.html">ただ他のメジャーな手続き型言語との違いから来るはまりどころが幾つかある</a>のできちんと理解するのはそれなりに労力は必要。</li>
+      <li>とはいえC++とかHaskellよりは確実に簡単だと思う。</li>
+    </ul>
+  </li>
+  <li>標準ライブラリが整備されている (vs. C++)
+    <ul>
+      <li>というか標準ライブラリにjsonのパースすら存在しないC++がおかしい…</li>
+    </ul>
+  </li>
+  <li>スレッドモデルによる並行プログラミング (vs. Node.js)
+    <ul>
+      <li>一時期Node.jsなどでイベントモデルによるプログラミングが何故かもてはやされていましたが、<a href="why_events_are_a_bad_idea.html">人類にはイベントモデルは無意味に難しすぎます</a>。</li>
+      <li>言語標準の方法としてgoroutineを使った同期モデルによる並行処理が推奨されているのは素晴らしいデザインだと思います。</li>
+    </ul>
+  </li>
+  <li>Dockerなどの素晴らしい大規模プロジェクトでの実績がある。</li>
+</ul>
+
+<h1 id="section">シンプルでバランスの取れた言語仕様</h1>
+<ul>
+  <li><a href="https://golang.org/ref/spec">仕様は比較的シンプルである</a>。
+    <ul>
+      <li>すべて読むのにそれほど多くの時間は必要ない。</li>
+    </ul>
+  </li>
+  <li>C++やHaskellに比べれば遥かに習得が容易である。
+すでに手続き型言語を１つでも使いこなせるプログラマならば軽く仕様を眺めればすぐに何となく使えるようになるであろう。
+ただしそれでもはまりどころはいくつもあるので</li>
+  <li>いくつかの”クール”な言語機能がGo言語 (golang) ではサポートされて<strong>いない</strong>。代表的なものは
+「例外」、「Generics (template)」、「継承」</li>
+</ul>
+
+<h1 id="go">なぜGoは”悪い”言語なのか</h1>
+<p><a href="https://github.com/ksimka/go-is-not-good">Goに対する批判は数多く存在します</a>。それのどれにもきちんとした理由はあると思います。主な批判は大きく</p>
+
+<ul>
+  <li>Generics (template) がない</li>
+  <li>継承がない</li>
+  <li>例外がない。まるで1970年代に設計されたかのようである。</li>
+  <li>非知的なプログラマのためにデザインされている。</li>
+</ul>
+
+<p>に集約されるように思います。</p>
+
+<h1 id="generics-template">Generics (template)がない</h1>
+<p><a href="https://golang.org/doc/faq#generics">GoにはGenericsはありません</a>。
+<a href="https://docs.oracle.com/javase/tutorial/java/generics/types.html">JavaのGeneric Types</a>とか<a href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88_(%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0)">C++のテンプレート</a>で書けるようなことはGoでは書けません。
+ただ配列(スライス), mapについては特別に言語でサポートされているのでJavaやC++で総称型を使うケースの大半はカバーされるとは思います。</p>
+
+<h1 id="section-1">継承がない</h1>
+<p><a href="https://golang.org/doc/faq#inheritance">Goには継承はありません</a>。
+<a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">そもそも継承はプログラミング言語にあまり必要ない機能だと思います</a>。
+継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっていることが多いと思います。<a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>や<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B9%E3%82%B3%E3%83%95%E3%81%AE%E7%BD%AE%E6%8F%9B%E5%8E%9F%E5%89%87">リスコフの置換原則</a>のような基本的な原則が守られておらず(そもそも多くの人は名前すら知らない)、単に一部のコードをクラス間で共有するために継承が使われていて可読性が著しく低いコードもよく目にします。</p>
+
+<p>そのため、そもそもプログラミング言語が継承をサポートしないというのは良いデザインだなと思います。継承が非常に有益な場合があるもの分かりますが、正しく使われない害のほうが大きいと思います。</p>
+
+<h1 id="errors-as-values-">Errors as values (例外が推奨されない)</h1>
+<p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
+例外で返されたエラーを <code class="highlighter-rouge">try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
+それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
+Goの例外は極力使わず、エラーを値として扱うポリシーはよいもの(特に大規模なプロジェクトで、エラーハンドリングが大切なプロジェクトでは)だと思います。</p>
+
+<p>ただ一方で、ちょっとした使い捨ての便利ツールを書く場合や、とりあえずプロトタイプで正常系だけ書きたい時、
+あるいは異常が発生したらプログラムを停止してしまって良いような起動時の初期化処理を書く時には、正直Goのエラーハンドリングはかなり面倒くさいです。
+こういうタイプのコードでは外部ライブラリの呼び出しやファイル、データベースなどの外部リソースへのアクセスが大きな割合を占めます。そして、そうした処理はほとんどの場合 error が発生しうるのでそれぞれの処理に対してエラーハンドリングを行う必要があります。
+場合によってはコードのかなりの割合の行が</p>
+
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>の繰り返しで占められてしまうこともあるでしょう。これに対しては根本的な解決策はないように思います。エラーが発生した場合はエラーメッセージを出力して処理を中断してしまって問題ない</p>
+
+<ul>
+  <li>使い捨てあるいは内部ツールでエラーハンドリングがあまり重要ではない時</li>
+  <li>正常系だけとりあえずプロトタイプしたい時</li>
+</ul>
+
+<p>には例外の方が便利であり、正直Go言語ではあまり効率的にコードが書けないような気がします。個人的にはそういう用途にはPythonなどを使うのが正しい解決策のように思えます。何でもGoで書く必要はないのですから。
+型の存在すら簡単なプロトタイピングをするのには少し鬱陶しいですしどんな言語も適材適所だと思います。</p>
+
+<h1 id="designed-for-non-intelligent-programmers">非知的なプログラマのためにデザインされている (Designed for non-intelligent programmers)</h1>
+<p><a href="http://nomad.so/2015/03/why-gos-design-is-a-disservice-to-intelligent-programmers/">Goは知的でないプログラマのためにデザインされていると批判されることがあります</a>。そして「知的でないプログラマ」のためにデザインされているというのは指摘自体は正しいと思います。実際Rob Pikeも<a href="https://channel9.msdn.com/Events/Lang-NEXT/Lang-NEXT-2014/From-Parallel-to-Concurrent">From Parallel to Concurrent</a>の20:40~で次のように述べています</p>
+
+<blockquote>
+  <p>The key point here is our programmers are Googlers, they’re not researchers.
+They’re typically, fairly young, fresh out of school, probably learned Java, maybe learned C or C++, probably learned Python.
+They’re not capable of understanding a brilliant language but we want to use them to build good software.
+So, the language that we give them has to be easy for them to understand and easy to adopt.</p>
+</blockquote>
+
+<p>要するにGoogle社員のような研究者ではなく、大学を出たばかりでC++, Java, Pythonの経験しかないような、「素晴らしいプログラミング言語」を理解する能力が欠けているエンジニアでも簡単に理解し、大きなシステムを構築するのに使えるようにGo言語はデザインされているのです。</p>
+
+<p>Goは言語デザインとして正しく使うのが難しい、乱用するとプログラムを無意味に複雑にしてしまう機能が排除されています(高度な型システム・継承・Generics・例外・イベントモデルによる並行処理など)。
+そのため、ある意味ではGoは「知的な」プログラマにとっては面白みに欠く言語だと思います。実際、Goを勉強しても概念的には目新しいものはなくて勉強することそのもので何かが学べるとは僕は全く思いません。
+一方でプログラミング言語を習得することのゴールは、それを使って何か大規模なソフトウェアをチームで作ることであるのだと思います。
+チームで大規模なソフトウェアを開発することはそれ自体が非常に難しいことです。そのゴールのためにプログラミング言語自体はシンプルに保ち、それ以外の部分により多くの労力をさけるようにするというのは僕は正しい判断だと思います。</p>
+
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/why_golang_is_good.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  console.log(fjs);
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+    
+  </body>
+
+</html>

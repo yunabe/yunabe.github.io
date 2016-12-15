@@ -32,7 +32,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2016-06-21T00:00:00+09:00" itemprop="datePublished">更新 Jun 21, 2016</time></p>
+          <p class="post-meta"><time datetime="2016-12-15T00:00:00+09:00" itemprop="datePublished">更新 Dec 15, 2016</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -52,36 +52,38 @@
         <h1 id="section">目次</h1>
 <p><a href="https://golang.org/ref/spec">Goの言語仕様</a>はシンプルで他の言語に比べてはまりどころが少なくて学習コストが小さめな言語のように思います。しかし、それでもはまるところがないわけではないので、自分がはまって時間を無駄にしてしまったことを書き留めておきます。</p>
 
+<p>念の為誤解のないように追記しておくと、この文書の目的はGoを批判することではなくGoがGoであるがゆえにC++/Java/Pythonなど利用者がGoを使い始めるときに困惑あるいは誤解するであろうポイントをまとめておくことで初めてGoを触る人がスムーズにGoを使い始められるようにすることです。<a href="why_golang_is_good.html">私個人はGoはバランスがとれた良い言語でだと思いますし、気に入っています</a>。</p>
+
 <ul id="markdown-toc">
-  <li><a href="#section">目次</a></li>
-  <li><a href="#interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</a>    <ul>
-      <li><a href="#section-1">文献</a></li>
+  <li><a href="#section" id="markdown-toc-section">目次</a></li>
+  <li><a href="#interface-nil-gointerface" id="markdown-toc-interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</a>    <ul>
+      <li><a href="#section-1" id="markdown-toc-section-1">文献</a></li>
     </ul>
   </li>
-  <li><a href="#this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</a></li>
-  <li><a href="#errorerror">errorしか返り値がない関数でerrorを処理し忘れる</a></li>
-  <li><a href="#section-2">基本型がメソッドを持たない</a></li>
-  <li><a href="#string">stringが単なるバイト列</a></li>
-  <li><a href="#section-3">継承がない</a></li>
-  <li><a href="#generics">Genericsがない</a></li>
-  <li><a href="#goroutine-gc">goroutine はGCされない</a></li>
-  <li><a href="#goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</a></li>
-  <li><a href="#section-4">例外が(推奨され)ない</a></li>
-  <li><a href="#if-err--nil-return-err">繰り返す if err != nil {return err}</a>    <ul>
-      <li><a href="#section-5">解決策</a></li>
+  <li><a href="#this-selfnil" id="markdown-toc-this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</a></li>
+  <li><a href="#errorerror" id="markdown-toc-errorerror">errorしか返り値がない関数でerrorを処理し忘れる</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">基本型がメソッドを持たない</a></li>
+  <li><a href="#string" id="markdown-toc-string">stringが単なるバイト列</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">継承がない</a></li>
+  <li><a href="#generics" id="markdown-toc-generics">Genericsがない</a></li>
+  <li><a href="#goroutine-gc" id="markdown-toc-goroutine-gc">goroutine はGCされない</a></li>
+  <li><a href="#goroutinegenerator-yield-" id="markdown-toc-goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">例外が(推奨され)ない</a></li>
+  <li><a href="#if-err--nil-return-err" id="markdown-toc-if-err--nil-return-err">繰り返す if err != nil {return err}</a>    <ul>
+      <li><a href="#section-5" id="markdown-toc-section-5">解決策</a></li>
     </ul>
   </li>
-  <li><a href="#return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
-  <li><a href="#defer">関数より狭いスコープで defer</a></li>
-  <li><a href="#structcjava">structとC++/Javaのクラスとの違い</a>    <ul>
-      <li><a href="#section-6">コンストラクタがない</a></li>
-      <li><a href="#section-7">ゼロ初期化が避けられない</a></li>
-      <li><a href="#section-8">コピーされるのが避けられない</a></li>
+  <li><a href="#return-nil-err--error" id="markdown-toc-return-nil-err--error">return nil, err → このerrorどこで発生したの？</a></li>
+  <li><a href="#defer" id="markdown-toc-defer">関数より狭いスコープで defer</a></li>
+  <li><a href="#structcjava" id="markdown-toc-structcjava">structとC++/Javaのクラスとの違い</a>    <ul>
+      <li><a href="#section-6" id="markdown-toc-section-6">コンストラクタがない</a></li>
+      <li><a href="#section-7" id="markdown-toc-section-7">ゼロ初期化が避けられない</a></li>
+      <li><a href="#section-8" id="markdown-toc-section-8">コピーされるのが避けられない</a></li>
     </ul>
   </li>
-  <li><a href="#section-9">型が後置</a></li>
-  <li><a href="#section-10">1.0 が浮動小数点型にならない(時がある)</a></li>
-  <li><a href="#section-11">名前が…</a></li>
+  <li><a href="#section-9" id="markdown-toc-section-9">型が後置</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-11" id="markdown-toc-section-11">名前が…</a></li>
 </ul>
 
 <h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
@@ -90,7 +92,7 @@
 
 <p>さてこの内部構造の違いがGoにどういった影響をもたらすのでしょうか。実はこの内部構造の違い、意外と言語の挙動にはあまり大きな影響を与えません。そのためこの点を理解していなくてもGoでプログラムを書けてしまいます。ただしnilを扱う場合にはGoは予想外の挙動をします。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
 </span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
@@ -123,15 +125,15 @@
     </span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
         </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err is nil."</span><span class="p">)</span><span class="x">
     </span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
-<p><a href="https://play.golang.org/p/ClzTEOs_P-">上のコード(Go Playground)</a>では、myFuncは<code>x &gt;= 0</code>の時には<code>var err *myError</code>の初期値<code>nil</code>を返すので、mainの最初の<code>fmt.Println(err)</code>は<code>myError: &lt;nil&gt;</code>を出力します。そして、次のif-elseはerrがnilだから”err is nil.”が表示されると思うかもしれません。JavaやC++ならそうなります。しかしGoでは”err is NOT nil”が表示されます。</p>
+<p><a href="https://play.golang.org/p/ClzTEOs_P-">上のコード(Go Playground)</a>では、myFuncは<code class="highlighter-rouge">x &gt;= 0</code>の時には<code class="highlighter-rouge">var err *myError</code>の初期値<code class="highlighter-rouge">nil</code>を返すので、mainの最初の<code class="highlighter-rouge">fmt.Println(err)</code>は<code class="highlighter-rouge">myError: &lt;nil&gt;</code>を出力します。そして、次のif-elseはerrがnilだから”err is nil.”が表示されると思うかもしれません。JavaやC++ならそうなります。しかしGoでは”err is NOT nil”が表示されます。</p>
 
-<p>何故こうなるのかは、interfaceが型と値への参照のペアであること点を踏まえた上で、errのValueとTypeを<code>reflect.ValueOf</code>, <code>reflect.TypeOf</code>を使って表示してみると明らかです。
-err のTypeとValueを表示してみると、Typeが<code>*main.myError</code>で値がValueが<code>&lt;nil&gt;</code>であることが分かります。errの”値”は<code>nil</code>ですがerrは型情報を保持しているのです。
-型を持っているinterfaceはValueが<code>nil</code>でも<code>nil</code>ではないのです。</p>
+<p>何故こうなるのかは、interfaceが型と値への参照のペアであること点を踏まえた上で、errのValueとTypeを<code class="highlighter-rouge">reflect.ValueOf</code>, <code class="highlighter-rouge">reflect.TypeOf</code>を使って表示してみると明らかです。
+err のTypeとValueを表示してみると、Typeが<code class="highlighter-rouge">*main.myError</code>で値がValueが<code class="highlighter-rouge">&lt;nil&gt;</code>であることが分かります。errの”値”は<code class="highlighter-rouge">nil</code>ですがerrは型情報を保持しているのです。
+型を持っているinterfaceはValueが<code class="highlighter-rouge">nil</code>でも<code class="highlighter-rouge">nil</code>ではないのです。</p>
 
-<pre><code>---- err ----
+<div class="highlighter-rouge"><pre class="highlight"><code>---- err ----
 is nil: false
 Type: *main.myError
 Value: &lt;nil&gt;
@@ -140,6 +142,7 @@ is nil: true
 Type: &lt;nil&gt;
 Value: &lt;invalid reflect.Value&gt;
 </code></pre>
+</div>
 
 <p>ちなみにこれは<a href="https://golang.org/doc/faq#nil_error">Frequently Asked Questions (FAQ)</a>に<a href="https://github.com/golang/go/commit/1e0f97ac6544ab3b7cf76e9c9d62e8c2a60bcdb6">2012年から</a>書いてある問題です。
 よくドキュメントを読まずに色々はまって時間をつぶすす前に(自分は数時間つぶしました)、まずFAQくらいは目を通しておいたほうがよいですね。</p>
@@ -152,44 +155,45 @@ Value: &lt;invalid reflect.Value&gt;
 </ul>
 
 <h1 id="this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</h1>
-<p>これははまりどころというより、Goだと<code>nil</code>に大してメソッド呼び出しを行った場合の挙動が他の人気のある言語と少し異なるので、メソッド側の書き方次第では呼び出し側の<code>nil</code>チェックをすこし緩和できるよという話ですが。あるいはこの点を理解していないと、呼び出し側で<code>nil</code>チェックしなくてなぜ大丈夫なのか困惑するという話です。</p>
+<p>これははまりどころというより、Goだと<code class="highlighter-rouge">nil</code>に大してメソッド呼び出しを行った場合の挙動が他の人気のある言語と少し異なるので、メソッド側の書き方次第では呼び出し側の<code class="highlighter-rouge">nil</code>チェックをすこし緩和できるよという話ですが。あるいはこの点を理解していないと、呼び出し側で<code class="highlighter-rouge">nil</code>チェックしなくてなぜ大丈夫なのか困惑するという話です。</p>
 
 <p>C++, Java, Python, JavaScript などの他の人気のある言語では</p>
 
-<pre><code>person.sayHello()
+<div class="highlighter-rouge"><pre class="highlight"><code>person.sayHello()
 </code></pre>
+</div>
 
-<p>のようにメソッド呼び出しをする場合は(C++の場合は<code>.</code>でなく<code>-&gt;</code>)、<code>person</code>が<code>null</code>でないことを確認しなくてはなりません(C++で<code>sayHello</code>がnon-virtualの場合も挙動は未定義)。
-しかしGoの場合は<code>person</code>が<code>struct</code>のポインタである場合には<code>person</code>が<code>nil</code>でも関数の呼び出しは問題なく行えます。
-また<code>person</code>がインターフェイスでその値が<code>nil</code>で型情報が<code>struct</code>のポインタである(つまり上述したようにインターフェイスそのものは<code>nil</code>ではない)場合にも、問題なく関数は呼び出されます。</p>
+<p>のようにメソッド呼び出しをする場合は(C++の場合は<code class="highlighter-rouge">.</code>でなく<code class="highlighter-rouge">-&gt;</code>)、<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">null</code>でないことを確認しなくてはなりません(C++で<code class="highlighter-rouge">sayHello</code>がnon-virtualの場合も挙動は未定義)。
+しかしGoの場合は<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">struct</code>のポインタである場合には<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">nil</code>でも関数の呼び出しは問題なく行えます。
+また<code class="highlighter-rouge">person</code>がインターフェイスでその値が<code class="highlighter-rouge">nil</code>で型情報が<code class="highlighter-rouge">struct</code>のポインタである(つまり上述したようにインターフェイスそのものは<code class="highlighter-rouge">nil</code>ではない)場合にも、問題なく関数は呼び出されます。</p>
 
-<p>そのため、Goではメソッド内部でレシーバのポインタが<code>nil</code>であるかを確認することには意味があります。
-メソッド内で<code>nil</code>のチェックが適切に行われている場合、そのメッソドは呼び出し側で<code>nil</code>チェックをすることなしに呼び出せるようになります。
-例えば<a href="https://github.com/golang/protobuf">Goのprotobufの実装</a>はレシーバが<code>nil</code>の場合でもgetterメッソドは問題なく実行できるように実装されています
+<p>そのため、Goではメソッド内部でレシーバのポインタが<code class="highlighter-rouge">nil</code>であるかを確認することには意味があります。
+メソッド内で<code class="highlighter-rouge">nil</code>のチェックが適切に行われている場合、そのメッソドは呼び出し側で<code class="highlighter-rouge">nil</code>チェックをすることなしに呼び出せるようになります。
+例えば<a href="https://github.com/golang/protobuf">Goのprotobufの実装</a>はレシーバが<code class="highlighter-rouge">nil</code>の場合でもgetterメッソドは問題なく実行できるように実装されています
 (<em>There are getters that return a field’s value if set, and return the field’s default value if unset. The getters work even if the receiver is a nil message.</em>)。
-そのためGoのprotobufを利用する場合、例え<code>GetDoc()</code>の返り値が<code>nil</code>だったとしても</p>
+そのためGoのprotobufを利用する場合、例え<code class="highlighter-rouge">GetDoc()</code>の返り値が<code class="highlighter-rouge">nil</code>だったとしても</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">url</span><span class="x"> </span><span class="kt">string</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">url</span><span class="x"> </span><span class="kt">string</span><span class="x">
 </span><span class="n">doc</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">response</span><span class="o">.</span><span class="n">GetDoc</span><span class="p">()</span><span class="x">
 </span><span class="k">if</span><span class="x"> </span><span class="n">doc</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
    </span><span class="n">url</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">doc</span><span class="o">.</span><span class="n">GetURL</span><span class="p">()</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>のように書かずに単純に</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">response</span><span class="o">.</span><span class="n">GetDoc</span><span class="p">()</span><span class="o">.</span><span class="n">GetURL</span><span class="p">()</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">response</span><span class="o">.</span><span class="n">GetDoc</span><span class="p">()</span><span class="o">.</span><span class="n">GetURL</span><span class="p">()</span></code></pre></figure>
 
-<p>のように書くことが出来ます(GetURLの内部でdocが<code>nil</code>かどうかがチェックされている)。呼び出し側での<code>nil</code>チェックの必要性は細かいことですが、<code>protobuf</code>のようなライブラリの使い勝手には大きく影響します。
-メソッド内部でレシーバの<code>nil</code>チェックが行われていない場合は、レシーバ内で<code>recv.field</code>を参照した時点、値を代入しようとした時点で<code>panic</code>が発生します。</p>
+<p>のように書くことが出来ます(GetURLの内部でdocが<code class="highlighter-rouge">nil</code>かどうかがチェックされている)。呼び出し側での<code class="highlighter-rouge">nil</code>チェックの必要性は細かいことですが、<code class="highlighter-rouge">protobuf</code>のようなライブラリの使い勝手には大きく影響します。
+メソッド内部でレシーバの<code class="highlighter-rouge">nil</code>チェックが行われていない場合は、レシーバ内で<code class="highlighter-rouge">recv.field</code>を参照した時点、値を代入しようとした時点で<code class="highlighter-rouge">panic</code>が発生します。</p>
 
 <iframe src="https://play.golang.org/p/fQ_0Jzu8M6" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/fQ_0Jzu8M6">see this code in play.golang.org</a></iframe>
 
 <h1 id="errorerror">errorしか返り値がない関数でerrorを処理し忘れる</h1>
-<p>Goではエラーは通常、最後の返り値として呼び出し元に返されます。関数が何か重要な値を返す場合であれば、<code>_</code>を利用しないかぎりはerrorは無視できないのでerrorを処理し忘れることはあまりないと思います。ただ<a href="https://golang.org/pkg/encoding/json/#Unmarshal">json.Unmarshal</a>のようなerror以外に重要な情報を返さない関数は、エラー以外に返り値がないからといって、うっかり返り値を受け取るのを忘れるとerrorが失われます。</p>
+<p>Goではエラーは通常、最後の返り値として呼び出し元に返されます。関数が何か重要な値を返す場合であれば、<code class="highlighter-rouge">_</code>を利用しないかぎりはerrorは無視できないのでerrorを処理し忘れることはあまりないと思います。ただ<a href="https://golang.org/pkg/encoding/json/#Unmarshal">json.Unmarshal</a>のようなerror以外に重要な情報を返さない関数は、エラー以外に返り値がないからといって、うっかり返り値を受け取るのを忘れるとerrorが失われます。</p>
 
 <iframe src="https://play.golang.org/p/E9UM39VxQx" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/E9UM39VxQx">see this code in play.golang.org</a></iframe>
 
-<p>例えば上のコードは<code>"not json"</code>はjsonとしてパース出来ないのでエラーが発生しますが、コンパイル時にはエラーが無視されていることは検出されません。これに関しては気をつける以外に解決策はないと思います。</p>
+<p>例えば上のコードは<code class="highlighter-rouge">"not json"</code>はjsonとしてパース出来ないのでエラーが発生しますが、コンパイル時にはエラーが無視されていることは検出されません。これに関しては気をつける以外に解決策はないと思います。</p>
 
 <h1 id="section-2">基本型がメソッドを持たない</h1>
 <p><a href="https://golang.org/doc/faq#methods_on_basics">例えばstringがlenをメソッドとして持ちません</a>。これは<a href="https://msdn.microsoft.com/ja-jp/library/system.int32.aspx">C#とかではintですらメソッドを持つ</a>のと真逆を行くように思える。
@@ -201,10 +205,10 @@ Goのインターフェースで宣言されているメソッドが実装され
 <p><a href="https://docs.python.org/3.0/whatsnew/3.0.html#text-vs-data-instead-of-unicode-vs-8-bit">これは文字列をUnicodeにしたPython3</a>の真逆を行く感じで正直本当に正しいのかはよく分かりません。</p>
 
 <ul>
-  <li>Goではファイルなどから<code>string</code>を読み込む際にエンコードを指定したりはしません。
+  <li>Goではファイルなどから<code class="highlighter-rouge">string</code>を読み込む際にエンコードを指定したりはしません。
 <a href="https://docs.oracle.com/javase/jp/6/api/java/io/FileReader.html">これは他の言語のようにデフォルトの文字エンコーディングで暗黙的にデコードされている</a>のではなく、
-そもそもGoは<code>string</code>を作る際にデコードを行わないからです。</li>
-  <li><code>len(s)</code>は<code>s</code>の文字列のバイナリ列としての長さを返します。<strong>文字の数ではない</strong>の注意して下さい。</li>
+そもそもGoは<code class="highlighter-rouge">string</code>を作る際にデコードを行わないからです。</li>
+  <li><code class="highlighter-rouge">len(s)</code>は<code class="highlighter-rouge">s</code>の文字列のバイナリ列としての長さを返します。<strong>文字の数ではない</strong>の注意して下さい。</li>
   <li><a href="https://golang.org/ref/spec#Source_code_representation">Goのソースコードは必ずUTF-8でなくてはならない</a>ので、
 ソースコード中に文字列リテラルとして定義された文字列はUTF-8の文字列です。</li>
   <li><a href="https://blog.golang.org/strings#TOC_6.">stringに対するrange-loop(for range)の場合だけ特別に文字列がUTF-8としてデコードされて”一文字”ずつ処理される</a>という少し歪な仕様になっている</li>
@@ -227,7 +231,7 @@ Goのインターフェースで宣言されているメソッドが実装され
 
 <h1 id="goroutine-gc">goroutine はGCされない</h1>
 <p><a href="https://groups.google.com/d/msg/golang-nuts/uiySuH8_3Y4/nvZoN7l0PxgJ">goroutine はガーベッジコレクションの対象ではありません</a>。
-goroutineはGCされないので、<code>go</code>で起動した関数は必ず終了するように気をつけてプログラムを書きましょう。JavaやPythonの実行中のスレッドがGCに回収されないのと同じですね、自然な仕様だと思います。ただgoroutineは割りと気軽に作成できてしまうので、うっかり新しいgoroutineもGCのルートになることを忘れてしまうかも。</p>
+goroutineはGCされないので、<code class="highlighter-rouge">go</code>で起動した関数は必ず終了するように気をつけてプログラムを書きましょう。JavaやPythonの実行中のスレッドがGCに回収されないのと同じですね、自然な仕様だと思います。ただgoroutineは割りと気軽に作成できてしまうので、うっかり新しいgoroutineもGCのルートになることを忘れてしまうかも。</p>
 
 <p>またこの制約のためGoで新しい読み込み専用channelだけを返す関数というのは呼び出し側がchannelからデータ最後まで読み込まないとメモリリークが発生する危険性があります。
 例えば標準ライブラリのtime.Tickはとても便利ですが<a href="https://golang.org/pkg/time/#Tick">リークします(「<em>it “leaks”.</em>」)</a>。
@@ -236,7 +240,7 @@ goroutineはGCされないので、<code>go</code>で起動した関数は必ず
 <h1 id="goroutinegenerator-yield-">goroutineはgenerator (yield) の実装には使えない</h1>
 <p>Go言語には<a href="https://docs.python.org/2/reference/simple_stmts.html#the-yield-statement">Pythonのyield</a>に相当する機能はありません。ただgoroutineとchannelを組み合わせればyieldに相当することができるのではと思うかもしれません(<a href="https://play.golang.org/p/AeXaSlCuFc">Go Playground</a>)。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
 </span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 
@@ -258,7 +262,7 @@ goroutineはGCされないので、<code>go</code>で起動した関数は必ず
         </span><span class="p">}</span><span class="x">
         </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="x">
     </span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>このコードは意図した通り1, 4, 9…,81, 100を出力します。ただこのやり方には</p>
 
@@ -274,7 +278,7 @@ goroutineはGCされないので、<code>go</code>で起動した関数は必ず
 
 <h1 id="section-4">例外が(推奨され)ない</h1>
 <p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
-例外で返されたエラーを <code>try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
+例外で返されたエラーを <code class="highlighter-rouge">try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
 それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
 Goの例外は極力使わず、エラーを値として扱うポリシーはよいもの(特に大規模なプロジェクトで、エラーハンドリングが大切なプロジェクトでは)だと思います。</p>
 
@@ -283,11 +287,11 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 こういうタイプのコードでは外部ライブラリの呼び出しやファイル、データベースなどの外部リソースへのアクセスが大きな割合を占めます。そして、そうした処理はほとんどの場合 error が発生しうるのでそれぞれの処理に対してエラーハンドリングを行う必要があります。
 場合によってはコードのかなりの割合の行が</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
-<p>の繰り返しで占められてしまうこともあるでしょう。これに対しては根本的な解決策はないように思います。エラーが発生した場合はエラーメッセージを出力して処理を中断してしまって問題ない </p>
+<p>の繰り返しで占められてしまうこともあるでしょう。これに対しては根本的な解決策はないように思います。エラーが発生した場合はエラーメッセージを出力して処理を中断してしまって問題ない</p>
 
 <ul>
   <li>使い捨てあるいは内部ツールでエラーハンドリングがあまり重要ではない時</li>
@@ -299,7 +303,7 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 <h1 id="if-err--nil-return-err">繰り返す if err != nil {return err}</h1>
 <p>Goでは例外が推奨されずエラー処理を常にきちんと書かなくてはならないので、Goでプログラムを書いていると</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span><span class="x">
 </span><span class="c">// ...</span><span class="x">
@@ -310,40 +314,41 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span><span class="c">// ....</span></code></pre></div>
+</span><span class="c">// ....</span></code></pre></figure>
 
-<p>のように <code>if err != nil</code> によるエラーハンドリングを繰り返し繰り返し書かなくてはならないことがあります。
-<a href="https://blog.golang.org/errors-are-values">Go Blog</a>には<code>if err != nil { return err }</code>のパターンはあまり出現しない(once per page or two)と書かれていますが、
-プログラムのタイプによっては(例えばいろいろな外部リソースや外部ライブラリをつなぐようなコード)かなりの頻度で <code>if err != nil</code> を書かざるを得ないことがあるような気がします。
-<code>if err != nil</code> を入力するショートカット定義したほうがいいんじゃないのという気分になることがたまにあります。</p>
+<p>のように <code class="highlighter-rouge">if err != nil</code> によるエラーハンドリングを繰り返し繰り返し書かなくてはならないことがあります。
+<a href="https://blog.golang.org/errors-are-values">Go Blog</a>には<code class="highlighter-rouge">if err != nil { return err }</code>のパターンはあまり出現しない(once per page or two)と書かれていますが、
+プログラムのタイプによっては(例えばいろいろな外部リソースや外部ライブラリをつなぐようなコード)かなりの頻度で <code class="highlighter-rouge">if err != nil</code> を書かざるを得ないことがあるような気がします。
+<code class="highlighter-rouge">if err != nil</code> を入力するショートカット定義したほうがいいんじゃないのという気分になることがたまにあります。</p>
 
 <h2 id="section-5">解決策</h2>
-<p><code>// ...</code> の部分のコードが同じ処理の繰り返しであれば<a href="https://blog.golang.org/errors-are-values">前述のGo Blog</a>に書かれているように <code>if err != nil</code> の繰り返しを避けることが出来ます。<code>if err != nil</code>が繰り返しているなと思ったら、そもそも<code>if err != nil</code>以外の部分も繰り返しになっていないか、繰り返している処理をひとまとめにできないかを考えてみるべきでしょう。</p>
+<p><code class="highlighter-rouge">// ...</code> の部分のコードが同じ処理の繰り返しであれば<a href="https://blog.golang.org/errors-are-values">前述のGo Blog</a>に書かれているように <code class="highlighter-rouge">if err != nil</code> の繰り返しを避けることが出来ます。<code class="highlighter-rouge">if err != nil</code>が繰り返しているなと思ったら、そもそも<code class="highlighter-rouge">if err != nil</code>以外の部分も繰り返しになっていないか、繰り返している処理をひとまとめにできないかを考えてみるべきでしょう。</p>
 
-<p>一方で、このテクニックが利用できるのは<code>...</code>の部分の処理が同じ型の処理の組み合わせでコードをまとめられる場合に限られます。そもそもコードが一定以上繰り返していたらまとめたほうが良いというのは、特に<code>if err != nil</code>とは関係なく行なうべきことでしょう。Goだと関数内の内部で更に関数を定義できるので、関数の一部の処理を気軽にまとめることができます、すばらしいことです。ただ<code>// ...</code>の処理に共通点があまりなく綺麗にまとめることができない場合は、<code>if err != nil</code> の繰り返しは我慢する以外によい解決策はないようです。</p>
+<p>一方で、このテクニックが利用できるのは<code class="highlighter-rouge">...</code>の部分の処理が同じ型の処理の組み合わせでコードをまとめられる場合に限られます。そもそもコードが一定以上繰り返していたらまとめたほうが良いというのは、特に<code class="highlighter-rouge">if err != nil</code>とは関係なく行なうべきことでしょう。Goだと関数内の内部で更に関数を定義できるので、関数の一部の処理を気軽にまとめることができます、すばらしいことです。ただ<code class="highlighter-rouge">// ...</code>の処理に共通点があまりなく綺麗にまとめることができない場合は、<code class="highlighter-rouge">if err != nil</code> の繰り返しは我慢する以外によい解決策はないようです。</p>
 
 <h1 id="return-nil-err--error">return nil, err → このerrorどこで発生したの？</h1>
 <p>Goではエラーハンドリングをきちんと書かなくてはなりません。とはいえ、きちんと書くと言ってもエラーが発生したら単に処理を中断してエラーを呼び出し元に返すことでエラー処理を呼び出し元に丸投げしてしまうことが多いでしょう。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>そして最後に一番外側の処理でエラーを出力します</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="c">// ...</span><span class="x">
   </span><span class="n">result</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="n">doSomething</span><span class="p">()</span><span class="x">
   </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
   </span><span class="p">}</span><span class="x">
   </span><span class="c">// ...</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>プログラムを走らせたらエラーが発生してエラーが出力されました。</p>
 
-<pre><code>Invalid Argument
+<div class="highlighter-rouge"><pre class="highlight"><code>Invalid Argument
 </code></pre>
+</div>
 
 <p>あれ…このエラーどこで発生したの…</p>
 
@@ -352,19 +357,19 @@ Goのエラーには、そのエラーがどこで発生したかというコン
 そのため、エラーハンドリングを呼び出し元に任せるからといってerrorを呼び出し元に何も考えずに返していると最終的にそのエラーがどこで発生したのかが分からなくなってしまいます。
 なので、errorを呼び出しに返すときは手動でエラーのコンテキストを残してあげましょう。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Some context: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>これでエラーがどこで発生したのかが分かるようになります。ただこういうことしてると実は例外で良かったんじゃないかという気分にもなりますが。</p>
 
 <h1 id="defer">関数より狭いスコープで defer</h1>
 <p>C#のusing, Pythonのwithのように他の人気のある言語ではあるスコープから処理が抜ける際に、リソースの解放処理を確実に実行するための機能がサポートされています。<a href="http://www.ne.jp/asahi/hishidama/home/tech/java/statement.html#try_with_resources_statement">Javaでも1.7からtry-with-resources</a>がサポートされています。
-Goではそういった解放処理は<code>defer</code>を使って行います。
-ただC#のusing, Pythonのwith, Javaのtry-with-resourcesと違ってGoの<code>defer</code>は一定のスコープを抜けた時ではなく、関数が終了する際に確実に指定した処理を実行する仕組みです。
-そのため、次のようなコードを書いても<code>r.Close()</code>が実行されるのは <code>if condition</code>のif文のブロックが終了した時ではなく<code>myFunc</code>全体が終了した時になってしまいます。</p>
+Goではそういった解放処理は<code class="highlighter-rouge">defer</code>を使って行います。
+ただC#のusing, Pythonのwith, Javaのtry-with-resourcesと違ってGoの<code class="highlighter-rouge">defer</code>は一定のスコープを抜けた時ではなく、関数が終了する際に確実に指定した処理を実行する仕組みです。
+そのため、次のようなコードを書いても<code class="highlighter-rouge">r.Close()</code>が実行されるのは <code class="highlighter-rouge">if condition</code>のif文のブロックが終了した時ではなく<code class="highlighter-rouge">myFunc</code>全体が終了した時になってしまいます。</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">myFunc</span><span class="p">()</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="p">{</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">myFunc</span><span class="p">()</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="p">{</span><span class="x">
   </span><span class="c">// ...</span><span class="x">
   </span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">os</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="x">
   </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
@@ -376,7 +381,7 @@ Goではそういった解放処理は<code>defer</code>を使って行います
     </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
   </span><span class="p">}</span><span class="x">
   </span><span class="c">// この時点でr.Close()を本当は呼びたいが、myFuncの終了まで呼び出されない。</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <h1 id="structcjava">structとC++/Javaのクラスとの違い</h1>
 <p>これもはまりどころというよりは、Goでコードを書く上で理解しておきたいポイントの整理ですが。
@@ -387,18 +392,18 @@ GoのstructとC++/Javaのクラスの、コードを書く上での理解して�
 
 <p>Goではstructは通常</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span><span class="x">
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span><span class="x">
 </span><span class="n">mydata</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="o">&amp;</span><span class="n">MyData</span><span class="x"> </span><span class="p">{</span><span class="x">
     </span><span class="n">X</span><span class="o">:</span><span class="x"> </span><span class="m">10</span><span class="p">,</span><span class="x">
     </span><span class="n">Y</span><span class="o">:</span><span class="x"> </span><span class="m">20</span><span class="p">,</span><span class="x">
-</span><span class="p">}</span></code></pre></div>
+</span><span class="p">}</span></code></pre></figure>
 
 <p>のように<a href="https://golang.org/ref/spec#Composite_literals">StructType{name: value,…}</a>で初期化します。{name: value}が省略された場合はゼロ初期化されます。Goにはコンストラクタは存在しません。Goであるstructの初期化関数を用意したい場合には、パッケージに生成用の関数を用意します。通常、関数の名前はNew+struct名(+付加情報)のようになります。例えば、bytes.Bufferには []byteからbytes.Bufferを生成する bytes.NewBuffer と string からbytes.Bufferを生成するbytes.NewBufferStringが用意されています。</p>
 
 <h2 id="section-7">ゼロ初期化が避けられない</h2>
 <p>Goでは、structのメンバー変数をパッケージ外に非公開にすることができます。非公開になっているメンバーは他のパッケージから直接編集することはできません。ただし、structがパッケージ外に公開されている場合、例え全ての変数が非公開だったとしても</p>
 
-<div class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">var</span><span class="x"> </span><span class="n">mydata</span><span class="x"> </span><span class="n">MyData</span></code></pre></figure>
 
 <p>のように書かれてしまうと、MyDataの中身は全てゼロ値で初期化されてしまいます。C++/やJavaではコンストラクタに書かれているようにしか非公開のメンバーは変更できないので、メンバーがどのように初期化されるかは明示することができます。しかしGoではそのようなことはできません。structが外部に公開されるのならばstructは全てがゼロ初期化された場合にも正しく動くように常に設計しなくてはならないのです。</p>
 
@@ -406,12 +411,13 @@ GoのstructとC++/Javaのクラスの、コードを書く上での理解して�
 <p>GoではC++のコピーコンストラクタのような仕組みはないので、structのコピーを防止することは不可能です。公開されているstructは他のパッケージのコードで自由にコピーができてしまいます。実はGoははじめのころは非公開のメンバーがあるstructはパッケージ外部ではコピーすることはできませんでした。しかし、<a href="https://go.googlesource.com/go/+/d03611f628c65321b572ab0d4ce85cc61b759fc6">2011年に仕様が変更</a>されて非公開のメンバーが存在してもコピー可能なようになりました。</p>
 
 <p>そのためパッケージ外部に公開されているstructはコピーされても不都合が(あまり)起こらないようにすべきです。コピーされると非常に不都合なstructはinterfaceだけを公開して実際の実装であるstructを隠すか、あるいはコピーされたくないフィールドを別のstructに分離して公開するstructではそのstructへのポインタを保持するようにします。
-例えば<a href="https://golang.org/pkg/os/#File">標準ライブラリのos.File</a>は、ソースコードを見るとファイルディスクリプタなどを管理する private な <code>os.file struct</code> へのポインタとなっています。これはファイルの実体に対応する構造体<code>os.file</code>がコピーされて同じファイルが2回閉じられたりするようなことが起こらないように配慮された結果です。</p>
+例えば<a href="https://golang.org/pkg/os/#File">標準ライブラリのos.File</a>は、ソースコードを見るとファイルディスクリプタなどを管理する private な <code class="highlighter-rouge">os.file struct</code> へのポインタとなっています。これはファイルの実体に対応する構造体<code class="highlighter-rouge">os.file</code>がコピーされて同じファイルが2回閉じられたりするようなことが起こらないように配慮された結果です。</p>
 
-<p>ちなみにos.Fileは<code>*os.file</code>を1つ持つだけの<code>struct</code>ですが、これを<code>type File *file</code>としては意味がありません。なぜなら<code>type File *file</code>としてしまうと、<code>os.File</code>はポインタなので例え<code>os.file</code>が非公開だとしても<code>*</code>演算でポインタの実体が参照できてしまい、<code>*file0 = *file1</code>のように書くことで<code>os.file</code>のコピーがパッケージ外部でもできてしまうからです。</p>
+<p>ちなみにos.Fileは<code class="highlighter-rouge">*os.file</code>を1つ持つだけの<code class="highlighter-rouge">struct</code>ですが、これを<code class="highlighter-rouge">type File *file</code>としては意味がありません。なぜなら<code class="highlighter-rouge">type File *file</code>としてしまうと、<code class="highlighter-rouge">os.File</code>はポインタなので例え<code class="highlighter-rouge">os.file</code>が非公開だとしても<code class="highlighter-rouge">*</code>演算でポインタの実体が参照できてしまい、<code class="highlighter-rouge">*file0 = *file1</code>のように書くことで<code class="highlighter-rouge">os.file</code>のコピーがパッケージ外部でもできてしまうからです。</p>
 
 <h1 id="section-9">型が後置</h1>
-<p>これは慣れです。C, Java系をメインで使っている多くのプログラマには最初は違和感がありますが、まあ割とどちらでもいいなという気分になります。多分。</p>
+<p>これは慣れです。C, Java系をメインで使っている多くのプログラマには最初は違和感がありますが、まあ割とどちらでもいいなという気分になります。
+とはいえ後置の言語と前置の言語両方書いてるとたまに混乱します。</p>
 
 <h1 id="section-10">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
