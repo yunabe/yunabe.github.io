@@ -51,6 +51,37 @@
 
         <p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。Pythonで数値処理や統計処理、機械学習を行う際に<code class="highlighter-rouge">numpy</code>などと共によく利用されます。</p>
 
+<ul id="markdown-toc">
+  <li><a href="#import" id="markdown-toc-import">インストールとimport</a></li>
+  <li><a href="#pandas-dataframe--series" id="markdown-toc-pandas-dataframe--series">pandasの基礎: DataFrame と Series</a>    <ul>
+      <li><a href="#dataframe" id="markdown-toc-dataframe">DataFrame</a></li>
+      <li><a href="#series" id="markdown-toc-series">Series</a></li>
+    </ul>
+  </li>
+  <li><a href="#dataframe--series-" id="markdown-toc-dataframe--series-">DataFrame と Series からデータを取り出す</a>    <ul>
+      <li><a href="#dataframe-" id="markdown-toc-dataframe-">DataFrameと[ ]</a></li>
+      <li><a href="#series-" id="markdown-toc-series-">Seriesと[ ]</a></li>
+    </ul>
+  </li>
+  <li><a href="#dataframeseries" id="markdown-toc-dataframeseries">DataFrame/Seriesの作り方</a>    <ul>
+      <li><a href="#series-1" id="markdown-toc-series-1">Series</a></li>
+      <li><a href="#dataframe-1" id="markdown-toc-dataframe-1">DataFrame</a></li>
+    </ul>
+  </li>
+  <li><a href="#section" id="markdown-toc-section">よく使う機能</a>    <ul>
+      <li><a href="#describe-" id="markdown-toc-describe-">describe(): 各行の統計情報を表示</a></li>
+      <li><a href="#dataframecorr-" id="markdown-toc-dataframecorr-">DataFrame.corr(): 行と行の相関係数を表示</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">ランダムにシャッフルする</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">ランダムサンプリング</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">図として表示</a>        <ul>
+          <li><a href="#section-4" id="markdown-toc-section-4">ヒストグラム</a></li>
+          <li><a href="#section-5" id="markdown-toc-section-5">散布図</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
 <h1 id="import">インストールとimport</h1>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>pip install pandas
