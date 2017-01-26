@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>なぜGo言語(golang)はよい言語なのか・Goでプログラムを書くべきなのか</title>
+  <title>なぜGo言語 (golang) はよい言語なのか・Goでプログラムを書くべき理由</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
   <link rel="stylesheet" href="/css/main.css">
@@ -31,8 +31,8 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">なぜGo言語(golang)はよい言語なのか・Goでプログラムを書くべきなのか</h1>
-          <p class="post-meta"><time datetime="2016-12-15T00:00:00-08:00" itemprop="datePublished">更新 Dec 15, 2016</time></p>
+          <h1 class="post-title" itemprop="name headline">なぜGo言語 (golang) はよい言語なのか・Goでプログラムを書くべき理由</h1>
+          <p class="post-meta"><time datetime="2017-01-26T00:00:00+09:00" itemprop="datePublished">更新 Jan 26, 2017</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -63,22 +63,38 @@
       <li>型があるので自然と実行時パフォーマンスも良い</li>
     </ul>
   </li>
-  <li>シンプルでバランスの取れた言語仕様。習得が比較的容易 (vs. C++, Haskell)
+  <li>標準ライブラリが整備されている (vs. C++)
+    <ul>
+      <li>むしろ標準ライブラリにjsonのparserすら存在しないC++がおかしい…</li>
+    </ul>
+  </li>
+  <li>シンプルでバランスの取れた言語仕様。習得が比較的容易 (vs. C++, Haskell, その他多くの言語)
     <ul>
       <li>すでに１つ手続き型言語をそれなりに使えている人ならば、軽く仕様を読めば何となく使えてしまえると思います。</li>
       <li><a href="golang_pitfall.html">ただ他のメジャーな手続き型言語との違いから来るはまりどころが幾つかある</a>のできちんと理解するのはそれなりに労力は必要。</li>
       <li>とはいえC++とかHaskellよりは確実に簡単だと思う。</li>
     </ul>
   </li>
-  <li>標準ライブラリが整備されている (vs. C++)
+  <li>非知的なプログラマのためにデザインされている。
     <ul>
-      <li>というか標準ライブラリにjsonのパースすら存在しないC++がおかしい…</li>
+      <li>言語デザインとして正しく使うのが難しい、乱用するとプログラムを無意味に複雑にしてしまう機能が排除されている。</li>
+      <li>高度な型システム・継承・Generics・例外・イベントモデルによる並行処理など。</li>
+      <li>面白みに欠くプログラミング言語である。そのようにデザインされている。</li>
     </ul>
   </li>
   <li>スレッドモデルによる並行プログラミング (vs. Node.js)
     <ul>
-      <li>一時期Node.jsなどでイベントモデルによるプログラミングが何故かもてはやされていましたが、<a href="why_events_are_a_bad_idea.html">人類にはイベントモデルは無意味に難しすぎます</a>。</li>
-      <li>言語標準の方法としてgoroutineを使った同期モデルによる並行処理が推奨されているのは素晴らしいデザインだと思います。</li>
+      <li>一時期Node.jsなどでイベントモデルによるプログラミングが何故かもてはやされていましたが、<a href="why_events_are_a_bad_idea.html">人類にはイベントモデルは無意味に難しすぎます</a>。
+        <ul>
+          <li>百害あって一利ぐらいしかない。</li>
+          <li>ようやくJavaScriptですらasync awaitによるスレッドモデルへの回帰がみられる。</li>
+        </ul>
+      </li>
+      <li>言語標準の方法としてgoroutineを使ったスレッドモデルによる並行処理が強く推奨されているのは素晴らしいデザインだと思います。
+        <ul>
+          <li>イベントモデル vs スレッドモデルの不毛な論争をさけることができる。</li>
+        </ul>
+      </li>
     </ul>
   </li>
   <li>Dockerなどの素晴らしい大規模プロジェクトでの実績がある。</li>
@@ -119,14 +135,15 @@
 C++のテンプレートの意味不明なコンパイルエラーに悩まされることはGo言語(golang)ではありません。
 またGenericsも継承と同じように本来使われるべきでない場所で乱用される言語機能の１つだと思います。Go/Javaのinterfaceに相当するもので十分なものに無意味にGenerics (template)が使われていて保守性・可読性の低いコードは特にC++でよく見かけます。そのためカスタムのコンテナを定義するのにGenericsがないのは不便だけれど、Genericsが存在することで生じる複雑性や乱用による不利益を避ける方を選んだのは悪いことではなかったと思います。</p>
 
-<p>一方で、mapと配列以外のカスタムのコンテナが使いたい時にはGenericsがないのは不便なのも確かなので、将来うまい落とし所がみつかることを期待したいです<a href="https://golang.org/doc/faq#generics"><em>(Generics may well be added at some point.)</em></a>。</p>
+<p>一方で、mapと配列以外のカスタムのコンテナが使いたい時にはGenericsがないのは不便なのも確かなので、将来うまい落とし所がみつかることを期待したいです<a href="https://golang.org/doc/faq#generics"><em>(Generics may well be added at some point.)</em></a>。
+現時点でどうしてもGenericsのようなことがやりたければ、<code class="highlighter-rouge">go generate</code>でコードを自動生成するのも１つの手ではあります。あまり多用しすぎない方がよいのかなとは思いますが。</p>
 
 <h1 id="section-1">継承がない</h1>
 <p><a href="https://golang.org/doc/faq#inheritance">Goには継承はありません</a>。
 <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">そもそも継承はプログラミング言語にあまり必要ない機能だと思います</a>。
 継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっていることが多いと思います。<a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>や<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B9%E3%82%B3%E3%83%95%E3%81%AE%E7%BD%AE%E6%8F%9B%E5%8E%9F%E5%89%87">リスコフの置換原則</a>のような基本的な原則が守られておらず(そもそも多くの人は名前すら知らない)、単に一部のコードをクラス間で共有するために継承が使われていて可読性が著しく低いコードもよく目にします。</p>
 
-<p>そのため、そもそもプログラミング言語が継承をサポートしないというのは良いデザインだなと思います。継承が非常に有益な場合があるもの分かりますが、正しく使われない害のほうが確実に大きいと思います。</p>
+<p>そのため、そもそもプログラミング言語が継承をサポートしないというのは非常に良いデザインだなと思います。継承が非常に有益な場合も稀にあるもの分かりますが、大規模プロジェクトにおいては正しく使われない害のほうが確実に大きいです。</p>
 
 <h1 id="errors-as-values-">Errors as values (例外が推奨されない)</h1>
 <p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
@@ -163,7 +180,7 @@ They’re not capable of understanding a brilliant language but we want to use t
 So, the language that we give them has to be easy for them to understand and easy to adopt.</p>
 </blockquote>
 
-<p>要するにGoogle社員のような研究者ではなく、大学を出たばかりでC++, Java, Pythonの経験しかないような、「素晴らしいプログラミング言語」を理解する能力が欠けているエンジニアでも簡単に理解し、大きなシステムを構築するのに使えるようにGo言語はデザインされているのです。</p>
+<p>要するにGoogle社員のような、研究者ではなく大学を出たばかりでC++, Java, Pythonの経験しかない「素晴らしいプログラミング言語」を理解する能力が欠けているエンジニアでも簡単に理解し、大きなシステムを構築するのに使えるようにGo言語はデザインされているのです。</p>
 
 <p>Goは言語デザインとして正しく使うのが難しい、乱用するとプログラムを無意味に複雑にしてしまう機能が排除されています(高度な型システム・継承・Generics・例外・イベントモデルによる並行処理など)。
 そのため、ある意味ではGoは「知的な」プログラマにとっては面白みに欠く言語だと思います。実際、Goを勉強しても概念的には目新しいものはなくて勉強することそのもので何かが学べるとは僕は全く思いません。
