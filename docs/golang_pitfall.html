@@ -9,6 +9,8 @@
   <title>Go言語(Golang) はまりどころと解決策</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/golang_pitfall.html">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.yunabe.jp/docs/golang_pitfall.html">
   <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
@@ -81,9 +83,10 @@
       <li><a href="#section-8" id="markdown-toc-section-8">コピーされるのが避けられない</a></li>
     </ul>
   </li>
-  <li><a href="#section-9" id="markdown-toc-section-9">型が後置</a></li>
-  <li><a href="#section-10" id="markdown-toc-section-10">1.0 が浮動小数点型にならない(時がある)</a></li>
-  <li><a href="#section-11" id="markdown-toc-section-11">名前が…</a></li>
+  <li><a href="#section-9" id="markdown-toc-section-9">キャストという概念がない</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">型が後置</a></li>
+  <li><a href="#section-11" id="markdown-toc-section-11">1.0 が浮動小数点型にならない(時がある)</a></li>
+  <li><a href="#section-12" id="markdown-toc-section-12">名前が…</a></li>
 </ul>
 
 <h1 id="interface-nil-gointerface">interface とnil (Goのinterfaceは単なる参照ではない)</h1>
@@ -415,14 +418,58 @@ GoのstructとC++/Javaのクラスの、コードを書く上での理解して�
 
 <p>ちなみにos.Fileは<code class="highlighter-rouge">*os.file</code>を1つ持つだけの<code class="highlighter-rouge">struct</code>ですが、これを<code class="highlighter-rouge">type File *file</code>としては意味がありません。なぜなら<code class="highlighter-rouge">type File *file</code>としてしまうと、<code class="highlighter-rouge">os.File</code>はポインタなので例え<code class="highlighter-rouge">os.file</code>が非公開だとしても<code class="highlighter-rouge">*</code>演算でポインタの実体が参照できてしまい、<code class="highlighter-rouge">*file0 = *file1</code>のように書くことで<code class="highlighter-rouge">os.file</code>のコピーがパッケージ外部でもできてしまうからです。</p>
 
-<h1 id="section-9">型が後置</h1>
-<p>これは慣れです。C, Java系をメインで使っている多くのプログラマには最初は違和感がありますが、まあ割とどちらでもいいなという気分になります。
+<h1 id="section-9">キャストという概念がない</h1>
+<p>Go (golang) にはキャストがありません。そもそもC++やJavaのキャストは
+- プリミティブ型のデータ変換(int→float)
+- 親クラス、インターフェイスへの参照をサブクラス参照へと型を変更(Object→String)
+という2つの全く異なる処理が「キャスト」という概念に統合されてしまっています。
+そのため<a href="http://www.yunabe.jp/docs/cpp_casts.html">C++では旧来のキャストに加えて4つのキャスト演算がサポートされたりしています</a>。
+Goではこの２つの処理は全く異なるシンタックスで扱われます。そもそも全く異なる処理なのだから、Goのやり方のほうが正しいです。</p>
+
+<ul>
+  <li>プリミティブ型のデータ変換
+    <ul>
+      <li><code class="highlighter-rouge">int</code>→<code class="highlighter-rouge">float</code>などのプリミティブ型間のデータ変換には <code class="highlighter-rouge">newtype(val)</code> を使います。</li>
+      <li><code class="highlighter-rouge">int64(f)</code>, <code class="highlighter-rouge">float64(i)</code> など</li>
+      <li><code class="highlighter-rouge">[]byte</code>と<code class="highlighter-rouge">string</code>の変換も非常によく使います。<code class="highlighter-rouge">[]byte(str)</code>, <code class="highlighter-rouge">string(binary)</code></li>
+    </ul>
+  </li>
+  <li>interfaceから実体を取り出す
+    <ul>
+      <li><code class="highlighter-rouge">obj.(subType)</code>という少し風変わりなシンタックスで処理します。</li>
+      <li>Javaで親クラスからサブクラスに、インターフェイスからサブインターフェイスに変換するのに相当する処理です。
+interfaceからその実体のstructやstructのポインタ、あるいはより詳細なinterfaceに変換します。</li>
+      <li>このシンタックスは3通りの使い方があります。</li>
+      <li><code class="highlighter-rouge">s := obj.(*myStruct)</code>
+        <ul>
+          <li>interface <code class="highlighter-rouge">obj</code>を<code class="highlighter-rouge">*myStruct</code>として扱えるかをチェックし、可能な場合は<code class="highlighter-rouge">*myStruct</code>を取り出します。
+そうでない場合は<strong>panic</strong>します。</li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">s, ok := obj.(*myStruct)</code>
+        <ul>
+          <li>上記とほぼ同じですが、panicする代わりにチェック結果を<code class="highlighter-rouge">bool</code>値の<code class="highlighter-rouge">ok</code>に格納します。<code class="highlighter-rouge">ok</code>であって<code class="highlighter-rouge">error</code>でないので注意。</li>
+          <li>失敗した場合は、<code class="highlighter-rouge">s</code>には<code class="highlighter-rouge">nil</code>などが入ります。</li>
+        </ul>
+      </li>
+      <li><a href="https://golang.org/doc/effective_go.html#type_switch">type switch</a>
+        <ul>
+          <li><code class="highlighter-rouge">s, ok := obj.(subType)</code>を複数の型に対して行って条件分岐するのを簡潔に記述するための特殊な構文が用意されています。</li>
+        </ul>
+      </li>
+      <li><a href="https://play.golang.org/p/7TQNQZxEbZ">An example on Go Playground</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="section-10">型が後置</h1>
+<p>これは慣れです。C, Java系をメインで使っている多くのプログラマには最初は違和感があります。でも使っていれば割とどちらでもいいなという気分になります。
 とはいえ後置の言語と前置の言語両方書いてるとたまに混乱します。</p>
 
-<h1 id="section-10">1.0 が浮動小数点型にならない(時がある)</h1>
+<h1 id="section-11">1.0 が浮動小数点型にならない(時がある)</h1>
 <p>https://play.golang.org/p/JjB2WDohT3</p>
 
-<h1 id="section-11">名前が…</h1>
+<h1 id="section-12">名前が…</h1>
 <p>何でこんな検索しにくい名前なのだろうな…結果golangで検索する羽目になるなら最初からgolangという名前だったらまだ良かったのにと思います。</p>
 
         <div>
@@ -481,13 +528,11 @@ GoのstructとC++/Javaのクラスの、コードを書く上での理解して�
     <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
-  console.log(fjs);
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3";
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
   fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
+  }(document, 'script', 'facebook-jssdk'));</script>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <script src="https://apis.google.com/js/platform.js" async defer>
   {lang: 'ja'}

@@ -9,6 +9,8 @@
   <title>C++と4つのキャスト演算</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/cpp_casts.html">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.yunabe.jp/docs/cpp_casts.html">
   <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
@@ -98,7 +100,7 @@
 <span class="o">//</span> <span class="n">Note</span><span class="o">:</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">causes</span> <span class="n">a</span> <span class="n">compile</span> <span class="n">error</span><span class="p">.</span></code></pre></figure>
 
 <h1 id="constcast">const_cast</h1>
-<p>型にconstをつけたり外したりするのに使えます。驚くべきことにC++では<code class="highlighter-rouge">const_cast</code>を使って型についているconstを外すことが許されています。
+<p>ポインタ型、参照型に<code class="highlighter-rouge">const</code>をつけたり外したりするのに使えます。驚くべきことにC++では<code class="highlighter-rouge">const_cast</code>を使って型についているconstを外すことが許されています。
 とはいえ当然<code class="highlighter-rouge">const</code>はこの変数は今後変更されないということを表しているのですから、それを解除してしまうのは問題があります。
 互換性などの問題でどうしても使わざるを得ない場合以外では使うべきではないでしょう。
 逆に<code class="highlighter-rouge">const</code>へのキャストで一番多いのは<code class="highlighter-rouge">const &amp;</code>な関数の引数として変数を渡す場合だと思いますが、この場合にわざわざ<code class="highlighter-rouge">const_cast</code>をつけることはあまりしないと思うので、結局<code class="highlighter-rouge">const_cast</code>を使うことはあまりないです。</p>
@@ -161,13 +163,11 @@
     <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
-  console.log(fjs);
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3";
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
   fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
+  }(document, 'script', 'facebook-jssdk'));</script>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <script src="https://apis.google.com/js/platform.js" async defer>
   {lang: 'ja'}

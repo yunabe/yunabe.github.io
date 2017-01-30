@@ -9,6 +9,8 @@
   <title>なぜGo言語 (golang) はよい言語なのか・Goでプログラムを書くべき理由</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/why_golang_is_good.html">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.yunabe.jp/docs/why_golang_is_good.html">
   <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
@@ -112,6 +114,7 @@
 ただしそれでもはまりどころはいくつもあるので</li>
   <li>いくつかの”クール”な言語機能がGo言語 (golang) ではサポートされて<strong>いない</strong>。代表的なものは
 「例外」、「Generics (template)」、「継承」</li>
+  <li><a href="golang_pitfall.html">ただ他のメジャーな手続き型言語との違いから来るはまりどころが幾つかある</a>のできちんと理解するのはそれなりに労力は必要ではある点は注意。</li>
 </ul>
 
 <h1 id="go">なぜGoは”悪い”言語なのか</h1>
@@ -243,13 +246,11 @@ So, the language that we give them has to be easy for them to understand and eas
     <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
-  console.log(fjs);
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3";
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
   fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
+  }(document, 'script', 'facebook-jssdk'));</script>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <script src="https://apis.google.com/js/platform.js" async defer>
   {lang: 'ja'}
