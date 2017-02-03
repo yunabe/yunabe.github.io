@@ -52,13 +52,22 @@
 </div>
 
         <ul id="markdown-toc">
-  <li><a href="#domain" id="markdown-toc-domain">domain属性</a></li>
-  <li><a href="#path" id="markdown-toc-path">path属性</a></li>
-  <li><a href="#max-age--expire" id="markdown-toc-max-age--expire">max-age と expire</a></li>
-  <li><a href="#secure" id="markdown-toc-secure">secure</a></li>
-  <li><a href="#httponly" id="markdown-toc-httponly">httponly</a></li>
-  <li><a href="#port" id="markdown-toc-port">クッキーとport番号</a></li>
-  <li><a href="#cookie-" id="markdown-toc-cookie-">Cookie が絡むセキュリティ関係の問題</a></li>
+  <li><a href="#set-cookie--cookie-" id="markdown-toc-set-cookie--cookie-">Set-Cookie ヘッダを使って Cookie を保存する</a></li>
+  <li><a href="#cookie-" id="markdown-toc-cookie-">Cookie を参照する</a></li>
+  <li><a href="#javascript--cookie-" id="markdown-toc-javascript--cookie-">JavaScript を使って Cookie を保存・参照する</a></li>
+  <li><a href="#cookie--1" id="markdown-toc-cookie--1">Cookie の属性</a>    <ul>
+      <li><a href="#domain" id="markdown-toc-domain">domain属性</a></li>
+      <li><a href="#path" id="markdown-toc-path">path属性</a></li>
+      <li><a href="#max-age--expire" id="markdown-toc-max-age--expire">max-age と expire</a></li>
+      <li><a href="#secure" id="markdown-toc-secure">secure</a></li>
+      <li><a href="#httponly" id="markdown-toc-httponly">httponly</a></li>
+    </ul>
+  </li>
+  <li><a href="#section" id="markdown-toc-section">その他</a>    <ul>
+      <li><a href="#port" id="markdown-toc-port">クッキーとport番号</a></li>
+    </ul>
+  </li>
+  <li><a href="#cookie--2" id="markdown-toc-cookie--2">Cookie が絡むセキュリティ関係の問題</a></li>
 </ul>
 
 <p>このドキュメントの目的は Cookie
@@ -67,7 +76,7 @@
 などを参考にして下さい。 ここでは Cookie
 がどういうものかは大体理解しているという前提で、仕様の確認をしていきます。</p>
 
-<p>#Set-Cookie ヘッダを使って Cookie を保存する</p>
+<h1 id="set-cookie--cookie-">Set-Cookie ヘッダを使って Cookie を保存する</h1>
 
 <p>Cookie を設定する一番基本的な方法は HTTPヘッダ の Set-Cookie
 を使う方法です。</p>
@@ -102,7 +111,7 @@ Set-Cookie: name1=value1
 </code></pre>
 </div>
 
-<p>#Cookie を参照する</p>
+<h1 id="cookie-">Cookie を参照する</h1>
 
 <p><code class="highlighter-rouge">Set-Cookie</code> で保存された Cookie は、HTTP Request の Cookie
 ヘッダとしてブラウザからサーバーに送信されます。 Cookie ヘッダは</p>
@@ -143,7 +152,7 @@ Set-Cookie: myname=value1; www.example.com; path=/
 
 <p>のように同じ名前のCookieを２つサーバーに送るようになります。</p>
 
-<p>#JavaScript を使って Cookie を保存・参照する</p>
+<h1 id="javascript--cookie-">JavaScript を使って Cookie を保存・参照する</h1>
 
 <p>document.cookie というプロパティを利用して JavaScript から cookie
 を設定したり参照することができます。</p>
@@ -185,7 +194,7 @@ document.cookie = "name1=value1";
 クッキーは削除されず、<code class="highlighter-rouge">document.cookie</code>
 を読んだ時に得られる値も変化しません。</p>
 
-<p>#Cookie の属性</p>
+<h1 id="cookie--1">Cookie の属性</h1>
 
 <h2 id="domain">domain属性</h2>
 
@@ -298,11 +307,11 @@ HttpOnly属性をつけておくとクッキーが XSS
 JavaScript から読み取る必要がないクッキーには HttpOnly
 を忘れずに付けておいたほうが良いでしょう。</p>
 
-<p>#その他</p>
+<h1 id="section">その他</h1>
 
 <h2 id="port">クッキーとport番号</h2>
 
-<h1 id="cookie-">Cookie が絡むセキュリティ関係の問題</h1>
+<h1 id="cookie--2">Cookie が絡むセキュリティ関係の問題</h1>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
