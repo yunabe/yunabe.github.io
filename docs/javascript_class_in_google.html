@@ -368,7 +368,7 @@ chain) と呼ばれるものです。</p>
 <span class="nx">Employee</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// 親クラスのメソッドを呼び出す場合は親クラスの prototype に</span>
   <span class="c1">// 定義されているメソッドを call を使って呼び出す。</span>
-  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">.</span><span class="nx">call</span><span class="p">();</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Salary is '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">salary</span><span class="p">);</span>
 <span class="p">};</span></code></pre></figure>
 
