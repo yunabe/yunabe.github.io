@@ -419,10 +419,14 @@ GoのstructとC++/Javaのクラスの、コードを書く上での理解して�
 <p>ちなみにos.Fileは<code class="highlighter-rouge">*os.file</code>を1つ持つだけの<code class="highlighter-rouge">struct</code>ですが、これを<code class="highlighter-rouge">type File *file</code>としては意味がありません。なぜなら<code class="highlighter-rouge">type File *file</code>としてしまうと、<code class="highlighter-rouge">os.File</code>はポインタなので例え<code class="highlighter-rouge">os.file</code>が非公開だとしても<code class="highlighter-rouge">*</code>演算でポインタの実体が参照できてしまい、<code class="highlighter-rouge">*file0 = *file1</code>のように書くことで<code class="highlighter-rouge">os.file</code>のコピーがパッケージ外部でもできてしまうからです。</p>
 
 <h1 id="section-9">キャストという概念がない</h1>
-<p>Go (golang) にはキャストがありません。そもそもC++やJavaのキャストは
-- プリミティブ型のデータ変換(int→float)
-- 親クラス、インターフェイスへの参照をサブクラス参照へと型を変更(Object→String)
-という2つの全く異なる処理が「キャスト」という概念に統合されてしまっています。
+<p>Go (golang) にはキャストがありません。そもそもC++やJavaのキャストは</p>
+
+<ul>
+  <li>プリミティブ型のデータ変換(int→float)</li>
+  <li>親クラス、インターフェイスへの参照をサブクラス参照へと型を変更(Object→String)</li>
+</ul>
+
+<p>という2つの全く異なる処理が「キャスト」という概念に統合されてしまっています。
 そのため<a href="http://www.yunabe.jp/docs/cpp_casts.html">C++では旧来のキャストに加えて4つのキャスト演算がサポートされたりしています</a>。
 Goではこの２つの処理は全く異なるシンタックスで扱われます。そもそも全く異なる処理なのだから、Goのやり方のほうが正しいです。</p>
 
