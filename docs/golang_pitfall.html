@@ -34,7 +34,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">Go言語(Golang) はまりどころと解決策</h1>
-          <p class="post-meta"><time datetime="2017-03-08T00:00:00+09:00" itemprop="datePublished">更新 Mar 8, 2017</time></p>
+          <p class="post-meta"><time datetime="2017-04-14T00:00:00+09:00" itemprop="datePublished">更新 Apr 14, 2017</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -64,6 +64,7 @@
   </li>
   <li><a href="#this-selfnil" id="markdown-toc-this-selfnil">メソッド内でレシーバ(this, self)がnilでないことをチェックすることに意味がある</a></li>
   <li><a href="#errorerror" id="markdown-toc-errorerror">errorしか返り値がない関数でerrorを処理し忘れる</a></li>
+  <li><a href="#defer--error-" id="markdown-toc-defer--error-">defer の中で発生した error を処理し忘れる</a></li>
   <li><a href="#section-2" id="markdown-toc-section-2">基本型がメソッドを持たない</a></li>
   <li><a href="#string" id="markdown-toc-string">stringが単なるバイト列</a></li>
   <li><a href="#section-3" id="markdown-toc-section-3">継承がない</a></li>
@@ -197,6 +198,52 @@ Value: &lt;invalid reflect.Value&gt;
 <iframe src="https://play.golang.org/p/E9UM39VxQx" frameborder="0" style="width: 100%; height: 400px"><a href="https://play.golang.org/p/E9UM39VxQx">see this code in play.golang.org</a></iframe>
 
 <p>例えば上のコードは<code class="highlighter-rouge">"not json"</code>はjsonとしてパース出来ないのでエラーが発生しますが、コンパイル時にはエラーが無視されていることは検出されません。これに関しては気をつける以外に解決策はないと思います。</p>
+
+<h1 id="defer--error-">defer の中で発生した error を処理し忘れる</h1>
+<p>Go (golang) ではファイルを閉じたりセッションを閉じたりといった、リソースの解放処理は<code class="highlighter-rouge">defer</code>で行います。
+<code class="highlighter-rouge">defer x.Close()</code>みたいなコードを書くことが多くあると思います。
+<a href="https://blog.golang.org/defer-panic-and-recover">Go Blog の defer, panic and recover</a>にも似たようなコードがあります。</p>
+
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">WriteSomeData</span><span class="p">()</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">w</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">OpenData</span><span class="p">()</span><span class="x">
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">w</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">w</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="s">"...."</span><span class="p">);</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="c">// Write more to w...</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>このコード問題ないようにみえます。そもそもGo Blogほぼ同じものが書かれているのだから問題がないはずです。</p>
+
+<p>しかしこのコードでは重大なことが忘れ去られてしまっています。<code class="highlighter-rouge">Close</code>の定義は<a href="https://golang.org/pkg/io/#Closer"><code class="highlighter-rouge">Close() error</code></a>でありエラーを返す可能性があるのです。現実のコードでは<code class="highlighter-rouge">Close()</code>でエラーが発生するような場合は<code class="highlighter-rouge">Close()</code>よりも前の段階の処理でエラーが発生しがちなので<code class="highlighter-rouge">Close()</code>のエラーを無視してしまっていても、あまり問題にならないのかもしれません。しかし<code class="highlighter-rouge">Close() error</code>がエラーを返す以上、ライブラリや状況によっては重要なエラーが<code class="highlighter-rouge">Close()</code>の段階になって初めて発生する可能性も十分にありえます。その場合にはエラーは完全に消失してしまうので実行結果がおかしいけれどエラーはどこにも出ないという非常に厄介な状態になります。そのため、<code class="highlighter-rouge">defer</code>で関数を呼び出す場合はその関数が<code class="highlighter-rouge">error</code>を返すことがないか慎重にチェックすべきです。Go Blogの記事ではチェックされていませんが。</p>
+
+<p>問題はどのように関数の終了し返り値も決定された後に実行される<code class="highlighter-rouge">defer</code>の内部で生じた<code class="highlighter-rouge">error</code>を処理するかです。結論としては<code class="highlighter-rouge">defer</code>内部で発生した<code class="highlighter-rouge">error</code>を処理するのには名前付き返り値を利用します。</p>
+
+<figure class="highlight"><pre><code class="language-golang" data-lang="golang"><span class="k">func</span><span class="x"> </span><span class="n">WriteSomeData</span><span class="p">()</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">w</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">OpenData</span><span class="p">()</span><span class="x">
+    </span><span class="k">defer</span><span class="x"> </span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">cerr</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">w</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+        </span><span class="k">if</span><span class="x"> </span><span class="n">cerr</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="k">return</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+        </span><span class="n">err</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Failed to close: %v, the original error was %v"</span><span class="p">,</span><span class="x"> </span><span class="n">cerr</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+    </span><span class="p">}()</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">w</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="s">"...."</span><span class="p">);</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="c">// Write more to w...</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>このように<code class="highlighter-rouge">defer</code>の中で発生した<code class="highlighter-rouge">error</code>を呼び出し元に返すには</p>
+
+<ul>
+  <li>返り値の<code class="highlighter-rouge">error</code>を<code class="highlighter-rouge">defer</code>から上書きできるように名前(<code class="highlighter-rouge">err</code>)をつけておく</li>
+  <li><code class="highlighter-rouge">defer</code>で直接<code class="highlighter-rouge">w.Close()</code>を呼ぶのではなく、<code class="highlighter-rouge">w.Close()</code>の返り値をチェックしてエラーが発生したら<code class="highlighter-rouge">err</code>を上書きするような関数を呼び出す</li>
+  <li><code class="highlighter-rouge">err</code>の元の値にも重要なエラー情報が入っている可能性があるので、間違って <code class="highlighter-rouge">err = w.Close()</code> などとして上書きして消してしまわないように注意が必要。</li>
+</ul>
+
+<p>うーん随分冗長ですね。これは間違えやすいように思いますし、もう少し賢くとりあつかえるように言語仕様が変わるとうれしいですね。
+<code class="highlighter-rouge">error</code>を明示的に扱わなければ行けない一方、うっかり<code class="highlighter-rouge">error</code>を処理し損なうと<code class="highlighter-rouge">error</code>が完全にどこかに消えてしまうのはエラー処理に例外を使用しないGoの割りと致命的な欠陥のように思うので、将来うまく扱う方法が現れるとよいです。</p>
 
 <h1 id="section-2">基本型がメソッドを持たない</h1>
 <p><a href="https://golang.org/doc/faq#methods_on_basics">例えばstringがlenをメソッドとして持ちません</a>。これは<a href="https://msdn.microsoft.com/ja-jp/library/system.int32.aspx">C#とかではintですらメソッドを持つ</a>のと真逆を行くように思える。
