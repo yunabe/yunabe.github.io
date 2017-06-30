@@ -34,7 +34,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">なぜGo言語 (golang) はよい言語なのか・Goでプログラムを書くべき理由</h1>
-          <p class="post-meta"><time datetime="2017-01-26T00:00:00+09:00" itemprop="datePublished">更新 Jan 26, 2017</time></p>
+          <p class="post-meta"><time datetime="2017-04-22T00:00:00+09:00" itemprop="datePublished">更新 Apr 22, 2017</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -100,6 +100,15 @@
     </ul>
   </li>
   <li>Dockerなどの素晴らしい大規模プロジェクトでの実績がある。</li>
+  <li>実行環境としてJVMやインタープリタを必要としないのでデプロイが軽量で済むし、比較的容易である。
+    <ul>
+      <li>純粋にGoで書かれた(<a href="https://golang.org/cmd/cgo/"><code class="highlighter-rouge">cgo</code></a>を使っていない)プログラムであれば<code class="highlighter-rouge">CGO_ENABLED=0</code>と一緒にコンパイルすると生成されるプログラムは静的リンクされたものとなる。</li>
+      <li>単一ファイルをデプロイするだけでよいのでデプロイが容易。</li>
+      <li>とはいえ仮想マシンやコンテナで環境をまるごとデプロイする既存の技術が発達している現在では容易さによるメリットは限定的。</li>
+      <li>実行に必要となるものが少ないので仮想マシンやコンテナのサイズは小さくて済むのでデプロイはその分軽量になる。</li>
+      <li>例えば<a href="https://github.com/yunabe/codelab/tree/master/docker/simpleserver">DockerのAlpineイメージと組み合わせて20~30MB程度の軽量なDockerコンテナでデプロイができます。</a></li>
+    </ul>
+  </li>
 </ul>
 
 <h1 id="section">シンプルでバランスの取れた言語仕様</h1>
@@ -189,6 +198,17 @@ So, the language that we give them has to be easy for them to understand and eas
 そのため、ある意味ではGoは「知的な」プログラマにとっては面白みに欠く言語だと思います。実際、Goを勉強しても概念的には目新しいものはなくて勉強することそのもので何かが学べるとは僕は全く思いません。
 一方でプログラミング言語を習得することのゴールは、それを使って何か大規模なソフトウェアをチームで作ることであるのだと思います。
 チームで大規模なソフトウェアを開発することはそれ自体が非常に難しいことです。そのゴールのためにプログラミング言語自体はシンプルに保ち、それ以外の部分により多くの労力をさけるようにするというのは僕は正しい判断だと思います。</p>
+
+<h1 id="section-2">関連記事</h1>
+<ul>
+  <li><a href="/docs/golang_pitfall.html">Go言語(Golang) はまりどころと解決策</a>
+    <ul>
+      <li>僕がGoを使い始めたときにはまったところをまとめてあります。
+C++, C#, Java, Pythonなどの経験者がGoを始めるときに、気をつけておくとよいなと思った点がまとめてあります。
+僕と同じ間違えをして時間を無駄にする人が少しでも減るとうれしい。</li>
+    </ul>
+  </li>
+</ul>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
