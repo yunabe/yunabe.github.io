@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>easycsv - Go言語 (golang) でcsvを手軽に扱うためのライブラリ</title>
+  <meta name="description" content="">
+  <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/easycsv_golang_ja.html">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/easycsv_golang_ja.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    }
+  </script>
+</head>
+
+
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">easycsv - Go言語 (golang) でcsvを手軽に扱うためのライブラリ</h1>
+          <p class="post-meta"><time datetime="2017-04-22T00:00:00+09:00" itemprop="datePublished">更新 Apr 22, 2017</time></p>
+        </header>
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <h1 id="easycsv">easycsv</h1>
+<p><a href="https://github.com/yunabe/easycsv">easycsv</a> はより高機能なGo言語 (golang)のcsvライブラリです。</p>
+
+<h1 id="section">特徴</h1>
+<ul>
+  <li>CSVファイルの読み込みを標準の<code class="highlighter-rouge">encoding/csv</code>よりも短いコードで実装できます。エラー関係の定型的なコードを省略してコードが簡潔になります。</li>
+  <li>CSV読み込み先のデータ型に合わせて自動的に<code class="highlighter-rouge">string</code>からの変換が行われます。</li>
+  <li><code class="highlighter-rouge">encoding/csv</code>と同じようにReaderをカスタマイズしてTSVファイルなどを取り扱うことも可能。</li>
+</ul>
+
+<h1 id="links">Links</h1>
+<ul>
+  <li><a href="https://github.com/yunabe/easycsv">yunabe/easycsv GitHub</a></li>
+  <li><a href="https://godoc.org/github.com/yunabe/easycsv">yunabe/easycsv godoc</a></li>
+</ul>
+
+<h1 id="section-1">インストール</h1>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>go get -u github.com/yunabe/easycsv
+</code></pre>
+</div>
+
+<h1 id="section-2">クイック ツアー</h1>
+
+<h2 id="csvstruct">CSVをstructとして読み込む</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
+</span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="k">for</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">entry</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Done</span><span class="p">();</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<h2 id="csvloop">CSVをLoopメソッドを使って読み込む</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
+</span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
+</span><span class="p">})</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">})</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<h1 id="section-3">使い方</h1>
+
+<h2 id="newreader">NewReader</h2>
+<p>easycsvの中心となるのが、<a href="https://godoc.org/github.com/yunabe/easycsv#Reader"><code class="highlighter-rouge">Reader</code></a>です。easycsvでのcsvの読み込みは全てReaderを使って行います。
+Readerは io.Reader, io.ReadCloser そしてファイルパスから作成することが可能です。</p>
+
+<ul>
+  <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReader">NewReader</a>
+    <ul>
+      <li><code class="highlighter-rouge">easycsv.Reader</code> を <code class="highlighter-rouge">io.Reader</code> から作成します.</li>
+    </ul>
+  </li>
+  <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReadCloser">NewReadCloser</a>
+    <ul>
+      <li><code class="highlighter-rouge">easycsv.Reader</code> を <code class="highlighter-rouge">io.ReadCloser</code> から作成します.</li>
+    </ul>
+  </li>
+  <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReaderFile">NewReaderFile</a>
+    <ul>
+      <li><code class="highlighter-rouge">easycsv.Reader</code> をファイルパスから作成します。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>NewReadCloserあるいはNewReaderFileによって作成された場合、Readerは終了時に内部のファイルを自動的に閉じます。
+そのため、Closeを読んだ場合のエラーハンドリングの定型的なコードなど省略してすっきりしたコードを書くことができます。</p>
+
+<h2 id="read">Read</h2>
+<p>There are three methods to read CSV with <code class="highlighter-rouge">easycsv.Reader</code>. Read, Loop and ReadAll.
+We are looking into <a href="https://godoc.org/github.com/yunabe/easycsv#Reader.Read"><code class="highlighter-rouge">Read</code></a> method first, which is the most basic and naive way to read CSV with Reader.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Read</span><span class="p">(</span><span class="n">e</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="kt">bool</span><span class="x">
+</span></code></pre>
+</div>
+
+<p><a href="https://godoc.org/github.com/yunabe/easycsv#Reader.Read"><code class="highlighter-rouge">Read</code></a> receives a pointer to a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a pointer to a slice of a primitive type (e.g. <code class="highlighter-rouge">*[]int</code>).
+If it reads a new row from CSV successufly, it stores the row into <code class="highlighter-rouge">e</code> and returns <code class="highlighter-rouge">true</code>.
+If <code class="highlighter-rouge">Reader</code> reached to <code class="highlighter-rouge">EOF</code> or it fails to read a new row for some reasons, it returns <code class="highlighter-rouge">false</code>.
+<code class="highlighter-rouge">Read</code> returns <code class="highlighter-rouge">false</code> for various reasons. To know the reason, you have to call <code class="highlighter-rouge">Done()</code> subsequently.
+<code class="highlighter-rouge">Done</code> returns an error if <code class="highlighter-rouge">Read</code> encountered an error.
+<code class="highlighter-rouge">Done</code> returns <code class="highlighter-rouge">nil</code> if <code class="highlighter-rouge">Read</code> returned <code class="highlighter-rouge">false</code> because it reached to <code class="highlighter-rouge">EOF</code>.</p>
+
+<p>You can pass two types of pointers to Read. A pointer to a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or  a pointer to a slice of primitive typs (e.g. <code class="highlighter-rouge">*[]int</code>). Passing a pointer to a struct is more convenient.
+When you use a struct, you need to specify how to map CSV columns to the struct’s field using struct field’s tags.
+Here are examples:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`name:"name"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`name:"age"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<p>You can use <code class="highlighter-rouge">index</code> tag or <code class="highlighter-rouge">name</code> tag to specify the mapping.
+When <code class="highlighter-rouge">index</code> is used, Read maps <code class="highlighter-rouge">index</code>-th (0-based) column to the field.
+In the first example, the frist column is mapped to Name and the second column is mapped to Age.
+When <code class="highlighter-rouge">name</code> is used, Read uses the first line of CSV as a header with column names and maps columns to fields based on the column names in the header. In the second example, give that the content of CSV is the following,</p>
+
+<pre><code class="language-csv">age,name
+10,Alice
+20,Bob
+</code></pre>
+
+<p>the frist column is mapped to Age and the second column is mapped to Name. So <code class="highlighter-rouge"><span class="p">{</span><span class="err">Alice</span><span class="w"> </span><span class="err">10</span><span class="p">}</span></code> and <code class="highlighter-rouge"><span class="p">{</span><span class="err">Bob</span><span class="w"> </span><span class="err">20</span><span class="p">}</span></code> are stored to the struct respectively. You can not use both <code class="highlighter-rouge">index</code> tag and <code class="highlighter-rouge">name</code> tag in the same struct. Read reports an error in that case.</p>
+
+<p>If you pass a pointer to a slice to Read, Read converts CSV row into the slice and fills it to the argument.
+If the argument <code class="highlighter-rouge">e</code> is invalid, Read returns false immediately and the reason of the error is reported by <code class="highlighter-rouge">Done()</code>.</p>
+
+<p>The conversion from CSV row (string) to the given field type (int, float32, bool, etc…) is handled in Reader automatically.</p>
+
+<p>When you read CSV with <code class="highlighter-rouge">Read</code> methods, you have to always call <code class="highlighter-rouge">Done()</code> subsequently to (1) check the error and (2) close the file behind the Reader when it is instantiated with <code class="highlighter-rouge">NewReadCloser</code> or <code class="highlighter-rouge">NewReaderFile</code>. If you forget to call <code class="highlighter-rouge">Done()</code>, the error will be completely gone.</p>
+
+<h2 id="loop">Loop</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Loop</span><span class="p">(</span><span class="n">body</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x">
+</span></code></pre>
+</div>
+
+<p>Loop reads CSV a line by line and executes <code class="highlighter-rouge">body</code> with a line everytime it reads a line.
+<code class="highlighter-rouge">body</code> must be a function that receives a struct (e.g. <code class="highlighter-rouge">myStruct</code>), a pointer of a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a slice of primitives (e.g. <code class="highlighter-rouge">[]int</code>).
+The line of CSV is automatically converted to the argument of <code class="highlighter-rouge">body</code> when Loop reads the line before it calls <code class="highlighter-rouge">body</code>.</p>
+
+<p>Also, <code class="highlighter-rouge">body</code> must be a function that returns <code class="highlighter-rouge">bool</code>, <code class="highlighter-rouge">error</code> or no return value.
+If <code class="highlighter-rouge">body</code> is a function that returns <code class="highlighter-rouge">bool</code>, Loop stops reading CSV at the line where <code class="highlighter-rouge">body</code> returns false.
+If <code class="highlighter-rouge">body</code> is a function that returns <code class="highlighter-rouge">error</code>, Loop stops reading CSV when <code class="highlighter-rouge">body</code> retruns an error.
+Loop does not stop until it reached to the end if <code class="highlighter-rouge">body</code> has no return value.
+If <code class="highlighter-rouge">body</code> retuns an error, Loop quits and the error.</p>
+
+<p>The example below shows how to use Loop with a function which returns <code class="highlighter-rouge">error</code>.
+This code reads CSV until Loop ends to EOF or an entry with Age &lt; 0 is found in the CSV.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
+</span><span class="p">})</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">Age</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="m">0</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="n">errors</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="s">"Age mustn't be negative"</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">})</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<h2 id="readall">ReadAll</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">ReadAll</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x">
+</span></code></pre>
+</div>
+
+<p>ReadAll reads CSV to the end and convert all rows into the slice passed as an argument.
+The argument <code class="highlighter-rouge">s</code> should be a pointer of a slice of a struct (<code class="highlighter-rouge">*[]myStruct</code>) or a pointer of a slice of a slice (<code class="highlighter-rouge">*[][]int</code>).
+Aside from that, the same rules of Read are applied to ReadAll. You need to specify how to map columns to struct fields using struct field’s tag.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
+	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="o">&amp;</span><span class="n">entry</span><span class="p">);</span><span class="x">
+</span></code></pre>
+</div>
+
+<h1 id="option">Option</h1>
+<p>To control the behavior of Reader, you can pass Option to NewReader methods.</p>
+
+<p>NewReader methods receive Option as a variadic parameter <code class="highlighter-rouge">opts</code>. <code class="highlighter-rouge">opts</code> is a variadic parameter so that we can omit <code class="highlighter-rouge">opts</code> from parameters when we call NewReader methods without changing Option.
+Thus, you don’t need to pass multiple Option to NewReader methods although you can pass as many Option as you want.</p>
+
+<h2 id="comma">Comma</h2>
+<p>Like <a href="https://golang.org/pkg/encoding/csv/#Reader">csv.Reader</a> in the standard library, you can change the deliminator of CSV by specifying <code class="highlighter-rouge">Comma</code> option. For example, if you set <code class="highlighter-rouge">'\t'</code> to Comma, Reader reads a file as a TSV file.</p>
+
+<h2 id="comment">Comment</h2>
+<p>Comment, if not 0, is the comment character. Lines beginning with the character without preceding whitespace are ignored.</p>
+
+<h1 id="customizing-decoders">Customizing decoders</h1>
+<p>By default, easycsv converts strings in CSV to integers, floats and bool automatically based on the types of struct fields and slices.</p>
+
+<ul>
+  <li>Integers are parsed with <code class="highlighter-rouge">strconv.ParseInt</code> and unsigned integers are parsed with <code class="highlighter-rouge">strconv.ParseUint</code>.
+easycsv parses inputs as decimals by default. But it parses inputs as hex if inputs have <code class="highlighter-rouge">"0x"</code> prefix and
+as octal if inputs have <code class="highlighter-rouge">"0"</code> prefix (<code class="highlighter-rouge">"0xff"</code> → 255, <code class="highlighter-rouge">"077"</code> → 63).</li>
+  <li>Floats are parsed with <code class="highlighter-rouge">strconv.ParseFloat</code>.</li>
+  <li>bool is parsed with <code class="highlighter-rouge">strconv.ParseBool</code>.</li>
+</ul>
+
+<p>You can customize how to decode strings in CSV to values by specifying <code class="highlighter-rouge">enc</code> attribute to struct fields.</p>
+
+<h2 id="predefined-encoding">Predefined encoding</h2>
+<p>easycsv has three predefined custom encoding for integers.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">oct</code> - Parses inputs as decimal integers even if the inputs are prefixed with <code class="highlighter-rouge">"0"</code>.</li>
+  <li><code class="highlighter-rouge">hex</code> - Parses inputs as hex integers.</li>
+  <li><code class="highlighter-rouge">deci</code>- Parses inputs as oct integers.</li>
+</ul>
+
+<h2 id="custom-encoding">Custom encoding</h2>
+<p>Also, you can use custom encodings in easycsv.</p>
+
+<p>To use custom encodings:
+- Define a func that convert strings to your custom types. This func must receive a string and returns (custom-type, error).
+- Register the func to Option.Decoders.
+- Specify the registered func name with <code class="highlighter-rouge">enc</code> struct-field attribute.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewBufferString</span><span class="p">(</span><span class="s">"name,birthday</span><span class="se">\n</span><span class="s">Alice,1980-12-30</span><span class="se">\n</span><span class="s">Bob,1975-06-09"</span><span class="p">),</span><span class="x">
+	</span><span class="n">Option</span><span class="p">{</span><span class="x">
+		</span><span class="n">Decoders</span><span class="o">:</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span><span class="x">
+			</span><span class="s">"date"</span><span class="o">:</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+				</span><span class="k">return</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">,</span><span class="x"> </span><span class="n">s</span><span class="p">)</span><span class="x">
+			</span><span class="p">},</span><span class="x">
+	</span><span class="p">},</span><span class="x">
+	</span><span class="p">})</span><span class="x">
+</span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x">  </span><span class="kt">string</span><span class="x">    </span><span class="s">`name:"name"`</span><span class="x">
+	</span><span class="n">Birth</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="x"> </span><span class="s">`name:"birthday" enc:"date"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="k">for</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">entry</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Done</span><span class="p">();</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Failed: %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="c">// Output: {Alice 1980-12-30 00:00:00 +0000 UTC}{Bob 1975-06-09 00:00:00 +0000 UTC}</span><span class="x">
+</span></code></pre>
+</div>
+
+<h1 id="godoc">godoc</h1>
+<p><a href="https://godoc.org/github.com/yunabe/easycsv">godoc</a></p>
+
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/easycsv_golang_ja.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+    
+  </body>
+
+</html>
