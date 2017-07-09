@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>easycsv - Go言語 (golang) でcsvを手軽に扱うためのライブラリ</title>
+  <title>easycsv - A package to read CSV in Go (golang) easily</title>
   <meta name="description" content="">
   <meta property="fb:admins" content="yunabe">
   <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/docs/easycsv_golang_ja.html">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/easycsv_golang.html">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/docs/easycsv_golang_ja.html">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/easycsv_golang.html">
   <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
   <script>
     if(location.host=='www.yunabe.jp'){
@@ -33,8 +33,8 @@
     <div class="page-content">
       <div class="wrapper">
         <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">easycsv - Go言語 (golang) でcsvを手軽に扱うためのライブラリ</h1>
-          <p class="post-meta"><time datetime="2017-04-22T00:00:00+09:00" itemprop="datePublished">更新 Apr 22, 2017</time></p>
+          <h1 class="post-title" itemprop="name headline">easycsv - A package to read CSV in Go (golang) easily</h1>
+          <p class="post-meta"><time datetime="2017-07-09T00:00:00+09:00" itemprop="datePublished">更新 Jul 9, 2017</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -52,30 +52,30 @@
 </div>
 
         <h1 id="easycsv">easycsv</h1>
-<p><a href="https://github.com/yunabe/easycsv">easycsv</a> はより高機能なGo言語 (golang)のcsvライブラリです。</p>
+<p>easycsv package provides API to read CSV files in Go (golang) easily.</p>
 
-<h1 id="section">特徴</h1>
-<ul>
-  <li>CSVファイルの読み込みを標準の<code class="highlighter-rouge">encoding/csv</code>よりも短いコードで実装できます。エラー関係の定型的なコードを省略してコードが簡潔になります。</li>
-  <li>CSV読み込み先のデータ型に合わせて自動的に<code class="highlighter-rouge">string</code>からの変換が行われます。</li>
-  <li><code class="highlighter-rouge">encoding/csv</code>と同じようにReaderをカスタマイズしてTSVファイルなどを取り扱うことも可能。</li>
-</ul>
-
-<h1 id="links">Links</h1>
-<ul>
-  <li><a href="https://github.com/yunabe/easycsv">yunabe/easycsv GitHub</a></li>
-  <li><a href="https://godoc.org/github.com/yunabe/easycsv">yunabe/easycsv godoc</a></li>
-</ul>
-
-<h1 id="section-1">インストール</h1>
-
+<h1 id="installation">Installation</h1>
 <div class="highlighter-rouge"><pre class="highlight"><code>go get -u github.com/yunabe/easycsv
 </code></pre>
 </div>
 
-<h1 id="section-2">クイック ツアー</h1>
+<h1 id="features">Features</h1>
+<ul>
+  <li>You can read CSV files with less boilerplate code because <code class="highlighter-rouge">easycsv</code> provides a consice error API.</li>
+  <li><code class="highlighter-rouge">easycsv</code> automatically converts CSV rows into your custom structs.</li>
+  <li>Of course, you can handle TSV and other CSV-like formats by customizing <code class="highlighter-rouge">easycsv.Reader</code>.</li>
+</ul>
 
-<h2 id="csvstruct">CSVをstructとして読み込む</h2>
+<h1 id="links">Links</h1>
+<ul>
+  <li><a href="http://www.yunabe.jp/docs/easycsv_golang.html">easycsv - Manutal</a></li>
+  <li><a href="https://godoc.org/github.com/yunabe/easycsv">yunabe/easycsv godoc</a></li>
+  <li><a href="https://github.com/yunabe/easycsv">yunabe/easycsv GitHub</a></li>
+</ul>
+
+<h1 id="quick-tour">Quick Tour</h1>
+
+<h2 id="read-a-csv-file-to-a-struct">Read a CSV file to a struct</h2>
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
 </span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
@@ -90,7 +90,7 @@
 </span></code></pre>
 </div>
 
-<h2 id="csvloop">CSVをLoopメソッドを使って読み込む</h2>
+<h2 id="read-a-csv-file-with-loop">Read a CSV file with Loop</h2>
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
 </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
@@ -105,32 +105,32 @@
 </span></code></pre>
 </div>
 
-<h1 id="section-3">使い方</h1>
+<h1 id="usages">Usages</h1>
 
 <h2 id="newreader">NewReader</h2>
-<p>easycsvの中心となるのが、<a href="https://godoc.org/github.com/yunabe/easycsv#Reader"><code class="highlighter-rouge">Reader</code></a>です。easycsvでのcsvの読み込みは全てReaderを使って行います。
-Readerは io.Reader, io.ReadCloser そしてファイルパスから作成することが可能です。</p>
+<p>The core component of easycsv is <a href="https://godoc.org/github.com/yunabe/easycsv#Reader"><code class="highlighter-rouge">Reader</code></a>.
+You can create a new <code class="highlighter-rouge">Reader</code> instance from <code class="highlighter-rouge">io.Reader</code>, <code class="highlighter-rouge">io.ReadCloser</code> and a file path.</p>
 
 <ul>
   <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReader">NewReader</a>
     <ul>
-      <li><code class="highlighter-rouge">easycsv.Reader</code> を <code class="highlighter-rouge">io.Reader</code> から作成します.</li>
+      <li>Create <code class="highlighter-rouge">easycsv.Reader</code> from <code class="highlighter-rouge">io.Reader</code>.</li>
     </ul>
   </li>
   <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReadCloser">NewReadCloser</a>
     <ul>
-      <li><code class="highlighter-rouge">easycsv.Reader</code> を <code class="highlighter-rouge">io.ReadCloser</code> から作成します.</li>
+      <li>Create <code class="highlighter-rouge">easycsv.Reader</code> from <code class="highlighter-rouge">io.ReadCloser</code>.</li>
     </ul>
   </li>
   <li><a href="https://godoc.org/github.com/yunabe/easycsv#NewReaderFile">NewReaderFile</a>
     <ul>
-      <li><code class="highlighter-rouge">easycsv.Reader</code> をファイルパスから作成します。</li>
+      <li>Create <code class="highlighter-rouge">easycsv.Reader</code> from a file path.</li>
     </ul>
   </li>
 </ul>
 
-<p>NewReadCloserあるいはNewReaderFileによって作成された場合、Readerは終了時に内部のファイルを自動的に閉じます。
-そのため、Closeを読んだ場合のエラーハンドリングの定型的なコードなど省略してすっきりしたコードを書くことができます。</p>
+<p>The Reader created by NewReadCloser and NewReaderFile closes the file automatically when the Reader is finished.
+So you do not need to close files manually and you can omit error handling code for closing files.</p>
 
 <h2 id="read">Read</h2>
 <p>There are three methods to read CSV with <code class="highlighter-rouge">easycsv.Reader</code>. Read, Loop and ReadAll.
@@ -142,12 +142,12 @@ We are looking into <a href="https://godoc.org/github.com/yunabe/easycsv#Reader.
 
 <p><a href="https://godoc.org/github.com/yunabe/easycsv#Reader.Read"><code class="highlighter-rouge">Read</code></a> receives a pointer to a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a pointer to a slice of a primitive type (e.g. <code class="highlighter-rouge">*[]int</code>).
 If it reads a new row from CSV successufly, it stores the row into <code class="highlighter-rouge">e</code> and returns <code class="highlighter-rouge">true</code>.
-If <code class="highlighter-rouge">Reader</code> reached to <code class="highlighter-rouge">EOF</code> or it fails to read a new row for some reasons, it returns <code class="highlighter-rouge">false</code>.
-<code class="highlighter-rouge">Read</code> returns <code class="highlighter-rouge">false</code> for various reasons. To know the reason, you have to call <code class="highlighter-rouge">Done()</code> subsequently.
+If <code class="highlighter-rouge">Reader</code> reaches to <code class="highlighter-rouge">EOF</code> or it fails to read a new row for some reasons, it returns <code class="highlighter-rouge">false</code>.
+<code class="highlighter-rouge">Read</code> returns <code class="highlighter-rouge">false</code> for various reasons. To check the reason, you have to call <code class="highlighter-rouge">Done()</code> subsequently.
 <code class="highlighter-rouge">Done</code> returns an error if <code class="highlighter-rouge">Read</code> encountered an error.
 <code class="highlighter-rouge">Done</code> returns <code class="highlighter-rouge">nil</code> if <code class="highlighter-rouge">Read</code> returned <code class="highlighter-rouge">false</code> because it reached to <code class="highlighter-rouge">EOF</code>.</p>
 
-<p>You can pass two types of pointers to Read. A pointer to a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or  a pointer to a slice of primitive typs (e.g. <code class="highlighter-rouge">*[]int</code>). Passing a pointer to a struct is more convenient.
+<p>You can pass two types of pointers to Read. A pointer of a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or  a pointer of a slice of primitive typs (e.g. <code class="highlighter-rouge">*[]int</code>). Passing a pointer of a struct is more convenient.
 When you use a struct, you need to specify how to map CSV columns to the struct’s field using struct field’s tags.
 Here are examples:</p>
 
@@ -178,27 +178,32 @@ When <code class="highlighter-rouge">name</code> is used, Read uses the first li
 <p>If you pass a pointer to a slice to Read, Read converts CSV row into the slice and fills it to the argument.
 If the argument <code class="highlighter-rouge">e</code> is invalid, Read returns false immediately and the reason of the error is reported by <code class="highlighter-rouge">Done()</code>.</p>
 
-<p>The conversion from CSV row (string) to the given field type (int, float32, bool, etc…) is handled in Reader automatically.</p>
+<p>The conversion from CSV row (string) to the given field type (int, float32, bool, etc…) is handled in Reader automatically. If you want to customize the conversion, see <a href="#custom-encoding">Custom encoding</a> section below.</p>
 
-<p>When you read CSV with <code class="highlighter-rouge">Read</code> methods, you have to always call <code class="highlighter-rouge">Done()</code> subsequently to (1) check the error and (2) close the file behind the Reader when it is instantiated with <code class="highlighter-rouge">NewReadCloser</code> or <code class="highlighter-rouge">NewReaderFile</code>. If you forget to call <code class="highlighter-rouge">Done()</code>, the error will be completely gone.</p>
+<p>When you read CSV with <code class="highlighter-rouge">Read</code> methods, you have to always call <code class="highlighter-rouge">Done()</code> subsequently to (1) check the error and (2) close the file behind the Reader. If you forget to call <code class="highlighter-rouge">Done()</code>, the error will be completely gone.
+Do not forget to call <code class="highlighter-rouge">Done</code> after <code class="highlighter-rouge">Read</code>.</p>
 
 <h2 id="loop">Loop</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Loop</span><span class="p">(</span><span class="n">body</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x">
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Loop</span><span class="p">(</span><span class="n">body</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
 </span></code></pre>
 </div>
 
-<p>Loop reads CSV a line by line and executes <code class="highlighter-rouge">body</code> with a line everytime it reads a line.
+<p><a href="https://godoc.org/github.com/yunabe/easycsv#Loop">Loop</a> reads CSV line by line and executes <code class="highlighter-rouge">body</code> with a line everytime it reads a line.
 <code class="highlighter-rouge">body</code> must be a function that receives a struct (e.g. <code class="highlighter-rouge">myStruct</code>), a pointer of a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a slice of primitives (e.g. <code class="highlighter-rouge">[]int</code>).
-The line of CSV is automatically converted to the argument of <code class="highlighter-rouge">body</code> when Loop reads the line before it calls <code class="highlighter-rouge">body</code>.</p>
-
-<p>Also, <code class="highlighter-rouge">body</code> must be a function that returns <code class="highlighter-rouge">bool</code>, <code class="highlighter-rouge">error</code> or no return value.
+A line of CSV is automatically converted to the argument of <code class="highlighter-rouge">body</code> when Loop reads the line and passed to <code class="highlighter-rouge">body</code>.
+Also, <code class="highlighter-rouge">body</code> must be a function that returns <code class="highlighter-rouge">bool</code>, <code class="highlighter-rouge">error</code> or no return value.
 If <code class="highlighter-rouge">body</code> is a function that returns <code class="highlighter-rouge">bool</code>, Loop stops reading CSV at the line where <code class="highlighter-rouge">body</code> returns false.
 If <code class="highlighter-rouge">body</code> is a function that returns <code class="highlighter-rouge">error</code>, Loop stops reading CSV when <code class="highlighter-rouge">body</code> retruns an error.
 Loop does not stop until it reached to the end if <code class="highlighter-rouge">body</code> has no return value.
-If <code class="highlighter-rouge">body</code> retuns an error, Loop quits and the error.</p>
+If <code class="highlighter-rouge">body</code> retuns an error, Loop quits and reports the error.</p>
+
+<p>When <code class="highlighter-rouge">Loop</code> ends, it invokes <code class="highlighter-rouge">Done</code> and closes internal files automatically.
+So, you do not need to call Done after Loop.
+Loop returns the first error if it encounters errors. It returns <code class="highlighter-rouge">nil</code> if everything goes well.
+Do not forget to handle the error returned by Loop.</p>
 
 <p>The example below shows how to use Loop with a function which returns <code class="highlighter-rouge">error</code>.
-This code reads CSV until Loop ends to EOF or an entry with Age &lt; 0 is found in the CSV.</p>
+This code reads CSV until Loop reaches to EOF or an entry with Age &lt; 0 is found in the CSV.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
@@ -216,13 +221,16 @@ This code reads CSV until Loop ends to EOF or an entry with Age &lt; 0 is found 
 </div>
 
 <h2 id="readall">ReadAll</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">ReadAll</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x">
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">ReadAll</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
 </span></code></pre>
 </div>
 
-<p>ReadAll reads CSV to the end and convert all rows into the slice passed as an argument.
-The argument <code class="highlighter-rouge">s</code> should be a pointer of a slice of a struct (<code class="highlighter-rouge">*[]myStruct</code>) or a pointer of a slice of a slice (<code class="highlighter-rouge">*[][]int</code>).
+<p><a href="https://godoc.org/github.com/yunabe/easycsv#ReadAll">ReadAll</a> reads a CSV input to the end and convert all rows into the slice passed as an argument.
+The argument <code class="highlighter-rouge">s</code> must be a pointer of a slice of a struct (<code class="highlighter-rouge">*[]myStruct</code>) or a pointer of a slice of a slice (<code class="highlighter-rouge">*[][]int</code>).
 Aside from that, the same rules of Read are applied to ReadAll. You need to specify how to map columns to struct fields using struct field’s tag.</p>
+
+<p>Like <code class="highlighter-rouge">Loop</code>, you do not need to call <code class="highlighter-rouge">Done</code> after ReadAll. ReadAll returns the first error if it encounters errors. It returns <code class="highlighter-rouge">nil</code> if everything goes well.
+Do not forget to handle the error returned by ReadAll.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
@@ -296,8 +304,29 @@ as octal if inputs have <code class="highlighter-rouge">"0"</code> prefix (<code
 </span></code></pre>
 </div>
 
-<h1 id="godoc">godoc</h1>
-<p><a href="https://godoc.org/github.com/yunabe/easycsv">godoc</a></p>
+<h2 id="customizing-decoders-for-types">Customizing decoders for types</h2>
+<p>You can also define how to convert strings into specific types in easycsv by using Option.TypeDecoders option. Option.TypeDecoders is similar to Option.Decoders. The key is <code class="highlighter-rouge">reflect.Type</code> and the value is a function to convert strings to the specific type.
+Reader uses the functions registered to Option.TypeDecoders instead of default converters when it converts rows in CSV into those types.</p>
+
+<p>The following example shows how to define a converter for <code class="highlighter-rouge">time.Time</code> with Option.TypeDecoders.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewReader</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"2017-01-02,2016-02-03</span><span class="se">\n</span><span class="s">2015-03-04,2014-04-05"</span><span class="p">)),</span><span class="x">
+	</span><span class="n">Option</span><span class="p">{</span><span class="n">TypeDecoders</span><span class="o">:</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="n">reflect</span><span class="o">.</span><span class="n">Type</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span><span class="x">
+		</span><span class="n">reflect</span><span class="o">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">{})</span><span class="o">:</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="k">return</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">,</span><span class="x"> </span><span class="n">s</span><span class="p">)</span><span class="x">
+		</span><span class="p">},</span><span class="x">
+	</span><span class="p">}})</span><span class="x">
+</span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">[]</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="x">
+</span><span class="k">for</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">entry</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006/1/2"</span><span class="p">),</span><span class="x"> </span><span class="s">";"</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Done</span><span class="p">();</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -314,7 +343,7 @@ as octal if inputs have <code class="highlighter-rouge">"0"</code> prefix (<code
   </div>
 </div>
 
-        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/easycsv_golang_ja.html"  data-numposts="5"></div>
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/easycsv_golang.html"  data-numposts="5"></div>
         <div style="text-align:center">
           <a href="/docs">Home</a>
         </div>
