@@ -54,22 +54,26 @@
         <p>Go言語でプログラムを書く際に欠かせないファイルなどの入出力(IO)関係の基本的なライブラリの一覧。この辺のライブラリはかなりよく使うのでパッケージ名や型名を覚えておくといちいちドキュメントを検索せずにすんで良いかも。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">備忘用早見表</a></li>
+  <li><a href="#宣伝" id="markdown-toc-宣伝">宣伝</a></li>
+  <li><a href="#備忘用早見表" id="markdown-toc-備忘用早見表">備忘用早見表</a></li>
   <li><a href="#ioreader-iowriter" id="markdown-toc-ioreader-iowriter">io.Reader, io.Writer</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">ファイルを読み書き用に開く</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">標準入力/標準出力/標準エラー</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">メモリからの読み込み・メモリへの書き込み</a></li>
-  <li><a href="#reader-writer" id="markdown-toc-reader-writer">Reader, Writerを効率よく使うためのライブラリ</a>    <ul>
-      <li><a href="#bufioscanner-" id="markdown-toc-bufioscanner-">bufio.Scanner: 文字列を一行ずつ読み込む</a></li>
-      <li><a href="#bufioreader-writer-" id="markdown-toc-bufioreader-writer-">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</a></li>
-      <li><a href="#ioioutilreadall-reader" id="markdown-toc-ioioutilreadall-reader">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</a></li>
-      <li><a href="#ioioutilreadfile-writefile-byte" id="markdown-toc-ioioutilreadfile-writefile-byte">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</a></li>
+  <li><a href="#ファイルを読み書き用に開く" id="markdown-toc-ファイルを読み書き用に開く">ファイルを読み書き用に開く</a></li>
+  <li><a href="#標準入力標準出力標準エラー" id="markdown-toc-標準入力標準出力標準エラー">標準入力/標準出力/標準エラー</a></li>
+  <li><a href="#メモリからの読み込みメモリへの書き込み" id="markdown-toc-メモリからの読み込みメモリへの書き込み">メモリからの読み込み・メモリへの書き込み</a></li>
+  <li><a href="#reader-writerを効率よく使うためのライブラリ" id="markdown-toc-reader-writerを効率よく使うためのライブラリ">Reader, Writerを効率よく使うためのライブラリ</a>    <ul>
+      <li><a href="#bufioscanner-文字列を一行ずつ読み込む" id="markdown-toc-bufioscanner-文字列を一行ずつ読み込む">bufio.Scanner: 文字列を一行ずつ読み込む</a></li>
+      <li><a href="#bufioreader-writer-バッファリングして効率よく読み書きを行う" id="markdown-toc-bufioreader-writer-バッファリングして効率よく読み書きを行う">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</a></li>
+      <li><a href="#ioioutilreadall-readerから全てのデータを一度に読み込む" id="markdown-toc-ioioutilreadall-readerから全てのデータを一度に読み込む">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</a></li>
+      <li><a href="#ioioutilreadfile-writefile-ファイル名とbyteで読み書き" id="markdown-toc-ioioutilreadfile-writefile-ファイル名とbyteで読み書き">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</a></li>
       <li><a href="#writebytes-vs-writestrings" id="markdown-toc-writebytes-vs-writestrings">Write([]byte(s)) v.s. WriteString(s)</a></li>
     </ul>
   </li>
 </ul>
 
-<h1 id="section">備忘用早見表</h1>
+<h1 id="宣伝">宣伝</h1>
+<p><a href="golang_jupyter.html">Goをインタラクティブに実行できるJupyter Notebook環境</a>を作ったので興味があったら試してみて下さい。</p>
+
+<h1 id="備忘用早見表">備忘用早見表</h1>
 
 <ul>
   <li>io.Reader
@@ -150,7 +154,7 @@
 標準ライブラリに用意されている便利なツールでラップして呼び出すことが多いと思います。
 Readerから全ての内容を１つの<code class="highlighter-rouge">string</code>として読み込んだり、一行ずつ読み込んだり、バッファリングして効率よくファイルに書き込んだりするための標準ライブラリが用意されています。</p>
 
-<h1 id="section-1">ファイルを読み書き用に開く</h1>
+<h1 id="ファイルを読み書き用に開く">ファイルを読み書き用に開く</h1>
 <p>Goでファイルを開く場合</p>
 
 <ul>
@@ -162,32 +166,32 @@ Readerから全ての内容を１つの<code class="highlighter-rouge">string</c
 ちなみにosパッケージには <a href="https://golang.org/pkg/os/#OpenFile">os.OpenFile</a> という関数も存在しますが、os.OpenFileはos.Open, os.Createの内部で使われる少しプリミティブな関数なので単純にファイルの読み書きをするだけなら普段はos.Open, os.Createを使えば十分です。
 Open, Createで開いたファイルは<strong>必ず<code class="highlighter-rouge">defer f.Close()</code>を呼び出してファイルを閉じる</strong>のを忘れないようにしましょう。</p>
 
-<h1 id="section-2">標準入力/標準出力/標準エラー</h1>
+<h1 id="標準入力標準出力標準エラー">標準入力/標準出力/標準エラー</h1>
 <p>ファイルの代わりに標準入力, 標準出力, 標準エラーを使いたい場合は<a href="https://golang.org/pkg/os/#pkg-variables">os.Stdin, os.Stdout, os.Stderr</a>(いずれも<code class="highlighter-rouge">*os.File</code>型)が用意されているのでファイルの代わりにこれを利用します。</p>
 
-<h1 id="section-3">メモリからの読み込み・メモリへの書き込み</h1>
+<h1 id="メモリからの読み込みメモリへの書き込み">メモリからの読み込み・メモリへの書き込み</h1>
 <p>ファイル入出力などを行う関数のユニットテストを書く場合などに、ファイルの代わりにメモリからデータを読んだり逆にファイルの代わりにメモリにデータを書き込んだりしたい場合があります。Goではこのような場合には<a href="https://golang.org/pkg/bytes/#Buffer">bytes.Buffer</a>(書き込み用。読み込みも可), <a href="https://golang.org/pkg/bytes/#Reader">bytes.Reader</a>(読み込み専用)を利用します。</p>
 
 <iframe src="http://play.golang.org/p/xURE66Vfs3" frameborder="0" style="width: 100%; height: 400px"><a href="http://play.golang.org/p/xURE66Vfs3">see this code in play.golang.org</a></iframe>
 <iframe src="http://play.golang.org/p/mYTMuFlQoS" frameborder="0" style="width: 100%; height: 400px"><a href="http://play.golang.org/p/mYTMuFlQoS">see this code in play.golang.org</a></iframe>
 
-<h1 id="reader-writer">Reader, Writerを効率よく使うためのライブラリ</h1>
+<h1 id="reader-writerを効率よく使うためのライブラリ">Reader, Writerを効率よく使うためのライブラリ</h1>
 <p>ここからはファイルの読み書き定形処理を行ってくれる便利なライブラリを紹介していきます。
 多くのプログラムでは<code class="highlighter-rouge">Read</code>, <code class="highlighter-rouge">Write</code>を直接使うのではなく<code class="highlighter-rouge">Read</code>, <code class="highlighter-rouge">Write</code>をラップしたこれらの便利なライブラリを使ってデータの読み書きします。</p>
 
-<h2 id="bufioscanner-">bufio.Scanner: 文字列を一行ずつ読み込む</h2>
+<h2 id="bufioscanner-文字列を一行ずつ読み込む">bufio.Scanner: 文字列を一行ずつ読み込む</h2>
 <p>Reader (例えば読み込み用ファイルや標準入力に対応する*os.File) から文字列を一行ずつ読み込むには<a href="http://golang.org/pkg/bufio/#Scanner">bufio.Scanner</a>を利用します。
 <a href="http://golang.org/pkg/bufio/#NewScanner">bufio.NewScanner</a>(<code class="highlighter-rouge">func NewScanner(r io.Reader) *Scanner</code>)でio.Readerから*bufio.Scannerを作成しforループの中で<a href="http://golang.org/pkg/bufio/#Scanner.Scan">Scan()</a>を呼び出して１行ずつファイルを読み込みます。
 <a href="http://golang.org/pkg/bufio/#Scanner.Text">Text()</a>が返すstringには改行文字(<code class="highlighter-rouge">\n</code>)は含まれません。
 <a href="/tips/golang_readlines.html">bufio.Scanerの詳しい使い方はこちらを参照して下さい。</a></p>
 
-<h2 id="bufioreader-writer-">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</h2>
+<h2 id="bufioreader-writer-バッファリングして効率よく読み書きを行う">bufio.Reader, Writer: バッファリングして効率よく読み書きを行う</h2>
 <p>Javaの<a href="https://docs.oracle.com/javase/jp/6/api/java/io/BufferedReader.html">BuferredReader</a>, <a href="https://docs.oracle.com/javase/jp/6/api/java/io/BufferedWriter.html">BufferedWriter</a>のようにバッファリングすることで効率的にファイルに対するデータの読み書きを行うライブラリがGoにも用意されています。</p>
 
-<h2 id="ioioutilreadall-reader">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</h2>
+<h2 id="ioioutilreadall-readerから全てのデータを一度に読み込む">“io/ioutil”.ReadAll: Readerから全てのデータを一度に読み込む</h2>
 <p>io/utilパッケージの<a href="https://golang.org/pkg/io/ioutil/#ReadAll">ReadAll</a>を使うとio.Readerからデータを全て読み込んで、io.Readerの中身のバイト列(<code class="highlighter-rouge">[]byte</code>)を作成することができます。</p>
 
-<h2 id="ioioutilreadfile-writefile-byte">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</h2>
+<h2 id="ioioutilreadfile-writefile-ファイル名とbyteで読み書き">“io/ioutil”.ReadFile, WriteFile: ファイル名とbyte[]で読み書き</h2>
 <p>io/utilパッケージの<a href="https://golang.org/src/io/ioutil/ioutil.go?s=1464:1510#L39">ReadFile</a>, <a href="https://golang.org/pkg/io/ioutil/#WriteFile">WriteFile</a>を使って、
 指定されたファイル名からファイルの中身をbyte[]として読み出す処理と、指定されたファイル名のファイルにbyte[]を書き込む処理が簡単に行なえます。</p>
 

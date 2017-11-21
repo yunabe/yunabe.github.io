@@ -51,7 +51,10 @@
   </div>
 </div>
 
-        <h1 id="go-golang">Go言語 (golang)の良い点</h1>
+        <h1 id="宣伝">宣伝</h1>
+<p><a href="golang_jupyter.html">Goをインタラクティブに実行できるJupyter Notebook環境</a>を作ったので興味があったら試してみて下さい。</p>
+
+<h1 id="go言語-golangの良い点">Go言語 (golang)の良い点</h1>
 <p>結論としてはGo言語には以下のようないくつかの長所があり、現実路線で非常にバランスがとれた言語だと思います。
 これらの長所のために失われたメリットも当然いくつもありますが、一定程度以上の規模のプロジェクトで利用する言語の選択肢としては現存するプログラミング言語の中では一番か二番目によいのではないかと思います。</p>
 
@@ -111,7 +114,7 @@
   </li>
 </ul>
 
-<h1 id="section">シンプルでバランスの取れた言語仕様</h1>
+<h1 id="シンプルでバランスの取れた言語仕様">シンプルでバランスの取れた言語仕様</h1>
 <ul>
   <li><a href="https://golang.org/ref/spec">仕様は比較的シンプルである</a>。
     <ul>
@@ -126,7 +129,7 @@
   <li><a href="golang_pitfall.html">ただ他のメジャーな手続き型言語との違いから来るはまりどころが幾つかある</a>のできちんと理解するのはそれなりに労力は必要ではある点は注意。</li>
 </ul>
 
-<h1 id="go">なぜGoは”悪い”言語なのか</h1>
+<h1 id="なぜgoは悪い言語なのか">なぜGoは”悪い”言語なのか</h1>
 <p><a href="https://github.com/ksimka/go-is-not-good">Goに対する批判は数多く存在します</a>。それのどれにもきちんとした理由はあると思います。主な批判は大きく</p>
 
 <ul>
@@ -138,7 +141,7 @@
 
 <p>に集約されるように思います。</p>
 
-<h1 id="generics-template">Generics (template)がない</h1>
+<h1 id="generics-templateがない">Generics (template)がない</h1>
 <p><a href="https://golang.org/doc/faq#generics">Go言語(golang)にはGenericsはありません</a>。
 <a href="https://docs.oracle.com/javase/tutorial/java/generics/types.html">JavaのGeneric Types</a>とか<a href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88_(%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0)">C++のテンプレート</a>で書けるようなことはGoでは書けません。
 ただ配列(スライス), mapについては特別に言語でサポートされているのでJavaやC++で総称型を使うケースの9割ぐらいはカバーされるとは思います。Java1.5より前のJavaのように連想配列や可変長配列を使うのに常にキャストが必要になったりはしません。そのためGenericsがサポートされていないことはそれほど大きな問題にはなりません。</p>
@@ -150,14 +153,14 @@ C++のテンプレートの意味不明なコンパイルエラーに悩まさ�
 <p>一方で、mapと配列以外のカスタムのコンテナが使いたい時にはGenericsがないのは不便なのも確かなので、将来うまい落とし所がみつかることを期待したいです<a href="https://golang.org/doc/faq#generics"><em>(Generics may well be added at some point.)</em></a>。
 現時点でどうしてもGenericsのようなことがやりたければ、<code class="highlighter-rouge">go generate</code>でコードを自動生成するのも１つの手ではあります。あまり多用しすぎない方がよいのかなとは思いますが。</p>
 
-<h1 id="section-1">継承がない</h1>
+<h1 id="継承がない">継承がない</h1>
 <p><a href="https://golang.org/doc/faq#inheritance">Goには継承はありません</a>。
 <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">そもそも継承はプログラミング言語にあまり必要ない機能だと思います</a>。
 継承が本当に有益なこともありますが、経験上大半のケースでは設計を手抜きするために継承が使われていて、結果長い目で見た際のreadabilityやmaintainabilityが著しく劣化してしまっていることが多いと思います。<a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>や<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B9%E3%82%B3%E3%83%95%E3%81%AE%E7%BD%AE%E6%8F%9B%E5%8E%9F%E5%89%87">リスコフの置換原則</a>のような基本的な原則が守られておらず(そもそも多くの人は名前すら知らない)、単に一部のコードをクラス間で共有するために継承が使われていて可読性が著しく低いコードもよく目にします。</p>
 
 <p>そのため、そもそもプログラミング言語が継承をサポートしないというのは非常に良いデザインだなと思います。継承が非常に有益な場合も稀にあるもの分かりますが、大規模プロジェクトにおいては正しく使われない害のほうが確実に大きいです。</p>
 
-<h1 id="errors-as-values-">Errors as values (例外が推奨されない)</h1>
+<h1 id="errors-as-values-例外が推奨されない">Errors as values (例外が推奨されない)</h1>
 <p><a href="https://golang.org/doc/faq#exceptions">Go言語のFAQにあるように、Goには例外がありません</a>。panic, recoverで例外と同じようなことはできますが、Javaの例外のように気軽に使ってはなりません。個人的にはこのFAQにかかれていることには概ね同意します。
 例外で返されたエラーを <code class="highlighter-rouge">try {...} catch (Exception e) {...}</code> みたいに処理しないといけないのは無意味に複雑なように思います。
 それだけならよいですが、例外が発生するとコードが想定外の順序で実行されて困ったり、何故かこのコードが実行されないなと思ったら、その前に例外で大域脱出していて、しかもその例外が予想外のところでcatchされ握りつぶされていたり、と例外を大規模なプロジェクトの中で正しく扱うのは中々に困難だと思います。
@@ -182,7 +185,7 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 <p>には例外の方が便利であり、正直Go言語ではあまり効率的にコードが書けないような気がします。個人的にはそういう用途にはPythonなどを使うのが正しい解決策のように思えます。何でもGoで書く必要はないのですから。
 型の存在すら簡単なプロトタイピングをするのには少し鬱陶しいですしどんな言語も適材適所だと思います。</p>
 
-<h1 id="designed-for-non-intelligent-programmers">非知的なプログラマのためにデザインされている (Designed for non-intelligent programmers)</h1>
+<h1 id="非知的なプログラマのためにデザインされている-designed-for-non-intelligent-programmers">非知的なプログラマのためにデザインされている (Designed for non-intelligent programmers)</h1>
 <p><a href="http://nomad.so/2015/03/why-gos-design-is-a-disservice-to-intelligent-programmers/">Goは知的でないプログラマのためにデザインされていると批判されることがあります</a>。そして「知的でないプログラマ」のためにデザインされているというのは指摘自体は正しいと思います。実際Rob Pikeも<a href="https://channel9.msdn.com/Events/Lang-NEXT/Lang-NEXT-2014/From-Parallel-to-Concurrent">From Parallel to Concurrent</a>の20:40~で次のように述べています</p>
 
 <blockquote>
@@ -199,7 +202,7 @@ So, the language that we give them has to be easy for them to understand and eas
 一方でプログラミング言語を習得することのゴールは、それを使って何か大規模なソフトウェアをチームで作ることであるのだと思います。
 チームで大規模なソフトウェアを開発することはそれ自体が非常に難しいことです。そのゴールのためにプログラミング言語自体はシンプルに保ち、それ以外の部分により多くの労力をさけるようにするというのは僕は正しい判断だと思います。</p>
 
-<h1 id="golang-">golang 関連記事</h1>
+<h1 id="golang-関連記事">golang 関連記事</h1>
 <ul>
   <li><a href="golang_pitfall.html">Go言語(Golang) はまりどころと解決策</a>
     <ul>
