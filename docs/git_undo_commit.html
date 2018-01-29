@@ -54,14 +54,13 @@
         <p>git commit を行った直後に、間違えたファイルをコミットしてしまっていたり、コミットのメッセージに誤字があったりといった間違いに気が付き、コミットを取り消したいことがあります。
 そうした場合には <code class="highlighter-rouge">git reset</code> や <code class="highlighter-rouge">git commit --amend</code> を利用してコミットを取り消すことができます。</p>
 
-<h1 id="section">コミットを取り消し、コミット直前の状態に戻す。</h1>
+<h1 id="コミットを取り消しコミット直前の状態に戻す">コミットを取り消し、コミット直前の状態に戻す。</h1>
 <p>直前のコミットを取り消し、単純に取り消しコミット直前の状態に戻したい場合には<a href="https://git-scm.com/docs/git-reset"><code class="highlighter-rouge">git reset</code></a>を–softオプションと共に使います。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git reset --soft HEAD@{1}
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git reset --soft HEAD@{1}
+</code></pre></div></div>
 
-<h2 id="section-1">解説</h2>
+<h2 id="解説">解説</h2>
 <ul>
   <li><code class="highlighter-rouge">git reset --soft</code>は作業ツリー(現在のファイルの状態)とインデックス(git addされたファイルの状態)の状態を保ったままHEADを指定したコミット(今回の場合は<code class="highlighter-rouge">HEAD@{1}</code>)に移動させます。</li>
   <li><a href="https://git-scm.com/book/ja/v1/Git-%E3%81%AE%E3%81%95%E3%81%BE%E3%81%96%E3%81%BE%E3%81%AA%E3%83%84%E3%83%BC%E3%83%AB-%E3%83%AA%E3%83%93%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E9%81%B8%E6%8A%9E#参照ログの短縮形"><code class="highlighter-rouge">HEAD@{1}</code></a>はHEADが今のコミットに移動する前に指していたコミットを意味するので、今回の場合は間違えて行ったコミットのひとつ前のコミットを表します。
@@ -84,22 +83,21 @@
 
 <p>一連の流れをコマンドで書くと以下のようになります。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git commit -m "間違ったコミット"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git commit -m "間違ったコミット"
 $ git reset --soft HEAD@{1}
 &lt;&lt; 修正作業 &gt;&gt;
 &lt;&lt; 修正したファイルをgit add &gt;&gt;
 $ git add ...
 &lt;&lt; コミットやり直し &gt;&gt;
 $ git commit -m "正しいコミット"
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="section-2">直前のコミットを修正してやり直す</h1>
+<h1 id="直前のコミットを修正してやり直す">直前のコミットを修正してやり直す</h1>
 <p>直前に行ったコミットを修正したい場合には <a href="https://git-scm.com/book/ja/v1/Git-%E3%81%AE%E3%81%95%E3%81%BE%E3%81%96%E3%81%BE%E3%81%AA%E3%83%84%E3%83%BC%E3%83%AB-%E6%AD%B4%E5%8F%B2%E3%81%AE%E6%9B%B8%E3%81%8D%E6%8F%9B%E3%81%88#直近のコミットの変更"><code class="highlighter-rouge">git commit --amend</code></a> を使うと<code class="highlighter-rouge">git reset --soft</code>を使った場合よりも手順が若干シンプルになります。amendは改正するとか修正するという意味です。</p>
 
 <p><code class="highlighter-rouge">git commit --amend</code>を行うと直前の修正したいコミットと、新しいコミットを合わせて1つのコミットにしてレポジトリにコミットされます。直前のコミットはなかったことになります。<code class="highlighter-rouge">git commit --amend</code> は<code class="highlighter-rouge">-m</code>でコミットメッセージを付けずに実行すると直前のコミットからメッセージをコピーしてくれます(<code class="highlighter-rouge">-c</code>と同じ挙動)。一連の流れは以下のようになります。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git commit -m "間違ったコミット"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git commit -m "間違ったコミット"
 &lt;&lt; 修正作業 &gt;&gt;
 &lt;&lt; 修正したファイル・足し忘れたファイルをgit add &gt;&gt;
 $ git add &lt;files&gt;
@@ -107,8 +105,7 @@ $ git add &lt;files&gt;
 $ git rm --cached &lt;files&gt;
 &lt;&lt; コミットやり直し &gt;&gt;
 $ git commit --amend
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">git commit --amend</code>は上で最初に紹介した<code class="highlighter-rouge">git reset --soft HEAD@{1}</code>と<code class="highlighter-rouge">git commit</code>を使った修正方法を短縮したものです。</p>
 

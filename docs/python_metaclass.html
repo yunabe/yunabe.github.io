@@ -57,10 +57,10 @@
 あまり関連情報がまとまってるドキュメントがなくて理解するのに苦労したので情報をまとめておきました。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#type-" id="markdown-toc-type-">type とクラス定義のあまり知られていない関係</a></li>
-  <li><a href="#new" id="markdown-toc-new">特殊メソッド __new__</a></li>
-  <li><a href="#type" id="markdown-toc-type">typeの継承</a></li>
-  <li><a href="#section" id="markdown-toc-section">実装の解説</a></li>
+  <li><a href="#type-とクラス定義のあまり知られていない関係" id="markdown-toc-type-とクラス定義のあまり知られていない関係">type とクラス定義のあまり知られていない関係</a></li>
+  <li><a href="#特殊メソッド-__new__" id="markdown-toc-特殊メソッド-__new__">特殊メソッド __new__</a></li>
+  <li><a href="#typeの継承" id="markdown-toc-typeの継承">typeの継承</a></li>
+  <li><a href="#実装の解説" id="markdown-toc-実装の解説">実装の解説</a></li>
 </ul>
 
 <p>#事前知識</p>
@@ -74,7 +74,7 @@
 何が書かれているかさっぱり分からないと思います。 まずは <code class="highlighter-rouge">__metaclass__</code>
 を理解する上で重要なこの2つについて整理しておきましょう。</p>
 
-<h2 id="type-">type とクラス定義のあまり知られていない関係</h2>
+<h2 id="type-とクラス定義のあまり知られていない関係">type とクラス定義のあまり知られていない関係</h2>
 
 <p>ご存知のように Python には <code class="highlighter-rouge">type</code> という builtin
 関数が定義されています。 type は <code class="highlighter-rouge">type(obj)</code> のように1つの引数を与えて
@@ -109,7 +109,7 @@ dict を渡して type
 なのです。 その証拠に <code class="highlighter-rouge">type(cls)</code> は <code class="highlighter-rouge">type</code> を返しますし、
 <code class="highlighter-rouge">isinstance(cls, type)</code> は True を返します。</p>
 
-<h2 id="new">特殊メソッド __new__</h2>
+<h2 id="特殊メソッド-__new__">特殊メソッド __new__</h2>
 
 <p>Python
 でクラスを定義する際、インスタンスを初期化するメソッドとして普通は
@@ -192,7 +192,7 @@ metaclass という名前がついていますが、<code class="highlighter-rou
 <p>のようなコードを書くと、ClassName の名前が ‘classname’ になります
 (classname というクラスが ClassName という変数に格納されている状態)。</p>
 
-<h2 id="type">typeの継承</h2>
+<h2 id="typeの継承">typeの継承</h2>
 
 <p>ただそれだと metaclass
 という名称とマッチしないので、実際にはtypeを継承したクラスを作成してそれを
@@ -239,7 +239,7 @@ metaclass という名前がついていますが、<code class="highlighter-rou
 <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="mi">123</span></code></pre></figure>
 
-<h2 id="section">実装の解説</h2>
+<h2 id="実装の解説">実装の解説</h2>
 
 <p>まずは <code class="highlighter-rouge">type</code> を継承したクラス auto_property を定義します。 そして
 <code class="highlighter-rouge">__new__</code> の中で引数として受け取ったクラス定義の辞書 <code class="highlighter-rouge">dict</code>

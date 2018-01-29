@@ -63,9 +63,9 @@
 
 <p>ただし微分、ベクトルに関して高校レベルの数学を理解している必要があります。</p>
 
-<h1 id="section">ラグランジュの未定乗数法</h1>
+<h1 id="ラグランジュの未定乗数法">ラグランジュの未定乗数法</h1>
 
-<h2 id="section-1">2次元の場合</h2>
+<h2 id="2次元の場合">2次元の場合</h2>
 <p><script type="math/tex">(x,y)</script> が束縛条件 <script type="math/tex">g(x,y)=0</script>をみたす条件下で、ある関数 <script type="math/tex">f(x, y)</script> を最大化（最小化）することを考える。
 変数<script type="math/tex">\lambda</script>を導入して関数<script type="math/tex">L(x,y,\lambda)</script>を次のように定義する。</p>
 
@@ -79,7 +79,7 @@
 
 <p>が成立する。</p>
 
-<h2 id="n"><script type="math/tex">n</script>次元の場合</h2>
+<h2 id="n次元の場合"><script type="math/tex">n</script>次元の場合</h2>
 <p><script type="math/tex">n</script>個の変数<script type="math/tex">x_1,x_2,\ldots,x_n</script> が 束縛条件 <script type="math/tex">g(x_1,x_2,\ldots,x_n)=0</script> をみたしている場合に、
 関数<script type="math/tex">f(x_1,x_2,\ldots,x_n)</script>を最大化する<script type="math/tex">(x_1,x_2,\ldots,x_n)</script>を求めたい。</p>
 
@@ -91,19 +91,19 @@
 
 <p>が成立する。</p>
 
-<h1 id="section-2">式の意味の解説と直感的な証明</h1>
+<h1 id="式の意味の解説と直感的な証明">式の意味の解説と直感的な証明</h1>
 <p>2次元の場合で考えましょう。ラグランジュの未定乗数法で使われる等式を確認のためにもう一度書いておきます。</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>
 
-<h2 id="fracpartial-lpartial-lambda0">(1) <script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>の意味</h2>
+<h2 id="1-fracpartial-lpartial-lambda0の意味">(1) <script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>の意味</h2>
 <p>まず初めに<script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>の部分ですが、これは単に<script type="math/tex">g(x,y)=0</script>を難しく書きなおしたものに過ぎません。</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial \lambda}=\frac{\partial({f(x,y)-{\lambda}g(x,y)})}{\partial \lambda}=\frac{\partial{f(x,y)}}{\partial \lambda}-\frac{\partial(\lambda g(x,y))}{\partial \lambda}=-g(x,y)=0</script>
 
 <p><script type="math/tex">\frac{\partial L}{\partial \lambda}=0</script>は束縛条件<script type="math/tex">g(x,y)=0</script>を別の方法で表現したものに過ぎないので、<script type="math/tex">(x,y)</script>を解析的に求める上では特に訳には立ちません。</p>
 
-<h2 id="fracpartial-lpartial-xfracpartial-lpartial-y0">(2) <script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>の意味</h2>
+<h2 id="2-fracpartial-lpartial-xfracpartial-lpartial-y0の意味">(2) <script type="math/tex">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>の意味</h2>
 <p>ラグランジュ未定乗数法において本当に意味のある部分は</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=0</script>
@@ -180,7 +180,7 @@
 \right)</script>
 が何を意味しているかを理解すればラグランジュの未定乗数法が何を意味していて何故それを使って<script type="math/tex">f(x,y)</script>を最大化する<script type="math/tex">(x, y)</script>を求めることができるのかが理解できます。</p>
 
-<h2 id="gradient">勾配 (gradient)，法線ベクトル</h2>
+<h2 id="勾配-gradient法線ベクトル">勾配 (gradient)，法線ベクトル</h2>
 <p><script type="math/tex">\left(
   \begin{array}{c}
   \frac{\partial f}{\partial x} \\
@@ -250,7 +250,7 @@
 
 <p><img src="https://docs.google.com/drawings/d/1Ydac4y9UM-0bodV9Z5mXZYj-hjRRs24Jl0mTiqRXJlQ/pub?w=555&amp;h=416" width="277" height="208" /></p>
 
-<h2 id="fxyc-gxy0-">なぜ <script type="math/tex">f(x,y)=c</script>, <script type="math/tex">g(x,y)=0</script> が接する必要があるか</h2>
+<h2 id="なぜ-fxyc-gxy0-が接する必要があるか">なぜ <script type="math/tex">f(x,y)=c</script>, <script type="math/tex">g(x,y)=0</script> が接する必要があるか</h2>
 <p>以上より、ラグランジュの未定乗数法が述べていることは言い換えれば、束縛条件 <script type="math/tex">g(x,y)</script> の元で <script type="math/tex">f(x,y)</script> が最大値(あるいは最小値)となる点<script type="math/tex">(x,y)</script>において曲線
 <script type="math/tex">g(x,y)=0</script> と <script type="math/tex">f(x,y)=c</script> （<script type="math/tex">c</script>は点<script type="math/tex">(x,y)</script>における<script type="math/tex">f(x,y)</script>の値）が接するということです。</p>
 
@@ -263,7 +263,7 @@ f(x,y)<c %]]></script> となるエリアです。
 上の図のようにもし点<script type="math/tex">(x,y)</script> で <script type="math/tex">g(x,y)=0</script> と <script type="math/tex">f(x,y)=c</script> が交差しているのならば、<script type="math/tex">g(x,y)=0</script>の曲線上に <script type="math/tex">f(x,y) > c</script> となる点と <script type="math/tex">% <![CDATA[
 f(x,y) < c %]]></script> となる点が必ず存在することになります。つまり束縛条件 <script type="math/tex">g(x,y)=0</script> をみたしつつ、 <script type="math/tex">f(x,y)</script> を <script type="math/tex">c</script> よりも大きくする点と小さくする点が存在するわけですから、その点においては <script type="math/tex">f(x,y)</script> は最大・最小いずれにもなることはありません。</p>
 
-<h1 id="section-3">解説・証明まとめ</h1>
+<h1 id="解説証明まとめ">解説・証明まとめ</h1>
 <p>ラグランジュ未定乗数法の式</p>
 
 <script type="math/tex; mode=display">\frac{\partial L}{\partial x}=\frac{\partial L}{\partial y}=\frac{\partial L}{\partial \lambda}=0</script>

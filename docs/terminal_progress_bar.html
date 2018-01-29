@@ -57,11 +57,10 @@
 
 <p><img src="/assets/progressbar.gif" width="344" height="60" /></p>
 
-<h2 id="section">仕組み</h2>
+<h2 id="仕組み">仕組み</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[=&gt;           ]  5.2%
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[=&gt;           ]  5.2%
+</code></pre></div></div>
 
 <p>プログレスバーが更新されるたびに新しい行が表示されるのを防ぐために、
 プログレスバーを表示する前にカーソルを行頭に戻して行の内容を消してしまえればプログレスバーの完成です。
@@ -92,11 +91,10 @@ return)</a></li>
 (<a href="http://www.termsys.demon.co.uk/vtansi.htm">エスケープシーケンスの一覧</a>)。
 行の削除のエスケープシーケンスは &lt;ESC&gt;[94m です。</p>
 
-<h2 id="section-1">実装</h2>
+<h2 id="実装">実装</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[======&gt;      ] 42.3%
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[======&gt;      ] 42.3%
+</code></pre></div></div>
 
 <p>基本的には <code class="highlighter-rouge">\r</code> と &lt;ESC&gt;[94m を標準出力に書き出して、その後に
 <code class="highlighter-rouge">"[====&gt;  ] 70%"</code> のようなプログレスバーを表す文字列を書くだけです。
@@ -127,18 +125,16 @@ return)</a></li>
 <h3 id="python">Python</h3>
 <p><a href="https://github.com/yunabe/codelab/blob/master/misc/terminal_progressbar/progress.py">GitHub にPythonのサンプルがおいてあります</a></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sys.stderr.write('\r\033[K' + get_progressbar_str(progress))
 sys.stderr.flush()
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-2">おまけ</h2>
+<h2 id="おまけ">おまけ</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[===========&gt; ] 89.7%
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[===========&gt; ] 89.7%
+</code></pre></div></div>
 
-<h3 id="section-3">色をつける</h3>
+<h3 id="色をつける">色をつける</h3>
 
 <p>プログレスバーがカラフルだと楽しいので余裕があったら色を付けてみましょう。
 <a href="http://www.termsys.demon.co.uk/vtansi.htm#colors">エスケープシーケンスを使って文字の色と背景色が制御できる</a>
@@ -152,9 +148,8 @@ sys.stderr.flush()
 で実行すると真ん中の <code class="highlighter-rouge">*</code> のみが明るい赤で表示されるはずです。
 いろいろ自分で試して遊んでみて下さい。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>print "*\x1b[1;31m*\x1b[0m*"
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print "*\x1b[1;31m*\x1b[0m*"
+</code></pre></div></div>
 
 <p>エスケープシーケンスで指定できる Red, Blue
 などの色が実際のターミナルでどのような色になるかは、 <a href="http://en.wikipedia.org/wiki/ANSI_escape_code#Colors">Wikipedia

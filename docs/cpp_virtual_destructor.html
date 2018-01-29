@@ -56,9 +56,9 @@
 its destructor should be virtual.</a>)。
 ただその理由は若干複雑です。理由が説明できないとコードレビューで問題を指摘する際に困りますし、逆に必要ないのに <a href="#others">「デストラクタには常に virtual をつけろ」</a>と言われた場合に反論できなくて困ることになります。</p>
 
-<h1 id="section">ルールの前提</h1>
+<h1 id="ルールの前提">ルールの前提</h1>
 
-<h2 id="virtual-">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</h2>
+<h2 id="virtual-なメソッドがあるなら子クラスのポインタは必ず親クラスのポインタとして使用される">virtual なメソッドがあるなら、子クラスのポインタは必ず親クラスのポインタとして使用される</h2>
 
 <p>そもそも virtual なメソッド (仮想メンバー関数)
 がクラスに定義されているということは、
@@ -71,7 +71,7 @@ its destructor should be virtual.</a>)。
 そのためプリモーフィズムを利用しないクラスであれば、不必要に virtual
 をつけるべきではないでしょう。</p>
 
-<h2 id="virtual--1">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</h2>
+<h2 id="子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが-virtual-でなくてはならない">子クラスのポインタを親クラスのポインタにキャストして使用するならデストラクタが virtual でなくてはならない</h2>
 
 <p>言い換えると、デストラクタが virtual
 でない場合、子クラスのポインタを親クラスのポインタにキャストして使用してはいけません。
@@ -80,10 +80,10 @@ its destructor should be virtual.</a>)。
 たとえ親クラスの型のポインタが指している実体が子クラスだったとしても子クラスのデストラクタ
 (これは暗黙的に親クラスのデストラクタを呼ぶ) は呼び出されません。</p>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// ~Parent is not virtual.
-</span><span class="n">Parent</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Child</span><span class="p">();</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// ~Parent is not virtual.</span>
+<span class="n">Parent</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Child</span><span class="p">();</span>
 <span class="p">...</span>
-<span class="k">delete</span> <span class="n">parent</span><span class="p">;</span>  <span class="o">//</span> <span class="k">this</span> <span class="n">always</span> <span class="n">calls</span> <span class="o">~</span><span class="n">Parent</span><span class="p">();</span> <span class="o">~</span><span class="n">Child</span><span class="p">()</span> <span class="n">is</span> <span class="n">never</span> <span class="n">called</span><span class="p">.</span></code></pre></figure>
+<span class="k">delete</span> <span class="n">parent</span><span class="p">;</span>  <span class="c1">// this always calls ~Parent(); ~Child() is never called.</span></code></pre></figure>
 
 <p>このコードでは <code class="highlighter-rouge">Child</code> のデストラクタが呼び出されないので Child
 のリソースの解放が行われません。 もちろん <code class="highlighter-rouge">delete parent;</code>
@@ -100,12 +100,12 @@ its destructor should be virtual.</a>)。
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">class</span> <span class="nc">Parent</span> <span class="p">{</span>
   <span class="p">...</span>
 
-  <span class="c1">// 例えデストラクタが空でも
-</span>  <span class="c1">// virtual なデストラクタは明示的に定義する
-</span>  <span class="k">virtual</span> <span class="o">~</span><span class="n">Parent</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="c1">// 例えデストラクタが空でも</span>
+  <span class="c1">// virtual なデストラクタは明示的に定義する</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Parent</span><span class="p">()</span> <span class="p">{}</span>
 <span class="p">}</span></code></pre></figure>
 
-<h1 id="section-1">結論</h1>
+<h1 id="結論">結論</h1>
 
 <p>上で述べた2つの前提</p>
 

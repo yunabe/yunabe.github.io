@@ -73,8 +73,8 @@ ez_setup.py, distutils, PyPI, Eggs, etc…
 で正しくパッケージ管理を行う上で大切かと思います。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">キーワード</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">事前知識</a>    <ul>
+  <li><a href="#キーワード" id="markdown-toc-キーワード">キーワード</a></li>
+  <li><a href="#事前知識" id="markdown-toc-事前知識">事前知識</a>    <ul>
       <li><a href="#site-packages" id="markdown-toc-site-packages">site-packages</a></li>
       <li><a href="#user-site-directory" id="markdown-toc-user-site-directory">User site directory</a></li>
       <li><a href="#pypi" id="markdown-toc-pypi">PyPI</a></li>
@@ -82,37 +82,37 @@ ez_setup.py, distutils, PyPI, Eggs, etc…
   </li>
   <li><a href="#distutils" id="markdown-toc-distutils">distutils</a>    <ul>
       <li><a href="#distutils-basic" id="markdown-toc-distutils-basic">基本</a></li>
-      <li><a href="#distutils-" id="markdown-toc-distutils-">distutils における依存関係の扱い</a></li>
+      <li><a href="#distutils-における依存関係の扱い" id="markdown-toc-distutils-における依存関係の扱い">distutils における依存関係の扱い</a></li>
     </ul>
   </li>
   <li><a href="#distribute" id="markdown-toc-distribute">distribute</a></li>
   <li><a href="#setuptools" id="markdown-toc-setuptools">setuptools</a>    <ul>
-      <li><a href="#section-2" id="markdown-toc-section-2">インストール</a></li>
-      <li><a href="#section-3" id="markdown-toc-section-3">参考文献</a></li>
+      <li><a href="#インストール" id="markdown-toc-インストール">インストール</a></li>
+      <li><a href="#参考文献" id="markdown-toc-参考文献">参考文献</a></li>
     </ul>
   </li>
   <li><a href="#easy-install" id="markdown-toc-easy-install">easy_install</a>    <ul>
-      <li><a href="#easyinstall-" id="markdown-toc-easyinstall-">easy_install の使い方</a></li>
-      <li><a href="#section-4" id="markdown-toc-section-4">文献</a></li>
+      <li><a href="#easy_install-の使い方" id="markdown-toc-easy_install-の使い方">easy_install の使い方</a></li>
+      <li><a href="#文献" id="markdown-toc-文献">文献</a></li>
     </ul>
   </li>
   <li><a href="#python-eggs" id="markdown-toc-python-eggs">Python Eggs</a></li>
   <li><a href="#ez-setup" id="markdown-toc-ez-setup">ez_setup.py</a></li>
   <li><a href="#pip" id="markdown-toc-pip">pip</a>    <ul>
-      <li><a href="#section-5" id="markdown-toc-section-5">インストール &amp; アップグレード</a></li>
-      <li><a href="#section-6" id="markdown-toc-section-6">使い方</a></li>
+      <li><a href="#インストール--アップグレード" id="markdown-toc-インストール--アップグレード">インストール &amp; アップグレード</a></li>
+      <li><a href="#使い方" id="markdown-toc-使い方">使い方</a></li>
     </ul>
   </li>
   <li><a href="#wheels" id="markdown-toc-wheels">Wheels</a>    <ul>
-      <li><a href="#section-7" id="markdown-toc-section-7">インストール</a></li>
-      <li><a href="#wheel" id="markdown-toc-wheel">Wheelの作成</a></li>
+      <li><a href="#インストール-1" id="markdown-toc-インストール-1">インストール</a></li>
+      <li><a href="#wheelの作成" id="markdown-toc-wheelの作成">Wheelの作成</a></li>
     </ul>
   </li>
-  <li><a href="#section-8" id="markdown-toc-section-8">その他</a></li>
-  <li><a href="#section-9" id="markdown-toc-section-9">参考文献</a></li>
+  <li><a href="#その他" id="markdown-toc-その他">その他</a></li>
+  <li><a href="#参考文献-1" id="markdown-toc-参考文献-1">参考文献</a></li>
 </ul>
 
-<h1 id="section">キーワード</h1>
+<h1 id="キーワード">キーワード</h1>
 
 <p>Python
 におけるパッケージ管理に関係のあるキーワードをアルファベット順に。</p>
@@ -192,7 +192,7 @@ ez_setup.py, distutils, PyPI, Eggs, etc…
   </li>
 </ul>
 
-<h1 id="section-1">事前知識</h1>
+<h1 id="事前知識">事前知識</h1>
 
 <h2 id="site-packages">site-packages</h2>
 
@@ -281,18 +281,16 @@ setuptools だろうから、distutils
 というモジュールがあるモジュール配布物 (module distribution)
 を定義している。 setup.py ができたら、:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py sdist
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py sdist
+</code></pre></div></div>
 
 <p>を実行する。そうすると、dist というディレクトリに module distribution の
 .zip や .tar.gz ファイルが作成される。これを配布すれば良い。
 配布されたパッケージをインストールするには、sdist
 で作成されたファイルをダウンロード・解凍して、展開先のディレクトリで:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py install
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py install
+</code></pre></div></div>
 
 <p>を実行すればよい。site-packages にインストールが行われる。
 <code class="highlighter-rouge">User site directory</code> にインストールしたい場合には、 <a href="https://docs.python.org/2/install/index.html#alternate-installation-the-user-scheme">install コマンドに
@@ -302,13 +300,12 @@ setuptools だろうから、distutils
 オプションを付ければ、非rootユーザも自分のホームディレクトリにモジュール配布物をインストールすることができる。
 その他のコマンドの一覧は:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python setup.py --help-commands
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py --help-commands
+</code></pre></div></div>
 
 <p>で表示できる。</p>
 
-<h2 id="distutils-">distutils における依存関係の扱い</h2>
+<h2 id="distutils-における依存関係の扱い">distutils における依存関係の扱い</h2>
 
 <p><a href="https://docs.python.org/2/distutils/setupscript.html#relationships-between-distributions-and-packages">distutils ドキュメントには、setup に渡す requires
 パラメータで依存関係が定義できる</a>
@@ -335,29 +332,26 @@ distribute は setuptools
 更新が停止していたので、代替として distribute が開発されていたが
 distribute は2013年にマージされたので、今後はsetuptools を使えば良い。</p>
 
-<h2 id="section-2">インストール</h2>
+<h2 id="インストール">インストール</h2>
 
 <p>ez_setup.py
 というブートストラップ用のスクリプトをダウンロードし実行する。:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python ez_setup.py
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>前述の User site directory にインストールする場合には、:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python ez_setup.py --user
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python ez_setup.py --user
+</code></pre></div></div>
 
 <p>を実行する。 Mac の Python には始めから入っているような気がする。:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/setuptools
+</code></pre></div></div>
 
-<h2 id="section-3">参考文献</h2>
+<h2 id="参考文献">参考文献</h2>
 
 <p><a href="https://pypi.python.org/pypi/setuptools">https://pypi.python.org/pypi/setuptools</a></p>
 
@@ -368,7 +362,7 @@ python ez_setup.py
 setuptools に付随している。パッケージを自作しないユーザが setuptols
 を入れる直接的な理由のほとんどはこれをインストールするためであろう。</p>
 
-<h2 id="easyinstall-">easy_install の使い方</h2>
+<h2 id="easy_install-の使い方">easy_install の使い方</h2>
 
 <ul>
   <li>PyPI から最新版をダウンロードしてインストール
@@ -400,7 +394,7 @@ easy_install 自体を User site directory
   </li>
 </ul>
 
-<h2 id="section-4">文献</h2>
+<h2 id="文献">文献</h2>
 
 <ul>
   <li><a href="https://pythonhosted.org/setuptools/easy_install.html">easy_install
@@ -427,7 +421,7 @@ setuptools を使って setup.py を定義していれば) 作成することが
 にはない機能が提供されています。 2014年12月現在、pip を使うのが Python
 における最もモダンなパッケージ管理方法だと思います。</p>
 
-<h2 id="section-5">インストール &amp; アップグレード</h2>
+<h2 id="インストール--アップグレード">インストール &amp; アップグレード</h2>
 
 <ul>
   <li>wget “<a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a>”</li>
@@ -448,7 +442,7 @@ setuptools を使って setup.py を定義していれば) 作成することが
   </li>
 </ul>
 
-<h2 id="section-6">使い方</h2>
+<h2 id="使い方">使い方</h2>
 
 <ul>
   <li>PyPI から最新版をダウンロードしてインストール
@@ -483,21 +477,20 @@ setuptools を使って setup.py を定義していれば) 作成することが
   <li><a href="https://wheel.readthedocs.org/en/latest/">Wheel</a></li>
 </ul>
 
-<h2 id="section-7">インストール</h2>
+<h2 id="インストール-1">インストール</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install wheel
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install wheel
 (必要ならば --user をつける)
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="wheel">Wheelの作成</h2>
+<h2 id="wheelの作成">Wheelの作成</h2>
 
 <ul>
   <li>setup.py が setuptools を使って書かれていれば、 wheel
 をインストールすることで bdist_wheel が使えるようになります。</li>
 </ul>
 
-<h1 id="section-8">その他</h1>
+<h1 id="その他">その他</h1>
 
 <ul>
   <li><a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>
@@ -514,7 +507,7 @@ setuptools を使って setup.py を定義していれば) 作成することが
   </li>
 </ul>
 
-<h1 id="section-9">参考文献</h1>
+<h1 id="参考文献-1">参考文献</h1>
 
 <ul>
   <li><a href="http://www.freia.jp/taka/docs/pyhack4/index.html">Python Hack-a-thon 4 ハンズオン

@@ -75,45 +75,41 @@
 github</a>
 にアップロードしてあります。</p>
 
-<h1 id="ulimit-">ulimit によるプロセス数制限</h1>
+<h1 id="ulimit-によるプロセス数制限">ulimit によるプロセス数制限</h1>
 
 <p>ユーザ毎に起動できるプロセス数の制限が存在します。
 スレッドもプロセスの一種なのでこの上限を超えてスレッドを作成することはできません。
 この上限は <code class="highlighter-rouge">ulimit -u</code> で確認できます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ ulimit -u
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ulimit -u
 unlimited
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>この上限は <code class="highlighter-rouge">/etc/security/limits.conf</code> をで設定できます。例えば</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>yunabe      soft    nproc     10000
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yunabe      soft    nproc     10000
 yunabe      hard    nproc     unlimited
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>みたいなエントリを足せばよいです。編集後は再ログインか <code class="highlighter-rouge">ulimit -a</code>
 の実行が必要。</p>
 
-<h1 id="section">システム全体でのスレッド数の上限</h1>
+<h1 id="システム全体でのスレッド数の上限">システム全体でのスレッド数の上限</h1>
 
 <p>Linux にはシステム全体でのスレッド数の上限が設定されています。この値は</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat /proc/sys/kernel/threads-max
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /proc/sys/kernel/threads-max
+</code></pre></div></div>
 
 <p>で確認できます。 この上限値を挙げるには <code class="highlighter-rouge">/etc/sysctl.conf</code> に</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>kernel.threads-max = 100000
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kernel.threads-max = 100000
+</code></pre></div></div>
 
 <p>のようなエントリを追加して、<code class="highlighter-rouge">sudo sysctl -p</code>
 を実行してシステムに反映します。</p>
 
-<h1 id="procsysvmmaxmapcount">/proc/sys/vm/max_map_count</h1>
+<h1 id="procsysvmmax_map_count">/proc/sys/vm/max_map_count</h1>
 
 <ul>
   <li>pthread は 1スレッドあたり、2つのメモリマップを必要とするようです。</li>
@@ -126,7 +122,7 @@ yunabe      hard    nproc     unlimited
   <li>参考:<a href="https://listman.redhat.com/archives/phil-list/2003-August/msg00005.html">https://listman.redhat.com/archives/phil-list/2003-August/msg00005.html</a></li>
 </ul>
 
-<h1 id="section-1">プロセス番号の最大値</h1>
+<h1 id="プロセス番号の最大値">プロセス番号の最大値</h1>
 
 <ul>
   <li>プロセス番号の最大値 <code class="highlighter-rouge">cat /proc/sys/kernel/pid_max</code></li>
@@ -135,7 +131,7 @@ bit 環境では 2\^22 (4Mぐらい) まで上げることが可能。</li>
   <li><code class="highlighter-rouge">man 5 proc</code></li>
 </ul>
 
-<h1 id="bit">スタックと仮想メモリサイズ制限 (32bit環境限定)</h1>
+<h1 id="スタックと仮想メモリサイズ制限-32bit環境限定">スタックと仮想メモリサイズ制限 (32bit環境限定)</h1>
 
 <p>pthread のスレッドごとのスタックサイズがデフォルトで 2MB ぐらいらしい
 (要出典) ので、 1つのプロセスでたくさんのスレッドを作ると 32bit

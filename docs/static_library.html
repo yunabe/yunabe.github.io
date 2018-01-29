@@ -51,42 +51,39 @@
   </div>
 </div>
 
-        <h1 id="a-">静的ライブラリ (.a) の作成</h1>
+        <h1 id="静的ライブラリ-a-の作成">静的ライブラリ (.a) の作成</h1>
 
 <p><a href="http://linuxjm.sourceforge.jp/html/GNU_binutils/man1/ar.1.html">ar コマンド</a>
 で複数のオブジェクトファイル (<code class="highlighter-rouge">.o</code>) をまとめて静的ライブラリ (<code class="highlighter-rouge">.a</code>)
 を作成できます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ar rcs libfoo.a foo.o bar.o baz.o
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ar rcs libfoo.a foo.o bar.o baz.o
+</code></pre></div></div>
 
-<h1 id="section">静的ライブラリをリンクする</h1>
+<h1 id="静的ライブラリをリンクする">静的ライブラリをリンクする</h1>
 
 <p>オブジェクトファイルをリンクするのと同じように gcc
 に引数を渡すとリンクされます</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc(g++) -o program program.o libfoo.a
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc(g++) -o program program.o libfoo.a
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">-L</code> で指定したディレクトリにある <code class="highlighter-rouge">libname.a</code> という静的ライブラリは
 <code class="highlighter-rouge">-lname</code> として指定することもできる。 たまにみる <code class="highlighter-rouge">-lpthread</code> とかは
 <code class="highlighter-rouge">libpthread.a</code> をリンクするという意味です。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc(g++) -o program program.o -L. -lfoo
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc(g++) -o program program.o -L. -lfoo
+</code></pre></div></div>
 
 <p>ただし後述するように、オブジェクトファイルをリンクする場合と違って
 静的ライブラリ (.a) をリンクする場合は引数の順序が重要になるので注意が必要です &lt;linker&gt;。</p>
 
-<h1 id="section-1">静的ライブラリの内容(シンボル)の確認</h1>
+<h1 id="静的ライブラリの内容シンボルの確認">静的ライブラリの内容(シンボル)の確認</h1>
 
 <p>nm コマンドで <code class="highlighter-rouge">.o</code> ファイルや <code class="highlighter-rouge">.a</code>
 ファイルに存在するシンボルを確認することができます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ nm foo.o 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nm foo.o 
                  U _Z7say_bari
 0000000000000000 T _Z7say_fooi
                  U __gxx_personality_v0
@@ -110,16 +107,15 @@ bar.o:
                  U _Z7say_fooi
                  U __gxx_personality_v0
                  U printf
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="section-2">リンカーの挙動</h1>
+<h1 id="リンカーの挙動">リンカーの挙動</h1>
 
 <p>静的ライブラリをリンクする場合は、引数で与える静的ファイルやオブジェクトファイルの順序が重要になります。
 基本的にはAがBに依存しているなら、AをBの前に引数で与えなくてはなりません。
 このルールはリンカーが静的ライブラリ内のオブジェクトファイルを参照する際の挙動を理解していると分かりやすいです。</p>
 
-<h2 id="section-3">大雑把な流れ</h2>
+<h2 id="大雑把な流れ">大雑把な流れ</h2>
 
 <p>リンカは未解決の参照のリストを保持している。はじめ、このリストにはmainが入っている<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>。
 リンカはオブジェクトファイル(.o)を受け取り、参照を解決し、新しい未解決の参照がみつかったらリストに追加する（リンクする）。
@@ -128,15 +124,13 @@ bar.o:
 静的ライブラリに含まれていても無視される。
 そのため、main.oがlibfoo.a内のシンボルを参照している場合</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o program main.o libfoo.a
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -o program main.o libfoo.a
+</code></pre></div></div>
 
 <p>は問題なく実行できるが</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o program libfoo.a main.o
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -o program libfoo.a main.o
+</code></pre></div></div>
 
 <p>は、libfoo.aをリンカが読み込んだ時点ではlibfoo.a内のシンボルは「未解決の参照リスト」には含まれてないので
 libfoo.a内のオブジェクトファイルはリンカに無視されてしまい、
@@ -149,12 +143,11 @@ libfoo.a内のオブジェクトファイルはリンカに無視されてしま
 <code class="highlighter-rouge">--no-whole-archive</code> で挙動を元に戻す。 gcc(g++)の引数で指定する場合は
 <code class="highlighter-rouge">-Wl,</code> を前につける</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># これはコンパイルできる
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># これはコンパイルできる
 gcc -o program -Wl,--whole-archive libfoo.a -Wl,--no-whole-archive main.o
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-4">文献</h2>
+<h2 id="文献">文献</h2>
 
 <ul>
   <li><a href="http://groups.google.com/group/gnu.gcc.help/msg/c1ed29766d6a5a7d">linking problems and
@@ -164,7 +157,7 @@ order</a></li>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>厳密にはmainへの参照をもつcrt0.oがリンカに渡されるというのが正しい？ <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>厳密にはmainへの参照をもつcrt0.oがリンカに渡されるというのが正しい？ <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

@@ -36,23 +36,21 @@
           <h1 class="post-title tips-title" itemprop="name headline">JVM (java, javac コマンド) の言語, ロケールを設定方法</h1>
           <p class="post-meta"><time datetime="2015-05-04T00:00:00+09:00" itemprop="datePublished">更新 May 4, 2015</time></p>
         </header>
-        <h1 id="section">質問</h1>
+        <h1 id="質問">質問</h1>
 <p>JVM (java, javac コマンド) の言語・ロケールはどうやって指定するの？</p>
 
-<h1 id="section-1">答え</h1>
+<h1 id="答え">答え</h1>
 <p>user.language, user.country オプションを java や javac コマンドを実行する際に指定することでJVMのロケール（言語・国）のデフォルト値が設定できます。
 user.language に指定できるのは<a href="http://ja.wikipedia.org/wiki/ISO_639-1%E3%82%B3%E3%83%BC%E3%83%89%E4%B8%80%E8%A6%A7">ISO 639 の2桁の小文字</a>、
 user.country に指定できるのは<a href="http://ja.wikipedia.org/wiki/ISO_3166-1">ISO 3166 の2桁の大文字</a>です。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>java -Duser.language=ja -Duser.country=JP ...
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -Duser.language=ja -Duser.country=JP ...
+</code></pre></div></div>
 
 <p>環境変数 <code class="highlighter-rouge">_JAVA_OPTIONS</code> に設定しておけば、java, javac 起動時に自動的に引数が渡されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export _JAVA_OPTIONS="-Duser.language=ja -Duser.country=JP"
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export _JAVA_OPTIONS="-Duser.language=ja -Duser.country=JP"
+</code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

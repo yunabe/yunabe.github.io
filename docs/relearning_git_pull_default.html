@@ -58,7 +58,7 @@
 はどのリモートリポジトリのブランチを選んで現在のブランチに pull
 するのでしょうか。</p>
 
-<h1 id="tracking-branch--upstream">トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</h1>
+<h1 id="トラッキングブランチ-tracking-branch-とアップストリーム-upstream">トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</h1>
 
 <p><code class="highlighter-rouge">git pull/push</code> で引数を省略できるように、Git
 ではローカルブランチをリモートトラッキングブランチに対して関連付けることができます。
@@ -68,17 +68,16 @@
 逆に関連付けられているリモートトラキングブランチのことはアップストリーム
 (Upstream) と呼びます。</p>
 
-<h1 id="section">アップストリームの設定と確認</h1>
+<h1 id="アップストリームの設定と確認">アップストリームの設定と確認</h1>
 
 <p>既存のブランチをリモートトラッキングブランチに関連付けてみましょう。
 これは <code class="highlighter-rouge">git branch -u &lt;upstream&gt; &lt;branch&gt;</code> で行うことができます
 (<code class="highlighter-rouge">&lt;branch&gt;</code> は省略可。省略した際は現在のブランチが暗黙的に指定される)。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
 $ git branch -u shared/master master
 Branch master set up to track remote branch master from shared.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これでローカルブランチ <code class="highlighter-rouge">master</code> が リモートトラキングブランチ
 <code class="highlighter-rouge">shared/master</code> と関連付けられました。
@@ -86,56 +85,51 @@ Branch master set up to track remote branch master from shared.
 <code class="highlighter-rouge">git branch -vv</code>, <code class="highlighter-rouge">git remote show &lt;repository&gt;</code> の出力あるいは
 <code class="highlighter-rouge">.git/config</code> ファイルの中身から確認できます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git branch -vv
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git branch -vv
 * master   d623bbf [shared/master] Merged.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>ブランチの upstream が存在する場合 <code class="highlighter-rouge">[]</code> で囲まれて表示されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git remote show shared
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git remote show shared
   * remote shared
   (略)
   Local branch configured for 'git pull':
     master merges with remote master
   (略)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>このように、<code class="highlighter-rouge">master</code> ブランチが <code class="highlighter-rouge">shared</code> の <code class="highlighter-rouge">master</code>
 ブランチに関連付けられていることが <code class="highlighter-rouge">'git pull'</code> の項目に表示されます。
 また、<code class="highlighter-rouge">.git/config</code>
 ファイルを開くと下のような項目が追加されているはずです。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[branch "master"]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[branch "master"]
  remote = shared
  merge = refs/heads/master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これで、アップストリームが設定できたので <code class="highlighter-rouge">git pull</code>
 を引数なしで実行してみましょう (<code class="highlighter-rouge">-v</code> をつけると分かりやすいです)。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git pull
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull
 Already up-to-date.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>ローカルブランチとリモートトラキングブランチの関連付けは
 <code class="highlighter-rouge">git branch --unset-upstream &lt;local_branch&gt;</code> で解除できます。
 解除すると、<code class="highlighter-rouge">git pull</code> は引数なしでは動かなくなります。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git branch --unset-upstream master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git branch --unset-upstream master
 $ git pull
 fatal: No remote repository specified.  Please, specify either a URL or a
 remote name from which new revisions should be fetched.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">git remote show shared</code> の出力と <code class="highlighter-rouge">.git/config</code>
 の中身をみて、関連付けが解除されていることを確認してみてください。</p>
 
-<h1 id="section-1">暗黙的に設定されるアップストリーム</h1>
+<h1 id="暗黙的に設定されるアップストリーム">暗黙的に設定されるアップストリーム</h1>
 
 <p>ここまで読んで、アップストリームの設定はしたことないけれど <code class="highlighter-rouge">git pull</code>
 は引数なしで普段使っていると思った人がいるかもしれません。

@@ -141,7 +141,7 @@
 err のTypeとValueを表示してみると、Typeが<code class="highlighter-rouge">*main.myError</code>で値がValueが<code class="highlighter-rouge">&lt;nil&gt;</code>であることが分かります。errの”値”は<code class="highlighter-rouge">nil</code>ですがerrは型情報を保持しているのです。
 型を持っているinterfaceはValueが<code class="highlighter-rouge">nil</code>でも<code class="highlighter-rouge">nil</code>ではないのです。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---- err ----
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---- err ----
 is nil: false
 Type: *main.myError
 Value: &lt;nil&gt;
@@ -149,8 +149,7 @@ Value: &lt;nil&gt;
 is nil: true
 Type: &lt;nil&gt;
 Value: &lt;invalid reflect.Value&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>ちなみにこれは<a href="https://golang.org/doc/faq#nil_error">Frequently Asked Questions (FAQ)</a>に<a href="https://github.com/golang/go/commit/1e0f97ac6544ab3b7cf76e9c9d62e8c2a60bcdb6">2012年から</a>書いてある問題です。
 よくドキュメントを読まずに色々はまって時間をつぶすす前に(自分は数時間つぶしました)、まずFAQくらいは目を通しておいたほうがよいですね。</p>
@@ -167,9 +166,8 @@ Value: &lt;invalid reflect.Value&gt;
 
 <p>C++, Java, Python, JavaScript などの他の人気のある言語では</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>person.sayHello()
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>person.sayHello()
+</code></pre></div></div>
 
 <p>のようにメソッド呼び出しをする場合は(C++の場合は<code class="highlighter-rouge">.</code>でなく<code class="highlighter-rouge">-&gt;</code>)、<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">null</code>でないことを確認しなくてはなりません(C++で<code class="highlighter-rouge">sayHello</code>がnon-virtualの場合も挙動は未定義)。
 しかしGoの場合は<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">struct</code>のポインタである場合には<code class="highlighter-rouge">person</code>が<code class="highlighter-rouge">nil</code>でも関数の呼び出しは問題なく行えます。
@@ -400,9 +398,8 @@ Goの例外は極力使わず、エラーを値として扱うポリシーはよ
 
 <p>プログラムを走らせたらエラーが発生してエラーが出力されました。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Invalid Argument
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invalid Argument
+</code></pre></div></div>
 
 <p>あれ…このエラーどこで発生したの…</p>
 

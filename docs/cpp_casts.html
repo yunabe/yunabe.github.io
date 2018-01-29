@@ -52,20 +52,20 @@
 </div>
 
         <ul id="markdown-toc">
-  <li><a href="#staticcast" id="markdown-toc-staticcast">static_cast</a></li>
-  <li><a href="#dynamiccast" id="markdown-toc-dynamiccast">dynamic_cast</a></li>
-  <li><a href="#reinterpretcast" id="markdown-toc-reinterpretcast">reinterpret_cast</a></li>
-  <li><a href="#constcast" id="markdown-toc-constcast">const_cast</a></li>
+  <li><a href="#static_cast" id="markdown-toc-static_cast">static_cast</a></li>
+  <li><a href="#dynamic_cast" id="markdown-toc-dynamic_cast">dynamic_cast</a></li>
+  <li><a href="#reinterpret_cast" id="markdown-toc-reinterpret_cast">reinterpret_cast</a></li>
+  <li><a href="#const_cast" id="markdown-toc-const_cast">const_cast</a></li>
 </ul>
 
-<h1 id="staticcast">static_cast</h1>
+<h1 id="static_cast">static_cast</h1>
 <p>ある型からある型への暗黙の変換が存在する時に(たとえば<code class="highlighter-rouge">int</code>から<code class="highlighter-rouge">double</code>など)、そこで暗黙の変換が行われることを明示する場合に行います。
 多くの場合は<code class="highlighter-rouge">static_cast</code>は省略することが可能です。</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">);</span></code></pre></figure>
 
-<h1 id="dynamiccast">dynamic_cast</h1>
+<h1 id="dynamic_cast">dynamic_cast</h1>
 <p>親クラスの型のポインタを子クラスのポインタにキャストするときに利用します。
 この際、その親クラスの型のポインタが指すオブジェクトの実体のクラスがキャスト先のクラスであることを確認されます。
 ポインタが指す実体がキャスト先のクラスまたはその子孫クラスである場合はポインタはそのまま使われますが、
@@ -73,17 +73,17 @@
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">Child0</span> <span class="n">child0</span><span class="p">;</span>
 <span class="n">Parent</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">child0</span><span class="p">;</span>
-<span class="c1">// Child1* child1 = parent; &lt;-- compile error.
-</span><span class="n">Child1</span><span class="o">*</span> <span class="n">child1</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Child1</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span>
+<span class="c1">// Child1* child1 = parent; &lt;-- compile error.</span>
+<span class="n">Child1</span><span class="o">*</span> <span class="n">child1</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Child1</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span>
 <span class="n">Child0</span><span class="o">*</span> <span class="n">child0_2</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Child0</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span>
-<span class="c1">// child1 is nullptr. child0_2 == child0.
-</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"child1: "</span> <span class="o">&lt;&lt;</span> <span class="n">child1</span> <span class="o">&lt;&lt;</span> <span class="s">", child0_2: "</span> <span class="o">&lt;&lt;</span> <span class="n">child0_2</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="c1">// child1 is nullptr. child0_2 == child0.</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"child1: "</span> <span class="o">&lt;&lt;</span> <span class="n">child1</span> <span class="o">&lt;&lt;</span> <span class="s">", child0_2: "</span> <span class="o">&lt;&lt;</span> <span class="n">child0_2</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"child0_2-&gt;name(): "</span> <span class="o">&lt;&lt;</span> <span class="n">child0_2</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span></code></pre></figure>
 
 <p><code class="highlighter-rouge">dynamic_cast</code>を行うためには、型情報がポインタから得られる必要があります。つまりクラスは<a href="https://en.wikipedia.org/wiki/Polymorphism_(computer_science)"><em>polymorphic</em></a>である必要があります。
 つまり親クラスは最低でも1つの<code class="highlighter-rouge">virtual</code>な関数が親クラスに定義されていて<em>vtable</em>が存在しなくてはなりません。</p>
 
-<h1 id="reinterpretcast">reinterpret_cast</h1>
+<h1 id="reinterpret_cast">reinterpret_cast</h1>
 <ol>
   <li>ポインタ型を他のポインタ型に強制的に変換します。<code class="highlighter-rouge">dynamic_cast</code>と違いポインタの型変換が安全に行えるかは考慮されません。</li>
   <li>また整数型(<code class="highlighter-rouge">int</code>, <code class="highlighter-rouge">long</code>, <code class="highlighter-rouge">long long</code>など)を任意の型のポインタに変換するのにも利用できます。</li>
@@ -93,13 +93,13 @@
 <span class="kt">char</span><span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">j</span><span class="p">);</span>
 <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="c1">// 257 in little-endian.
-</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"j: "</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="c1">// 257 in little-endian.</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"j: "</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="kt">long</span> <span class="n">addrint</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
 <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"addrint: "</span> <span class="o">&lt;&lt;</span> <span class="n">addrint</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="o">//</span> <span class="n">Note</span><span class="o">:</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">causes</span> <span class="n">a</span> <span class="n">compile</span> <span class="n">error</span><span class="p">.</span></code></pre></figure>
+<span class="c1">// Note: reinterpret_cast&lt;int&gt;(c); causes a compile error.</span></code></pre></figure>
 
-<h1 id="constcast">const_cast</h1>
+<h1 id="const_cast">const_cast</h1>
 <p>ポインタ型、参照型に<code class="highlighter-rouge">const</code>をつけたり外したりするのに使えます。驚くべきことにC++では<code class="highlighter-rouge">const_cast</code>を使って型についているconstを外すことが許されています。
 とはいえ当然<code class="highlighter-rouge">const</code>はこの変数は今後変更されないということを表しているのですから、それを解除してしまうのは問題があります。
 互換性などの問題でどうしても使わざるを得ない場合以外では使うべきではないでしょう。

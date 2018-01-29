@@ -39,22 +39,20 @@
         <p>Linux で複数のバージョンのJavaがインストールされている場合に、<code class="highlighter-rouge">java</code>, <code class="highlighter-rouge">javac</code> で実行されるJavaのバージョンを変更するには
 <code class="highlighter-rouge">update-alternatives</code> を使います。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo update-alternatives --config java
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo update-alternatives --config java
 sudo update-alternatives --config javac
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>このように、JVMが複数表示されるので利用したいバージョンの番号を選択肢ます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>There are 2 choices for the alternative javac (providing /usr/bin/javac).
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>There are 2 choices for the alternative javac (providing /usr/bin/javac).
 
   Selection    Path                                         Priority   Status
 ------------------------------------------------------------
 * 0            /usr/lib/jvm/java-6-openjdk-amd64/bin/javac   1061      auto mode
   1            /usr/lib/jvm/java-6-openjdk-amd64/bin/javac   1061      manual mode
   2            /usr/lib/jvm/java-7-openjdk-amd64/bin/javac   1051      manual mode
-</code></pre>
-</div>
+</code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

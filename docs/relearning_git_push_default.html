@@ -59,15 +59,14 @@
 <code class="highlighter-rouge">git push</code> で引数を省略した場合のルールは <code class="highlighter-rouge">git pull</code>
 で引数を省略した場合のそれより複雑です。</p>
 
-<h1 id="srcdst-">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</h1>
+<h1 id="srcdst-が省略された時の挙動">&lt;src&gt;:&lt;dst&gt; が省略された時の挙動</h1>
 
 <p><code class="highlighter-rouge">&lt;src&gt;:&lt;dst&gt;</code> が省略された場合の挙動は、<a href="http://git-scm.com/docs/git-config/1.9.2">push.default の設定値によって以下のように決まります</a>。
 1.x系列では <code class="highlighter-rouge">matching</code> がデフォルト値ですが、<code class="highlighter-rouge">mathing</code>だと現在のブランチ以外も push してしまい危険なので<code class="highlighter-rouge">simple</code>などに変更しておくことが推奨されます。
 2.x系からはデフォルト値は <code class="highlighter-rouge">simple</code> に変更されています。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git config --global push.default simple
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global push.default simple
+</code></pre></div></div>
 
 <p>5つの値について簡単に説明しておきます。
 (<a href="relearning_git_pull_default.html">アップストリーム、トラッキングブランチが何だか分からない場合はこちらを参照して下さい</a>)</p>
@@ -122,13 +121,13 @@
   </li>
 </ul>
 
-<h1 id="dst-">:&lt;dst&gt; が省略された時の挙動</h1>
+<h1 id="dst-が省略された時の挙動">:&lt;dst&gt; が省略された時の挙動</h1>
 
 <p><code class="highlighter-rouge">git push</code> に渡す <code class="highlighter-rouge">&lt;src&gt;:&lt;dst&gt;</code> の <code class="highlighter-rouge">:&lt;dst&gt;</code> の部分は省略可能です。
 <code class="highlighter-rouge">:&lt;dst&gt;</code> を省略した場合には <code class="highlighter-rouge">&lt;src&gt;:&lt;src&gt;</code>
 を指定したのと同じことになります。</p>
 
-<h1 id="remote-">&lt;remote&gt; が省略された時の挙動</h1>
+<h1 id="remote-が省略された時の挙動">&lt;remote&gt; が省略された時の挙動</h1>
 
 <p><code class="highlighter-rouge">&lt;remote&gt;</code> が省略された場合の挙動は
 <a href="http://git-scm.com/docs/git-push/1.9.2">git push の –repo=&lt;repository&gt; の項目</a>

@@ -51,7 +51,7 @@
   </div>
 </div>
 
-        <h1 id="section">この文書の目的</h1>
+        <h1 id="この文書の目的">この文書の目的</h1>
 
 <ul>
   <li>別の場所にある git リポジトリ（リモートリポジトリ）と連携する方法について再学習します。</li>
@@ -65,7 +65,7 @@ git pull について学習します。</li>
 pull, git push の引数を省略した際のデフォルトの挙動のルールについて学びます。</li>
 </ul>
 
-<h1 id="section-1">対象とする人</h1>
+<h1 id="対象とする人">対象とする人</h1>
 
 <ul>
   <li>入門本でリモート, push, pull
@@ -88,68 +88,65 @@ origin/master）が何故それでうまくいくのかきちんと説明でき�
   <li>というか少し前の自分のことです…</li>
 </ul>
 
-<h1 id="section-2">目次</h1>
+<h1 id="目次">目次</h1>
 <ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">この文書の目的</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">対象とする人</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">目次</a></li>
-  <li><a href="#section-3" id="markdown-toc-section-3">下準備</a></li>
-  <li><a href="#remote" id="markdown-toc-remote">リモート (Remote)</a>    <ul>
-      <li><a href="#section-4" id="markdown-toc-section-4">リモートリポジトリの登録と読み込み</a></li>
+  <li><a href="#この文書の目的" id="markdown-toc-この文書の目的">この文書の目的</a></li>
+  <li><a href="#対象とする人" id="markdown-toc-対象とする人">対象とする人</a></li>
+  <li><a href="#目次" id="markdown-toc-目次">目次</a></li>
+  <li><a href="#下準備" id="markdown-toc-下準備">下準備</a></li>
+  <li><a href="#リモート-remote" id="markdown-toc-リモート-remote">リモート (Remote)</a>    <ul>
+      <li><a href="#リモートリポジトリの登録と読み込み" id="markdown-toc-リモートリポジトリの登録と読み込み">リモートリポジトリの登録と読み込み</a></li>
     </ul>
   </li>
-  <li><a href="#section-5" id="markdown-toc-section-5">リモートトラキングブランチを扱う</a></li>
-  <li><a href="#section-6" id="markdown-toc-section-6">リモートトラッキングブランチとマージする</a></li>
+  <li><a href="#リモートトラキングブランチを扱う" id="markdown-toc-リモートトラキングブランチを扱う">リモートトラキングブランチを扱う</a></li>
+  <li><a href="#リモートトラッキングブランチとマージする" id="markdown-toc-リモートトラッキングブランチとマージする">リモートトラッキングブランチとマージする</a></li>
   <li><a href="#git-pull" id="markdown-toc-git-pull">git pull</a></li>
-  <li><a href="#section-7" id="markdown-toc-section-7">ここまでのまとめ</a></li>
+  <li><a href="#ここまでのまとめ" id="markdown-toc-ここまでのまとめ">ここまでのまとめ</a></li>
   <li><a href="#git-push" id="markdown-toc-git-push">git push</a>    <ul>
-      <li><a href="#section-8" id="markdown-toc-section-8">共有用のリポジトリを作る</a></li>
-      <li><a href="#git-push-" id="markdown-toc-git-push-">git push でコミットを書き込む</a></li>
-      <li><a href="#push-fast-forward-" id="markdown-toc-push-fast-forward-">push (fast-forward) に失敗した場合の対処法</a></li>
+      <li><a href="#共有用のリポジトリを作る" id="markdown-toc-共有用のリポジトリを作る">共有用のリポジトリを作る</a></li>
+      <li><a href="#git-push-でコミットを書き込む" id="markdown-toc-git-push-でコミットを書き込む">git push でコミットを書き込む</a></li>
+      <li><a href="#push-fast-forward-に失敗した場合の対処法" id="markdown-toc-push-fast-forward-に失敗した場合の対処法">push (fast-forward) に失敗した場合の対処法</a></li>
     </ul>
   </li>
 </ul>
 
-<h1 id="section-3">下準備</h1>
+<h1 id="下準備">下準備</h1>
 
 <p>アリスとボブが2人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは
 git リポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
 まずはアリスになったつもりでリポジトリーを作成して、紹介ページを作ってコミットしましょう
 （<code class="highlighter-rouge">/tmp/my/workingdir</code> は好きなディレクトリに置き換えて下さい）。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
 $ mkdir alice
 $ cd alice
 $ git init
 Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これでリポジトリができました。まず自分の紹介ページを作ってコミットしましょう。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ echo "I’m Alice." &gt;&gt; alice.txt
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "I’m Alice." &gt;&gt; alice.txt
 $ git add alice.txt
 $ git commit -m "Added alice.txt"
 [master (root-commit) 8f6e1d0] Added alice.txt
  1 file changed, 1 insertion(+)
  create mode 100644 alice.txt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>次にメンバー一覧ページも作ってコミットします。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ echo "Alice &lt;alice.txt&gt;" &gt;&gt; members.txt
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Alice &lt;alice.txt&gt;" &gt;&gt; members.txt
 $ git add members.txt
 $ git commit -m "Added Alice to members.txt"
 [master 9e73b53] Added Alice to members.txt
  1 file changed, 1 insertion(+)
  create mode 100644 members.txt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでリポジトリの作成とコミットを行います。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
 $ mkdir bob
 $ cd bob
 $ git init
@@ -168,8 +165,7 @@ $ git commit -m "Added Bob to members.txt"
 [master f3bc482] Added Bob to members.txt
  1 file changed, 1 insertion(+)
  create mode 100644 members.txt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために
 git では「リモート」という仕組みと、<code class="highlighter-rouge">git fetch</code>, <code class="highlighter-rouge">pull</code>, <code class="highlighter-rouge">push</code>
@@ -177,21 +173,20 @@ git では「リモート」という仕組みと、<code class="highlighter-rou
 
 <p><img src="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;h=728" width="378" height="364" /></p>
 
-<h1 id="remote">リモート (Remote)</h1>
+<h1 id="リモート-remote">リモート (Remote)</h1>
 
 <p>git では別の場所にあるリポジトリ（以下リモートリポジトリ）を手元のリポジトリ（以下ローカルリポジトリ）と連携させることができます。
 リモートリポジトリとローカルリポジトリの連携により、リモートリポジトリにあるコミットをローカルリポジトリに持ってきたり、
 逆にローカルリポジトリで行ったコミットをリモートリポジトリに書き出すことができます。</p>
 
-<h2 id="section-4">リモートリポジトリの登録と読み込み</h2>
+<h2 id="リモートリポジトリの登録と読み込み">リモートリポジトリの登録と読み込み</h2>
 
 <p>リモートリポジトリ
 と連携するために、まずローカルリポジトリにリモートリポジトリを登録する必要があります。
 リモートリポジトリの登録には <code class="highlighter-rouge">git remote add</code> を利用します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git remote add &lt;name&gt; &lt;URL&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add &lt;name&gt; &lt;URL&gt;
+</code></pre></div></div>
 
 <p>現在ローカルリポジトリに登録されているリモートリポジトリの一覧は
 <code class="highlighter-rouge">git remote</code> で確認することができます。 各 remote
@@ -209,7 +204,7 @@ git fetch
 <p>アリスとボブのケースに戻りましょう。ボブはアリスが紹介ページを自分の作っているものにマージすることにしました。
 ボブはアリスのリポジトリー上のコミットを取り込むために、まずアリスのリポジトリを自分のリポジトリに「リモートリポジトリ」として登録します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bob
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bob
 $ git remote add alice /tmp/my/workingdir/alice
 
 $ git remote
@@ -223,12 +218,11 @@ $ git remote show alice
     master new (next fetch will store in remotes/alice)
   Local ref configured for 'git push':
     master pushes to master (local out of date)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>次にアリスのリポジトリをフェッチします。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git fetch alice
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git fetch alice
 warning: no common commits
 remote: Counting objects: 6, done.
 remote: Compressing objects: 100% (3/3), done.
@@ -238,8 +232,7 @@ From /tmp/my/workingdir/alice
  * [new branch]      master     -&gt; alice/master
 $ git branch -r
   alice/master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>bob のリポジトリの状態を図を書くと次のようになります。 リポジトリ alice
 からコミットがコピーされており、master ブランチの代わりに <code class="highlighter-rouge">alice/master</code>
@@ -247,7 +240,7 @@ $ git branch -r
 
 <p><img src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;h=664" width="660" height="332" /></p>
 
-<h1 id="section-5">リモートトラキングブランチを扱う</h1>
+<h1 id="リモートトラキングブランチを扱う">リモートトラキングブランチを扱う</h1>
 
 <p>これで <code class="highlighter-rouge">git remote add</code> と <code class="highlighter-rouge">git fetch</code>
 で別の場所にあるリポジトリを登録し、そこからコミットを読み込むことができました。
@@ -261,23 +254,21 @@ $ git branch -r
 そのため前章で学んだような <code class="highlighter-rouge">git checkout</code>, <code class="highlighter-rouge">git merge</code>, <code class="highlighter-rouge">git branch</code>
 のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git log alice/master
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log alice/master
+</code></pre></div></div>
 
 <p>でボブはリモートリポジトリ（アリスのリポジトリ）上の <code class="highlighter-rouge">master</code>
 ブランチのログを見ることができます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git checkout alice/master
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout alice/master
+</code></pre></div></div>
 
 <p>とするとボブはアリスのリポジトリの <code class="highlighter-rouge">master</code>
 ブランチの最新の状態を再現することができます （ただし
 <code class="highlighter-rouge">You are in 'detached HEAD' state.</code>
 と言われてこのままでは編集作業ができないことに注意）。</p>
 
-<h1 id="section-6">リモートトラッキングブランチとマージする</h1>
+<h1 id="リモートトラッキングブランチとマージする">リモートトラッキングブランチとマージする</h1>
 
 <p>次にリモートトラッキングブランチ（リモートリポジトリ上のブランチ）をローカルのブランチにマージしてみましょう。
 これはローカルでブランチをマージした場合と全く同じようにできます。</p>
@@ -287,24 +278,22 @@ $ git branch -r
 マージしようとしている2つのコミットに共通する先祖が存在しない点が、ローカルのみで作業していた場合と少し違いますが、
 これはファイルが何もない「初期状態」が共通の親として暗黙的存在すると考えれば特に問題はないかと思います。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git checkout master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git checkout master
 $ git merge alice/master
 Auto-merging members.txt
 CONFLICT (add/add): Merge conflict in members.txt
 Automatic merge failed; fix conflicts and then commit the result.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>members.txt
 はアリスとボブ両方のリポジトリで編集されていたのでコンフリクトが発生します。
 適当にコンフリクトを解消します。このあたりの作業もローカルのブランチをマージする場合となにも変わりません。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ emacs members.txt # 適当なエディタで衝突を解消
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ emacs members.txt # 適当なエディタで衝突を解消
 $ git add members.txt
 $ git commit
 [master 5de7b36] Merge remote-tracking branch 'alice/master'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これで無事、ボブはアリスが行った変更を自分のリポジトリに取り込むことができました。ボブのリポジトリの状態は図で書くと以下のようになります</p>
 
@@ -321,9 +310,8 @@ master ブランチにマージすることが出来ます。 この fetch → m
 という一連の処理は非常に頻繁に行われるので、これを一度に行う <code class="highlighter-rouge">git pull</code>
 というコマンドが用意されています。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git pull &lt;remote&gt; &lt;src&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull &lt;remote&gt; &lt;src&gt;
+</code></pre></div></div>
 
 <p>このコマンドを実行すると <code class="highlighter-rouge">git fetch &lt;remote&gt;</code> →
 <code class="highlighter-rouge">git merge &lt;remote&gt;/&lt;src&gt;</code> を実行した場合と同じようにリモートリポジトリ
@@ -331,7 +319,7 @@ master ブランチにマージすることが出来ます。 この fetch → m
 現在のブランチにマージされます（厳密には git fetch &lt;remote&gt; &lt;src&gt; →
 git merge FETCHED_HEAD）。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
 $ git remote add bob /tmp/my/workingdir/bob
 $ git pull bob master
 remote: Counting objects: 11, done.
@@ -347,8 +335,7 @@ Fast-forward
  members.txt | 1 +
  2 files changed, 2 insertions(+)
  create mode 100644 bob.txt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>また後述するように <code class="highlighter-rouge">git pull</code>
 は引数を省略することができるので、日常の業務で利用するには <code class="highlighter-rouge">git fetch</code>
@@ -356,7 +343,7 @@ Fast-forward
 
 <p><img src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545" width="505" height="272" /></p>
 
-<h1 id="section-7">ここまでのまとめ</h1>
+<h1 id="ここまでのまとめ">ここまでのまとめ</h1>
 
 <ul>
   <li>別の場所にあるgit
@@ -397,7 +384,7 @@ git pull しなければなりません。
 
 <p><img src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499" width="520" height="249" /></p>
 
-<h2 id="section-8">共有用のリポジトリを作る</h2>
+<h2 id="共有用のリポジトリを作る">共有用のリポジトリを作る</h2>
 
 <p>まず共有用のリポジトリを作成しましょう。各々のユーザがコミットの書き込み
 (<code class="highlighter-rouge">git push</code>) を行うリポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のリポジトリ（bare
@@ -411,37 +398,33 @@ init に <code class="highlighter-rouge">--bare</code> オプションをつけ�
 リポジトリのディレクトリ名には <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git
 を末尾につけるのが慣習です</a>。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
 $ mkdir shared.git
 $ cd shared.git
 $ git init --bare
 Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">ls</code> で <code class="highlighter-rouge">shared.git</code> の中身を確認してみると、通常のリポジトリの <code class="highlighter-rouge">.git</code>
 ディレクトリの中身が保存されていることが分かります。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ ls
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls
 HEAD        branches    config      description hooks       info        objects     refs
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="git-push-">git push でコミットを書き込む</h2>
+<h2 id="git-push-でコミットを書き込む">git push でコミットを書き込む</h2>
 
 <p>次にアリスの立場に手元のコミットを共有リポジトリに書き出してみましょう。まずは共有リポジトリをリモートとして登録します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
 $ git remote add shared /tmp/my/workingdir/shared.git
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>次に shared に対してコミットを書き込みます。コミットの書き込みには git
 push を利用します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
+</code></pre></div></div>
 
 <p>このコマンドを実行するとローカルリポジトリの &lt;src&gt;
 が指すコミットとその先祖のコミットを &lt;remote&gt; に対して書き込み、
@@ -459,7 +442,7 @@ push を利用します。</p>
 <p>アリスのリポジトリから共有リポジトリに対して、master
 ブランチを書き込んでみましょう</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git push shared master:master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
 ounting objects: 15, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (8/8), done.
@@ -467,8 +450,7 @@ Writing objects: 100% (15/15), 1.32 KiB | 0 bytes/s, done.
 Total 15 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
  * [new branch]      master -&gt; master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これでアリスの master
 ブランチ（の指すコミットとその全ての先祖コミット）が shared
@@ -479,7 +461,7 @@ To /tmp/my/workingdir/shared.git
 
 <p>続いて新しいコミットを作ってそれも shared に push してみましょう。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ echo "Email: alice@example.com" &gt;&gt; alice.txt
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Email: alice@example.com" &gt;&gt; alice.txt
 $ git commit -a -m "Added an email addr to alice.txt"
 [master c671712] Added an email addr to alice.txt
  1 file changed, 1 insertion(+)
@@ -491,33 +473,30 @@ Writing objects: 100% (3/3), 357 bytes | 0 bytes/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
    77c39e3..c671712  master -&gt; master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><img src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069" width="667" height="534" /></p>
 
-<h2 id="push-fast-forward-">push (fast-forward) に失敗した場合の対処法</h2>
+<h2 id="push-fast-forward-に失敗した場合の対処法">push (fast-forward) に失敗した場合の対処法</h2>
 
 <p>次にボブの立場になって共有リポジトリに新しいコミットを push
 してみましょう。 まず共有リポジトリを <code class="highlighter-rouge">git remote add</code> で登録します</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bo
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bo
 $ git remote add shared /tmp/my/workingdir/shared
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>続いて新しいコミットを作成します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ echo "Email: bob@example.com" &gt;&gt; bob.txt
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Email: bob@example.com" &gt;&gt; bob.txt
 $ git commit -a -m "Added an email addr to bob.txt"
 [master 99af642] Added an email addr to bob.txt
  1 file changed, 1 insertion(+)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>これを <code class="highlighter-rouge">git push</code> してみましょう。そうするとエラーが発生してしまいます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git push shared master:master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
 To /tmp/my/workingdir/shared.git
  ! [rejected]        master -&gt; master (fetch first)
 error: failed to push some refs to '/tmp/my/workingdir/shared.git'
@@ -526,8 +505,7 @@ hint: not have locally. This is usually caused by another repository pushing
 hint: to the same ref. You may want to first integrate the remote changes
 hint: (e.g., 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>前述したように <code class="highlighter-rouge">git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code> は <code class="highlighter-rouge">&lt;remote&gt;</code> 上の
 <code class="highlighter-rouge">&lt;dst&gt;</code> (今回は <code class="highlighter-rouge">shared</code> 上の <code class="highlighter-rouge">master</code>) を <code class="highlighter-rouge">&lt;src&gt;</code> (今回は <code class="highlighter-rouge">bob</code> の
@@ -541,12 +519,11 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 前述したように <code class="highlighter-rouge">git pull</code> でマージしましょう (あるいは <code class="highlighter-rouge">git fetch</code> と
 <code class="highlighter-rouge">git merge</code> でもよい)。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git pull shared master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull shared master
 Merge made by the 'recursive' strategy.
  alice.txt | 1 +
  1 file changed, 1 insertion(+)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>bob のリポジトリは図のような状態になります。</p>
 
@@ -556,7 +533,7 @@ Merge made by the 'recursive' strategy.
 の <code class="highlighter-rouge">master</code> を bob の <code class="highlighter-rouge">master</code> にfast-forwardできるようになりました。
 もう一度プッシュを行うと今度は成功するはずです。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ git push shared master:master
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
 Counting objects: 8, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (4/4), done.
@@ -564,8 +541,7 @@ Writing objects: 100% (5/5), 684 bytes | 0 bytes/s, done.
 Total 5 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared
    c671712..14245e3  master -&gt; master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>リモートリポジトリを使って作業を行うのに最低限必要な知識は以上です。
 あとはトラッキングブランチ、アップストリーム、そしてgit pull/push の引数を省略した場合に何が起こるかについて理解していれば、

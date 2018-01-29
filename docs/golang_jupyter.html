@@ -69,28 +69,26 @@
 
 <h1 id="lgoを使ったjupyter-notebook-の例">lgoを使ったJupyter Notebook の例</h1>
 <ul>
-  <li><a href="http://nbviewer.jupyter.org/github/yunabe/lgo/blob/master/examples/basics.ipynb">このNotebookの例 (basics.ipynb)</a>をみてもらえると何ができるか分かりやすいかと思います。
+  <li><a href="https://nbviewer.jupyter.org/github/yunabe/lgo/blob/master/examples/basics.ipynb">このNotebookの例 (basics.ipynb)</a>をみてもらえると何ができるか分かりやすいかと思います。
 画像やHTMLの出力も可能です。</li>
-  <li><a href="http://nbviewer.jupyter.org/github/yunabe/lgo/tree/master/examples/">他にもNotebookのサンプルがいくつかあります。</a></li>
+  <li><a href="https://nbviewer.jupyter.org/github/yunabe/lgo/tree/master/examples/">他にもNotebookのサンプルがいくつかあります。</a></li>
 </ul>
 
 <h1 id="クイックスタート-with-docker">クイックスタート with Docker</h1>
 <ol>
   <li><a href="https://docs.docker.com/engine/installation/">Docker</a>と<a href="https://docs.docker.com/compose/">Docker Compose</a>がインストールされていない場合、インストールして下さい。</li>
   <li>lgoのレポジトリに含まれるdocker-compose.ymlから、Dockerコンテナを起動します。
-    <div class="highlighter-rouge"><pre class="highlight"><code>&gt; git clone https://github.com/yunabe/lgo.git
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/yunabe/lgo.git
 &gt; cd lgo/docker/jupyter
 &gt; docker-compose up -d
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>上のコマンドで起動されたコンテナの名前をチェックして下さい。<code class="highlighter-rouge">jupyter_jupyter_1</code>などの名前がついているはずです。</li>
   <li>以下のコマンドを実行してJupyter NotebookにアクセスするURLを取得します。
-    <div class="highlighter-rouge"><pre class="highlight"><code>&gt; docker exec jupyter_jupyter_1 jupyter notebook list
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker exec jupyter_jupyter_1 jupyter notebook list
 Currently running servers:
 http://0.0.0.0:8888/?token=50dfee7e328bf86e70c234a2f06021e1df63a19641c86676 :: /examples
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li><code class="highlighter-rouge">docker exec</code>で表示されたアクセストークン付きのURLを使ってJupyter Noteboookを開きます。</li>
   <li>Enjoy!</li>
@@ -102,9 +100,9 @@ http://0.0.0.0:8888/?token=50dfee7e328bf86e70c234a2f06021e1df63a19641c86676 :: /
   <li>lgoは現在Linuxのみをサポートしています。Windows, Mac OS で使いたい場合はVMやDocker上のLinux環境を使って下さい。</li>
   <li><a href="https://golang.org/doc/install">Go 1.8またはGo 1.9</a>がインストールされている</li>
   <li><a href="http://jupyter.readthedocs.io/en/latest/install.html">Jupyter Notebookがインストールされている</a></li>
-  <li>ZMQ (libczmq)がインストールされている。
+  <li>ZMQ がインストールされている。
     <ul>
-      <li>aptなら<code class="highlighter-rouge">sudo apt-get install libczmq-dev</code>でインストールできます。</li>
+      <li>aptなら<code class="highlighter-rouge">sudo apt-get install libzmq3-dev</code>でインストールできます。</li>
     </ul>
   </li>
 </ul>
@@ -144,7 +142,7 @@ http://0.0.0.0:8888/?token=50dfee7e328bf86e70c234a2f06021e1df63a19641c86676 :: /
 
 <p><code class="highlighter-rouge">lgo run</code>でREPLが起動します。</p>
 
-<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="err">$</span><span class="x"> </span><span class="n">lgo</span><span class="x"> </span><span class="n">run</span><span class="x">
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span><span class="x"> </span><span class="n">lgo</span><span class="x"> </span><span class="n">run</span><span class="x">
 </span><span class="o">&gt;&gt;&gt;</span><span class="x"> </span><span class="n">a</span><span class="p">,</span><span class="x"> </span><span class="n">b</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">3</span><span class="p">,</span><span class="x"> </span><span class="m">4</span><span class="x">
 </span><span class="o">&gt;&gt;&gt;</span><span class="x"> </span><span class="k">func</span><span class="x"> </span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="x"> </span><span class="n">y</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
 </span><span class="o">...</span><span class="x">     </span><span class="k">return</span><span class="x"> </span><span class="n">x</span><span class="x"> </span><span class="o">+</span><span class="x"> </span><span class="n">y</span><span class="x">
@@ -152,8 +150,7 @@ http://0.0.0.0:8888/?token=50dfee7e328bf86e70c234a2f06021e1df63a19641c86676 :: /
 </span><span class="o">&gt;&gt;&gt;</span><span class="x"> </span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
 </span><span class="o">&gt;&gt;&gt;</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"sum(%d, %d) = %d"</span><span class="p">,</span><span class="x"> </span><span class="n">a</span><span class="p">,</span><span class="x"> </span><span class="n">b</span><span class="p">,</span><span class="x"> </span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="x"> </span><span class="n">b</span><span class="p">))</span><span class="x">
 </span><span class="n">sum</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="x"> </span><span class="m">4</span><span class="p">)</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="m">7</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

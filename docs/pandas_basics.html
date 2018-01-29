@@ -54,61 +54,58 @@
         <p>pandas は主に Excel のような2次元のテーブルを対象にしたライブラリです。Pythonで数値処理や統計処理、機械学習を行う際に<code class="highlighter-rouge">numpy</code>などと共によく利用されます。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#import" id="markdown-toc-import">インストールとimport</a></li>
-  <li><a href="#pandas-dataframe--series" id="markdown-toc-pandas-dataframe--series">pandasの基礎: DataFrame と Series</a>    <ul>
+  <li><a href="#インストールとimport" id="markdown-toc-インストールとimport">インストールとimport</a></li>
+  <li><a href="#pandasの基礎-dataframe-と-series" id="markdown-toc-pandasの基礎-dataframe-と-series">pandasの基礎: DataFrame と Series</a>    <ul>
       <li><a href="#dataframe" id="markdown-toc-dataframe">DataFrame</a></li>
       <li><a href="#series" id="markdown-toc-series">Series</a></li>
     </ul>
   </li>
-  <li><a href="#dataframe--series-" id="markdown-toc-dataframe--series-">DataFrame と Series からデータを取り出す</a>    <ul>
-      <li><a href="#dataframe-" id="markdown-toc-dataframe-">DataFrameと[ ]</a></li>
-      <li><a href="#series-" id="markdown-toc-series-">Seriesと[ ]</a></li>
+  <li><a href="#dataframe-と-series-からデータを取り出す" id="markdown-toc-dataframe-と-series-からデータを取り出す">DataFrame と Series からデータを取り出す</a>    <ul>
+      <li><a href="#dataframeと-" id="markdown-toc-dataframeと-">DataFrameと[ ]</a></li>
+      <li><a href="#seriesと-" id="markdown-toc-seriesと-">Seriesと[ ]</a></li>
     </ul>
   </li>
-  <li><a href="#dataframeseries" id="markdown-toc-dataframeseries">DataFrame/Seriesの作り方</a>    <ul>
+  <li><a href="#dataframeseriesの作り方" id="markdown-toc-dataframeseriesの作り方">DataFrame/Seriesの作り方</a>    <ul>
       <li><a href="#series-1" id="markdown-toc-series-1">Series</a></li>
       <li><a href="#dataframe-1" id="markdown-toc-dataframe-1">DataFrame</a></li>
     </ul>
   </li>
-  <li><a href="#section" id="markdown-toc-section">よく使う機能</a>    <ul>
-      <li><a href="#describe-" id="markdown-toc-describe-">describe(): 各行の統計情報を表示</a></li>
-      <li><a href="#dataframecorr-" id="markdown-toc-dataframecorr-">DataFrame.corr(): 行と行の相関係数を表示</a></li>
-      <li><a href="#section-1" id="markdown-toc-section-1">ランダムにシャッフルする</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">ランダムサンプリング</a></li>
-      <li><a href="#section-3" id="markdown-toc-section-3">図として表示</a>        <ul>
-          <li><a href="#section-4" id="markdown-toc-section-4">ヒストグラム</a></li>
-          <li><a href="#section-5" id="markdown-toc-section-5">散布図</a></li>
+  <li><a href="#よく使う機能" id="markdown-toc-よく使う機能">よく使う機能</a>    <ul>
+      <li><a href="#describe-各行の統計情報を表示" id="markdown-toc-describe-各行の統計情報を表示">describe(): 各行の統計情報を表示</a></li>
+      <li><a href="#dataframecorr-行と行の相関係数を表示" id="markdown-toc-dataframecorr-行と行の相関係数を表示">DataFrame.corr(): 行と行の相関係数を表示</a></li>
+      <li><a href="#ランダムにシャッフルする" id="markdown-toc-ランダムにシャッフルする">ランダムにシャッフルする</a></li>
+      <li><a href="#ランダムサンプリング" id="markdown-toc-ランダムサンプリング">ランダムサンプリング</a></li>
+      <li><a href="#図として表示" id="markdown-toc-図として表示">図として表示</a>        <ul>
+          <li><a href="#ヒストグラム" id="markdown-toc-ヒストグラム">ヒストグラム</a></li>
+          <li><a href="#散布図" id="markdown-toc-散布図">散布図</a></li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
 
-<h1 id="import">インストールとimport</h1>
+<h1 id="インストールとimport">インストールとimport</h1>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install pandas
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pandas
+</code></pre></div></div>
 
 <p>インストールはpipを使って行います。<a href="/docs/python_package_management.html">pipを使ったことがない場合はPythonパッケージ管理に関するドキュメントを参照して下さい</a>。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import pandas as pd
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pandas as pd
+</code></pre></div></div>
 
 <p>pandasは<code class="highlighter-rouge">pd</code>としてimportするのが慣習なので<code class="highlighter-rouge">pd</code>としてimportしましょう。ついでに他の数値ライブラリと一緒にimportしておきましょう。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import math
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 # Jupyter notebookでグラフを出す場合
 %matplotlib inline
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="pandas-dataframe--series">pandasの基礎: DataFrame と Series</h1>
+<h1 id="pandasの基礎-dataframe-と-series">pandasの基礎: DataFrame と Series</h1>
 <p>pandas の基本的なデータ構造に DataFrame と Serries があります。この2つが何を表すのかを始めに理解しましょう。</p>
 
 <h2 id="dataframe">DataFrame</h2>
@@ -135,10 +132,10 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 
 <p>のようになります。</p>
 
-<h1 id="dataframe--series-">DataFrame と Series からデータを取り出す</h1>
+<h1 id="dataframe-と-series-からデータを取り出す">DataFrame と Series からデータを取り出す</h1>
 <p>まず pandas を初めて使った時に必要になり困惑するのが、要素の参照の仕方だと思います。pandasのDataFrameもPythonの他のデータと同じく<code class="highlighter-rouge">[]</code>で要素にアクセスすることができますが、<code class="highlighter-rouge">[]</code>のルールが不規則なのでルールを理解しておく必要があります。</p>
 
-<h2 id="dataframe-">DataFrameと[ ]</h2>
+<h2 id="dataframeと-">DataFrameと[ ]</h2>
 <p>DataFrameに対して、<code class="highlighter-rouge">df[key]</code>のようにアクセスするとDataFrameはラベルが<code class="highlighter-rouge">key</code>の<strong>列(column)</strong>をSeriesとして返します。
 多くのライブラリでは行列の<script type="math/tex">X</script>の<script type="math/tex">i</script>行, <script type="math/tex">j</script>列の要素<script type="math/tex">x_{ij}</script>には<code class="highlighter-rouge">X[i][j]</code>のようにアクセスするので<code class="highlighter-rouge">X[i]</code>は普通は<strong>行</strong>(横方向の1行)を返しますが、pandasは<strong>列</strong>を返すので注意が必要です。</p>
 
@@ -185,12 +182,12 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
   </tbody>
 </table>
 
-<h2 id="series-">Seriesと[ ]</h2>
+<h2 id="seriesと-">Seriesと[ ]</h2>
 <p>Seriesは<code class="highlighter-rouge">dict</code>のようにラベルで要素にアクセスすることも、<code class="highlighter-rouge">list</code>のように位置で要素にアクセスすることも可能です。
 <code class="highlighter-rouge">series[key]</code>とすると、<code class="highlighter-rouge">key</code>に一致するラベルが存在する場合には<code class="highlighter-rouge">dict</code>のように<code class="highlighter-rouge">key</code>にラベルが一致する要素が返されます。<code class="highlighter-rouge">key</code>がラベルに一致せず<code class="highlighter-rouge">int</code>であるときには<code class="highlighter-rouge">list</code>のように<code class="highlighter-rouge">series[index]</code>は<code class="highlighter-rouge">index</code>番目の要素を返します。
 スライスを使った場合には、<code class="highlighter-rouge">list</code>と同じように振る舞います。series[1:3]は <code class="highlighter-rouge">1 &lt;= index &lt; 3</code>の範囲の要素を含む長さ2のSeriesを返します。</p>
 
-<h1 id="dataframeseries">DataFrame/Seriesの作り方</h1>
+<h1 id="dataframeseriesの作り方">DataFrame/Seriesの作り方</h1>
 
 <h2 id="series-1">Series</h2>
 <p>まずはSeriesから作ります。Seriesはlistなどの<a href="https://docs.python.org/2/glossary.html#term-iterable">iterable</a>なデータから作ることができます。Seriesにもう1つiterableを渡すとラベルとして使われます。また<code class="highlighter-rouge">dict</code>を渡した場合は、dictのkeyがラベル,valueが値のSeriesが作られます。</p>
@@ -210,17 +207,17 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 
 <p>columnにラベルをつける必要なければ、二次元の配列(list)やnumpyのndarrayから作ることもできます。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'a'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}))</span>
 <span class="k">print</span> <span class="s">'From 2D list'</span>
 <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">]]))</span>
 <span class="k">print</span> <span class="s">'From numpy ndarray'</span>
 <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span></code></pre></figure>
 
-<h1 id="section">よく使う機能</h1>
+<h1 id="よく使う機能">よく使う機能</h1>
 <p>pandasのよく使う処理を簡単にいくつか書いておきます。<a href="http://pandas.pydata.org/pandas-docs/stable/api.html#dataframe">pandasのAPIの一覧</a>はすぐに参照できるようにブックマークしておくとよいです。</p>
 
-<h2 id="describe-">describe(): 各行の統計情報を表示</h2>
+<h2 id="describe-各行の統計情報を表示">describe(): 各行の統計情報を表示</h2>
 <p>DataFrameのメソッド<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html">describe()</a>を呼び出すと、2次元テーブルの各columnの統計情報の入った新しいDataFrameが返されます。DataFrameの中のデータの統計情報をぱっと確認したい時に便利です。得られる統計情報は要素数、最大値、最小値、平均などです。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span></code></pre></figure>
@@ -234,10 +231,10 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">()[</span><span class="s">'平均気温'</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="s">'平均気温'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c"># True</span></code></pre></figure>
 
-<h2 id="dataframecorr-">DataFrame.corr(): 行と行の相関係数を表示</h2>
+<h2 id="dataframecorr-行と行の相関係数を表示">DataFrame.corr(): 行と行の相関係数を表示</h2>
 <p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.corr.html">DataFrame.corr()</a></p>
 
-<h2 id="section-1">ランダムにシャッフルする</h2>
+<h2 id="ランダムにシャッフルする">ランダムにシャッフルする</h2>
 <p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.reindex.html#pandas.DataFrame.reindex">DataFrameにはreindex</a>というメソッドがあって、行(row)のラベルの配列を与えると、そのラベルの順に行を並び替えたDataFrameが作られます。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># 1行目が'4月'のデータ, 2行目が'1月'のデータのDataFrame</span>
@@ -249,7 +246,7 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># DataFrameのrowをランダムにシャッフル</span>
 <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span></code></pre></figure>
 
-<h2 id="section-2">ランダムサンプリング</h2>
+<h2 id="ランダムサンプリング">ランダムサンプリング</h2>
 <p>pandasのDataFrameから要素を幾つかランダムサンプリングしたい場合には、<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sample.html">DataFrame.sample</a>を使用します。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span></code></pre></figure>
@@ -258,23 +255,22 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="s">'occurence'</span><span class="p">)</span></code></pre></figure>
 
-<h2 id="section-3">図として表示</h2>
+<h2 id="図として表示">図として表示</h2>
 <p>よく使うようなグラフを<a href="http://matplotlib.org/">mathplotlib</a>を使って表示する機能がpandasには用意されています。
 DataFrameのグラフ描画のメソッドは<a href="http://pandas.pydata.org/pandas-docs/stable/api.html#api-dataframe-plotting">df.plot.*</a>に用意されています。
 <a href="http://jupyter.org/">Jupyter notebook</a>から使う場合は、グラフがinlineで表示されるように</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>%matplotlib inline
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%matplotlib inline
+</code></pre></div></div>
 
 <p>をnotebookの先頭で実行しておくことをおすすめします。</p>
 
-<h3 id="section-4">ヒストグラム</h3>
+<h3 id="ヒストグラム">ヒストグラム</h3>
 <p><code class="highlighter-rouge">hist()</code>メソッドで各columnのヒストグラムが表示されます。第一引数にcolumn名のリストを渡すと、ヒストグラムを表示する列を指定することができます。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span></code></pre></figure>
 
-<h3 id="section-5">散布図</h3>
+<h3 id="散布図">散布図</h3>
 <p><code class="highlighter-rouge">scatter</code>を使うとx軸とy軸に使うcolumnを指定して散布図を表示できます。2つの列の間の相関を可視化する際に便利です。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s">'x_column'</span><span class="p">,</span> <span class="s">'y_column'</span><span class="p">)</span></code></pre></figure>

@@ -51,7 +51,7 @@
   </div>
 </div>
 
-        <h1 id="section">プリミティブ型とラッパーオブジェクト</h1>
+        <h1 id="プリミティブ型とラッパーオブジェクト">プリミティブ型とラッパーオブジェクト</h1>
 
 <p>数値(number)・文字列(string)・真偽値(boolean)
 のプリミティブ型（基本型）には それぞれNumber, String,
@@ -102,7 +102,7 @@ Booleanという対応するオブジェクト型(ラッパーオブジェクト
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">);</span> <span class="c1">//object</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">());</span> <span class="c1">//number</span></code></pre></figure>
 
-<h1 id="section-1">ラッパーオブジェクトのインスタンスと論理値</h1>
+<h1 id="ラッパーオブジェクトのインスタンスと論理値">ラッパーオブジェクトのインスタンスと論理値</h1>
 
 <p>ラッパーオブジェクトのインスタンスはすべて <code class="highlighter-rouge">true</code> として解釈される
 (参考: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">Boolean -
@@ -130,7 +130,7 @@ MDN</a>)。
 <span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//true</span>
 <span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//false</span></code></pre></figure>
 
-<h1 id="section-2">型変換</h1>
+<h1 id="型変換">型変換</h1>
 
 <p>ラッパーオブジェクトは関数として利用すると、
 対応するプリミティブ型へのコンバーターとして機能する:</p>
@@ -145,7 +145,7 @@ MDN</a>)。
 <span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span><span class="p">);</span> <span class="c1">// object</span>
 <span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
 
-<h1 id="section-3">ラッパーオブジェクトの演算</h1>
+<h1 id="ラッパーオブジェクトの演算">ラッパーオブジェクトの演算</h1>
 
 <p>ラッパーオブジェクトのインスタンスを演算子で処理した結果は、
 プリミティブ型となる。:</p>
@@ -165,7 +165,7 @@ MDN</a>)。
 <code class="highlighter-rouge">new String('Hello world')</code>
 のようにして積極的にラッパーオブジェクトを利用するのは避けた方がよさそうである。</p>
 
-<h1 id="section-4">プリミティブ型のプロパティへのアクセス</h1>
+<h1 id="プリミティブ型のプロパティへのアクセス">プリミティブ型のプロパティへのアクセス</h1>
 
 <p>プリミティブ型の値に対して、<code class="highlighter-rouge">x.key</code> や <code class="highlighter-rouge">x['key']</code>
 でプロパティのアクセスを行うと
@@ -197,7 +197,7 @@ MDN</a>)。
 <span class="nx">j</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="s1">'j.x'</span><span class="p">;</span>
 <span class="nx">alert</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// j.x</span></code></pre></figure>
 
-<h2 id="google-chrome">Google Chromeの場合</h2>
+<h2 id="google-chromeの場合">Google Chromeの場合</h2>
 
 <p>Firefox, Safariは上のように動いていると思って問題なさそうだが、Chromeは若干動作が違うようである。</p>
 
@@ -221,7 +221,7 @@ Firefoxでは <code class="highlighter-rouge">"object"</code> が表示される
 つまりChromeではラッパーオブジェクトへの変換は行われず、thisには元々のプリミティブ型がそのまま格納されるようである。
 なお、プリミティブ型のプロパティに値の代入を行っても反映されないのはChromeでも同じである。</p>
 
-<h1 id="false">falseとして扱われる値</h1>
+<h1 id="falseとして扱われる値">falseとして扱われる値</h1>
 
 <p>if, whileなどの条件式や、!演算にfalseとして解釈される値:</p>
 

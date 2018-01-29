@@ -55,9 +55,8 @@
 <p>easycsv package provides API to read CSV files in Go (golang) easily.</p>
 
 <h1 id="installation">Installation</h1>
-<div class="highlighter-rouge"><pre class="highlight"><code>go get -u github.com/yunabe/easycsv
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get -u github.com/yunabe/easycsv
+</code></pre></div></div>
 
 <h1 id="features">Features</h1>
 <ul>
@@ -76,7 +75,7 @@
 <h1 id="quick-tour">Quick Tour</h1>
 
 <h2 id="read-a-csv-file-to-a-struct">Read a CSV file to a struct</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
 </span><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
@@ -87,11 +86,10 @@
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Done</span><span class="p">();</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <h2 id="read-a-csv-file-with-loop">Read a CSV file with Loop</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">easycsv</span><span class="o">.</span><span class="n">NewReaderFile</span><span class="p">(</span><span class="s">"testdata/sample.csv"</span><span class="p">)</span><span class="x">
 </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
@@ -102,8 +100,7 @@
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <h1 id="usages">Usages</h1>
 
@@ -136,9 +133,8 @@ So you do not need to close files manually and you can omit error handling code 
 <p>There are three methods to read CSV with <code class="highlighter-rouge">easycsv.Reader</code>. Read, Loop and ReadAll.
 We are looking into <a href="https://godoc.org/github.com/yunabe/easycsv#Reader.Read"><code class="highlighter-rouge">Read</code></a> method first, which is the most basic and naive way to read CSV with Reader.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Read</span><span class="p">(</span><span class="n">e</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="kt">bool</span><span class="x">
-</span></code></pre>
-</div>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Read</span><span class="p">(</span><span class="n">e</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="kt">bool</span><span class="x">
+</span></code></pre></div></div>
 
 <p><a href="https://godoc.org/github.com/yunabe/easycsv#Reader.Read"><code class="highlighter-rouge">Read</code></a> receives a pointer to a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a pointer to a slice of a primitive type (e.g. <code class="highlighter-rouge">*[]int</code>).
 If it reads a new row from CSV successufly, it stores the row into <code class="highlighter-rouge">e</code> and returns <code class="highlighter-rouge">true</code>.
@@ -151,7 +147,7 @@ If <code class="highlighter-rouge">Reader</code> reaches to <code class="highlig
 When you use a struct, you need to specify how to map CSV columns to the struct’s field using struct field’s tags.
 Here are examples:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
 </span><span class="p">}</span><span class="x">
@@ -160,8 +156,7 @@ Here are examples:</p>
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`name:"name"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`name:"age"`</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>You can use <code class="highlighter-rouge">index</code> tag or <code class="highlighter-rouge">name</code> tag to specify the mapping.
 When <code class="highlighter-rouge">index</code> is used, Read maps <code class="highlighter-rouge">index</code>-th (0-based) column to the field.
@@ -173,7 +168,7 @@ When <code class="highlighter-rouge">name</code> is used, Read uses the first li
 20,Bob
 </code></pre>
 
-<p>the frist column is mapped to Age and the second column is mapped to Name. So <code class="highlighter-rouge"><span class="p">{</span><span class="err">Alice</span><span class="w"> </span><span class="err">10</span><span class="p">}</span></code> and <code class="highlighter-rouge"><span class="p">{</span><span class="err">Bob</span><span class="w"> </span><span class="err">20</span><span class="p">}</span></code> are stored to the struct respectively. You can not use both <code class="highlighter-rouge">index</code> tag and <code class="highlighter-rouge">name</code> tag in the same struct. Read reports an error in that case.</p>
+<p>the frist column is mapped to Age and the second column is mapped to Name. So <code class="highlighter-rouge">{Alice 10}</code> and <code class="highlighter-rouge">{Bob 20}</code> are stored to the struct respectively. You can not use both <code class="highlighter-rouge">index</code> tag and <code class="highlighter-rouge">name</code> tag in the same struct. Read reports an error in that case.</p>
 
 <p>If you pass a pointer to a slice to Read, Read converts CSV row into the slice and fills it to the argument.
 If the argument <code class="highlighter-rouge">e</code> is invalid, Read returns false immediately and the reason of the error is reported by <code class="highlighter-rouge">Done()</code>.</p>
@@ -184,9 +179,8 @@ If the argument <code class="highlighter-rouge">e</code> is invalid, Read return
 Do not forget to call <code class="highlighter-rouge">Done</code> after <code class="highlighter-rouge">Read</code>.</p>
 
 <h2 id="loop">Loop</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Loop</span><span class="p">(</span><span class="n">body</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">Loop</span><span class="p">(</span><span class="n">body</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+</span></code></pre></div></div>
 
 <p><a href="https://godoc.org/github.com/yunabe/easycsv#Loop">Loop</a> reads CSV line by line and executes <code class="highlighter-rouge">body</code> with a line everytime it reads a line.
 <code class="highlighter-rouge">body</code> must be a function that receives a struct (e.g. <code class="highlighter-rouge">myStruct</code>), a pointer of a struct (e.g. <code class="highlighter-rouge">*myStruct</code>) or a slice of primitives (e.g. <code class="highlighter-rouge">[]int</code>).
@@ -205,7 +199,7 @@ Do not forget to handle the error returned by Loop.</p>
 <p>The example below shows how to use Loop with a function which returns <code class="highlighter-rouge">error</code>.
 This code reads CSV until Loop reaches to EOF or an entry with Age &lt; 0 is found in the CSV.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Loop</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">entry</span><span class="x"> </span><span class="o">*</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
 </span><span class="p">})</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
@@ -217,13 +211,11 @@ This code reads CSV until Loop reaches to EOF or an entry with Age &lt; 0 is fou
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatalf</span><span class="p">(</span><span class="s">"Failed to read a CSV file: %v"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <h2 id="readall">ReadAll</h2>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">ReadAll</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
-</span></code></pre>
-</div>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">r</span><span class="x"> </span><span class="o">*</span><span class="n">Reader</span><span class="p">)</span><span class="x"> </span><span class="n">ReadAll</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+</span></code></pre></div></div>
 
 <p><a href="https://godoc.org/github.com/yunabe/easycsv#ReadAll">ReadAll</a> reads a CSV input to the end and convert all rows into the slice passed as an argument.
 The argument <code class="highlighter-rouge">s</code> must be a pointer of a slice of a struct (<code class="highlighter-rouge">*[]myStruct</code>) or a pointer of a slice of a slice (<code class="highlighter-rouge">*[][]int</code>).
@@ -232,13 +224,12 @@ Aside from that, the same rules of Read are applied to ReadAll. You need to spec
 <p>Like <code class="highlighter-rouge">Loop</code>, you do not need to call <code class="highlighter-rouge">Done</code> after ReadAll. ReadAll returns the first error if it encounters errors. It returns <code class="highlighter-rouge">nil</code> if everything goes well.
 Do not forget to handle the error returned by ReadAll.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span><span class="x"> </span><span class="n">entry</span><span class="x"> </span><span class="p">[]</span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="s">`index:"0"`</span><span class="x">
 	</span><span class="n">Age</span><span class="x">  </span><span class="kt">int</span><span class="x">    </span><span class="s">`index:"1"`</span><span class="x">
 </span><span class="p">}</span><span class="x">
 </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="o">&amp;</span><span class="n">entry</span><span class="p">);</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <h1 id="option">Option</h1>
 <p>To control the behavior of Reader, you can pass Option to NewReader methods.</p>
@@ -277,12 +268,14 @@ as octal if inputs have <code class="highlighter-rouge">"0"</code> prefix (<code
 <h2 id="custom-encoding">Custom encoding</h2>
 <p>Also, you can use custom encodings in easycsv.</p>
 
-<p>To use custom encodings:
-- Define a func that convert strings to your custom types. This func must receive a string and returns (custom-type, error).
-- Register the func to Option.Decoders.
-- Specify the registered func name with <code class="highlighter-rouge">enc</code> struct-field attribute.</p>
+<p>To use custom encodings:</p>
+<ul>
+  <li>Define a func that convert strings to your custom types. This func must receive a string and returns (custom-type, error).</li>
+  <li>Register the func to Option.Decoders.</li>
+  <li>Specify the registered func name with <code class="highlighter-rouge">enc</code> struct-field attribute.</li>
+</ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewBufferString</span><span class="p">(</span><span class="s">"name,birthday</span><span class="se">\n</span><span class="s">Alice,1980-12-30</span><span class="se">\n</span><span class="s">Bob,1975-06-09"</span><span class="p">),</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewBufferString</span><span class="p">(</span><span class="s">"name,birthday</span><span class="se">\n</span><span class="s">Alice,1980-12-30</span><span class="se">\n</span><span class="s">Bob,1975-06-09"</span><span class="p">),</span><span class="x">
 	</span><span class="n">Option</span><span class="p">{</span><span class="x">
 		</span><span class="n">Decoders</span><span class="o">:</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span><span class="x">
 			</span><span class="s">"date"</span><span class="o">:</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
@@ -301,8 +294,7 @@ as octal if inputs have <code class="highlighter-rouge">"0"</code> prefix (<code
 	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Failed: %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
 </span><span class="p">}</span><span class="x">
 </span><span class="c">// Output: {Alice 1980-12-30 00:00:00 +0000 UTC}{Bob 1975-06-09 00:00:00 +0000 UTC}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <h2 id="customizing-decoders-for-types">Customizing decoders for types</h2>
 <p>You can also define how to convert strings into specific types in easycsv by using Option.TypeDecoders option. Option.TypeDecoders is similar to Option.Decoders. The key is <code class="highlighter-rouge">reflect.Type</code> and the value is a function to convert strings to the specific type.
@@ -310,7 +302,7 @@ Reader uses the functions registered to Option.TypeDecoders instead of default c
 
 <p>The following example shows how to define a converter for <code class="highlighter-rouge">time.Time</code> with Option.TypeDecoders.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewReader</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"2017-01-02,2016-02-03</span><span class="se">\n</span><span class="s">2015-03-04,2014-04-05"</span><span class="p">)),</span><span class="x">
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">NewReader</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">NewReader</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"2017-01-02,2016-02-03</span><span class="se">\n</span><span class="s">2015-03-04,2014-04-05"</span><span class="p">)),</span><span class="x">
 	</span><span class="n">Option</span><span class="p">{</span><span class="n">TypeDecoders</span><span class="o">:</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="n">reflect</span><span class="o">.</span><span class="n">Type</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span><span class="x">
 		</span><span class="n">reflect</span><span class="o">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">{})</span><span class="o">:</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">s</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
 			</span><span class="k">return</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">,</span><span class="x"> </span><span class="n">s</span><span class="p">)</span><span class="x">
@@ -325,8 +317,7 @@ Reader uses the functions registered to Option.TypeDecoders instead of default c
 </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">r</span><span class="o">.</span><span class="n">Done</span><span class="p">();</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
 	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="x">
 </span><span class="p">}</span><span class="x">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

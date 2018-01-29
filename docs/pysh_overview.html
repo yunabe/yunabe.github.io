@@ -58,44 +58,43 @@
 使いならばもはやシェルスクリプトを書く理由は何もありません(Windows以外)。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#section" id="markdown-toc-section">特徴</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">使い方</a>    <ul>
-      <li><a href="#section-2" id="markdown-toc-section-2">インストール</a></li>
-      <li><a href="#section-3" id="markdown-toc-section-3">ファイルから実行</a></li>
-      <li><a href="#section-4" id="markdown-toc-section-4">標準入力から実行</a></li>
-      <li><a href="#section-5" id="markdown-toc-section-5">引数から実行</a></li>
+  <li><a href="#特徴" id="markdown-toc-特徴">特徴</a></li>
+  <li><a href="#使い方" id="markdown-toc-使い方">使い方</a>    <ul>
+      <li><a href="#インストール" id="markdown-toc-インストール">インストール</a></li>
+      <li><a href="#ファイルから実行" id="markdown-toc-ファイルから実行">ファイルから実行</a></li>
+      <li><a href="#標準入力から実行" id="markdown-toc-標準入力から実行">標準入力から実行</a></li>
+      <li><a href="#引数から実行" id="markdown-toc-引数から実行">引数から実行</a></li>
     </ul>
   </li>
-  <li><a href="#section-6" id="markdown-toc-section-6">機能</a>    <ul>
-      <li><a href="#section-7" id="markdown-toc-section-7">変数参照</a></li>
-      <li><a href="#python" id="markdown-toc-python">Python式</a></li>
-      <li><a href="#section-8" id="markdown-toc-section-8">パイプ</a></li>
-      <li><a href="#section-9" id="markdown-toc-section-9">リダイレクション</a></li>
-      <li><a href="#section-10" id="markdown-toc-section-10">&amp;&amp; || ;</a></li>
-      <li><a href="#section-11" id="markdown-toc-section-11">文字列リテラル</a></li>
-      <li><a href="#section-12" id="markdown-toc-section-12">バッククオート</a></li>
-      <li><a href="#section-13" id="markdown-toc-section-13">コメント</a></li>
+  <li><a href="#機能" id="markdown-toc-機能">機能</a>    <ul>
+      <li><a href="#変数参照" id="markdown-toc-変数参照">変数参照</a></li>
+      <li><a href="#python式" id="markdown-toc-python式">Python式</a></li>
+      <li><a href="#パイプ" id="markdown-toc-パイプ">パイプ</a></li>
+      <li><a href="#リダイレクション" id="markdown-toc-リダイレクション">リダイレクション</a></li>
+      <li><a href="#--" id="markdown-toc---">&amp;&amp; || ;</a></li>
+      <li><a href="#文字列リテラル" id="markdown-toc-文字列リテラル">文字列リテラル</a></li>
+      <li><a href="#バッククオート" id="markdown-toc-バッククオート">バッククオート</a></li>
+      <li><a href="#コメント" id="markdown-toc-コメント">コメント</a></li>
       <li><a href="#map-filter-reduce" id="markdown-toc-map-filter-reduce">map filter reduce</a></li>
-      <li><a href="#section-14" id="markdown-toc-section-14">リターンコードの保存</a></li>
-      <li><a href="#python-1" id="markdown-toc-python-1">Pythonへのリダイレクション</a></li>
+      <li><a href="#リターンコードの保存" id="markdown-toc-リターンコードの保存">リターンコードの保存</a></li>
+      <li><a href="#pythonへのリダイレクション" id="markdown-toc-pythonへのリダイレクション">Pythonへのリダイレクション</a></li>
       <li><a href="#echo" id="markdown-toc-echo">echo</a></li>
-      <li><a href="#python-2" id="markdown-toc-python-2">組み込みコマンド をPythonで実装する</a></li>
+      <li><a href="#組み込みコマンド-をpythonで実装する" id="markdown-toc-組み込みコマンド-をpythonで実装する">組み込みコマンド をPythonで実装する</a></li>
     </ul>
   </li>
 </ul>
 
-<h1 id="section">特徴</h1>
+<h1 id="特徴">特徴</h1>
 
 <p>Pysh では Python スクリプトの中に含まれている <code class="highlighter-rouge">&gt;</code>
 で始まる行をシェルコマンドとして実行します。 それ以外の部分は通常の
 Python スクリプトとして処理されます。 例えば次のスクリプトはfrom00.txt,
 from01.txt, …, from99.txt を to00.txt…to99.txt に移動します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>for i in xrange(100):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i in xrange(100):
   index = "%02d" % i
   &gt; mv from$index.txt to$index.txt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Pysh は次のような特徴を持ちます</p>
 
@@ -114,9 +113,9 @@ for文などはシェルコマンドの中では利用できない。プログ�
   <li>またPythonオブジェクトのまま、出力を他のコマンドにパイプすることができる</li>
 </ul>
 
-<h1 id="section-1">使い方</h1>
+<h1 id="使い方">使い方</h1>
 
-<h2 id="section-2">インストール</h2>
+<h2 id="インストール">インストール</h2>
 
 <p><a href="https://github.com/yunabe/pysh">GitHubからソースコード</a>
 をチェックアウトします。 Pysh は Python で実装されているので Python
@@ -124,12 +123,11 @@ for文などはシェルコマンドの中では利用できない。プログ�
 簡単に実行できます。ただしWindowsはサポート外です。 pysh
 はスクリプトファイルをファイル・標準入力・引数のいずれかで与えて実行することができます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git checkout https://github.com/yunabe/pysh.git
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout https://github.com/yunabe/pysh.git
 ./pysh/bin/pysh&lt;/pre&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-3">ファイルから実行</h2>
+<h2 id="ファイルから実行">ファイルから実行</h2>
 
 <p>python
 コマンドと同様に、pyshの引数としてファイルを与えるとファイルをpyshスクリプトとして
@@ -137,11 +135,10 @@ for文などはシェルコマンドの中では利用できない。プログ�
 スクリプトに変換し Python として実行を行います。
 そのため実行後、スクリプト名と同名の拡張子が .py のファイルが残ります。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pysh script.pysh
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh script.pysh
+</code></pre></div></div>
 
-<h2 id="section-4">標準入力から実行</h2>
+<h2 id="標準入力から実行">標準入力から実行</h2>
 
 <p>python コマンドと同様に、pyshの引数として <code class="highlighter-rouge">-</code> を与えると
 標準入力からpyshスクリプトを読み込み実行します。
@@ -150,30 +147,28 @@ for文などはシェルコマンドの中では利用できない。プログ�
 で構造化されたプログラムを書きましょう。
 構造化されたスクリプトはワンライナーよりも遥かに読みやすく、将来再利用することができます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pysh - &lt;&lt; 'EOF'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh - &lt;&lt; 'EOF'
 for i in xrange(3):
   index = "%02d" % i
   &gt; echo $index
 EOF
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-5">引数から実行</h2>
+<h2 id="引数から実行">引数から実行</h2>
 
 <p>python コマンドと同様に、pyshの引数として <code class="highlighter-rouge">-c cmd</code> を与えると <code class="highlighter-rouge">cmd</code>
 をスクリプトとして解釈、実行します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pysh -c "`cat &lt;&lt; 'EOF'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh -c "`cat &lt;&lt; 'EOF'
 for i in xrange(3):
   index = "%02d" % i
   &gt; echo $index
 EOF`"&lt;/pre&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="section-6">機能</h1>
+<h1 id="機能">機能</h1>
 
-<h2 id="section-7">変数参照</h2>
+<h2 id="変数参照">変数参照</h2>
 
 <p><code class="highlighter-rouge">$var</code> でPythonの変数をシェルコマンドの中から参照することができます。
 環境変数も <code class="highlighter-rouge">$PATH</code> のように Python の変数と同じように参照できます。
@@ -181,16 +176,15 @@ EOF`"&lt;/pre&gt;
 で囲まれた文字列中の変数は自動的に展開されます。 <code class="highlighter-rouge">''</code>
 で囲まれた文字列中の変数は展開されません。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>x = 3
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = 3
 y = x * x
 &gt; echo $y     # 9
 &gt; echo $PATH  # os.environment['PATH']
 &gt; echo "$x * $x = $y"  # 3 * 3 = 9
 &gt; echo '$x * $x = $y'  # $x * $x = $y
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="python">Python式</h2>
+<h2 id="python式">Python式</h2>
 
 <p>Pyshでは変数だけでなく任意の Python
 式をシェルコマンドの中で利用することができます。
@@ -198,49 +192,45 @@ y = x * x
 変数参照と同様に、 <code class="highlighter-rouge">""</code> 文字列中のPython式は評価されますが <code class="highlighter-rouge">''</code>
 文字列中のPython式は評価されません。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo ${3 + 4}  # 7
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo ${3 + 4}  # 7
 def f(x):
   return x * x
 &gt; echo ${f(10)}  # 100
 &gt; echo ${lambda x: x}
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-8">パイプ</h2>
+<h2 id="パイプ">パイプ</h2>
 
 <p>Pysh ではその他のシェルと同じようにコマンドの入出力をパイプ <code class="highlighter-rouge">|</code>
 でつなぐことができます</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo "foo\nbar" | tac
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo "foo\nbar" | tac
+</code></pre></div></div>
 
-<h2 id="section-9">リダイレクション</h2>
+<h2 id="リダイレクション">リダイレクション</h2>
 
 <p>Pysh
 ではリダイレクションを使ってコマンドの出力結果をファイルに出力することができます。
 また、<code class="highlighter-rouge">&amp;&gt;1</code>
 のようにして標準エラーの出力先を標準出力と同じにすることなどもできます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo "Hello world" &gt; /dev/null
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo "Hello world" &gt; /dev/null
 &gt; echo "Hello world" &gt;&gt; /dev/null
 &gt; echo "Hello world" 2&gt;&amp;1
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-10">&amp;&amp; || ;</h2>
+<h2 id="--">&amp;&amp; || ;</h2>
 
 <p>Pyshでは他のシェルと同様に <code class="highlighter-rouge">;</code> で複数のコマンドを順番に実行したり、 <code class="highlighter-rouge">&amp;&amp;</code>
 で論理積(前者のコマンドが成功したら後者のコマンドを実行)や、 <code class="highlighter-rouge">||</code>
 で論理和(前者のコマンドが失敗したら後者のコマンドを実行)を使うことができます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo foo; echo bar
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo; echo bar
 &gt; echo foo &amp;&amp; echo bar
 &gt; echo foo || echo bar
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-11">文字列リテラル</h2>
+<h2 id="文字列リテラル">文字列リテラル</h2>
 
 <p>Pysh ではシェルコマンド中の文字列リテラルの形式は Python
 のそれと同じです。 <code class="highlighter-rouge">\n</code>
@@ -251,7 +241,7 @@ Pythonと同様に3つの <code class="highlighter-rouge">"</code> か <code cla
 一方Pyshではその他のシェルと同様に、”で囲まれた文字列中の変数および式($var,
 ${expr})は 自動的に展開されます。</p>
 
-<h2 id="section-12">バッククオート</h2>
+<h2 id="バッククオート">バッククオート</h2>
 
 <p>他のシェルと同じように、`` で囲まれたコマンドのパラメータに指定することで、 コマンドの実行結果を他のコマンドのパラメータとして利用することが可能です。</p>
 
@@ -260,18 +250,16 @@ ${expr})は 自動的に展開されます。</p>
 <p>Python や他のシェルと同じように、行の末尾にバックスラッシュ文字<code class="highlighter-rouge">\</code>
 をつけると 改行が無視され次の行もつなげて１つの行として評価されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo foo\
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo\
     bar
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-13">コメント</h2>
+<h2 id="コメント">コメント</h2>
 
 <p>Python と同様に Pysh では# より後ろの文字はコメントとして扱われます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo 'Hello world' # This is a comment
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'Hello world' # This is a comment
+</code></pre></div></div>
 
 <h2 id="map-filter-reduce">map filter reduce</h2>
 
@@ -290,7 +278,7 @@ Pysh ではPythonのフィルタ系組み込み関数 map, filter, reduce
 
 <!-- -->
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; seq 10 | map ${lambda s: int(s) * int(s)}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; seq 10 | map ${lambda s: int(s) * int(s)}
 1
 4
 9
@@ -301,8 +289,7 @@ Pysh ではPythonのフィルタ系組み込み関数 map, filter, reduce
 9
 &gt; seq 10 | reduce ${lambda x, y: int(x) + int(y)}
 55
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>map, filter, reduce をPythonの関数と組み合わせて利用することで grep,
 sed, awk
@@ -310,13 +297,12 @@ sed, awk
 Python にある程度慣れていればいちいち sed や awk
 の使い方を思い出すよりも効率的に 置換/変形処理が実装できます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># The lambda expr of reduce does not need to str() to convert input.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># The lambda expr of reduce does not need to str() to convert input.
 &gt; seq 10 | map ${lambda s: int(s) * 2} | reduce ${lambda x, y: x + y}
 110
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="section-14">リターンコードの保存</h2>
+<h2 id="リターンコードの保存">リターンコードの保存</h2>
 
 <p>pysh ではコマンドに <code class="highlighter-rouge">-&gt;</code> をつけるとそのコマンドのリターンコードが <code class="highlighter-rouge">-&gt;</code>
 の後ろに指定された変数に保存されます。 他のシェルではリターンコードは
@@ -328,13 +314,12 @@ pysh ではパイプされているコマンドそれぞれに <code class="high
 と共に利用され、<code class="highlighter-rouge">-&gt;</code>
 が指定されたコマンドの実行が行われなかった場合には、Noneが保存されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; (python -c 'import sys;sys.exit(2)' -&gt; rc0\
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; (python -c 'import sys;sys.exit(2)' -&gt; rc0\
     || python -c 'import sys;sys;exit(0)' -&gt; rc1)
 &gt; print rc0, rc1  # 512 0
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="python-1">Pythonへのリダイレクション</h2>
+<h2 id="pythonへのリダイレクション">Pythonへのリダイレクション</h2>
 
 <p>pysh ではコマンドの出力をファイルだけではなく Python
 の変数に対してリダイレクトすることが可能です。 Python
@@ -342,12 +327,11 @@ pysh ではパイプされているコマンドそれぞれに <code class="high
 コマンドの出力が各行が各要素として格納されたリストに変換され、Pythonの変数として保存されます。
 <code class="highlighter-rouge">-&gt;</code> と同様にコマンドが実行されなかった場合には <code class="highlighter-rouge">None</code> が保存されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; seq 5 | grep -v 3 =&gt; out
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; seq 5 | grep -v 3 =&gt; out
 print out  # ['1', '2', '4', '5']
 &gt; send ${xrange(5)} | filter ${lambda i: i != 3} =&gt; out
 print out  # [0, 1, 2, 4]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="echo">echo</h2>
 
@@ -357,16 +341,15 @@ print out  # [0, 1, 2, 4]
 引数にリストやタプルなどの文字列以外の iterable
 なオブジェクトが渡された場合には、リスト・タプルの各要素を一行づつ分けて出力します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; echo foo bar  # foo bar
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo bar  # foo bar
 data = ['foo', 'bar']
 &gt; echo $data  # foo
               # bar
 &gt; echo $data | sort # bar
                     # foo
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h2 id="python-2">組み込みコマンド をPythonで実装する</h2>
+<h2 id="組み込みコマンド-をpythonで実装する">組み込みコマンド をPythonで実装する</h2>
 
 <p>(to be continued….)</p>
 

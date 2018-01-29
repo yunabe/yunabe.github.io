@@ -53,11 +53,10 @@
 
         <p>Git では <code class="highlighter-rouge">git branch</code> で非常に気軽にブランチを作成することができます。同様に<code class="highlighter-rouge">git merge</code> によってmasterなどの他のブランチにマージされて不要になったブランチは簡単に削除することができます。</p>
 
-<h1 id="section">ローカルのブランチを削除する</h1>
+<h1 id="ローカルのブランチを削除する">ローカルのブランチを削除する</h1>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git branch -d &lt;branch_name&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch -d &lt;branch_name&gt;
+</code></pre></div></div>
 
 <ul>
   <li><code class="highlighter-rouge">git branch</code>を<code class="highlighter-rouge">-d</code> (<code class="highlighter-rouge">--delete</code>)オプションを付けて実行するとブランチが削除されます。</li>
@@ -76,24 +75,22 @@
   </li>
 </ul>
 
-<h1 id="section-1">リモートのブランチを削除する</h1>
+<h1 id="リモートのブランチを削除する">リモートのブランチを削除する</h1>
 <p>リモートレポジトリからブランチを削除するには<a href="https://git-scm.com/docs/git-push"><code class="highlighter-rouge">git push</code></a>を使います。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git push origin --delete &lt;branch_name&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push origin --delete &lt;branch_name&gt;
 あるいは
 git push origin :&lt;branch_name&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">--delete</code> が覚えやすいですが、これは<code class="highlighter-rouge">:&lt;branch_name&gt;</code>のエイリアスです。
 <a href="https://git-scm.com/docs/git-push"><code class="highlighter-rouge">git push</code>の<code class="highlighter-rouge">&lt;refspec&gt;</code>の項</a>にPushing an empty &lt;src&gt; allows you to delete the &lt;dst&gt; ref from the remote repository. とあるように、<code class="highlighter-rouge">git push</code> で<code class="highlighter-rouge">:</code>の前を空にするとリモートレポジトリから指定したブランチが削除されます。ローカルのブランチをあらかじめ削除しておく必要はありません。</p>
 
 <p>ローカルブランチを削除していない、あるいはリモートブランチが他の人によって削除されたなどの理由で、削除されたリモートレポジトリのブランチをトラックしている<a href="relearning_git_pull_default.html"><code class="highlighter-rouge">トラッキングブランチ</code></a>が存在する場合には、そのブランチで<code class="highlighter-rouge">git pull</code>を実行しようとして削除されたブランチとpullしようとすると以下の様なエラーが表示されます。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Your configuration specifies to merge with the ref '&lt;branch_name&gt;'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Your configuration specifies to merge with the ref '&lt;branch_name&gt;'
 from the remote, but no such ref was fetched.
-</code></pre>
-</div>
+</code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">

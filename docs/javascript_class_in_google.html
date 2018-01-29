@@ -74,39 +74,39 @@ Library</a>
 を参考にしてどのように JavaScript でクラスを実現すればよいかを学びます。</p>
 
 <ul id="markdown-toc">
-  <li><a href="#javascript-" id="markdown-toc-javascript-">クラス実現のために必要な JavaScript の言語仕様</a>    <ul>
+  <li><a href="#クラス実現のために必要な-javascript-の言語仕様" id="markdown-toc-クラス実現のために必要な-javascript-の言語仕様">クラス実現のために必要な JavaScript の言語仕様</a>    <ul>
       <li><a href="#function" id="markdown-toc-function">function</a></li>
       <li><a href="#this" id="markdown-toc-this">this</a></li>
       <li><a href="#call" id="markdown-toc-call">call</a></li>
-      <li><a href="#new-" id="markdown-toc-new-">new 演算子</a></li>
-      <li><a href="#prototype-" id="markdown-toc-prototype-">prototype チェーン</a></li>
-      <li><a href="#prototype" id="markdown-toc-prototype">プロパティ: prototype</a></li>
+      <li><a href="#new-演算子" id="markdown-toc-new-演算子">new 演算子</a></li>
+      <li><a href="#prototype-チェーン" id="markdown-toc-prototype-チェーン">prototype チェーン</a></li>
+      <li><a href="#プロパティ-prototype" id="markdown-toc-プロパティ-prototype">プロパティ: prototype</a></li>
     </ul>
   </li>
-  <li><a href="#google-closure-" id="markdown-toc-google-closure-">Google Closure 流のクラスの実現方法の概要</a></li>
-  <li><a href="#section" id="markdown-toc-section">クラスの宣言とコンストラクタの定義</a></li>
-  <li><a href="#section-1" id="markdown-toc-section-1">メンバ変数 (インスタンス変数)</a></li>
-  <li><a href="#section-2" id="markdown-toc-section-2">メソッド定義と呼び出し</a>    <ul>
+  <li><a href="#google-closure-流のクラスの実現方法の概要" id="markdown-toc-google-closure-流のクラスの実現方法の概要">Google Closure 流のクラスの実現方法の概要</a></li>
+  <li><a href="#クラスの宣言とコンストラクタの定義" id="markdown-toc-クラスの宣言とコンストラクタの定義">クラスの宣言とコンストラクタの定義</a></li>
+  <li><a href="#メンバ変数-インスタンス変数" id="markdown-toc-メンバ変数-インスタンス変数">メンバ変数 (インスタンス変数)</a></li>
+  <li><a href="#メソッド定義と呼び出し" id="markdown-toc-メソッド定義と呼び出し">メソッド定義と呼び出し</a>    <ul>
       <li><a href="#private-protected" id="markdown-toc-private-protected">private, protected</a></li>
     </ul>
   </li>
-  <li><a href="#section-3" id="markdown-toc-section-3">継承</a>    <ul>
-      <li><a href="#section-4" id="markdown-toc-section-4">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
-      <li><a href="#section-5" id="markdown-toc-section-5">親クラスのコンストラクタの呼び出し</a></li>
-      <li><a href="#section-6" id="markdown-toc-section-6">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
-      <li><a href="#section-7" id="markdown-toc-section-7">多重継承</a></li>
+  <li><a href="#継承" id="markdown-toc-継承">継承</a>    <ul>
+      <li><a href="#プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ" id="markdown-toc-プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
+      <li><a href="#親クラスのコンストラクタの呼び出し" id="markdown-toc-親クラスのコンストラクタの呼び出し">親クラスのコンストラクタの呼び出し</a></li>
+      <li><a href="#メソッドオーバーライドと親クラスのメソッドの呼び出し" id="markdown-toc-メソッドオーバーライドと親クラスのメソッドの呼び出し">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
+      <li><a href="#多重継承" id="markdown-toc-多重継承">多重継承</a></li>
       <li><a href="#abstract-interface" id="markdown-toc-abstract-interface">abstract, interface</a></li>
     </ul>
   </li>
-  <li><a href="#inherits-" id="markdown-toc-inherits-">inherits の実際のコード</a></li>
-  <li><a href="#section-8" id="markdown-toc-section-8">良くないクラス実現方法</a>    <ul>
+  <li><a href="#inherits-の実際のコード" id="markdown-toc-inherits-の実際のコード">inherits の実際のコード</a></li>
+  <li><a href="#良くないクラス実現方法" id="markdown-toc-良くないクラス実現方法">良くないクラス実現方法</a>    <ul>
       <li><a href="#prototype--" id="markdown-toc-prototype--">prototype = {}</a></li>
     </ul>
   </li>
-  <li><a href="#es6-" id="markdown-toc-es6-">ES6 のクラス</a></li>
+  <li><a href="#es6-のクラス" id="markdown-toc-es6-のクラス">ES6 のクラス</a></li>
 </ul>
 
-<h1 id="javascript-">クラス実現のために必要な JavaScript の言語仕様</h1>
+<h1 id="クラス実現のために必要な-javascript-の言語仕様">クラス実現のために必要な JavaScript の言語仕様</h1>
 
 <p>JavaScript でのクラスの実現方法を理解するためには <code class="highlighter-rouge">this</code>, <code class="highlighter-rouge">new</code>,
 <code class="highlighter-rouge">prototype</code>
@@ -182,7 +182,7 @@ JavaScript の this は <strong>Java, C++ の this とは全く挙動が異な�
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">alice</span><span class="p">);</span>  <span class="c1">// Hello, I'm Alice</span>
 <span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">bob</span><span class="p">);</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></figure>
 
-<h2 id="new-">new 演算子</h2>
+<h2 id="new-演算子">new 演算子</h2>
 
 <p>JavaScript にも <code class="highlighter-rouge">new</code> 演算子が存在します。 ただし JavaScript の new も
 <strong>Java や C++ でクラスのインスタンス化を行う new
@@ -190,11 +190,10 @@ JavaScript の this は <strong>Java, C++ の this とは全く挙動が異な�
 はクラスと共に利用しますが JavaScript の <code class="highlighter-rouge">new</code>
 は任意の関数と一緒に呼び出します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>new &lt;関数&gt;(&lt;引数&gt;);
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new &lt;関数&gt;(&lt;引数&gt;);
+</code></pre></div></div>
 
-<p><code class="highlighter-rouge">new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code class="highlighter-rouge"><span class="p">{}</span></code>)
+<p><code class="highlighter-rouge">new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code class="highlighter-rouge">{}</code>)
 が生成されます。 次に関数が呼び出されますが、その際に関数内の <code class="highlighter-rouge">this</code>
 が生成されたオブジェクトを指すようになります。
 関数が実行された後、生成されたオブジェクトが <code class="highlighter-rouge">new</code>
@@ -222,9 +221,9 @@ JavaScript の this は <strong>Java, C++ の this とは全く挙動が異な�
 で生成されたオブジェクトは <code class="highlighter-rouge">constructor</code>
 というプロパティで生成時に利用された関数への参照を保持しています。</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nx">Person</span><span class="p">);</span>  <span class="c1">// true</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">==</span> <span class="nx">Person</span><span class="p">);</span>  <span class="c1">// true</span></code></pre></figure>
 
-<h2 id="prototype-">prototype チェーン</h2>
+<h2 id="prototype-チェーン">prototype チェーン</h2>
 
 <p>JavaScript のオブジェクトは基本的には key と value
 のペアを保持する単なるマップ (連想配列) です。 <code class="highlighter-rouge">obj['prop'] = value;</code>
@@ -273,7 +272,7 @@ chain) と呼ばれるものです。</p>
 <del>ただしこれは<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a>なので今後はあまり利用しないほうがよいでしょう。</del>
 <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">ES6で__proto__が標準になりました</a>。ただ下位互換性の観点からあまり推奨されないことには変わりないかと思います。</p>
 
-<h2 id="prototype">プロパティ: prototype</h2>
+<h2 id="プロパティ-prototype">プロパティ: prototype</h2>
 
 <p>プロトタイプの設定の方法はもう1つ存在します。それが関数の <code class="highlighter-rouge">prototype</code>
 プロパティを使う方法です。 実は <code class="highlighter-rouge">function</code>
@@ -311,7 +310,7 @@ chain) と呼ばれるものです。</p>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>  <span class="c1">// 'Apple';</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>  <span class="c1">// 'Banana';</span></code></pre></figure>
 
-<h1 id="google-closure-">Google Closure 流のクラスの実現方法の概要</h1>
+<h1 id="google-closure-流のクラスの実現方法の概要">Google Closure 流のクラスの実現方法の概要</h1>
 
 <p>まずクラスの実現方法の例を示して、それから各要素について解説します。
 クラスの定義は次のような形になります。</p>
@@ -333,7 +332,7 @@ chain) と呼ばれるものです。</p>
 <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// メソッド内から他のメソッドを呼ぶ場合も this.&lt;メソッド&gt; を使います。</span>
   <span class="c1">// C++, Java と違い this は省略できません。</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Hello I\'m '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Hello I</span><span class="se">\'</span><span class="s1">m '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
 <span class="p">};</span></code></pre></figure>
 
 <p>クラスをインスタンス化する際には <code class="highlighter-rouge">new</code> を使います。</p>
@@ -374,7 +373,7 @@ chain) と呼ばれるものです。</p>
 
 <p>ではそれぞれの要素について解説していきましょう。</p>
 
-<h1 id="section">クラスの宣言とコンストラクタの定義</h1>
+<h1 id="クラスの宣言とコンストラクタの定義">クラスの宣言とコンストラクタの定義</h1>
 
 <p>上で述べたように <code class="highlighter-rouge">new</code>
 演算子をつかうと関数をクラスのコンストラクタのように利用することができます。
@@ -392,7 +391,7 @@ chain) と呼ばれるものです。</p>
 
 <span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
 
-<h1 id="section-1">メンバ変数 (インスタンス変数)</h1>
+<h1 id="メンバ変数-インスタンス変数">メンバ変数 (インスタンス変数)</h1>
 
 <p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには
 <code class="highlighter-rouge">this.&lt;プロパティ名&gt;</code> を使います。 JavaScript では Java や C++ と違い
@@ -402,7 +401,7 @@ chain) と呼ばれるものです。</p>
 インスタンス変数やメソッド呼び出しの際に Python では <code class="highlighter-rouge">self</code>
 を付けなければならないように JavaScript では <code class="highlighter-rouge">this</code> が必ず必要です。</p>
 
-<h1 id="section-2">メソッド定義と呼び出し</h1>
+<h1 id="メソッド定義と呼び出し">メソッド定義と呼び出し</h1>
 
 <p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <code class="highlighter-rouge">prototype</code>
 オブジェクトに関数を定義します。
@@ -452,9 +451,9 @@ JavaScript の <code class="highlighter-rouge">this</code>
 では private なメソッド, メンバ変数は名前の末尾に <code class="highlighter-rouge">_</code>
 をつけることが求められています。</p>
 
-<h1 id="section-3">継承</h1>
+<h1 id="継承">継承</h1>
 
-<h2 id="section-4">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</h2>
+<h2 id="プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</h2>
 
 <p>子クラスから親クラスのメソッドが引き継がれるようにするには、 子クラスの
 <code class="highlighter-rouge">prototype</code> にメソッドが見つからなかった場合に、親クラスの <code class="highlighter-rouge">prototype</code>
@@ -462,9 +461,8 @@ JavaScript の <code class="highlighter-rouge">this</code>
 が子クラスの <code class="highlighter-rouge">prototype</code> のプロトタイプ (<code class="highlighter-rouge">__proto__</code>, あるいは
 [[Prototype]])になるようにします。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;figure&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;figure&gt;
+</code></pre></div></div>
 
 <p>前述したように、<code class="highlighter-rouge">setPrototypeOf</code>
 であるオブジェクトを他のオブジェクトのプロトタイプに設定できるので、次のような継承用の関数を事前に用意しておきます。
@@ -499,7 +497,7 @@ JavaScript の <code class="highlighter-rouge">this</code>
 <span class="nx">child</span><span class="p">.</span><span class="nx">method0</span><span class="p">();</span>
 <span class="nx">child</span><span class="p">.</span><span class="nx">method1</span><span class="p">();</span></code></pre></figure>
 
-<h2 id="section-5">親クラスのコンストラクタの呼び出し</h2>
+<h2 id="親クラスのコンストラクタの呼び出し">親クラスのコンストラクタの呼び出し</h2>
 
 <p>上の例ではコンストラクタが空だったので問題ありませんでしたが、
 現実のプログラムでは初期化を正しく行うためには子クラスのコンストラクタから
@@ -517,7 +515,7 @@ JavaScript の <code class="highlighter-rouge">this</code>
   <span class="nx">Parent</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arg</span><span class="p">);</span>
 <span class="p">};</span></code></pre></figure>
 
-<h2 id="section-6">メソッドオーバーライドと親クラスのメソッドの呼び出し</h2>
+<h2 id="メソッドオーバーライドと親クラスのメソッドの呼び出し">メソッドオーバーライドと親クラスのメソッドの呼び出し</h2>
 
 <p>前述したように、<code class="highlighter-rouge">child.method0()</code> のようにメソッド呼び出しが行われると、
 JavaScript はまず <code class="highlighter-rouge">child</code> のプロトタイプである <code class="highlighter-rouge">Child.prototype</code> から
@@ -536,11 +534,10 @@ JavaScript はまず <code class="highlighter-rouge">child</code> のプロト�
 <p>また親クラスのメソッドを明示的に呼び出すには、親クラスのコンストラクタの呼び出しの場合と同様に
 <code class="highlighter-rouge">call</code> を使用します。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Parent.prototype.sayHello(this);
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Parent.prototype.sayHello(this);
+</code></pre></div></div>
 
-<h2 id="section-7">多重継承</h2>
+<h2 id="多重継承">多重継承</h2>
 
 <p>プロトタイプチェーンを利用している仕組み上、多重継承はできません。</p>
 
@@ -564,7 +561,7 @@ Python でも同じです。 Java の interface
   <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not Implemented'</span><span class="p">);</span>
 <span class="p">};</span></code></pre></figure>
 
-<h1 id="inherits-">inherits の実際のコード</h1>
+<h1 id="inherits-の実際のコード">inherits の実際のコード</h1>
 
 <p>前述した継承用の関数 <code class="highlighter-rouge">inherits</code> は非常にシンプルでしたが、実際には
 <code class="highlighter-rouge">setPrototypeOf</code> が利用できない古いブラウザの互換性のために、
@@ -581,10 +578,10 @@ goog.inherits</a>
   <span class="nx">childCtor</span><span class="p">.</span><span class="nx">superClass_</span> <span class="o">=</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
   <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">tempCtor</span><span class="p">();</span>
   <span class="cm">/** @override */</span>
-  <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">childCtor</span><span class="p">;</span>
+  <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">=</span> <span class="nx">childCtor</span><span class="p">;</span>
 <span class="p">};</span></code></pre></figure>
 
-<h1 id="section-8">良くないクラス実現方法</h1>
+<h1 id="良くないクラス実現方法">良くないクラス実現方法</h1>
 
 <h2 id="prototype--">prototype = {}</h2>
 
@@ -617,7 +614,7 @@ goog.inherits</a>
 <code class="highlighter-rouge">Person.prototype.constructor == Person</code>
 の関係は壊れてしまうのでそこも若干マイナスポイントです。</p>
 
-<h1 id="es6-">ES6 のクラス</h1>
+<h1 id="es6-のクラス">ES6 のクラス</h1>
 <p><a href="javascript_class_es6.html">ECMAScript 6 (ES6) でようやくJavaScriptにもクラスの構文が追加されています</a>。数年後、ユーザが使っているブラウザの大半がECMAScript 6 をサポートするようになれば(2015年10月時点では最新のFirefoxではサポートされていない)、新規のプロジェクトや単なる趣味であればここに書かれている文法を直接使う必要はなくなると思います。
 ただ下位互換性が非常に重要になるClosure Libraryのようなコアライブラリや既存のコード読む上で、あるいは<a href="https://github.com/google/traceur-compiler">ES6 to ES5 converter</a>の出力をデバッグする上で、今後少なくとも数年はもここに書かれている手段への理解は必要となるかと思います。
 また<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ES6のクラスがシンタックスシュガーに過ぎない</a>以上、ES6のクラスの挙動をきちんと理解したければプロトタイプを使ってどのようにクラスが実現できるのかを理解しておくのは今後も重要だと思います。ES6はあくまで既存のJavaScriptの上に作られた言語であり、JavaScriptがプロトタイプベースの言語であることは変わりません。</p>
