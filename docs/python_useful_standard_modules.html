@@ -34,7 +34,7 @@
       <div class="wrapper">
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">覚えておくと便利な Python 標準ライブラリ</h1>
-          <p class="post-meta"><time datetime="2014-06-01T00:00:00+09:00" itemprop="datePublished">更新 Jun 1, 2014</time></p>
+          <p class="post-meta"><time datetime="2019-01-07T00:00:00+09:00" itemprop="datePublished">更新 Jan 7, 2019</time></p>
         </header>
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
@@ -78,6 +78,7 @@
       <li><a href="#functoolswraps" id="markdown-toc-functoolswraps">functools.wraps</a></li>
     </ul>
   </li>
+  <li><a href="#simplehttpserver" id="markdown-toc-simplehttpserver">SimpleHTTPServer</a></li>
 </ul>
 
 <h1 id="collections">collections</h1>
@@ -225,6 +226,14 @@ __enter__ と __exit__ で呼び出すクラスである</a>。</p>
 
 <p>のようにラッパー関数のデコレータに <code class="highlighter-rouge">@functools.wraps(original)</code>
 をつけると元の関数のドキュメンテーション文字列とかが保持される。</p>
+
+<h1 id="simplehttpserver">SimpleHTTPServer</h1>
+
+<p><a href="https://docs.python.org/2/library/simplehttpserver.html">SimpleHTTPServer</a>を使うと現在のディレクトリを公開するHTTPサーバーが簡単に起動できてテストなどに便利。
+アクセス制御とかはないのでその点は注意。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -m SimpleHTTPServer &lt;port&gt;
+</code></pre></div></div>
 
         <div>
   <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
