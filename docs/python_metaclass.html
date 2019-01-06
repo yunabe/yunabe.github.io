@@ -187,7 +187,7 @@ metaclass という名前がついていますが、<code class="highlighter-rou
 <span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">tolower_classname</span>
 
-  <span class="k">print</span> <span class="n">ClassName</span><span class="o">.</span><span class="n">__name__</span>  <span class="c"># classname</span></code></pre></figure>
+  <span class="k">print</span> <span class="n">ClassName</span><span class="o">.</span><span class="n">__name__</span>  <span class="c1"># classname</span></code></pre></figure>
 
 <p>のようなコードを書くと、ClassName の名前が ‘classname’ になります
 (classname というクラスが ClassName という変数に格納されている状態)。</p>
@@ -213,8 +213,8 @@ metaclass という名前がついていますが、<code class="highlighter-rou
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">mymeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="c"># TODO: customize name, bases, dict.</span>
-    <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span></code></pre></figure>
+    <span class="c1"># TODO: customize name, bases, dict.
+</span>    <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span></code></pre></figure>
 
 <p>#メタクラスの例</p>
 
@@ -247,9 +247,9 @@ metaclass という名前がついていますが、<code class="highlighter-rou
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">auto_property</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="c"># TODO: dict から setter/getter っぽい名前のメソッドを取り除いて、</span>
-    <span class="c">#       代わりに対応する property を持つ new_dict を作成する</span>
-    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span></code></pre></figure>
+    <span class="c1"># TODO: dict から setter/getter っぽい名前のメソッドを取り除いて、
+</span>    <span class="c1">#       代わりに対応する property を持つ new_dict を作成する
+</span>    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span></code></pre></figure>
 
 <p>後は、 TODO の部分で <code class="highlighter-rouge">dict</code> に対して for文を回して正規表現を使って
 getter/setter と property 名を取り出して、 最後に <code class="highlighter-rouge">new_dict</code> に対して
@@ -263,8 +263,8 @@ getter/setter と property 名を取り出して、 最後に <code class="highl
     <span class="n">properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
       <span class="n">value</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-      <span class="c"># TODO: setter/getter を正規表現で検出</span>
-
+      <span class="c1"># TODO: setter/getter を正規表現で検出
+</span>
     <span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
       <span class="n">getter</span> <span class="o">=</span> <span class="n">getters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
       <span class="n">setter</span> <span class="o">=</span> <span class="n">setters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>

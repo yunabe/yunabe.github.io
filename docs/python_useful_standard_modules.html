@@ -198,7 +198,7 @@ iterable を返す。
 を用いると <code class="highlighter-rouge">__enter__</code>, <code class="highlighter-rouge">__exit__</code> を定義せずに、 <code class="highlighter-rouge">yield</code> を使って
 <code class="highlighter-rouge">with</code> 文で利用する関数を作成することができる。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@contextlib.contextmanager</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">@</span><span class="n">contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
 <span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
   <span class="k">print</span> <span class="s">'start with-stmt'</span>
   <span class="k">yield</span> <span class="n">val</span>
@@ -218,7 +218,7 @@ __enter__ と __exit__ で呼び出すクラスである</a>。</p>
 
 <h2 id="functoolswraps">functools.wraps</h2>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">@</span><span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">wrapper_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
   <span class="k">print</span> <span class="s">'wrapper_f...'</span>
   <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></code></pre></figure>

@@ -229,7 +229,7 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 
 <p>また、Seriesにもdescribe()があり1次元データの統計情報の入ったSeriesが返されますし、count, mean, stdなどで個別に値を求めることももちろん可能です。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">()[</span><span class="s">'平均気温'</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="s">'平均気温'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c"># True</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">()[</span><span class="s">'平均気温'</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="s">'平均気温'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># True</span></code></pre></figure>
 
 <h2 id="dataframecorr-行と行の相関係数を表示">DataFrame.corr(): 行と行の相関係数を表示</h2>
 <p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.corr.html">DataFrame.corr()</a></p>
@@ -237,14 +237,14 @@ Seriesも単なる1次元の<code class="highlighter-rouge">list</code>ではな
 <h2 id="ランダムにシャッフルする">ランダムにシャッフルする</h2>
 <p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.reindex.html#pandas.DataFrame.reindex">DataFrameにはreindex</a>というメソッドがあって、行(row)のラベルの配列を与えると、そのラベルの順に行を並び替えたDataFrameが作られます。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># 1行目が'4月'のデータ, 2行目が'1月'のデータのDataFrame</span>
-<span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">([</span><span class="s">'4月'</span><span class="p">,</span> <span class="s">'1月'</span><span class="p">])</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># 1行目が'4月'のデータ, 2行目が'1月'のデータのDataFrame
+</span><span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">([</span><span class="s">'4月'</span><span class="p">,</span> <span class="s">'1月'</span><span class="p">])</span></code></pre></figure>
 
 <p>そのためreindexにrowのラベルをランダムに並べ替えたものを渡せばDataFrameの行をランダムに並び替えたDataFrameを作ることができます。
 行のラベルの一覧は属性<code class="highlighter-rouge">df.index</code>から取得できます。配列の並び替えを<code class="highlighter-rouge">numpy.random.permutation</code>で行うと以下のようになります。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># DataFrameのrowをランダムにシャッフル</span>
-<span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># DataFrameのrowをランダムにシャッフル
+</span><span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span></code></pre></figure>
 
 <h2 id="ランダムサンプリング">ランダムサンプリング</h2>
 <p>pandasのDataFrameから要素を幾つかランダムサンプリングしたい場合には、<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sample.html">DataFrame.sample</a>を使用します。</p>
