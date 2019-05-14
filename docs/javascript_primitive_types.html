@@ -1,309 +1,203 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>JavaScript プリミティブ型 (基本データ型)</title>
-  <meta name="description" content="">
-  <meta property="fb:admins" content="yunabe">
-  <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/docs/javascript_primitive_types.html">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/docs/javascript_primitive_types.html">
-  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
-  <script>
-    if(location.host=='www.yunabe.jp'){
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-19477574-2', 'yunabe.jp');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">JavaScript プリミティブ型 (基本データ型) | yunabe.jp</title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
     }
-  </script>
-</head>
-
-
-  <body>
-    <div class="page-content">
-      <div class="wrapper">
-        <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">JavaScript プリミティブ型 (基本データ型)</h1>
-          <p class="post-meta"><time datetime="2014-03-24T00:00:00+09:00" itemprop="datePublished">更新 Mar 24, 2014</time></p>
-        </header>
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <h1 id="プリミティブ型とラッパーオブジェクト">プリミティブ型とラッパーオブジェクト</h1>
-
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var offset = element.offsetTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-a409082f05ae56f79255.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-77bdbd45d64174385941.js"/><link as="fetch" rel="preload" href="/static/d/898/path---docs-javascript-primitive-types-html-989-3b9-M3wkULKVR25DnKep9tympqJvE4.json" crossorigin="use-credentials"/></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>JavaScript プリミティブ型 (基本データ型)</h1><div><h2 id="プリミティブ型とラッパーオブジェクト"><a href="#%E3%83%97%E3%83%AA%E3%83%9F%E3%83%86%E3%82%A3%E3%83%96%E5%9E%8B%E3%81%A8%E3%83%A9%E3%83%83%E3%83%91%E3%83%BC%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88" aria-label="プリミティブ型とラッパーオブジェクト permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>プリミティブ型とラッパーオブジェクト</h2>
 <p>数値(number)・文字列(string)・真偽値(boolean)
 のプリミティブ型（基本型）には それぞれNumber, String,
 Booleanという対応するオブジェクト型(ラッパーオブジェクト)が存在する。
 (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Values,_variables,_and_literals">Values, variables, and literals</a>)</p>
-
 <table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th style="text-align: center">プリミティブ型</th>
-      <th style="text-align: right">ラッパーオブジェクト</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>数値</td>
-      <td style="text-align: center">number</td>
-      <td style="text-align: right">Number</td>
-    </tr>
-    <tr>
-      <td>文字列</td>
-      <td style="text-align: center">string</td>
-      <td style="text-align: right">String</td>
-    </tr>
-    <tr>
-      <td>真偽値</td>
-      <td style="text-align: center">boolean</td>
-      <td style="text-align: right">Boolean</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th></th>
+<th align="center">プリミティブ型</th>
+<th align="right">ラッパーオブジェクト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数値</td>
+<td align="center">number</td>
+<td align="right">Number</td>
+</tr>
+<tr>
+<td>文字列</td>
+<td align="center">string</td>
+<td align="right">String</td>
+</tr>
+<tr>
+<td>真偽値</td>
+<td align="center">boolean</td>
+<td align="right">Boolean</td>
+</tr>
+</tbody>
 </table>
-
 <p>プリミティブ型からラッパーオブジェクトへの変換は
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Description">Objectを使って行うことができる</a>。:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//newは省略可能</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">obj</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">//true</span></code></pre></figure>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//newは省略可能</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>obj <span class="token keyword">instanceof</span> <span class="token class-name">Number</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//true</span></code></pre></div>
 <p>ただ、ラッパーオブジェクトのメソッドやプロパティ（文字列のlengthなど）はプリミティブ型からも利用可能なので、
 ラッパーオブジェクトを拡張して新しいメソッドを追加する場合を除いて、
 ラッパーオブジェクトを意識して利用するケースはそれほどないと思う。
 型変換のための関数として利用するのが、ラッパーオブジェクトの一番の使い道になるような気がする。
 なおラッパーオブジェクトからプリミティブ型への変換を行うには、
 各ラッパーオブジェクトが持つvalueOfメソッドを利用すればよい。:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">);</span> <span class="c1">//object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">i</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">());</span> <span class="c1">//number</span></code></pre></figure>
-
-<h1 id="ラッパーオブジェクトのインスタンスと論理値">ラッパーオブジェクトのインスタンスと論理値</h1>
-
-<p>ラッパーオブジェクトのインスタンスはすべて <code class="highlighter-rouge">true</code> として解釈される
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//object</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> i<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//number</span></code></pre></div>
+<h2 id="ラッパーオブジェクトのインスタンスと論理値"><a href="#%E3%83%A9%E3%83%83%E3%83%91%E3%83%BC%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E3%81%A8%E8%AB%96%E7%90%86%E5%80%A4" aria-label="ラッパーオブジェクトのインスタンスと論理値 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ラッパーオブジェクトのインスタンスと論理値</h2>
+<p>ラッパーオブジェクトのインスタンスはすべて <code>true</code> として解釈される
 (参考: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">Boolean -
 MDN</a>)。
-そのため、<code class="highlighter-rouge">0</code> や <code class="highlighter-rouge">false</code>, <code class="highlighter-rouge">''</code> (空文字列) が <code class="highlighter-rouge">false</code>
-として扱われるにも関わらず、 それをラップしたインスタンスは <code class="highlighter-rouge">true</code>
+そのため、<code>0</code> や <code>false</code>, <code>''</code> (空文字列) が <code>false</code>
+として扱われるにも関わらず、 それをラップしたインスタンスは <code>true</code>
 として取り扱われる。
 これはすこし直感に反しているので、注意が必要な挙動。</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//!!（否定2回)でbooleanへの変換が行える</span>
-<span class="kd">var</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
-<span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nx">s</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">b</span><span class="p">);</span> <span class="c1">//false</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">i</span><span class="p">);</span> <span class="c1">//false</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">s</span><span class="p">);</span> <span class="c1">//false</span>
-<span class="nx">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-<span class="nx">i</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="s1">''</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">b</span><span class="p">);</span> <span class="c1">//true</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">i</span><span class="p">);</span> <span class="c1">//true</span>
-<span class="nx">alert</span><span class="p">(</span><span class="o">!!</span><span class="nx">s</span><span class="p">);</span> <span class="c1">//true</span>
-<span class="c1">// Booleanはfalseに対応するラッパーオブジェクトをtrueと解釈する</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//true</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">(</span><span class="kc">false</span><span class="p">)));</span> <span class="c1">//false</span></code></pre></figure>
-
-<h1 id="型変換">型変換</h1>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">//!!（否定2回)でbooleanへの変換が行える</span>
+<span class="token keyword">var</span> b<span class="token punctuation">,</span> i<span class="token punctuation">,</span> s<span class="token punctuation">;</span>
+b <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+s <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//false</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//false</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//false</span>
+b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+i <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//true</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//true</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//true</span>
+<span class="token comment">// Booleanはfalseに対応するラッパーオブジェクトをtrueと解釈する</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//true</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token function">Boolean</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//false</span></code></pre></div>
+<h2 id="型変換"><a href="#%E5%9E%8B%E5%A4%89%E6%8F%9B" aria-label="型変換 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>型変換</h2>
 <p>ラッパーオブジェクトは関数として利用すると、
 対応するプリミティブ型へのコンバーターとして機能する:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span><span class="p">);</span> <span class="c1">// number</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// false</span></code></pre></figure>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> n <span class="token operator">=</span> <span class="token function">Number</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// number</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>n <span class="token keyword">instanceof</span> <span class="token class-name">Number</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// false</span></code></pre></div>
 <p>また、newをつけて呼び出すと、ラッパーオブジェクトのインスタンスが作成される。(あまりこれを使うことはないと思うが):</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="s1">'123'</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">n</span> <span class="k">instanceof</span> <span class="nb">Number</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
-
-<h1 id="ラッパーオブジェクトの演算">ラッパーオブジェクトの演算</h1>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> n <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// object</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>n <span class="token keyword">instanceof</span> <span class="token class-name">Number</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span></code></pre></div>
+<h2 id="ラッパーオブジェクトの演算"><a href="#%E3%83%A9%E3%83%83%E3%83%91%E3%83%BC%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E6%BC%94%E7%AE%97" aria-label="ラッパーオブジェクトの演算 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ラッパーオブジェクトの演算</h2>
 <p>ラッパーオブジェクトのインスタンスを演算子で処理した結果は、
 プリミティブ型となる。:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">);</span> <span class="c1">// number</span></code></pre></figure>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> y <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// object</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> x <span class="token operator">+</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// number</span></code></pre></div>
 <p>ラッパーオブジェクトの関数の演算結果は基本的にプリミティブ型が返る。:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="s1">'Hello world'</span><span class="p">);</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">s</span><span class="p">);</span> <span class="c1">// object</span>
-<span class="nx">alert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span> <span class="c1">// string</span></code></pre></figure>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">'Hello world'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// object</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> s<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// string</span></code></pre></div>
 <p>このように何かしら処理を行うと、結果は簡単にプリミティブ型になってしまうので
-<code class="highlighter-rouge">new String('Hello world')</code>
+<code>new String('Hello world')</code>
 のようにして積極的にラッパーオブジェクトを利用するのは避けた方がよさそうである。</p>
-
-<h1 id="プリミティブ型のプロパティへのアクセス">プリミティブ型のプロパティへのアクセス</h1>
-
-<p>プリミティブ型の値に対して、<code class="highlighter-rouge">x.key</code> や <code class="highlighter-rouge">x['key']</code>
+<h2 id="プリミティブ型のプロパティへのアクセス"><a href="#%E3%83%97%E3%83%AA%E3%83%9F%E3%83%86%E3%82%A3%E3%83%96%E5%9E%8B%E3%81%AE%E3%83%97%E3%83%AD%E3%83%91%E3%83%86%E3%82%A3%E3%81%B8%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9" aria-label="プリミティブ型のプロパティへのアクセス permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>プリミティブ型のプロパティへのアクセス</h2>
+<p>プリミティブ型の値に対して、<code>x.key</code> や <code>x['key']</code>
 でプロパティのアクセスを行うと
 対応するラッパーオブジェクトへ自動変換されてからプロパティのアクセスが実行される（FirefoxのString.lengthなど）。</p>
-
 <p>そのため、ラッパーオブジェクトのメソッドやプロパティはプリミティブ型からも利用可能。
-またラッパーオブジェクトの <code class="highlighter-rouge">prototype</code>
+またラッパーオブジェクトの <code>prototype</code>
 を拡張しておけば、プリミティブ型からも利用することができる。</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Boolean</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">invert</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="cm">/*
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Boolean</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">invert</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">/*
    * thisはラッパーオブジェクトBooleanのインスタンスであり、
    * ラッパークラスのインスタンスは常にtrueとして扱われることに注意
    * (つまりreturn !this;とすると常にfalseを返す関数となってしまう。）
    */</span>
-  <span class="k">return</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">();</span>
-<span class="p">};</span>
-<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">invert</span><span class="p">());</span> <span class="c1">// false</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">invert</span><span class="p">());</span> <span class="c1">// true</span></code></pre></figure>
-
+  <span class="token keyword">return</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> t <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> f <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span><span class="token function">invert</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// false</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>f<span class="token punctuation">.</span><span class="token function">invert</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span></code></pre></div>
 <p>またプロパティに値を代入しても、プリミティブ型に対しては反映されない。:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nx">i</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="s1">'i.x'</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// undefined</span>
-<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nx">j</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="s1">'j.x'</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// j.x</span></code></pre></figure>
-
-<h2 id="google-chromeの場合">Google Chromeの場合</h2>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+i<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token string">'i.x'</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// undefined</span>
+<span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+j<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token string">'j.x'</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>j<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// j.x</span></code></pre></div>
+<h2 id="google-chromeの場合"><a href="#google-chrome%E3%81%AE%E5%A0%B4%E5%90%88" aria-label="google chromeの場合 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Google Chromeの場合</h2>
 <p>Firefox, Safariは上のように動いていると思って問題なさそうだが、Chromeは若干動作が違うようである。</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getType</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">typeof</span> <span class="k">this</span><span class="p">;</span>
-<span class="p">};</span>
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nx">alert</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">getType</span><span class="p">());</span></code></pre></figure>
-
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getType</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">typeof</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token function">alert</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <p>上で述べたように、プリミティブ型（number）のプロパティを参照すると、対応するラッパーオブジェクト（Number）に変換され、
 そこからprototypeをたどってgetTypeを呼び出しているとすれば、最後の文は:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alert</span><span class="p">(</span><span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">getType</span><span class="p">());</span></code></pre></figure>
-
-<p>と等価となり <code class="highlighter-rouge">this</code>
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>と等価となり <code>this</code>
 はラッパーオブジェクトのインスタンスになるはずなので、 実行結果は
-<code class="highlighter-rouge">"object"</code> となるはずである。 実際、このスクリプトを実行するとSafari,
-Firefoxでは <code class="highlighter-rouge">"object"</code> が表示される。</p>
-
-<p>しかしChromeでは <code class="highlighter-rouge">"number"</code> が表示される。
+<code>"object"</code> となるはずである。 実際、このスクリプトを実行するとSafari,
+Firefoxでは <code>"object"</code> が表示される。</p>
+<p>しかしChromeでは <code>"number"</code> が表示される。
 つまりChromeではラッパーオブジェクトへの変換は行われず、thisには元々のプリミティブ型がそのまま格納されるようである。
 なお、プリミティブ型のプロパティに値の代入を行っても反映されないのはChromeでも同じである。</p>
-
-<h1 id="falseとして扱われる値">falseとして扱われる値</h1>
-
+<h2 id="falseとして扱われる値"><a href="#false%E3%81%A8%E3%81%97%E3%81%A6%E6%89%B1%E3%82%8F%E3%82%8C%E3%82%8B%E5%80%A4" aria-label="falseとして扱われる値 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>falseとして扱われる値</h2>
 <p>if, whileなどの条件式や、!演算にfalseとして解釈される値:</p>
-
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kc">false</span>
-<span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">0</span>
-<span class="kc">NaN</span>
-<span class="s1">''</span>
-<span class="kc">null</span>
-<span class="kc">undefined</span></code></pre></figure>
-
-<p>ほかにあるのかな？ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">new Boolean(false)や、new
-Number(0)はfalseとしては扱われないので注意が必要</a>。</p>
-
-
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/javascript_primitive_types.html"  data-numposts="5"></div>
-        <div style="text-align:center">
-          <a href="/docs">Home</a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li></li>
-          <li><a href="mailto:"></a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          
-
-          
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-
-    <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-  {lang: 'ja'}
-</script>
-<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-
-    
-  </body>
-
-</html>
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token boolean">false</span>
+<span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0</span>
+<span class="token number">NaN</span>
+<span class="token string">''</span>
+<span class="token keyword">null</span>
+<span class="token keyword">undefined</span></code></pre></div>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#Description">new Boolean(false)や、new
+Number(0)はfalseとしては扱われないので注意が必要</a>。</p></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->3/24/2014</div></div></div></main></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-19477574-2', 'auto', {});
+      
+      
+      
+      }
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-javascript-primitive-types-html-989","path":"/docs/javascript_primitive_types.html"};window.dataPath="898/path---docs-javascript-primitive-types-html-989-3b9-M3wkULKVR25DnKep9tympqJvE4";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-a409082f05ae56f79255.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-77bdbd45d64174385941.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-a409082f05ae56f79255.js" async=""></script></body></html>

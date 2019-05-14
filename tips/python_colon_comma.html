@@ -1,123 +1,65 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Python (numpy) で出てくるコロン,カンマ [:,]</title>
-  <meta name="description" content="">
-  <meta property="fb:admins" content="yunabe">
-  <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/tips/python_colon_comma.html">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/tips/python_colon_comma.html">
-  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
-  <script>
-    if(location.host=='www.yunabe.jp'){
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Python (numpy) で出てくるコロン,カンマ [:,] | yunabe.jp</title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var offset = element.offsetTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-a409082f05ae56f79255.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-77bdbd45d64174385941.js"/><link as="fetch" rel="preload" href="/static/d/988/path---tips-python-colon-comma-html-ba-9-bcb-6THEomXbU6d5a8yf9yEX04ojU5E.json" crossorigin="use-credentials"/></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Python (numpy) で出てくるコロン,カンマ [:,]</h1><div><p>Python (というよりnumpy) のコードを読んでて突然 <code>x[:,0]</code> みたいな表記がでてきて、
+Python2.x系はかなり長いこと使っているのに <code>:,</code>何てPythonにあったっけ...何だこれ...これシンタックスエラーじゃないんだな...と困惑してしまった。</p>
+<p>調べたところ、まず最初のコロン<code>:</code>はスライシングの<code>:</code> (<code>x[1:]</code>とかの<code>:</code>)だった。
+そしてPythonでは実はスライシングはカンマ<code>,</code>で区切って複数<code>[]</code>の中に書くことができる(全く知らなかった)。
+言語仕様の<a href="https://docs.python.org/2/reference/expressions.html#slicings">Slicing</a>に書かれている<a href="https://docs.python.org/2/reference/expressions.html#grammar-token-extended_slicing">extended_slicing</a>というもののようである。</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">import</span> numpy
+a <span class="token operator">=</span> numpy<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span> a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span>  <span class="token comment"># array([1, 3])</span></code></pre></div></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->9/4/2015</div></div></div></main></div></div></div><script>
+  
+  
+  if(true) {
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-19477574-2', 'yunabe.jp');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
-    }
-  </script>
-</head>
-
-
-  <body>
-    <div class="page-content">
-      <div class="wrapper">
-        <header class="post-header">
-          <h1 class="post-title tips-title" itemprop="name headline">Python (numpy) で出てくるコロン,カンマ [:,]</h1>
-          <p class="post-meta"><time datetime="2015-09-04T00:00:00+09:00" itemprop="datePublished">更新 Sep 4, 2015</time></p>
-        </header>
-        <h1 id="python-numpy-で出てくるコロンカンマ-">Python (numpy) で出てくるコロン,カンマ [:,]</h1>
-
-<p>Python (というよりnumpy) のコードを読んでて突然 <code class="highlighter-rouge">x[:,0]</code> みたいな表記がでてきて、
-Python2.x系はかなり長いこと使っているのに <code class="highlighter-rouge">:,</code>何てPythonにあったっけ…何だこれ…これシンタックスエラーじゃないんだな…と困惑してしまった。</p>
-
-<p>調べたところ、まず最初のコロン<code class="highlighter-rouge">:</code>はスライシングの<code class="highlighter-rouge">:</code> (<code class="highlighter-rouge">x[1:]</code>とかの<code class="highlighter-rouge">:</code>)だった。
-そしてPythonでは実はスライシングはカンマ<code class="highlighter-rouge">,</code>で区切って複数<code class="highlighter-rouge">[]</code>の中に書くことができる(全く知らなかった)。
-言語仕様の<a href="https://docs.python.org/2/reference/expressions.html#slicings">Slicing</a>に書かれている<a href="https://docs.python.org/2/reference/expressions.html#grammar-token-extended_slicing">extended_slicing</a>というもののようである。</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
-<span class="k">print</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># array([1, 3])</span></code></pre></figure>
-
-
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <div class="fb-comments" data-href="http://www.yunabe.jp/tips/python_colon_comma.html"  data-numposts="5"></div>
-        <div style="text-align:center">
-          <a href="/docs">Home</a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li></li>
-          <li><a href="mailto:"></a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          
-
-          
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-
-    <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-  {lang: 'ja'}
-</script>
-<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-
-
-  </body>
-
-</html>
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-19477574-2', 'auto', {});
+      
+      
+      
+      }
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"tips-python-colon-comma-html-ba9","path":"/tips/python_colon_comma.html"};window.dataPath="988/path---tips-python-colon-comma-html-ba-9-bcb-6THEomXbU6d5a8yf9yEX04ojU5E";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-a409082f05ae56f79255.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-77bdbd45d64174385941.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-a409082f05ae56f79255.js" async=""></script></body></html>

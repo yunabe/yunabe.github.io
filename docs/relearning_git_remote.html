@@ -1,210 +1,170 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Git 再入門 リモートリポジトリを使った作業</title>
-  <meta name="description" content="">
-  <meta property="fb:admins" content="yunabe">
-  <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/docs/relearning_git_remote.html">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/docs/relearning_git_remote.html">
-  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
-  <script>
-    if(location.host=='www.yunabe.jp'){
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-19477574-2', 'yunabe.jp');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Git 再入門 リモートリポジトリを使った作業 | yunabe.jp</title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
     }
-  </script>
-</head>
-
-
-  <body>
-    <div class="page-content">
-      <div class="wrapper">
-        <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Git 再入門 リモートリポジトリを使った作業</h1>
-          <p class="post-meta"><time datetime="2015-05-01T00:00:00+09:00" itemprop="datePublished">更新 May 1, 2015</time></p>
-        </header>
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <h1 id="この文書の目的">この文書の目的</h1>
-
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var offset = element.offsetTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-a409082f05ae56f79255.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-77bdbd45d64174385941.js"/><link as="fetch" rel="preload" href="/static/d/942/path---docs-relearning-git-remote-html-28-e-aac-GMAivDQNLQe0S00MVaNk9pVPTA.json" crossorigin="use-credentials"/></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Git 再入門 リモートリポジトリを使った作業</h1><div><div><p>この文書のゴールは以下になります:</p>
 <ul>
-  <li>別の場所にある git リポジトリ（リモートリポジトリ）と連携する方法について再学習します。</li>
-  <li>はじめに git remote, git fetch, git merge
+<li>別の場所にある git リポジトリ（リモートリポジトリ）と連携する方法について再学習します。</li>
+<li>はじめに git remote, git fetch, git merge
 を使ってリモートリポジトリの内容を手元のリポジトリ（ローカルリポジトリ）に取り込む方法について学習します。</li>
-  <li>次に git fetch, git merge を使った一連の作業を自動的に行なってくれる
+<li>次に git fetch, git merge を使った一連の作業を自動的に行なってくれる
 git pull について学習します。</li>
-  <li>次に git push を使ってローカルリポジトリの内容をリモートリポジトリに書き出す方法について
+<li>次に git push を使ってローカルリポジトリの内容をリモートリポジトリに書き出す方法について
 学習します。</li>
-  <li>最後に, トラッキングブランチ (tracking branch) について理解し、 git
+<li>最後に, トラッキングブランチ (tracking branch) について理解し、 git
 pull, git push の引数を省略した際のデフォルトの挙動のルールについて学びます。</li>
 </ul>
-
-<h1 id="対象とする人">対象とする人</h1>
-
+</div><p><b>目次</b></p><div><ul>
+<li><a href="/docs/relearning_git_remote.html/#%E5%AF%BE%E8%B1%A1%E3%81%A8%E3%81%99%E3%82%8B%E4%BA%BA">対象とする人</a></li>
+<li><a href="/docs/relearning_git_remote.html/#%E4%B8%8B%E6%BA%96%E5%82%99">下準備</a></li>
+<li>
+<p><a href="/docs/relearning_git_remote.html/#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88-remote">リモート (Remote)</a></p>
 <ul>
-  <li>入門本でリモート, push, pull
+<li><a href="/docs/relearning_git_remote.html/#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AE%E7%99%BB%E9%8C%B2%E3%81%A8%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">リモートリポジトリの登録と読み込み</a></li>
+</ul>
+</li>
+<li><a href="/docs/relearning_git_remote.html/#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%88%E3%83%A9%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%82%92%E6%89%B1%E3%81%86">リモートトラキングブランチを扱う</a></li>
+<li><a href="/docs/relearning_git_remote.html/#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%88%E3%83%A9%E3%83%83%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%81%A8%E3%83%9E%E3%83%BC%E3%82%B8%E3%81%99%E3%82%8B">リモートトラッキングブランチとマージする</a></li>
+<li><a href="/docs/relearning_git_remote.html/#git-pull">git pull</a></li>
+<li><a href="/docs/relearning_git_remote.html/#%E3%81%93%E3%81%93%E3%81%BE%E3%81%A7%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">ここまでのまとめ</a></li>
+<li>
+<p><a href="/docs/relearning_git_remote.html/#git-push">git push</a></p>
+<ul>
+<li><a href="/docs/relearning_git_remote.html/#%E5%85%B1%E6%9C%89%E7%94%A8%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E4%BD%9C%E3%82%8B">共有用のリポジトリを作る</a></li>
+<li><a href="/docs/relearning_git_remote.html/#git-push-%E3%81%A7%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%82%92%E6%9B%B8%E3%81%8D%E8%BE%BC%E3%82%80">git push でコミットを書き込む</a></li>
+<li><a href="/docs/relearning_git_remote.html/#push-fast-forward-%E3%81%AB%E5%A4%B1%E6%95%97%E3%81%97%E3%81%9F%E5%A0%B4%E5%90%88%E3%81%AE%E5%AF%BE%E5%87%A6%E6%B3%95">push (fast-forward) に失敗した場合の対処法</a></li>
+</ul>
+</li>
+</ul></div><div><h2 id="対象とする人"><a href="#%E5%AF%BE%E8%B1%A1%E3%81%A8%E3%81%99%E3%82%8B%E4%BA%BA" aria-label="対象とする人 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>対象とする人</h2>
+<ul>
+<li>入門本でリモート, push, pull
 について読んだけど何が「プッシュ」されてなにが「プル」されるのか、よく分からなかった人。</li>
-  <li><a href="http://git-scm.com/book/ja/Git-%E3%81%AE%E5%9F%BA%E6%9C%AC-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%A7%E3%81%AE%E4%BD%9C%E6%A5%AD">2.5 Git の基本 -
+<li><a href="http://git-scm.com/book/ja/Git-%E3%81%AE%E5%9F%BA%E6%9C%AC-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%81%A7%E3%81%AE%E4%BD%9C%E6%A5%AD">2.5 Git の基本 -
 リモートでの作業</a>
 や <a href="http://git-scm.com/book/ja/Git-%E3%81%AE%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E6%A9%9F%E8%83%BD-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81">3.5 Git のブランチ機能 -
 リモートブランチ</a>
 を読んで何となく分かったけれど、理解を再確認したい人。</li>
-  <li><code class="highlighter-rouge">git pull</code> と <code class="highlighter-rouge">git push</code> を使って1人で github を使ってるけど、実は
-<code class="highlighter-rouge">git pull</code>, <code class="highlighter-rouge">push</code> が何をしているのかよく理解していない人。</li>
-  <li><code class="highlighter-rouge">git pull/push</code> と <code class="highlighter-rouge">fetch/merge</code> の関係を理解していない人</li>
-  <li><code class="highlighter-rouge">git pull/push</code> で
-「fast-forwardナンタラカンタラ」とかエラーが出てもそれが何なの分かっていない人。
-それの解決方法 （例えば git fetch &amp;&amp; git merge
+<li><code>git pull</code> と <code>git push</code> を使って 1 人で github を使ってるけど、実は
+<code>git pull</code>, <code>push</code> が何をしているのかよく理解していない人。</li>
+<li><code>git pull/push</code> と <code>fetch/merge</code> の関係を理解していない人</li>
+<li><code>git pull/push</code> で
+「fast-forward ナンタラカンタラ」とかエラーが出てもそれが何なの分かっていない人。
+それの解決方法 （例えば git fetch &#x26;&#x26; git merge
 origin/master）が何故それでうまくいくのかきちんと説明できない人</li>
-  <li><code class="highlighter-rouge">git push/pull</code>
+<li><code>git push/pull</code>
 の引数が省略された場合のデフォルトの動作を厳密に説明出来ない人
 「リモートトラッキングブランチ」と「トラキングブランチ」がそれぞれ何であるか説明できない人</li>
-  <li>というか少し前の自分のことです…</li>
+<li>というか少し前の自分のことです...</li>
 </ul>
-
-<h1 id="目次">目次</h1>
-<ul id="markdown-toc">
-  <li><a href="#この文書の目的" id="markdown-toc-この文書の目的">この文書の目的</a></li>
-  <li><a href="#対象とする人" id="markdown-toc-対象とする人">対象とする人</a></li>
-  <li><a href="#目次" id="markdown-toc-目次">目次</a></li>
-  <li><a href="#下準備" id="markdown-toc-下準備">下準備</a></li>
-  <li><a href="#リモート-remote" id="markdown-toc-リモート-remote">リモート (Remote)</a>    <ul>
-      <li><a href="#リモートリポジトリの登録と読み込み" id="markdown-toc-リモートリポジトリの登録と読み込み">リモートリポジトリの登録と読み込み</a></li>
-    </ul>
-  </li>
-  <li><a href="#リモートトラキングブランチを扱う" id="markdown-toc-リモートトラキングブランチを扱う">リモートトラキングブランチを扱う</a></li>
-  <li><a href="#リモートトラッキングブランチとマージする" id="markdown-toc-リモートトラッキングブランチとマージする">リモートトラッキングブランチとマージする</a></li>
-  <li><a href="#git-pull" id="markdown-toc-git-pull">git pull</a></li>
-  <li><a href="#ここまでのまとめ" id="markdown-toc-ここまでのまとめ">ここまでのまとめ</a></li>
-  <li><a href="#git-push" id="markdown-toc-git-push">git push</a>    <ul>
-      <li><a href="#共有用のリポジトリを作る" id="markdown-toc-共有用のリポジトリを作る">共有用のリポジトリを作る</a></li>
-      <li><a href="#git-push-でコミットを書き込む" id="markdown-toc-git-push-でコミットを書き込む">git push でコミットを書き込む</a></li>
-      <li><a href="#push-fast-forward-に失敗した場合の対処法" id="markdown-toc-push-fast-forward-に失敗した場合の対処法">push (fast-forward) に失敗した場合の対処法</a></li>
-    </ul>
-  </li>
-</ul>
-
-<h1 id="下準備">下準備</h1>
-
-<p>アリスとボブが2人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは
+<h2 id="下準備"><a href="#%E4%B8%8B%E6%BA%96%E5%82%99" aria-label="下準備 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>下準備</h2>
+<p>アリスとボブが 2 人で自分たちの部門の紹介ページを作ろうとしてるとしています。アリスは
 git リポジトリーを作ってその上で部門の紹介ページの作成を開始しました。
 まずはアリスになったつもりでリポジトリーを作成して、紹介ページを作ってコミットしましょう
-（<code class="highlighter-rouge">/tmp/my/workingdir</code> は好きなディレクトリに置き換えて下さい）。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+（<code>/tmp/my/workingdir</code> は好きなディレクトリに置き換えて下さい）。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir
 $ mkdir alice
 $ cd alice
 $ git init
-Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
-</code></pre></div></div>
-
+Initialized empty Git repository in /tmp/my/workingdir/alice/.git/</code></pre></div>
 <p>これでリポジトリができました。まず自分の紹介ページを作ってコミットしましょう。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "I’m Alice." &gt;&gt; alice.txt
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ echo &quot;I’m Alice.&quot; &gt;&gt; alice.txt
 $ git add alice.txt
-$ git commit -m "Added alice.txt"
+$ git commit -m &quot;Added alice.txt&quot;
 [master (root-commit) 8f6e1d0] Added alice.txt
  1 file changed, 1 insertion(+)
- create mode 100644 alice.txt
-</code></pre></div></div>
-
+ create mode 100644 alice.txt</code></pre></div>
 <p>次にメンバー一覧ページも作ってコミットします。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Alice &lt;alice.txt&gt;" &gt;&gt; members.txt
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ echo &quot;Alice &lt;alice.txt&gt;&quot; &gt;&gt; members.txt
 $ git add members.txt
-$ git commit -m "Added Alice to members.txt"
+$ git commit -m &quot;Added Alice to members.txt&quot;
 [master 9e73b53] Added Alice to members.txt
  1 file changed, 1 insertion(+)
- create mode 100644 members.txt
-</code></pre></div></div>
-
+ create mode 100644 members.txt</code></pre></div>
 <p>アリスが紹介ページを作り始めたのを知らずに、ボブも紹介ページを手元で作りはじめてしまいました。今度はボブになったつもりでリポジトリの作成とコミットを行います。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir
 $ mkdir bob
 $ cd bob
 $ git init
 Initialized empty Git repository in /tmp/my/workingdir/alice/.git/
 
-$ echo "I’m Bob." &gt; bob.txt
+$ echo &quot;I’m Bob.&quot; &gt; bob.txt
 $ git add bob.txt
-$ git commit -m "Added bob.txt"
+$ git commit -m &quot;Added bob.txt&quot;
 [master (root-commit) 527df0c] Added bob.txt
  1 file changed, 1 insertion(+)
  create mode 100644 bob.txt
 
-$ echo "Bob &lt;bob.txt&gt;" &gt; members.txt
+$ echo &quot;Bob &lt;bob.txt&gt;&quot; &gt; members.txt
 $ git add members.txt
-$ git commit -m "Added Bob to members.txt"
+$ git commit -m &quot;Added Bob to members.txt&quot;
 [master f3bc482] Added Bob to members.txt
  1 file changed, 1 insertion(+)
- create mode 100644 members.txt
-</code></pre></div></div>
-
+ create mode 100644 members.txt</code></pre></div>
 <p>アリスとボブがそれぞれ手元で紹介ページをある程度作ったところで、アリスとボブはお互いが別々の場所で紹介ページの作成をしていたことに気が付きます。アリスとボブはそれぞれが手元で作ったコミットを相手と共有しなければなりません。こうしたケースに対処するために
-git では「リモート」という仕組みと、<code class="highlighter-rouge">git fetch</code>, <code class="highlighter-rouge">pull</code>, <code class="highlighter-rouge">push</code>
+git では「リモート」という仕組みと、<code>git fetch</code>, <code>pull</code>, <code>push</code>
 といったコマンドが用意されています。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;h=728" width="378" height="364" /></p>
-
-<h1 id="リモート-remote">リモート (Remote)</h1>
-
+<img src="https://docs.google.com/drawings/d/1k9ZFqZb2xSvMwTKi-74YtbczJr9uDgbMG6DfT9wyCmI/pub?w=756&amp;h=728" width="378" height="364">
+<h2 id="リモート-remote"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88-remote" aria-label="リモート remote permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リモート (Remote)</h2>
 <p>git では別の場所にあるリポジトリ（以下リモートリポジトリ）を手元のリポジトリ（以下ローカルリポジトリ）と連携させることができます。
 リモートリポジトリとローカルリポジトリの連携により、リモートリポジトリにあるコミットをローカルリポジトリに持ってきたり、
 逆にローカルリポジトリで行ったコミットをリモートリポジトリに書き出すことができます。</p>
-
-<h2 id="リモートリポジトリの登録と読み込み">リモートリポジトリの登録と読み込み</h2>
-
+<h3 id="リモートリポジトリの登録と読み込み"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AE%E7%99%BB%E9%8C%B2%E3%81%A8%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF" aria-label="リモートリポジトリの登録と読み込み permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リモートリポジトリの登録と読み込み</h3>
 <p>リモートリポジトリ
 と連携するために、まずローカルリポジトリにリモートリポジトリを登録する必要があります。
-リモートリポジトリの登録には <code class="highlighter-rouge">git remote add</code> を利用します。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add &lt;name&gt; &lt;URL&gt;
-</code></pre></div></div>
-
+リモートリポジトリの登録には <code>git remote add</code> を利用します。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git remote add &lt;name&gt; &lt;URL&gt;</code></pre></div>
 <p>現在ローカルリポジトリに登録されているリモートリポジトリの一覧は
-<code class="highlighter-rouge">git remote</code> で確認することができます。 各 remote
-の、例えばURLなどの、詳細な情報 は <code class="highlighter-rouge">git remote show &lt;remote&gt;</code>
+<code>git remote</code> で確認することができます。 各 remote
+の、例えば URL などの、詳細な情報 は <code>git remote show &#x3C;remote></code>
 で確認できます。</p>
-
 <p>リモートリポジトリにあるコミットを読み込んでみましょう。リモートリポジトリにあるコミットは
-<code class="highlighter-rouge">git fetch &lt;remote&gt;</code> でローカルリポジトリにロードすることができます。
+<code>git fetch &#x3C;remote></code> でローカルリポジトリにロードすることができます。
 git fetch
 でコミットをロードすると、リモートリポジトリ上のブランチに対応する「リモートトラキングブランチ」という特殊なブランチが自動的に作成されます（ブランチはコミットに対するポインタであることに注意して下さい）。
-リモートトラッキングブランチの名前は <code class="highlighter-rouge">&lt;remote&gt;/&lt;branch&gt;</code>
+リモートトラッキングブランチの名前は <code>&#x3C;remote>/&#x3C;branch></code>
 という名前になります。現在のリポジトリにあるリモートトラッキングブランチの一覧は
-<code class="highlighter-rouge">git branch -r</code> で確認できます。</p>
-
+<code>git branch -r</code> で確認できます。</p>
 <p>アリスとボブのケースに戻りましょう。ボブはアリスが紹介ページを自分の作っているものにマージすることにしました。
 ボブはアリスのリポジトリー上のコミットを取り込むために、まずアリスのリポジトリを自分のリポジトリに「リモートリポジトリ」として登録します。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bob
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir/bob
 $ git remote add alice /tmp/my/workingdir/alice
 
 $ git remote
@@ -216,13 +176,10 @@ $ git remote show alice
   HEAD branch: master
   Remote branch:
     master new (next fetch will store in remotes/alice)
-  Local ref configured for 'git push':
-    master pushes to master (local out of date)
-</code></pre></div></div>
-
+  Local ref configured for &#39;git push&#39;:
+    master pushes to master (local out of date)</code></pre></div>
 <p>次にアリスのリポジトリをフェッチします。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git fetch alice
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git fetch alice
 warning: no common commits
 remote: Counting objects: 6, done.
 remote: Compressing objects: 100% (3/3), done.
@@ -231,95 +188,67 @@ Unpacking objects: 100% (6/6), done.
 From /tmp/my/workingdir/alice
  * [new branch]      master     -&gt; alice/master
 $ git branch -r
-  alice/master
-</code></pre></div></div>
-
+  alice/master</code></pre></div>
 <p>bob のリポジトリの状態を図を書くと次のようになります。 リポジトリ alice
-からコミットがコピーされており、master ブランチの代わりに <code class="highlighter-rouge">alice/master</code>
+からコミットがコピーされており、master ブランチの代わりに <code>alice/master</code>
 という「リモートトラッキングブランチ」が作成されていることに注意して下さい。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;h=664" width="660" height="332" /></p>
-
-<h1 id="リモートトラキングブランチを扱う">リモートトラキングブランチを扱う</h1>
-
-<p>これで <code class="highlighter-rouge">git remote add</code> と <code class="highlighter-rouge">git fetch</code>
+<img src="https://docs.google.com/drawings/d/1aw6WitGt4TCLuqi2812vPdU_K8MPSh_C8XiZUHXeg-w/pub?w=1321&amp;h=664" width="660" height="332">
+<h2 id="リモートトラキングブランチを扱う"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%88%E3%83%A9%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%82%92%E6%89%B1%E3%81%86" aria-label="リモートトラキングブランチを扱う permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リモートトラキングブランチを扱う</h2>
+<p>これで <code>git remote add</code> と <code>git fetch</code>
 で別の場所にあるリポジトリを登録し、そこからコミットを読み込むことができました。
-その際にリモートリポジトリ上のブランチに対応する <code class="highlighter-rouge">&lt;remote&gt;/&lt;branch&gt;</code>
+その際にリモートリポジトリ上のブランチに対応する <code>&#x3C;remote>/&#x3C;branch></code>
 という名前の「リモートトラキングブランチ」が自動的に作られることが分かりました。</p>
-
-<p>「リモートトラッキングブランチ」(e.g. <code class="highlighter-rouge">origin/master</code>) は通常のブランチ
-(e.g. <code class="highlighter-rouge">master</code>) や <code class="highlighter-rouge">HEAD</code>, <code class="highlighter-rouge">HEAD^</code>, コミットのハッシュID
-(<code class="highlighter-rouge">198bc17aade</code>),
+<p>「リモートトラッキングブランチ」(e.g. <code>origin/master</code>) は通常のブランチ
+(e.g. <code>master</code>) や <code>HEAD</code>, <code>HEAD^</code>, コミットのハッシュ ID
+(<code>198bc17aade</code>),
 タグと同様に手元のリポジトリに保存されているコミットに対するポインタです。
-そのため前章で学んだような <code class="highlighter-rouge">git checkout</code>, <code class="highlighter-rouge">git merge</code>, <code class="highlighter-rouge">git branch</code>
+そのため前章で学んだような <code>git checkout</code>, <code>git merge</code>, <code>git branch</code>
 のようなコマンドはリモートトラッキングブランチに対しても変わらず利用できます。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log alice/master
-</code></pre></div></div>
-
-<p>でボブはリモートリポジトリ（アリスのリポジトリ）上の <code class="highlighter-rouge">master</code>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log alice/master</code></pre></div>
+<p>でボブはリモートリポジトリ（アリスのリポジトリ）上の <code>master</code>
 ブランチのログを見ることができます。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout alice/master
-</code></pre></div></div>
-
-<p>とするとボブはアリスのリポジトリの <code class="highlighter-rouge">master</code>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git checkout alice/master</code></pre></div>
+<p>とするとボブはアリスのリポジトリの <code>master</code>
 ブランチの最新の状態を再現することができます （ただし
-<code class="highlighter-rouge">You are in 'detached HEAD' state.</code>
+<code>You are in 'detached HEAD' state.</code>
 と言われてこのままでは編集作業ができないことに注意）。</p>
-
-<h1 id="リモートトラッキングブランチとマージする">リモートトラッキングブランチとマージする</h1>
-
+<h2 id="リモートトラッキングブランチとマージする"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%83%88%E3%83%A9%E3%83%83%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%81%A8%E3%83%9E%E3%83%BC%E3%82%B8%E3%81%99%E3%82%8B" aria-label="リモートトラッキングブランチとマージする permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リモートトラッキングブランチとマージする</h2>
 <p>次にリモートトラッキングブランチ（リモートリポジトリ上のブランチ）をローカルのブランチにマージしてみましょう。
 これはローカルでブランチをマージした場合と全く同じようにできます。</p>
-
 <p>ボブはアリスの master ブランチを自分の master
 ブランチにマージすることにしました。
-マージしようとしている2つのコミットに共通する先祖が存在しない点が、ローカルのみで作業していた場合と少し違いますが、
+マージしようとしている 2 つのコミットに共通する先祖が存在しない点が、ローカルのみで作業していた場合と少し違いますが、
 これはファイルが何もない「初期状態」が共通の親として暗黙的存在すると考えれば特に問題はないかと思います。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git checkout master
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git checkout master
 $ git merge alice/master
 Auto-merging members.txt
 CONFLICT (add/add): Merge conflict in members.txt
-Automatic merge failed; fix conflicts and then commit the result.
-</code></pre></div></div>
-
+Automatic merge failed; fix conflicts and then commit the result.</code></pre></div>
 <p>members.txt
 はアリスとボブ両方のリポジトリで編集されていたのでコンフリクトが発生します。
 適当にコンフリクトを解消します。このあたりの作業もローカルのブランチをマージする場合となにも変わりません。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ emacs members.txt # 適当なエディタで衝突を解消
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ emacs members.txt # 適当なエディタで衝突を解消
 $ git add members.txt
 $ git commit
-[master 5de7b36] Merge remote-tracking branch 'alice/master'
-</code></pre></div></div>
-
+[master 5de7b36] Merge remote-tracking branch &#39;alice/master&#39;</code></pre></div>
 <p>これで無事、ボブはアリスが行った変更を自分のリポジトリに取り込むことができました。ボブのリポジトリの状態は図で書くと以下のようになります</p>
-
-<p><img src="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;h=644" width="503" height="322" /></p>
-
-<h1 id="git-pull">git pull</h1>
-
-<p>今度はアリスの立場になってボブのリポジトリ上のmaster
-ブランチをローカルリポジトリの masterブランチにマージしましょう。
+<img src="https://docs.google.com/drawings/d/1-ChqglgHp_OTeNlqVnDQyZLYHxA2o6oBm3Vlspxald0/pub?w=1007&amp;h=644" width="503" height="322">
+<h2 id="git-pull"><a href="#git-pull" aria-label="git pull permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>git pull</h2>
+<p>今度はアリスの立場になってボブのリポジトリ上の master
+ブランチをローカルリポジトリの master ブランチにマージしましょう。
 ボブがアリスのコミットを読み込んだ時と同じようにまずはリモートリポジトリを
-<code class="highlighter-rouge">git remote add</code> で登録します。 続いて、git fetch と git merge
-を実行すれば前述したようにボブのリポジトリ上のmasterブランチをローカルリポジトリの
+<code>git remote add</code> で登録します。 続いて、git fetch と git merge
+を実行すれば前述したようにボブのリポジトリ上の master ブランチをローカルリポジトリの
 master ブランチにマージすることが出来ます。 この fetch → merge
-という一連の処理は非常に頻繁に行われるので、これを一度に行う <code class="highlighter-rouge">git pull</code>
+という一連の処理は非常に頻繁に行われるので、これを一度に行う <code>git pull</code>
 というコマンドが用意されています。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull &lt;remote&gt; &lt;src&gt;
-</code></pre></div></div>
-
-<p>このコマンドを実行すると <code class="highlighter-rouge">git fetch &lt;remote&gt;</code> →
-<code class="highlighter-rouge">git merge &lt;remote&gt;/&lt;src&gt;</code> を実行した場合と同じようにリモートリポジトリ
-&lt;remote&gt; 上の &lt;src&gt; ブランチが
-現在のブランチにマージされます（厳密には git fetch &lt;remote&gt; &lt;src&gt; →
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git pull &lt;remote&gt; &lt;src&gt;</code></pre></div>
+<p>このコマンドを実行すると <code>git fetch &#x3C;remote></code> →
+<code>git merge &#x3C;remote>/&#x3C;src></code> を実行した場合と同じようにリモートリポジトリ
+&#x3C;remote> 上の &#x3C;src> ブランチが
+現在のブランチにマージされます（厳密には git fetch &#x3C;remote> &#x3C;src> →
 git merge FETCHED_HEAD）。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir/alice
 $ git remote add bob /tmp/my/workingdir/bob
 $ git pull bob master
 remote: Counting objects: 11, done.
@@ -334,135 +263,102 @@ Fast-forward
  bob.txt     | 1 +
  members.txt | 1 +
  2 files changed, 2 insertions(+)
- create mode 100644 bob.txt
-</code></pre></div></div>
-
-<p>また後述するように <code class="highlighter-rouge">git pull</code>
-は引数を省略することができるので、日常の業務で利用するには <code class="highlighter-rouge">git fetch</code>
-と <code class="highlighter-rouge">merge</code> をばらばらに実行するよりも便利です。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545" width="505" height="272" /></p>
-
-<h1 id="ここまでのまとめ">ここまでのまとめ</h1>
-
+ create mode 100644 bob.txt</code></pre></div>
+<p>また後述するように <code>git pull</code>
+は引数を省略することができるので、日常の業務で利用するには <code>git fetch</code>
+と <code>merge</code> をばらばらに実行するよりも便利です。</p>
+<img src="https://docs.google.com/drawings/d/1ArgcrHHHctjQnkAMqqxqqKXrtxdWOCmpVBJ3IdiYJGA/pub?w=1010&amp;h=545" width="505" height="272">
+<h2 id="ここまでのまとめ"><a href="#%E3%81%93%E3%81%93%E3%81%BE%E3%81%A7%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81" aria-label="ここまでのまとめ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ここまでのまとめ</h2>
 <ul>
-  <li>別の場所にあるgit
+<li>別の場所にある git
 リポジトリ（リモートリポジトリ）と連携するための仕組みとして git
 には「リモート」というものが用意されています。</li>
-  <li>リモートリポジトリと連携するには、まずローカルリポジトリに登録するリモートリポジトリを登録します。これには
-<code class="highlighter-rouge">git remote add &lt;name&gt; &lt;url&gt;</code> を利用します。</li>
-  <li>リモートリポジトリ上のコミットを <code class="highlighter-rouge">git fetch</code>
+<li>リモートリポジトリと連携するには、まずローカルリポジトリに登録するリモートリポジトリを登録します。これには
+<code>git remote add &#x3C;name> &#x3C;url></code> を利用します。</li>
+<li>リモートリポジトリ上のコミットを <code>git fetch</code>
 でロードすることができます。
 この際、リモートリポジトリ上のブランチに対応する「リモートトラッキングブランチ」が自動的に作成されます。
-リモートトラッキングブランチの名前は <code class="highlighter-rouge">&lt;remote&gt;/&lt;branch&gt;</code> (e.g.
-<code class="highlighter-rouge">alice/master</code>) となります。</li>
-  <li>git fetch
+リモートトラッキングブランチの名前は <code>&#x3C;remote>/&#x3C;branch></code> (e.g.
+<code>alice/master</code>) となります。</li>
+<li>git fetch
 で取り込んだ後は、リモートトラッキングブランチという特殊なブランチがある以外は単一のリポジトリで作業している場合全く同じように作業できる。
 リモートリポジトリ上で行われたコミットを手元のブランチに取り込むには
-<code class="highlighter-rouge">git merge</code> を行えば良い。</li>
-  <li><code class="highlighter-rouge">git fetch</code> → <code class="highlighter-rouge">git merge</code> の一連の流れは <code class="highlighter-rouge">git pull</code>
+<code>git merge</code> を行えば良い。</li>
+<li><code>git fetch</code> → <code>git merge</code> の一連の流れは <code>git pull</code>
 コマンドで行うことができる。</li>
 </ul>
-
-<h1 id="git-push">git push</h1>
-
+<h2 id="git-push"><a href="#git-push" aria-label="git push permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>git push</h2>
 <p>ここまで紹介した方法で、異なる場所にあるリポジトリを連携させることができるようになりました。
 しかし今まで紹介した、お互いのリポジトリーからコミットを読み込んでマージするという方法は</p>
-
 <ul>
-  <li>アリスのコンピュータの電源が落ちているなどの理由でアリスのリポジトリにアクセス出来ないと共同作業が出来ない。</li>
-  <li>チャーリーが作業に参加するとアリスは、ボブとチャーリのリポジトリそれぞれからコミットを
+<li>アリスのコンピュータの電源が落ちているなどの理由でアリスのリポジトリにアクセス出来ないと共同作業が出来ない。</li>
+<li>チャーリーが作業に参加するとアリスは、ボブとチャーリのリポジトリそれぞれからコミットを
 git pull しなければなりません。
 更に参加者が増えると読み込むリポジトリが参加人数に比例して増えてしまい破綻してしまいます。</li>
 </ul>
-
 <p>のような問題があり実際に日常の業務で使うのには現実的でありません。
 この問題を解決する git
-の運用方法は複数存在しますが、1つの単純な解決方法は共有のリポジトリを1つ用意して作業に参加する人が各自のローカルレポジドリに共有リポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有リポジトリに書き込むことです。
+の運用方法は複数存在しますが、1 つの単純な解決方法は共有のリポジトリを 1 つ用意して作業に参加する人が各自のローカルレポジドリに共有リポジトリからコミットを読み込み、ローカルレポジドリに作成したコミットを共有リポジトリに書き込むことです。
 これを実現するには今まで述べてきたリモートリポジトリからコミットを読み込む方法に加えて、リモートリポジトリに対して手元のコミットを書き込む方法も必要になります。
-このコミットをリモートリポジトリに書き込むための手段が <code class="highlighter-rouge">git push</code> です。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499" width="520" height="249" /></p>
-
-<h2 id="共有用のリポジトリを作る">共有用のリポジトリを作る</h2>
-
+このコミットをリモートリポジトリに書き込むための手段が <code>git push</code> です。</p>
+<img src="https://docs.google.com/drawings/d/1-_EHaRYe_WWE-Jhg8HBESQSG10DqeZOqaurQVKzec4U/pub?w=1040&amp;h=499" width="520" height="249">
+<h3 id="共有用のリポジトリを作る"><a href="#%E5%85%B1%E6%9C%89%E7%94%A8%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E4%BD%9C%E3%82%8B" aria-label="共有用のリポジトリを作る permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>共有用のリポジトリを作る</h3>
 <p>まず共有用のリポジトリを作成しましょう。各々のユーザがコミットの書き込み
-(<code class="highlighter-rouge">git push</code>) を行うリポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のリポジトリ（bare
+(<code>git push</code>) を行うリポジトリは <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">「裸」のリポジトリ（bare
 repository）</a>
-である必要があります。 bare repository は作業ディレクトリのない（<code class="highlighter-rouge">.git</code>
+である必要があります。 bare repository は作業ディレクトリのない（<code>.git</code>
 ディレクトリのみ存在する） git リポジトリです。 bare リポジトリは git
-init に <code class="highlighter-rouge">--bare</code> オプションをつけて実行することで作成できます。
-あるいは、 git clone で既存のリポジトリを複製する際に <code class="highlighter-rouge">--bare</code>
+init に <code>--bare</code> オプションをつけて実行することで作成できます。
+あるいは、 git clone で既存のリポジトリを複製する際に <code>--bare</code>
 オプションを付けることで 既存のリポジトリを bare
 リポジトリとして複製することも出来ます。 また bare
 リポジトリのディレクトリ名には <a href="http://git-scm.com/docs/gitglossary/2.0.0#def_bare_repository">.git
 を末尾につけるのが慣習です</a>。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir
 $ mkdir shared.git
 $ cd shared.git
 $ git init --bare
-Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">ls</code> で <code class="highlighter-rouge">shared.git</code> の中身を確認してみると、通常のリポジトリの <code class="highlighter-rouge">.git</code>
+Initialized empty Git repository in /private/tmp/my/workingdir/shared.git/</code></pre></div>
+<p><code>ls</code> で <code>shared.git</code> の中身を確認してみると、通常のリポジトリの <code>.git</code>
 ディレクトリの中身が保存されていることが分かります。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls
-HEAD        branches    config      description hooks       info        objects     refs
-</code></pre></div></div>
-
-<h2 id="git-push-でコミットを書き込む">git push でコミットを書き込む</h2>
-
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ ls
+HEAD        branches    config      description hooks       info        objects     refs</code></pre></div>
+<h3 id="git-push-でコミットを書き込む"><a href="#git-push-%E3%81%A7%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%82%92%E6%9B%B8%E3%81%8D%E8%BE%BC%E3%82%80" aria-label="git push でコミットを書き込む permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>git push でコミットを書き込む</h3>
 <p>次にアリスの立場に手元のコミットを共有リポジトリに書き出してみましょう。まずは共有リポジトリをリモートとして登録します。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
-$ git remote add shared /tmp/my/workingdir/shared.git
-</code></pre></div></div>
-
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir/alice
+$ git remote add shared /tmp/my/workingdir/shared.git</code></pre></div>
 <p>次に shared に対してコミットを書き込みます。コミットの書き込みには git
 push を利用します。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;
-</code></pre></div></div>
-
-<p>このコマンドを実行するとローカルリポジトリの &lt;src&gt;
-が指すコミットとその先祖のコミットを &lt;remote&gt; に対して書き込み、
-同時に &lt;remote&gt; の &lt;dst&gt; が &lt;src&gt;
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code></pre></div>
+<p>このコマンドを実行するとローカルリポジトリの &#x3C;src>
+が指すコミットとその先祖のコミットを &#x3C;remote> に対して書き込み、
+同時に &#x3C;remote> の &#x3C;dst> が &#x3C;src>
 と同じコミットを指すように変更します。</p>
-
 <ul>
-  <li>&lt;dst&gt; ブランチが存在しない場合は &lt;dst&gt; ブランチが &lt;remote&gt;
+<li>&#x3C;dst> ブランチが存在しない場合は &#x3C;dst> ブランチが &#x3C;remote>
 に作成されます。</li>
-  <li>&lt;dst&gt; ブランチがすでに存在する場合には &lt;dst&gt; を &lt;src&gt; まで
-<strong>fast-forward</strong> します。fast-forward できない場合 （&lt;dst&gt; が
-&lt;src&gt; の祖先でない場合）には git push は <strong>失敗</strong> します。</li>
+<li>&#x3C;dst> ブランチがすでに存在する場合には &#x3C;dst> を &#x3C;src> まで
+<strong>fast-forward</strong> します。fast-forward できない場合 （&#x3C;dst> が
+&#x3C;src> の祖先でない場合）には git push は <strong>失敗</strong> します。</li>
 </ul>
-
 <p>アリスのリポジトリから共有リポジトリに対して、master
 ブランチを書き込んでみましょう</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git push shared master:master
 ounting objects: 15, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (8/8), done.
 Writing objects: 100% (15/15), 1.32 KiB | 0 bytes/s, done.
 Total 15 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
- * [new branch]      master -&gt; master
-</code></pre></div></div>
-
+ * [new branch]      master -&gt; master</code></pre></div>
 <p>これでアリスの master
 ブランチ（の指すコミットとその全ての先祖コミット）が shared
 に対して書き込まれ、shared に master
 ブランチが作成されます。図にすると以下な状態になります。</p>
-
-<p><img src="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;h=1073" width="507" height="536" /></p>
-
+<img src="https://docs.google.com/drawings/d/13zVdgJQz_qeApchPVReQtFUbmaEleLuJci2j035OBZ8/pub?w=1015&amp;h=1073" width="507" height="536">
 <p>続いて新しいコミットを作ってそれも shared に push してみましょう。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Email: alice@example.com" &gt;&gt; alice.txt
-$ git commit -a -m "Added an email addr to alice.txt"
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ echo &quot;Email: alice@example.com&quot; &gt;&gt; alice.txt
+$ git commit -a -m &quot;Added an email addr to alice.txt&quot;
 [master c671712] Added an email addr to alice.txt
  1 file changed, 1 insertion(+)
 $ git push shared master:master
@@ -472,158 +368,75 @@ Compressing objects: 100% (2/2), done.
 Writing objects: 100% (3/3), 357 bytes | 0 bytes/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared.git
-   77c39e3..c671712  master -&gt; master
-</code></pre></div></div>
-
-<p><img src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069" width="667" height="534" /></p>
-
-<h2 id="push-fast-forward-に失敗した場合の対処法">push (fast-forward) に失敗した場合の対処法</h2>
-
+   77c39e3..c671712  master -&gt; master</code></pre></div>
+<img src="https://docs.google.com/drawings/d/1Qgia-UMx3KM3Ms1xbAfMyF53TQKLL8_E_EJya_k7zSM/pub?w=1335&amp;h=1069" width="667" height="534">
+<h3 id="push-fast-forward-に失敗した場合の対処法"><a href="#push-fast-forward-%E3%81%AB%E5%A4%B1%E6%95%97%E3%81%97%E3%81%9F%E5%A0%B4%E5%90%88%E3%81%AE%E5%AF%BE%E5%87%A6%E6%B3%95" aria-label="push fast forward に失敗した場合の対処法 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>push (fast-forward) に失敗した場合の対処法</h3>
 <p>次にボブの立場になって共有リポジトリに新しいコミットを push
-してみましょう。 まず共有リポジトリを <code class="highlighter-rouge">git remote add</code> で登録します</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/bo
-$ git remote add shared /tmp/my/workingdir/shared
-</code></pre></div></div>
-
+してみましょう。 まず共有リポジトリを <code>git remote add</code> で登録します</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir/bo
+$ git remote add shared /tmp/my/workingdir/shared</code></pre></div>
 <p>続いて新しいコミットを作成します。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "Email: bob@example.com" &gt;&gt; bob.txt
-$ git commit -a -m "Added an email addr to bob.txt"
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ echo &quot;Email: bob@example.com&quot; &gt;&gt; bob.txt
+$ git commit -a -m &quot;Added an email addr to bob.txt&quot;
 [master 99af642] Added an email addr to bob.txt
- 1 file changed, 1 insertion(+)
-</code></pre></div></div>
-
-<p>これを <code class="highlighter-rouge">git push</code> してみましょう。そうするとエラーが発生してしまいます。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
+ 1 file changed, 1 insertion(+)</code></pre></div>
+<p>これを <code>git push</code> してみましょう。そうするとエラーが発生してしまいます。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git push shared master:master
 To /tmp/my/workingdir/shared.git
  ! [rejected]        master -&gt; master (fetch first)
-error: failed to push some refs to '/tmp/my/workingdir/shared.git'
+error: failed to push some refs to &#39;/tmp/my/workingdir/shared.git&#39;
 hint: Updates were rejected because the remote contains work that you do
 hint: not have locally. This is usually caused by another repository pushing
 hint: to the same ref. You may want to first integrate the remote changes
-hint: (e.g., 'git pull ...') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-</code></pre></div></div>
-
-<p>前述したように <code class="highlighter-rouge">git push &lt;remote&gt; &lt;src&gt;:&lt;dst&gt;</code> は <code class="highlighter-rouge">&lt;remote&gt;</code> 上の
-<code class="highlighter-rouge">&lt;dst&gt;</code> (今回は <code class="highlighter-rouge">shared</code> 上の <code class="highlighter-rouge">master</code>) を <code class="highlighter-rouge">&lt;src&gt;</code> (今回は <code class="highlighter-rouge">bob</code> の
-<code class="highlighter-rouge">master</code>) が指しているコミットまで fast-forward します。 fast-forward
+hint: (e.g., &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.</code></pre></div>
+<p>前述したように <code>git push &#x3C;remote> &#x3C;src>:&#x3C;dst></code> は <code>&#x3C;remote></code> 上の
+<code>&#x3C;dst></code> (今回は <code>shared</code> 上の <code>master</code>) を <code>&#x3C;src></code> (今回は <code>bob</code> の
+<code>master</code>) が指しているコミットまで fast-forward します。 fast-forward
 出来ない場合は失敗してしまいます。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;h=878" width="671" height="439" /></p>
-
-<p>fast-forward を可能にして <code class="highlighter-rouge">push</code> を行うためには、ローカルの <code class="highlighter-rouge">master</code>
-ブランチを <code class="highlighter-rouge">shared</code> の <code class="highlighter-rouge">master</code> とマージしてあげる必要があります。
-前述したように <code class="highlighter-rouge">git pull</code> でマージしましょう (あるいは <code class="highlighter-rouge">git fetch</code> と
-<code class="highlighter-rouge">git merge</code> でもよい)。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull shared master
-Merge made by the 'recursive' strategy.
+<img src="https://docs.google.com/drawings/d/1fxsEiHFLN5plyCtJ87HZD-APhTTz8RI_2-iZdTS5NR0/pub?w=1342&amp;h=878" width="671" height="439">
+<p>fast-forward を可能にして <code>push</code> を行うためには、ローカルの <code>master</code>
+ブランチを <code>shared</code> の <code>master</code> とマージしてあげる必要があります。
+前述したように <code>git pull</code> でマージしましょう (あるいは <code>git fetch</code> と
+<code>git merge</code> でもよい)。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git pull shared master
+Merge made by the &#39;recursive&#39; strategy.
  alice.txt | 1 +
- 1 file changed, 1 insertion(+)
-</code></pre></div></div>
-
+ 1 file changed, 1 insertion(+)</code></pre></div>
 <p>bob のリポジトリは図のような状態になります。</p>
-
-<p><img src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;h=599" width="758" height="299" /></p>
-
-<p>これで <code class="highlighter-rouge">shared/master</code> が bob の <code class="highlighter-rouge">master</code> の先祖になったので、 <code class="highlighter-rouge">shared</code>
-の <code class="highlighter-rouge">master</code> を bob の <code class="highlighter-rouge">master</code> にfast-forwardできるようになりました。
+<img src="https://docs.google.com/drawings/d/1HQOPf9ZNngLfEUKtsN6W-CP2Dc1TK_lIqKqEZVdUMVQ/pub?w=1516&amp;h=599" width="758" height="299">
+<p>これで <code>shared/master</code> が bob の <code>master</code> の先祖になったので、 <code>shared</code>
+の <code>master</code> を bob の <code>master</code> に fast-forward できるようになりました。
 もう一度プッシュを行うと今度は成功するはずです。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push shared master:master
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git push shared master:master
 Counting objects: 8, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (4/4), done.
 Writing objects: 100% (5/5), 684 bytes | 0 bytes/s, done.
 Total 5 (delta 0), reused 0 (delta 0)
 To /tmp/my/workingdir/shared
-   c671712..14245e3  master -&gt; master
-</code></pre></div></div>
-
+   c671712..14245e3  master -&gt; master</code></pre></div>
 <p>リモートリポジトリを使って作業を行うのに最低限必要な知識は以上です。
-あとはトラッキングブランチ、アップストリーム、そしてgit pull/push の引数を省略した場合に何が起こるかについて理解していれば、
+あとはトラッキングブランチ、アップストリーム、そして git pull/push の引数を省略した場合に何が起こるかについて理解していれば、
 リモートレポジトリを使う上で困ることはあまり無いかと思います。
 それらについては</p>
-
 <ul>
-  <li><a href="relearning_git_pull_default.html">引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a></li>
-  <li><a href="relearning_git_push_default.html">引数がない場合の git push のデフォルトの挙動</a></li>
+<li><a href="relearning_git_pull_default.html">引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</a></li>
+<li><a href="relearning_git_push_default.html">引数がない場合の git push のデフォルトの挙動</a></li>
 </ul>
-
-<p>を参考にして下さい。</p>
-
-
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/relearning_git_remote.html"  data-numposts="5"></div>
-        <div style="text-align:center">
-          <a href="/docs">Home</a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li></li>
-          <li><a href="mailto:"></a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          
-
-          
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-
-    <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-  {lang: 'ja'}
-</script>
-<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-
-    
-  </body>
-
-</html>
+<p>を参考にして下さい。</p></div></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->5/1/2015</div></div></div></main></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-19477574-2', 'auto', {});
+      
+      
+      
+      }
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-relearning-git-remote-html-28e","path":"/docs/relearning_git_remote.html"};window.dataPath="942/path---docs-relearning-git-remote-html-28-e-aac-GMAivDQNLQe0S00MVaNk9pVPTA";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-a409082f05ae56f79255.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-77bdbd45d64174385941.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-a409082f05ae56f79255.js" async=""></script></body></html>
