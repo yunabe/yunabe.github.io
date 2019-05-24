@@ -1,215 +1,291 @@
-<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Pysh シェルスクリプトをPythonで書く | yunabe.jp</title><style type="text/css">
-    .anchor {
-      float: left;
-      padding-right: 4px;
-      margin-left: -20px;
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pysh シェルスクリプトをPythonで書く</title>
+  <meta name="description" content="">
+  <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/pysh_overview.html">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/pysh_overview.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
     }
-    h1 .anchor svg,
-    h2 .anchor svg,
-    h3 .anchor svg,
-    h4 .anchor svg,
-    h5 .anchor svg,
-    h6 .anchor svg {
-      visibility: hidden;
-    }
-    h1:hover .anchor svg,
-    h2:hover .anchor svg,
-    h3:hover .anchor svg,
-    h4:hover .anchor svg,
-    h5:hover .anchor svg,
-    h6:hover .anchor svg,
-    h1 .anchor:focus svg,
-    h2 .anchor:focus svg,
-    h3 .anchor:focus svg,
-    h4 .anchor:focus svg,
-    h5 .anchor:focus svg,
-    h6 .anchor:focus svg {
-      visibility: visible;
-    }
-  </style><script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var hash = window.decodeURI(location.hash.replace('#', ''))
-      if (hash !== '') {
-        var element = document.getElementById(hash)
-        if (element) {
-          var offset = element.offsetTop
-          // Wait for the browser to finish rendering before scrolling.
-          setTimeout((function() {
-            window.scrollTo(0, offset - 0)
-          }), 0)
-        }
-      }
-    })
-  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-a409082f05ae56f79255.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-77bdbd45d64174385941.js"/><link as="fetch" rel="preload" href="/static/d/52/path---docs-pysh-overview-html-435-27d-kMC8MCi138o9C7BNphLRHr563w.json" crossorigin="use-credentials"/><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-5305161629251914", enable_page_level_ads: true});</script></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Pysh シェルスクリプトをPythonで書く</h1><div><div><p>Pysh はシェルスクリプトをPythonで記述するためのプログラムです。 Pysh
+  </script>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-5305161629251914",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">Pysh シェルスクリプトをPythonで書く</h1>
+          <p class="post-meta"><time datetime="2014-07-25T00:00:00+09:00" itemprop="datePublished">更新 Jul 25, 2014</time></p>
+        </header>
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <p>Pysh はシェルスクリプトをPythonで記述するためのプログラムです。 Pysh
 を利用すると、コマンドの実行やリダイレクションやパイプといったシェルスクリプトの
 便利な機能を Python スクリプトの中で簡単に利用できるようになり、 Python
 をシェルスクリプトの代わりとしてより利用しやすくなります。 Python
 使いならばもはやシェルスクリプトを書く理由は何もありません(Windows以外)。</p>
-</div><p><b>目次</b></p><div><ul>
-<li><a href="/docs/pysh_overview.html/#%E7%89%B9%E5%BE%B4">特徴</a></li>
-<li>
-<p><a href="/docs/pysh_overview.html/#%E4%BD%BF%E3%81%84%E6%96%B9">使い方</a></p>
-<ul>
-<li><a href="/docs/pysh_overview.html/#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">インストール</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C">ファイルから実行</a></li>
-<li><a href="/docs/pysh_overview.html/#%E6%A8%99%E6%BA%96%E5%85%A5%E5%8A%9B%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C">標準入力から実行</a></li>
-<li><a href="/docs/pysh_overview.html/#%E5%BC%95%E6%95%B0%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C">引数から実行</a></li>
+
+<ul id="markdown-toc">
+  <li><a href="#特徴" id="markdown-toc-特徴">特徴</a></li>
+  <li><a href="#使い方" id="markdown-toc-使い方">使い方</a>    <ul>
+      <li><a href="#インストール" id="markdown-toc-インストール">インストール</a></li>
+      <li><a href="#ファイルから実行" id="markdown-toc-ファイルから実行">ファイルから実行</a></li>
+      <li><a href="#標準入力から実行" id="markdown-toc-標準入力から実行">標準入力から実行</a></li>
+      <li><a href="#引数から実行" id="markdown-toc-引数から実行">引数から実行</a></li>
+    </ul>
+  </li>
+  <li><a href="#機能" id="markdown-toc-機能">機能</a>    <ul>
+      <li><a href="#変数参照" id="markdown-toc-変数参照">変数参照</a></li>
+      <li><a href="#python式" id="markdown-toc-python式">Python式</a></li>
+      <li><a href="#パイプ" id="markdown-toc-パイプ">パイプ</a></li>
+      <li><a href="#リダイレクション" id="markdown-toc-リダイレクション">リダイレクション</a></li>
+      <li><a href="#--" id="markdown-toc---">&amp;&amp; || ;</a></li>
+      <li><a href="#文字列リテラル" id="markdown-toc-文字列リテラル">文字列リテラル</a></li>
+      <li><a href="#バッククオート" id="markdown-toc-バッククオート">バッククオート</a></li>
+      <li><a href="#コメント" id="markdown-toc-コメント">コメント</a></li>
+      <li><a href="#map-filter-reduce" id="markdown-toc-map-filter-reduce">map filter reduce</a></li>
+      <li><a href="#リターンコードの保存" id="markdown-toc-リターンコードの保存">リターンコードの保存</a></li>
+      <li><a href="#pythonへのリダイレクション" id="markdown-toc-pythonへのリダイレクション">Pythonへのリダイレクション</a></li>
+      <li><a href="#echo" id="markdown-toc-echo">echo</a></li>
+      <li><a href="#組み込みコマンド-をpythonで実装する" id="markdown-toc-組み込みコマンド-をpythonで実装する">組み込みコマンド をPythonで実装する</a></li>
+    </ul>
+  </li>
 </ul>
-</li>
-<li>
-<p><a href="/docs/pysh_overview.html/#%E6%A9%9F%E8%83%BD">機能</a></p>
-<ul>
-<li><a href="/docs/pysh_overview.html/#%E5%A4%89%E6%95%B0%E5%8F%82%E7%85%A7">変数参照</a></li>
-<li><a href="/docs/pysh_overview.html/#python%E5%BC%8F">Python式</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%91%E3%82%A4%E3%83%97">パイプ</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">リダイレクション</a></li>
-<li><a href="/docs/pysh_overview.html/#--">&#x26;&#x26; || ;</a></li>
-<li><a href="/docs/pysh_overview.html/#%E6%96%87%E5%AD%97%E5%88%97%E3%83%AA%E3%83%86%E3%83%A9%E3%83%AB">文字列リテラル</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%90%E3%83%83%E3%82%AF%E3%82%AF%E3%82%AA%E3%83%BC%E3%83%88">バッククオート</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%90%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A9%E3%83%83%E3%82%B7%E3%83%A5%E6%96%87%E5%AD%97%E3%81%AB%E3%82%88%E3%82%8B%E8%A1%8C%E7%B6%99%E7%B6%9A">バックスラッシュ文字による行継続</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88">コメント</a></li>
-<li><a href="/docs/pysh_overview.html/#map-filter-reduce">map filter reduce</a></li>
-<li><a href="/docs/pysh_overview.html/#%E3%83%AA%E3%82%BF%E3%83%BC%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E4%BF%9D%E5%AD%98">リターンコードの保存</a></li>
-<li><a href="/docs/pysh_overview.html/#python%E3%81%B8%E3%81%AE%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">Pythonへのリダイレクション</a></li>
-<li><a href="/docs/pysh_overview.html/#echo">echo</a></li>
-<li><a href="/docs/pysh_overview.html/#%E7%B5%84%E3%81%BF%E8%BE%BC%E3%81%BF%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89-%E3%82%92python%E3%81%A7%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B">組み込みコマンド をPythonで実装する</a></li>
-</ul>
-</li>
-</ul></div><div><h2 id="特徴"><a href="#%E7%89%B9%E5%BE%B4" aria-label="特徴 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>特徴</h2>
-<p>Pysh では Python スクリプトの中に含まれている <code>></code>
+
+<h1 id="特徴">特徴</h1>
+
+<p>Pysh では Python スクリプトの中に含まれている <code class="highlighter-rouge">&gt;</code>
 で始まる行をシェルコマンドとして実行します。 それ以外の部分は通常の
 Python スクリプトとして処理されます。 例えば次のスクリプトはfrom00.txt,
-from01.txt, ..., from99.txt を to00.txt...to99.txt に移動します。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">for i in xrange(100):
-  index = &quot;%02d&quot; % i
-  &gt; mv from$index.txt to$index.txt</code></pre></div>
+from01.txt, …, from99.txt を to00.txt…to99.txt に移動します。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i in xrange(100):
+  index = "%02d" % i
+  &gt; mv from$index.txt to$index.txt
+</code></pre></div></div>
+
 <p>Pysh は次のような特徴を持ちます</p>
+
 <ul>
-<li><code>></code> で始まる行をシェルコマンドとして実行できる。</li>
-<li>シェルコマンドの中から <strong>Pythonの変数</strong>
-がシェルスクリプトと同じように <code>$var</code> のように参照できる。</li>
-<li>パイプやリダイレクションも利用可能</li>
-<li>if,
+  <li><code class="highlighter-rouge">&gt;</code> で始まる行をシェルコマンドとして実行できる。</li>
+  <li>シェルコマンドの中から <strong>Pythonの変数</strong>
+がシェルスクリプトと同じように <code class="highlighter-rouge">$var</code> のように参照できる。</li>
+  <li>パイプやリダイレクションも利用可能</li>
+  <li>if,
 for文などはシェルコマンドの中では利用できない。プログラムの制御はPythonで行う。</li>
-<li>フィルタ系組み込み関数 map, filter, reduce
+  <li>フィルタ系組み込み関数 map, filter, reduce
 がコマンドとして利用できる。 grep, sed, awk
 を利用しなくても柔軟なフィルタリング・置換・変形が行える。</li>
-<li>組み込みコマンドを Python で書くことができる。</li>
-<li>Pythonで書かれたコマンドは入出力をPythonオブジェクトとして扱うことができる。</li>
-<li>またPythonオブジェクトのまま、出力を他のコマンドにパイプすることができる</li>
+  <li>組み込みコマンドを Python で書くことができる。</li>
+  <li>Pythonで書かれたコマンドは入出力をPythonオブジェクトとして扱うことができる。</li>
+  <li>またPythonオブジェクトのまま、出力を他のコマンドにパイプすることができる</li>
 </ul>
-<h2 id="使い方"><a href="#%E4%BD%BF%E3%81%84%E6%96%B9" aria-label="使い方 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使い方</h2>
-<h3 id="インストール"><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB" aria-label="インストール permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>インストール</h3>
+
+<h1 id="使い方">使い方</h1>
+
+<h2 id="インストール">インストール</h2>
+
 <p><a href="https://github.com/yunabe/pysh">GitHubからソースコード</a>
 をチェックアウトします。 Pysh は Python で実装されているので Python
 がインストールされている環境ならば
 簡単に実行できます。ただしWindowsはサポート外です。 pysh
 はスクリプトファイルをファイル・標準入力・引数のいずれかで与えて実行することができます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git checkout https://github.com/yunabe/pysh.git
-./pysh/bin/pysh&lt;/pre&gt;</code></pre></div>
-<h3 id="ファイルから実行"><a href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C" aria-label="ファイルから実行 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ファイルから実行</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout https://github.com/yunabe/pysh.git
+./pysh/bin/pysh&lt;/pre&gt;
+</code></pre></div></div>
+
+<h2 id="ファイルから実行">ファイルから実行</h2>
+
 <p>python
 コマンドと同様に、pyshの引数としてファイルを与えるとファイルをpyshスクリプトとして
 解釈し実行します。 pysh コマンドは与えられたファイルを通常の Python
 スクリプトに変換し Python として実行を行います。
 そのため実行後、スクリプト名と同名の拡張子が .py のファイルが残ります。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">pysh script.pysh</code></pre></div>
-<h3 id="標準入力から実行"><a href="#%E6%A8%99%E6%BA%96%E5%85%A5%E5%8A%9B%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C" aria-label="標準入力から実行 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>標準入力から実行</h3>
-<p>python コマンドと同様に、pyshの引数として <code>-</code> を与えると
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh script.pysh
+</code></pre></div></div>
+
+<h2 id="標準入力から実行">標準入力から実行</h2>
+
+<p>python コマンドと同様に、pyshの引数として <code class="highlighter-rouge">-</code> を与えると
 標準入力からpyshスクリプトを読み込み実行します。
 この機能はpyshをワンライナーの代わりに利用する際に重宝します。
 複雑で読みづらいワンライナーを書くぐらいなら Python
 で構造化されたプログラムを書きましょう。
 構造化されたスクリプトはワンライナーよりも遥かに読みやすく、将来再利用することができます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">pysh - &lt;&lt; &#39;EOF&#39;
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh - &lt;&lt; 'EOF'
 for i in xrange(3):
-  index = &quot;%02d&quot; % i
+  index = "%02d" % i
   &gt; echo $index
-EOF</code></pre></div>
-<h3 id="引数から実行"><a href="#%E5%BC%95%E6%95%B0%E3%81%8B%E3%82%89%E5%AE%9F%E8%A1%8C" aria-label="引数から実行 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>引数から実行</h3>
-<p>python コマンドと同様に、pyshの引数として <code>-c cmd</code> を与えると <code>cmd</code>
+EOF
+</code></pre></div></div>
+
+<h2 id="引数から実行">引数から実行</h2>
+
+<p>python コマンドと同様に、pyshの引数として <code class="highlighter-rouge">-c cmd</code> を与えると <code class="highlighter-rouge">cmd</code>
 をスクリプトとして解釈、実行します。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">pysh -c &quot;`cat &lt;&lt; &#39;EOF&#39;
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pysh -c "`cat &lt;&lt; 'EOF'
 for i in xrange(3):
-  index = &quot;%02d&quot; % i
+  index = "%02d" % i
   &gt; echo $index
-EOF`&quot;&lt;/pre&gt;</code></pre></div>
-<h2 id="機能"><a href="#%E6%A9%9F%E8%83%BD" aria-label="機能 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>機能</h2>
-<h3 id="変数参照"><a href="#%E5%A4%89%E6%95%B0%E5%8F%82%E7%85%A7" aria-label="変数参照 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>変数参照</h3>
-<p><code>$var</code> でPythonの変数をシェルコマンドの中から参照することができます。
-環境変数も <code>$PATH</code> のように Python の変数と同じように参照できます。
-また他のシェルと同様に <code>""</code>
-で囲まれた文字列中の変数は自動的に展開されます。 <code>''</code>
+EOF`"&lt;/pre&gt;
+</code></pre></div></div>
+
+<h1 id="機能">機能</h1>
+
+<h2 id="変数参照">変数参照</h2>
+
+<p><code class="highlighter-rouge">$var</code> でPythonの変数をシェルコマンドの中から参照することができます。
+環境変数も <code class="highlighter-rouge">$PATH</code> のように Python の変数と同じように参照できます。
+また他のシェルと同様に <code class="highlighter-rouge">""</code>
+で囲まれた文字列中の変数は自動的に展開されます。 <code class="highlighter-rouge">''</code>
 で囲まれた文字列中の変数は展開されません。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">x = 3
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = 3
 y = x * x
 &gt; echo $y     # 9
-&gt; echo $PATH  # os.environment[&#39;PATH&#39;]
-&gt; echo &quot;$x * $x = $y&quot;  # 3 * 3 = 9
-&gt; echo &#39;$x * $x = $y&#39;  # $x * $x = $y</code></pre></div>
-<h3 id="python式"><a href="#python%E5%BC%8F" aria-label="python式 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Python式</h3>
+&gt; echo $PATH  # os.environment['PATH']
+&gt; echo "$x * $x = $y"  # 3 * 3 = 9
+&gt; echo '$x * $x = $y'  # $x * $x = $y
+</code></pre></div></div>
+
+<h2 id="python式">Python式</h2>
+
 <p>Pyshでは変数だけでなく任意の Python
 式をシェルコマンドの中で利用することができます。
-シェルコマンドの中でPython式を書くには&#x3C;code>${expr}&#x3C;/code>のように書きます。
-変数参照と同様に、 <code>""</code> 文字列中のPython式は評価されますが <code>''</code>
+シェルコマンドの中でPython式を書くには&lt;code&gt;${expr}&lt;/code&gt;のように書きます。
+変数参照と同様に、 <code class="highlighter-rouge">""</code> 文字列中のPython式は評価されますが <code class="highlighter-rouge">''</code>
 文字列中のPython式は評価されません。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo ${3 + 4}  # 7
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo ${3 + 4}  # 7
 def f(x):
   return x * x
 &gt; echo ${f(10)}  # 100
-&gt; echo ${lambda x: x}</code></pre></div>
-<h3 id="パイプ"><a href="#%E3%83%91%E3%82%A4%E3%83%97" aria-label="パイプ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>パイプ</h3>
-<p>Pysh ではその他のシェルと同じようにコマンドの入出力をパイプ <code>|</code>
+&gt; echo ${lambda x: x}
+</code></pre></div></div>
+
+<h2 id="パイプ">パイプ</h2>
+
+<p>Pysh ではその他のシェルと同じようにコマンドの入出力をパイプ <code class="highlighter-rouge">|</code>
 でつなぐことができます</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo &quot;foo\nbar&quot; | tac</code></pre></div>
-<h3 id="リダイレクション"><a href="#%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" aria-label="リダイレクション permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リダイレクション</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo "foo\nbar" | tac
+</code></pre></div></div>
+
+<h2 id="リダイレクション">リダイレクション</h2>
+
 <p>Pysh
 ではリダイレクションを使ってコマンドの出力結果をファイルに出力することができます。
-また、<code>&#x26;>1</code>
+また、<code class="highlighter-rouge">&amp;&gt;1</code>
 のようにして標準エラーの出力先を標準出力と同じにすることなどもできます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo &quot;Hello world&quot; &gt; /dev/null
-&gt; echo &quot;Hello world&quot; &gt;&gt; /dev/null
-&gt; echo &quot;Hello world&quot; 2&gt;&amp;1</code></pre></div>
-<h3 id="--"><a href="#--" aria-label="   permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>&#x26;&#x26; || ;</h3>
-<p>Pyshでは他のシェルと同様に <code>;</code> で複数のコマンドを順番に実行したり、 <code>&#x26;&#x26;</code>
-で論理積(前者のコマンドが成功したら後者のコマンドを実行)や、 <code>||</code>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo "Hello world" &gt; /dev/null
+&gt; echo "Hello world" &gt;&gt; /dev/null
+&gt; echo "Hello world" 2&gt;&amp;1
+</code></pre></div></div>
+
+<h2 id="--">&amp;&amp; || ;</h2>
+
+<p>Pyshでは他のシェルと同様に <code class="highlighter-rouge">;</code> で複数のコマンドを順番に実行したり、 <code class="highlighter-rouge">&amp;&amp;</code>
+で論理積(前者のコマンドが成功したら後者のコマンドを実行)や、 <code class="highlighter-rouge">||</code>
 で論理和(前者のコマンドが失敗したら後者のコマンドを実行)を使うことができます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo foo; echo bar
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo; echo bar
 &gt; echo foo &amp;&amp; echo bar
-&gt; echo foo || echo bar</code></pre></div>
-<h3 id="文字列リテラル"><a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%83%AA%E3%83%86%E3%83%A9%E3%83%AB" aria-label="文字列リテラル permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>文字列リテラル</h3>
+&gt; echo foo || echo bar
+</code></pre></div></div>
+
+<h2 id="文字列リテラル">文字列リテラル</h2>
+
 <p>Pysh ではシェルコマンド中の文字列リテラルの形式は Python
-のそれと同じです。 <code>\n</code>
+のそれと同じです。 <code class="highlighter-rouge">\n</code>
 などのエスケープ文字もPythonと全く同じ物が利用できます。 Python
 に慣れていれば、シェル特有の文字列リテラルのルールを覚える必要はありません。
-Pythonと同様に3つの <code>"</code> か <code>'</code>
+Pythonと同様に3つの <code class="highlighter-rouge">"</code> か <code class="highlighter-rouge">'</code>
 で囲まれた範囲はヒアドキュメントとなります。
-一方Pyshではその他のシェルと同様に、"で囲まれた文字列中の変数および式($var,
+一方Pyshではその他のシェルと同様に、”で囲まれた文字列中の変数および式($var,
 ${expr})は 自動的に展開されます。</p>
-<h3 id="バッククオート"><a href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%AF%E3%82%AA%E3%83%BC%E3%83%88" aria-label="バッククオート permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>バッククオート</h3>
+
+<h2 id="バッククオート">バッククオート</h2>
+
 <p>他のシェルと同じように、`` で囲まれたコマンドのパラメータに指定することで、 コマンドの実行結果を他のコマンドのパラメータとして利用することが可能です。</p>
-<h3 id="バックスラッシュ文字による行継続"><a href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A9%E3%83%83%E3%82%B7%E3%83%A5%E6%96%87%E5%AD%97%E3%81%AB%E3%82%88%E3%82%8B%E8%A1%8C%E7%B6%99%E7%B6%9A" aria-label="バックスラッシュ文字による行継続 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>バックスラッシュ文字による行継続</h3>
-<p>Python や他のシェルと同じように、行の末尾にバックスラッシュ文字<code>\</code>
+
+<p>##バックスラッシュ文字による行継続</p>
+
+<p>Python や他のシェルと同じように、行の末尾にバックスラッシュ文字<code class="highlighter-rouge">\</code>
 をつけると 改行が無視され次の行もつなげて１つの行として評価されます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo foo\
-    bar</code></pre></div>
-<h3 id="コメント"><a href="#%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88" aria-label="コメント permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>コメント</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo\
+    bar
+</code></pre></div></div>
+
+<h2 id="コメント">コメント</h2>
+
 <p>Python と同様に Pysh では# より後ろの文字はコメントとして扱われます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">echo &#39;Hello world&#39; # This is a comment</code></pre></div>
-<h3 id="map-filter-reduce"><a href="#map-filter-reduce" aria-label="map filter reduce permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>map filter reduce</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'Hello world' # This is a comment
+</code></pre></div></div>
+
+<h2 id="map-filter-reduce">map filter reduce</h2>
+
 <p>ここからは他のシェルにはない pysh 独特の機能を紹介して行きましょう。
 Pysh ではPythonのフィルタ系組み込み関数 map, filter, reduce
 に相当するコマンドが用意されています。</p>
+
 <ul>
-<li>map
+  <li>map
 は標準入力の各行に対して引数で指定された関数を適用し結果を標準出力に出力します。</li>
-<li>filter
+  <li>filter
 は標準入力の各行に対して引数で指定された関数を適用し、関数が真を返した行のみを出力します。</li>
-<li>reduce
+  <li>reduce
 は標準入力の各行を、引数で指定された関数を使って1つの値に累積的にまとめます。</li>
 </ul>
+
 <!-- -->
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; seq 10 | map ${lambda s: int(s) * int(s)}
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; seq 10 | map ${lambda s: int(s) * int(s)}
 1
 4
 9
@@ -219,64 +295,139 @@ Pysh ではPythonのフィルタ系組み込み関数 map, filter, reduce
 6
 9
 &gt; seq 10 | reduce ${lambda x, y: int(x) + int(y)}
-55</code></pre></div>
+55
+</code></pre></div></div>
+
 <p>map, filter, reduce をPythonの関数と組み合わせて利用することで grep,
 sed, awk
 などを使わなくてもフィルタリング・置換・変形を柔軟に実装できます。
 Python にある程度慣れていればいちいち sed や awk
 の使い方を思い出すよりも効率的に 置換/変形処理が実装できます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text"># The lambda expr of reduce does not need to str() to convert input.
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># The lambda expr of reduce does not need to str() to convert input.
 &gt; seq 10 | map ${lambda s: int(s) * 2} | reduce ${lambda x, y: x + y}
-110</code></pre></div>
-<h3 id="リターンコードの保存"><a href="#%E3%83%AA%E3%82%BF%E3%83%BC%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E4%BF%9D%E5%AD%98" aria-label="リターンコードの保存 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>リターンコードの保存</h3>
-<p>pysh ではコマンドに <code>-></code> をつけるとそのコマンドのリターンコードが <code>-></code>
+110
+</code></pre></div></div>
+
+<h2 id="リターンコードの保存">リターンコードの保存</h2>
+
+<p>pysh ではコマンドに <code class="highlighter-rouge">-&gt;</code> をつけるとそのコマンドのリターンコードが <code class="highlighter-rouge">-&gt;</code>
 の後ろに指定された変数に保存されます。 他のシェルではリターンコードは
-<code>$?</code> に保存されてしまうため、
+<code class="highlighter-rouge">$?</code> に保存されてしまうため、
 パイプされているコマンドのそれぞれのリターンコードを参照することは困難ですが、
-pysh ではパイプされているコマンドそれぞれに <code>-></code>
+pysh ではパイプされているコマンドそれぞれに <code class="highlighter-rouge">-&gt;</code>
 をつけることができるので、
-簡単にそれぞれのコマンドのリターンコードを参照できます。 <code>&#x26;&#x26;</code> や <code>||</code>
-と共に利用され、<code>-></code>
+簡単にそれぞれのコマンドのリターンコードを参照できます。 <code class="highlighter-rouge">&amp;&amp;</code> や <code class="highlighter-rouge">||</code>
+と共に利用され、<code class="highlighter-rouge">-&gt;</code>
 が指定されたコマンドの実行が行われなかった場合には、Noneが保存されます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; (python -c &#39;import sys;sys.exit(2)&#39; -&gt; rc0\
-    || python -c &#39;import sys;sys;exit(0)&#39; -&gt; rc1)
-&gt; print rc0, rc1  # 512 0</code></pre></div>
-<h3 id="pythonへのリダイレクション"><a href="#python%E3%81%B8%E3%81%AE%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" aria-label="pythonへのリダイレクション permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pythonへのリダイレクション</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; (python -c 'import sys;sys.exit(2)' -&gt; rc0\
+    || python -c 'import sys;sys;exit(0)' -&gt; rc1)
+&gt; print rc0, rc1  # 512 0
+</code></pre></div></div>
+
+<h2 id="pythonへのリダイレクション">Pythonへのリダイレクション</h2>
+
 <p>pysh ではコマンドの出力をファイルだけではなく Python
 の変数に対してリダイレクトすることが可能です。 Python
-変数に対してリダイレクトするには <code>=></code> を使います。
+変数に対してリダイレクトするには <code class="highlighter-rouge">=&gt;</code> を使います。
 コマンドの出力が各行が各要素として格納されたリストに変換され、Pythonの変数として保存されます。
-<code>-></code> と同様にコマンドが実行されなかった場合には <code>None</code> が保存されます。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; seq 5 | grep -v 3 =&gt; out
-print out  # [&#39;1&#39;, &#39;2&#39;, &#39;4&#39;, &#39;5&#39;]
+<code class="highlighter-rouge">-&gt;</code> と同様にコマンドが実行されなかった場合には <code class="highlighter-rouge">None</code> が保存されます。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; seq 5 | grep -v 3 =&gt; out
+print out  # ['1', '2', '4', '5']
 &gt; send ${xrange(5)} | filter ${lambda i: i != 3} =&gt; out
-print out  # [0, 1, 2, 4]</code></pre></div>
-<h3 id="echo"><a href="#echo" aria-label="echo permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>echo</h3>
-<p><code>=></code> とは逆に Pytnon 上のデータをシェルコマンドで利用するには <code>echo</code>
-コマンドを利用します。 pysh の <code>echo</code>
+print out  # [0, 1, 2, 4]
+</code></pre></div></div>
+
+<h2 id="echo">echo</h2>
+
+<p><code class="highlighter-rouge">=&gt;</code> とは逆に Pytnon 上のデータをシェルコマンドで利用するには <code class="highlighter-rouge">echo</code>
+コマンドを利用します。 pysh の <code class="highlighter-rouge">echo</code>
 コマンドはその他のシェルと同様に引数をスペースで区切った文字列を出力しますが、
 引数にリストやタプルなどの文字列以外の iterable
 なオブジェクトが渡された場合には、リスト・タプルの各要素を一行づつ分けて出力します。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&gt; echo foo bar  # foo bar
-data = [&#39;foo&#39;, &#39;bar&#39;]
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; echo foo bar  # foo bar
+data = ['foo', 'bar']
 &gt; echo $data  # foo
               # bar
 &gt; echo $data | sort # bar
-                    # foo</code></pre></div>
-<h3 id="組み込みコマンド-をpythonで実装する"><a href="#%E7%B5%84%E3%81%BF%E8%BE%BC%E3%81%BF%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89-%E3%82%92python%E3%81%A7%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B" aria-label="組み込みコマンド をpythonで実装する permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>組み込みコマンド をPythonで実装する</h3>
-<p>(to be continued....)</p></div></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->7/25/2014</div></div></div></main></div></div></div><script>
-  
-  
-  if(true) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  }
-  if (typeof ga === "function") {
-    ga('create', 'UA-19477574-2', 'auto', {});
-      
-      
-      
-      }
-      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-pysh-overview-html-435","path":"/docs/pysh_overview.html"};window.dataPath="52/path---docs-pysh-overview-html-435-27d-kMC8MCi138o9C7BNphLRHr563w";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-a409082f05ae56f79255.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-77bdbd45d64174385941.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-a409082f05ae56f79255.js" async=""></script></body></html>
+                    # foo
+</code></pre></div></div>
+
+<h2 id="組み込みコマンド-をpythonで実装する">組み込みコマンド をPythonで実装する</h2>
+
+<p>(to be continued….)</p>
+
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/pysh_overview.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+    
+  </body>
+
+</html>

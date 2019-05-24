@@ -1,525 +1,699 @@
-<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Google 流 JavaScript におけるクラス定義の実現方法 | yunabe.jp</title><style type="text/css">
-    .anchor {
-      float: left;
-      padding-right: 4px;
-      margin-left: -20px;
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Google流 JavaScript におけるクラス定義の実現方法</title>
+  <meta name="description" content="">
+  <meta property="fb:admins" content="yunabe">
+  <meta property="fb:app_id" content="234187763701556">
+  <meta property="og:url" href="http://www.yunabe.jp/docs/javascript_class_in_google.html">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.yunabe.jp/docs/javascript_class_in_google.html">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
+  <script>
+    if(location.host=='www.yunabe.jp'){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-19477574-2', 'yunabe.jp');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
     }
-    h1 .anchor svg,
-    h2 .anchor svg,
-    h3 .anchor svg,
-    h4 .anchor svg,
-    h5 .anchor svg,
-    h6 .anchor svg {
-      visibility: hidden;
-    }
-    h1:hover .anchor svg,
-    h2:hover .anchor svg,
-    h3:hover .anchor svg,
-    h4:hover .anchor svg,
-    h5:hover .anchor svg,
-    h6:hover .anchor svg,
-    h1 .anchor:focus svg,
-    h2 .anchor:focus svg,
-    h3 .anchor:focus svg,
-    h4 .anchor:focus svg,
-    h5 .anchor:focus svg,
-    h6 .anchor:focus svg {
-      visibility: visible;
-    }
-  </style><script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var hash = window.decodeURI(location.hash.replace('#', ''))
-      if (hash !== '') {
-        var element = document.getElementById(hash)
-        if (element) {
-          var offset = element.offsetTop
-          // Wait for the browser to finish rendering before scrolling.
-          setTimeout((function() {
-            window.scrollTo(0, offset - 0)
-          }), 0)
-        }
-      }
-    })
-  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-a409082f05ae56f79255.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-77bdbd45d64174385941.js"/><link as="fetch" rel="preload" href="/static/d/969/path---docs-javascript-class-in-google-html-831-eb7-icfCVVHGvyEaNk64S0bSftus8.json" crossorigin="use-credentials"/><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-5305161629251914", enable_page_level_ads: true});</script></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Google 流 JavaScript におけるクラス定義の実現方法</h1><div><div><p>他のメジャーなオブジェクト指向プログラミング言語と異なり JavaScript には「クラス」が存在しません。
-代わりに C++, Java などにはない <code>prototype</code> や C++, Java のとは全く異なる <code>new</code> 演算子や <code>this</code> が用意されています。
+  </script>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-5305161629251914",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">Google流 JavaScript におけるクラス定義の実現方法</h1>
+          <p class="post-meta"><time datetime="2016-03-08T00:00:00+09:00" itemprop="datePublished">更新 Mar 8, 2016</time></p>
+        </header>
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <p>他のメジャーなオブジェクト指向プログラミング言語と異なりJavaScriptには「クラス」が存在しません。
+代わりに C++, Java などにはない <code class="highlighter-rouge">prototype</code> や C++, Java のとは全く異なる <code class="highlighter-rouge">new</code> 演算子や <code class="highlighter-rouge">this</code> が用意されています。
 これらの機能は一見するとどれもかなり奇妙な仕様をしています。
-そのため、それぞれの機能の仕様を 1 つ 1 つ勉強しても一体全体何のためにそんな機能が用意されていて、
+そのため、それぞれの機能の仕様を1つ1つ勉強しても一体全体何のためにそんな機能が用意されていて、
 どのようにその機能を活用してプログラムを作ればよいのか全く理解できないと思います。</p>
+
 <p>そのため C++, Java, Python
 などの「まともな」オブジェクト指向プログラミング言語の経験のあるプログラマが
 JavaScript で大規模なプログラミングを書こうとすると
 クラスがないのにプログラムをどうやってモジュール化したらよいのか分からないし、
-代わりにある <code>this</code> とか <code>prototype</code>
+代わりにある <code class="highlighter-rouge">this</code> とか <code class="highlighter-rouge">prototype</code>
 とかは何に使えばよいか分からないしで途方に暮れてしまうと思います。</p>
-<p>しかし JavaScript には「クラス」という言語仕様は用意されていないものの、<code>this</code>,
-<code>prototype</code> などを一定のルールに基づいて利用すれば
+
+<p>しかし JavaScriptには「クラス」という言語仕様は用意されていないものの、<code class="highlighter-rouge">this</code>,
+<code class="highlighter-rouge">prototype</code> などを一定のルールに基づいて利用すれば
 他の言語のクラスほぼ同等のことは実現可能です。
 つまり他のクラスで行うようなクラスを使ったカプセル化、ポリモーフィズム、継承などを
 JavaScript でも実現することができます。 このドキュメントでは Google
 が公開している JavaScript のオープンソースライブラリ <a href="https://developers.google.com/closure/library/">Google Closure
 Library</a>
 を参考にしてどのように JavaScript でクラスを実現すればよいかを学びます。</p>
-</div><p><b>目次</b></p><div><ul>
-<li>
-<p><a href="/docs/javascript_class_in_google.html/#%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9F%E7%8F%BE%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA-javascript-%E3%81%AE%E8%A8%80%E8%AA%9E%E4%BB%95%E6%A7%98">クラス実現のために必要な JavaScript の言語仕様</a></p>
-<ul>
-<li><a href="/docs/javascript_class_in_google.html/#function">function</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#this">this</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#call">call</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#new-%E6%BC%94%E7%AE%97%E5%AD%90">new 演算子</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#prototype-%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3">prototype チェーン</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E3%83%97%E3%83%AD%E3%83%91%E3%83%86%E3%82%A3-prototype">プロパティ: prototype</a></li>
+
+<ul id="markdown-toc">
+  <li><a href="#クラス実現のために必要な-javascript-の言語仕様" id="markdown-toc-クラス実現のために必要な-javascript-の言語仕様">クラス実現のために必要な JavaScript の言語仕様</a>    <ul>
+      <li><a href="#function" id="markdown-toc-function">function</a></li>
+      <li><a href="#this" id="markdown-toc-this">this</a></li>
+      <li><a href="#call" id="markdown-toc-call">call</a></li>
+      <li><a href="#new-演算子" id="markdown-toc-new-演算子">new 演算子</a></li>
+      <li><a href="#prototype-チェーン" id="markdown-toc-prototype-チェーン">prototype チェーン</a></li>
+      <li><a href="#プロパティ-prototype" id="markdown-toc-プロパティ-prototype">プロパティ: prototype</a></li>
+    </ul>
+  </li>
+  <li><a href="#google-closure-流のクラスの実現方法の概要" id="markdown-toc-google-closure-流のクラスの実現方法の概要">Google Closure 流のクラスの実現方法の概要</a></li>
+  <li><a href="#クラスの宣言とコンストラクタの定義" id="markdown-toc-クラスの宣言とコンストラクタの定義">クラスの宣言とコンストラクタの定義</a></li>
+  <li><a href="#メンバ変数-インスタンス変数" id="markdown-toc-メンバ変数-インスタンス変数">メンバ変数 (インスタンス変数)</a></li>
+  <li><a href="#メソッド定義と呼び出し" id="markdown-toc-メソッド定義と呼び出し">メソッド定義と呼び出し</a>    <ul>
+      <li><a href="#private-protected" id="markdown-toc-private-protected">private, protected</a></li>
+    </ul>
+  </li>
+  <li><a href="#継承" id="markdown-toc-継承">継承</a>    <ul>
+      <li><a href="#プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ" id="markdown-toc-プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
+      <li><a href="#親クラスのコンストラクタの呼び出し" id="markdown-toc-親クラスのコンストラクタの呼び出し">親クラスのコンストラクタの呼び出し</a></li>
+      <li><a href="#メソッドオーバーライドと親クラスのメソッドの呼び出し" id="markdown-toc-メソッドオーバーライドと親クラスのメソッドの呼び出し">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
+      <li><a href="#多重継承" id="markdown-toc-多重継承">多重継承</a></li>
+      <li><a href="#abstract-interface" id="markdown-toc-abstract-interface">abstract, interface</a></li>
+    </ul>
+  </li>
+  <li><a href="#inherits-の実際のコード" id="markdown-toc-inherits-の実際のコード">inherits の実際のコード</a></li>
+  <li><a href="#良くないクラス実現方法" id="markdown-toc-良くないクラス実現方法">良くないクラス実現方法</a>    <ul>
+      <li><a href="#prototype--" id="markdown-toc-prototype--">prototype = {}</a></li>
+    </ul>
+  </li>
+  <li><a href="#es6-のクラス" id="markdown-toc-es6-のクラス">ES6 のクラス</a></li>
 </ul>
-</li>
-<li><a href="/docs/javascript_class_in_google.html/#google-closure-%E6%B5%81%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E5%AE%9F%E7%8F%BE%E6%96%B9%E6%B3%95%E3%81%AE%E6%A6%82%E8%A6%81">Google Closure 流のクラスの実現方法の概要</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E5%AE%A3%E8%A8%80%E3%81%A8%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF%E3%81%AE%E5%AE%9A%E7%BE%A9">クラスの宣言とコンストラクタの定義</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E3%83%A1%E3%83%B3%E3%83%90%E5%A4%89%E6%95%B0-%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E5%A4%89%E6%95%B0">メンバ変数 (インスタンス変数)</a></li>
-<li>
-<p><a href="/docs/javascript_class_in_google.html/#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E5%AE%9A%E7%BE%A9%E3%81%A8%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97">メソッド定義と呼び出し</a></p>
-<ul>
-<li><a href="/docs/javascript_class_in_google.html/#private-protected">private, protected</a></li>
-</ul>
-</li>
-<li>
-<p><a href="/docs/javascript_class_in_google.html/#%E7%B6%99%E6%89%BF">継承</a></p>
-<ul>
-<li><a href="/docs/javascript_class_in_google.html/#%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%A6%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%8B%E3%82%89%E5%BC%95%E3%81%8D%E7%B6%99%E3%81%90">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97">親クラスのコンストラクタの呼び出し</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%A8%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97">メソッドオーバーライドと親クラスのメソッドの呼び出し</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E5%A4%9A%E9%87%8D%E7%B6%99%E6%89%BF">多重継承</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#abstract-interface">abstract, interface</a></li>
-</ul>
-</li>
-<li><a href="/docs/javascript_class_in_google.html/#inherits-%E3%81%AE%E5%AE%9F%E9%9A%9B%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89">inherits の実際のコード</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#%E8%89%AF%E3%81%8F%E3%81%AA%E3%81%84%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9F%E7%8F%BE%E6%96%B9%E6%B3%95">良くないクラス実現方法</a></li>
-<li><a href="/docs/javascript_class_in_google.html/#es6-%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9">ES6 のクラス</a></li>
-</ul></div><div><h2 id="クラス実現のために必要な-javascript-の言語仕様"><a href="#%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9F%E7%8F%BE%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA-javascript-%E3%81%AE%E8%A8%80%E8%AA%9E%E4%BB%95%E6%A7%98" aria-label="クラス実現のために必要な javascript の言語仕様 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>クラス実現のために必要な JavaScript の言語仕様</h2>
-<p>JavaScript でのクラスの実現方法を理解するためには <code>this</code>, <code>new</code>,
-<code>prototype</code>
-などの JavaScript の特殊な言語仕様を理解している必要があります。
+
+<h1 id="クラス実現のために必要な-javascript-の言語仕様">クラス実現のために必要な JavaScript の言語仕様</h1>
+
+<p>JavaScript でのクラスの実現方法を理解するためには <code class="highlighter-rouge">this</code>, <code class="highlighter-rouge">new</code>,
+<code class="highlighter-rouge">prototype</code>
+などのJavaScriptの特殊な言語仕様を理解している必要があります。
 まずはそうした JavaScript の言語仕様から復習しておきます。</p>
-<h3 id="function"><a href="#function" aria-label="function permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>function</h3>
-<p>JavaScript では <code>function</code> で関数を定義します。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">sum</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+
+<h2 id="function">function</h2>
+
+<p>JavaScript では <code class="highlighter-rouge">function</code> で関数を定義します。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
 <p>JavaScript
 における関数の定義方法を知らない場合はクラスの実現方法を学ぶ前に、まず
 JavaScript の入門書や
 <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Functions_and_function_scope">関数と関数スコープ</a>
 などを読んだほうがよいかと思います。ここでは詳細は省略します。</p>
-<h3 id="this"><a href="#this" aria-label="this permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>this</h3>
-<p>JavaScript では <code>this</code> という特殊な変数が関数の中で利用可能です。
-JavaScript の this は <strong>Java, C++ の this とは全く挙動が異なる</strong>
-ので注意してください。 JavaScript の <code>this</code>
-はある関数が呼び出された際にその関数を格納していた <code>object</code> を指します。
-例えば</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">sayHelloShared</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello, I'm "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>という関数があり、それが alice, bob というオブジェクトの <code>sayHello</code>
-として登録されていたとします。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token punctuation">{</span>
-  sayHello<span class="token punctuation">:</span> sayHelloShared<span class="token punctuation">,</span>
-  name<span class="token punctuation">:</span> <span class="token string">"Alice"</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> bob <span class="token operator">=</span> <span class="token punctuation">{</span>
-  sayHello<span class="token punctuation">:</span> sayHelloShared<span class="token punctuation">,</span>
-  name<span class="token punctuation">:</span> <span class="token string">"Bob"</span><span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> alice
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+<h2 id="this">this</h2>
+
+<p>JavaScript では <code class="highlighter-rouge">this</code> という特殊な変数が関数の中で利用可能です。
+JavaScript の this は <strong>Java, C++ の this とは全く挙動が異なる</strong>
+ので注意してください。 JavaScript の <code class="highlighter-rouge">this</code>
+はある関数が呼び出された際にその関数を格納していた <code class="highlighter-rouge">object</code> を指します。
+例えば</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">sayHelloShared</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, I'm "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>という関数があり、それが alice, bob というオブジェクトの <code class="highlighter-rouge">sayHello</code>
+として登録されていたとします。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">sayHello</span><span class="p">:</span> <span class="nx">sayHelloShared</span><span class="p">,</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'Alice'</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">sayHello</span><span class="p">:</span> <span class="nx">sayHelloShared</span><span class="p">,</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'Bob'</span><span class="p">,</span>
+  <span class="na">child</span><span class="p">:</span> <span class="nx">alice</span>
+<span class="p">};</span></code></pre></figure>
+
 <p>これを</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js">alice<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello, I'm Alice</span>
-bob<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello, I'm Bob</span></code></pre></div>
-<p>のように呼び出すと前者の場合では <code>this</code> は <code>alice</code> を, 後者の場合では
-<code>bob</code> を指すので それぞれの実行で <code>I'm Alice</code> と <code>I'm Bob</code>
-が表示されます。 また下の例のように <code>.</code> が複数存在する場合は <code>this</code>
-はその関数を直接格納していたオブジェクト <code>child</code> を参照します。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js">bob<span class="token punctuation">.</span>child<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello, I'm Alice</span></code></pre></div>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span>
+<span class="nx">bob</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></figure>
+
+<p>のように呼び出すと前者の場合では <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">alice</code> を, 後者の場合では
+<code class="highlighter-rouge">bob</code> を指すので それぞれの実行で <code class="highlighter-rouge">I'm Alice</code> と <code class="highlighter-rouge">I'm Bob</code>
+が表示されます。 また下の例のように <code class="highlighter-rouge">.</code> が複数存在する場合は <code class="highlighter-rouge">this</code>
+はその関数を直接格納していたオブジェクト <code class="highlighter-rouge">child</code> を参照します。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">bob</span><span class="p">.</span><span class="nx">child</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span>  <span class="c1">// Hello, I'm Alice</span></code></pre></figure>
+
 <p>なおクラスを実現する上ではあまり重要なことではないですが、 関数を単に
-<code>method();</code> という形で単体で実行した場合には <code>this</code> は <code>window</code>
+<code class="highlighter-rouge">method();</code> という形で単体で実行した場合には <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">window</code>
 を指します。</p>
-<h3 id="call"><a href="#call" aria-label="call permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>call</h3>
-<p>関数呼び出しの際に <code>this</code> の明示的に指定することも可能です。 それには
+
+<h2 id="call">call</h2>
+
+<p>関数呼び出しの際に <code class="highlighter-rouge">this</code> の明示的に指定することも可能です。 それには
 <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/call">call</a>
-を利用します。 <code>call</code>
+を利用します。 <code class="highlighter-rouge">call</code>
 は全ての関数が暗黙的に持っているプロパティで、関数として呼び出すことができます。
-<code>call</code> を呼ぶと <code>call</code> の第一引数として渡されたオブジェクトが <code>this</code>
+<code class="highlighter-rouge">call</code> を呼ぶと <code class="highlighter-rouge">call</code> の第一引数として渡されたオブジェクトが <code class="highlighter-rouge">this</code>
 にセットされて元の関数が呼び出されます。
 第二引数移行は元の関数の引数として利用されます。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token function">sayHelloShared</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>alice<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello, I'm Alice</span>
-<span class="token function">sayHelloShared</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>bob<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello, I'm Bob</span></code></pre></div>
-<h3 id="new-演算子"><a href="#new-%E6%BC%94%E7%AE%97%E5%AD%90" aria-label="new 演算子 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new 演算子</h3>
-<p>JavaScript にも <code>new</code> 演算子が存在します。 ただし JavaScript の new も
-<strong>Java や C++ でクラスのインスタンス化を行う new
-とは全く動きが異なります。</strong> C++, Java では <code>new</code>
-はクラスと共に利用しますが JavaScript の <code>new</code>
-は任意の関数と一緒に呼び出します。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">new &lt;関数&gt;(&lt;引数&gt;);</code></pre></div>
-<p><code>new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code>{}</code>)
-が生成されます。 次に関数が呼び出されますが、その際に関数内の <code>this</code>
-が生成されたオブジェクトを指すようになります。
-関数が実行された後、生成されたオブジェクトが <code>new</code>
-の実行結果として返されます。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">Person</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<p>例えばこの例では、<code>new Person...</code>
-によって新しいオブジェクトが生成され、それが <code>this</code> に格納されて
-<code>Person</code> が実行され、 <code>name</code>, <code>age</code>
-がオブジェクトにセットされます。そして生成されたオブジェクトは <code>alice</code>
-に代入されます。 そのため、<code>alice.name</code>, <code>alice.age</code> は <code>Person</code>
-に渡された引数 <code>name</code>, <code>age</code> になります。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Alice</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 7</span></code></pre></div>
-<p>もうお気づきのように、<code>new</code> 演算子を使うことで <code>JavaScript</code>
-では関数を「コンストラクタ」として利用することができます。 実際 <code>new</code>
-で生成されたオブジェクトは <code>constructor</code>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">alice</span><span class="p">);</span>  <span class="c1">// Hello, I'm Alice</span>
+<span class="nx">sayHelloShared</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">bob</span><span class="p">);</span>  <span class="c1">// Hello, I'm Bob</span></code></pre></figure>
+
+<h2 id="new-演算子">new 演算子</h2>
+
+<p>JavaScript にも <code class="highlighter-rouge">new</code> 演算子が存在します。 ただし JavaScript の new も
+<strong>Java や C++ でクラスのインスタンス化を行う new
+とは全く動きが異なります。</strong> C++, Java では <code class="highlighter-rouge">new</code>
+はクラスと共に利用しますが JavaScript の <code class="highlighter-rouge">new</code>
+は任意の関数と一緒に呼び出します。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new &lt;関数&gt;(&lt;引数&gt;);
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">new</code> と一緒に関数を呼び出すと、まず新しい空のオブジェクト (つまり <code class="highlighter-rouge">{}</code>)
+が生成されます。 次に関数が呼び出されますが、その際に関数内の <code class="highlighter-rouge">this</code>
+が生成されたオブジェクトを指すようになります。
+関数が実行された後、生成されたオブジェクトが <code class="highlighter-rouge">new</code>
+の実行結果として返されます。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
+
+<p>例えばこの例では、<code class="highlighter-rouge">new Person...</code>
+によって新しいオブジェクトが生成され、それが <code class="highlighter-rouge">this</code> に格納されて
+<code class="highlighter-rouge">Person</code> が実行され、 <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">age</code>
+がオブジェクトにセットされます。そして生成されたオブジェクトは <code class="highlighter-rouge">alice</code>
+に代入されます。 そのため、<code class="highlighter-rouge">alice.name</code>, <code class="highlighter-rouge">alice.age</code> は <code class="highlighter-rouge">Person</code>
+に渡された引数 <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">age</code> になります。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// Alice</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>  <span class="c1">// 7</span></code></pre></figure>
+
+<p>もうお気づきのように、<code class="highlighter-rouge">new</code> 演算子を使うことで <code class="highlighter-rouge">JavaScript</code>
+では関数を「コンストラクタ」として利用することができます。 実際 <code class="highlighter-rouge">new</code>
+で生成されたオブジェクトは <code class="highlighter-rouge">constructor</code>
 というプロパティで生成時に利用された関数への参照を保持しています。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>constructor <span class="token operator">==</span> Person<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span></code></pre></div>
-<h3 id="prototype-チェーン"><a href="#prototype-%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3" aria-label="prototype チェーン permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>prototype チェーン</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">==</span> <span class="nx">Person</span><span class="p">);</span>  <span class="c1">// true</span></code></pre></figure>
+
+<h2 id="prototype-チェーン">prototype チェーン</h2>
+
 <p>JavaScript のオブジェクトは基本的には key と value
-のペアを保持する単なるマップ (連想配列) です。 <code>obj['prop'] = value;</code>
-あるいは <code>obj.prop = value;</code>
+のペアを保持する単なるマップ (連想配列) です。 <code class="highlighter-rouge">obj['prop'] = value;</code>
+あるいは <code class="highlighter-rouge">obj.prop = value;</code>
 のようにキーと値のペアを代入するとオブジェクトが内部的に保持しているマップにキーと値が保存されます。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">"Alice"</span> <span class="token comment">// 'name': 'Alice' と同義</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-alice<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span> <span class="token comment">// alice['age'] = 7; と同義</span></code></pre></div>
-<p>登録した値は <code>obj['prop']</code> あるいは <code>obj.prop</code>
-のように参照できます。参照されたキーが存在しない場合は <code>undefined</code>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'Alice'</span><span class="p">,</span>  <span class="c1">// 'name': 'Alice' と同義</span>
+<span class="p">};</span>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>  <span class="c1">// alice['age'] = 7; と同義</span></code></pre></figure>
+
+<p>登録した値は <code class="highlighter-rouge">obj['prop']</code> あるいは <code class="highlighter-rouge">obj.prop</code>
+のように参照できます。参照されたキーが存在しない場合は <code class="highlighter-rouge">undefined</code>
 が返されます。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">// alice['name'] と alice.name は同義</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Alice</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 7</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alice<span class="token punctuation">.</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// undefined</span></code></pre></div>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// alice['name'] と alice.name は同義</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// Alice</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>  <span class="c1">// 7</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alice</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span>  <span class="c1">// undefined</span></code></pre></figure>
+
 <p>これがオブジェクトの基本動作です。しかし実は参照されたプロパティをオブジェクトが持っていなかった場合に、
 他のオブジェクトからプロパティを探してきて参照するための仕組みが
 JavaScript には用意されています。 それがプロトタイプチェーン (prototype
 chain) と呼ばれるものです。</p>
+
 <p>JavaScript のオブジェクトは他のオブジェクトを プロトタイプ
 として利用することができます。
 オブジェクのプロパティが参照された際、そのプロパティをオブジェクト自身が保持していない場合には代わりにプロトタイプのオブジェクトのプロパティが参照されます。
 またプロトタイプのオブジェクトがそのプロパティを保持していない場合には、さらにプロトタイプのプロトタイプを参照します。
 このようにプロトタイプとしてオブジェクトが鎖のように繋がれて、それが順々に参照されることからこの仕組は「プロトタイプチェーン」と呼ばれます。</p>
-<img src="https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&h=171" width="341" height="85">
+
+<p><img src="https://docs.google.com/drawings/d/1CjtvTFiPYQOICdGHG5jw-Vbf3Kh360_bho2utbrzeLY/pub?w=683&amp;h=171" width="341" height="85" /></p>
+
 <p>なお <a href="http://www.ecma-international.org/ecma-262/5.1/">JavaScript
 の仕様書</a> ではこの
 プロトタイプ を表す内部的なプロパティを obj[[Prototype]]
 のように記述します。
 ただしこれは仕様書の中でのみ現れる表現であって、JavaScript
-のコードの中では利用できません。 JavaScript で <code>obj</code>
-のプロトタイプを参照するには <code>Object.getPrototypeOf(obj)</code> を使用します。
-逆に <code>obj</code> のプロトタイプとして <code>proto</code> を設定するには
-<code>Object.setPrototypeOf(obj, proto)</code> を利用します。</p>
-<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code>__proto__</code>という特殊なプロパティが用意されていて、
+のコードの中では利用できません。 JavaScript で <code class="highlighter-rouge">obj</code>
+のプロトタイプを参照するには <code class="highlighter-rouge">Object.getPrototypeOf(obj)</code> を使用します。
+逆に <code class="highlighter-rouge">obj</code> のプロトタイプとして <code class="highlighter-rouge">proto</code> を設定するには
+<code class="highlighter-rouge">Object.setPrototypeOf(obj, proto)</code> を利用します。</p>
+
+<p>一部の JavaScript エンジンでは [[Prototype]] に相当する <code class="highlighter-rouge">__proto__</code>という特殊なプロパティが用意されていて、
 このプロパティを参照、設定することでオブジェクトのプロトタイプを参照、設定することができます。
 <del>ただしこれは<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">非標準の機能であり廃止される予定</a>なので今後はあまり利用しないほうがよいでしょう。</del>
-<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">ES6 で<strong>proto</strong>が標準になりました</a>。ただ下位互換性の観点からあまり推奨されないことには変わりないかと思います。</p>
-<h3 id="プロパティ-prototype"><a href="#%E3%83%97%E3%83%AD%E3%83%91%E3%83%86%E3%82%A3-prototype" aria-label="プロパティ prototype permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>プロパティ: prototype</h3>
-<p>プロトタイプの設定の方法はもう 1 つ存在します。それが関数の <code>prototype</code>
-プロパティを使う方法です。 実は <code>function</code>
-で作られた関数オブジェクトには <code>prototype</code>
+<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">ES6で__proto__が標準になりました</a>。ただ下位互換性の観点からあまり推奨されないことには変わりないかと思います。</p>
+
+<h2 id="プロパティ-prototype">プロパティ: prototype</h2>
+
+<p>プロトタイプの設定の方法はもう1つ存在します。それが関数の <code class="highlighter-rouge">prototype</code>
+プロパティを使う方法です。 実は <code class="highlighter-rouge">function</code>
+で作られた関数オブジェクトには <code class="highlighter-rouge">prototype</code>
 というプロパティが存在し、空のオブジェクトが格納されています。
-そしてその関数が <code>new</code>
-演算子とともにコンストラクタとして実行された際に、<code>new</code>
-で作成されたオブジェクト（つまり関数内では <code>this</code> が表すオブジェクト)
-のプロトタイプとして関数の <code>prototype</code>
+そしてその関数が <code class="highlighter-rouge">new</code>
+演算子とともにコンストラクタとして実行された際に、<code class="highlighter-rouge">new</code>
+で作成されたオブジェクト（つまり関数内では <code class="highlighter-rouge">this</code> が表すオブジェクト)
+のプロトタイプとして関数の <code class="highlighter-rouge">prototype</code>
 プロパティのオブジェクトが設定されます。</p>
+
 <p>名前が非常に紛らわしいですが、 <strong>prototype
 はオブジェクトのプロトタイプを表すプロパティではありません</strong>。
-<code>prototype</code>
+<code class="highlighter-rouge">prototype</code>
 プロパティは「そのオブジェクトがコンストラクタとして利用された際に作成される新しいオブジェクト」のプロトタイプを決めるものです。
-オブジェクトのプロトタイプを表すプロパティは <code>__proto__</code>
-あるいは言語仕様書で [[Prototype]] と表されるもので <code>prototype</code>
+オブジェクトのプロトタイプを表すプロパティは <code class="highlighter-rouge">__proto__</code>
+あるいは言語仕様書で [[Prototype]] と表されるもので <code class="highlighter-rouge">prototype</code>
 プロパティとは異なります。
 ここを勘違いしてしまうと混乱のもとになるので自分で図を書いたりコードを実行してよく違いを理解しておいて下さい。</p>
-<p>さてこの <code>prototype</code>
+
+<p>さてこの <code class="highlighter-rouge">prototype</code>
 というプロパティ、オブジェクトの直接のプロトタイプを表さないので一見非常に使いにくように思えます。
 しかしこの特殊な仕様が JavaScript
 でクラスを実現するにはとても重要になります。 実際、JavaScript
-でプロトタイプを利用する場合 <code>setPrototypeOf</code>
+でプロトタイプを利用する場合 <code class="highlighter-rouge">setPrototypeOf</code>
 よりもこちらを使うのが一般的です。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">Constructor</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token class-name">Constructor</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token string">"Apple"</span><span class="token punctuation">;</span>
-<span class="token class-name">Constructor</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>b <span class="token operator">=</span> <span class="token string">"Banana"</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Constructor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+<span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">'Apple'</span><span class="p">;</span>
+<span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">'Banana'</span><span class="p">;</span>
 
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">getPrototypeOf</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token class-name">Constructor</span><span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>instance<span class="token punctuation">.</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'Apple';</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>instance<span class="token punctuation">.</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'Banana';</span></code></pre></div>
-<h2 id="google-closure-流のクラスの実現方法の概要"><a href="#google-closure-%E6%B5%81%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E5%AE%9F%E7%8F%BE%E6%96%B9%E6%B3%95%E3%81%AE%E6%A6%82%E8%A6%81" aria-label="google closure 流のクラスの実現方法の概要 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Google Closure 流のクラスの実現方法の概要</h2>
+<span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Constructor</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">instance</span><span class="p">)</span> <span class="o">==</span> <span class="nx">Constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>  <span class="c1">// true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>  <span class="c1">// 'Apple';</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>  <span class="c1">// 'Banana';</span></code></pre></figure>
+
+<h1 id="google-closure-流のクラスの実現方法の概要">Google Closure 流のクラスの実現方法の概要</h1>
+
 <p>まずクラスの実現方法の例を示して、それから各要素について解説します。
 クラスの定義は次のような形になります。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">// クラスとコンストラクタは関数を使って定義します</span>
-<span class="token function-variable function">Person</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// this はインスタンスを表します。</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token comment">// メソッドはコンストラクタの prototype プロパティに定義します</span>
-<span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getName</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// メンバ変数の定義・参照は this.&lt;メンバ変数> を使います。</span>
-  <span class="token comment">// C++, Java と違い this は省略できません。</span>
-  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラスとコンストラクタは関数を使って定義します</span>
+<span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// this はインスタンスを表します。</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+<span class="p">};</span>
 
-<span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// メソッド内から他のメソッドを呼ぶ場合も this.&lt;メソッド> を使います。</span>
-  <span class="token comment">// C++, Java と違い this は省略できません。</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello I'm "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>クラスをインスタンス化する際には <code>new</code> を使います。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-alice<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<p>継承は <code>inherits</code> という関数を用意して次のように行います。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">inherits</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">childCtor<span class="token punctuation">,</span> parentCtor</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// 子クラスの prototype のプロトタイプとして 親クラスの</span>
-  <span class="token comment">// prototype を指定することで継承が実現される</span>
-  Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>childCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> parentCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="c1">// メソッドはコンストラクタの prototype プロパティに定義します</span>
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// メンバ変数の定義・参照は this.&lt;メンバ変数&gt; を使います。</span>
+  <span class="c1">// C++, Java と違い this は省略できません。</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="p">};</span>
 
-<span class="token comment">// 子クラスのコンストラクタ</span>
-<span class="token keyword">var</span> <span class="token function-variable function">Employee</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> salary</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// 親クラスのコンストラクタの呼び出しには call を使用</span>
-  <span class="token function">Person</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> name<span class="token punctuation">,</span> age<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>salary <span class="token operator">=</span> salary<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// メソッド内から他のメソッドを呼ぶ場合も this.&lt;メソッド&gt; を使います。</span>
+  <span class="c1">// C++, Java と違い this は省略できません。</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Hello I</span><span class="se">\'</span><span class="s1">m '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
+<span class="p">};</span></code></pre></figure>
 
-<span class="token comment">// inherits を使って親子関係を明示する</span>
-<span class="token function">inherits</span><span class="token punctuation">(</span>Employee<span class="token punctuation">,</span> Person<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p>クラスをインスタンス化する際には <code class="highlighter-rouge">new</code> を使います。</p>
 
-<span class="token comment">// 子クラスのメソッド</span>
-<span class="token class-name">Employee</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSalary</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>salary<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></figure>
 
-<span class="token comment">// 同じ名前のメソッドを子クラスで定義すればオーバーライドになる。</span>
-<span class="token class-name">Employee</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// 親クラスのメソッドを呼び出す場合は親クラスの prototype に</span>
-  <span class="token comment">// 定義されているメソッドを call を使って呼び出す。</span>
-  <span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Salary is "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>salary<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+<p>継承は <code class="highlighter-rouge">inherits</code> という関数を用意して次のように行います。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 子クラスの prototype のプロトタイプとして 親クラスの</span>
+  <span class="c1">// prototype を指定することで継承が実現される</span>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">setPrototypeOf</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// 子クラスのコンストラクタ</span>
+<span class="kd">var</span> <span class="nx">Employee</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">salary</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 親クラスのコンストラクタの呼び出しには call を使用</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">salary</span> <span class="o">=</span> <span class="nx">salary</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// inherits を使って親子関係を明示する</span>
+<span class="nx">inherits</span><span class="p">(</span><span class="nx">Employee</span><span class="p">,</span> <span class="nx">Person</span><span class="p">);</span>
+
+<span class="c1">// 子クラスのメソッド</span>
+<span class="nx">Employee</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getSalary</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">salary</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 同じ名前のメソッドを子クラスで定義すればオーバーライドになる。</span>
+<span class="nx">Employee</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// 親クラスのメソッドを呼び出す場合は親クラスの prototype に</span>
+  <span class="c1">// 定義されているメソッドを call を使って呼び出す。</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Salary is '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">salary</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
 <p>ではそれぞれの要素について解説していきましょう。</p>
-<h2 id="クラスの宣言とコンストラクタの定義"><a href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E5%AE%A3%E8%A8%80%E3%81%A8%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF%E3%81%AE%E5%AE%9A%E7%BE%A9" aria-label="クラスの宣言とコンストラクタの定義 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>クラスの宣言とコンストラクタの定義</h2>
-<p>上で述べたように <code>new</code>
+
+<h1 id="クラスの宣言とコンストラクタの定義">クラスの宣言とコンストラクタの定義</h1>
+
+<p>上で述べたように <code class="highlighter-rouge">new</code>
 演算子をつかうと関数をクラスのコンストラクタのように利用することができます。
 そのため JavaScript
 では関数を使ってクラスとコンストラクタを同時に定義します。
-クラスのインスタンスの生成とコンストラクタの呼び出しには <code>new</code>
-演算子を使います。 上述したように JavaScript の <code>new</code> と C++/Java の
-<code>new</code>
+クラスのインスタンスの生成とコンストラクタの呼び出しには <code class="highlighter-rouge">new</code>
+演算子を使います。 上述したように JavaScript の <code class="highlighter-rouge">new</code> と C++/Javaの
+<code class="highlighter-rouge">new</code>
 の仕様は大きく異なりますが、結果的には似たような使い方をすることになります。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">// クラス Person とそのコンストラクタを定義。インスタンス変数の設定にはコンストラクタ中で `this.` を使う。</span>
-<span class="token keyword">var</span> <span class="token function-variable function">Person</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// コンストラクタの中身</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<h2 id="メンバ変数-インスタンス変数"><a href="#%E3%83%A1%E3%83%B3%E3%83%90%E5%A4%89%E6%95%B0-%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E5%A4%89%E6%95%B0" aria-label="メンバ変数 インスタンス変数 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>メンバ変数 (インスタンス変数)</h2>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// クラス Person とそのコンストラクタを定義。インスタンス変数の設定にはコンストラクタ中で ``this.`` を使う。</span>
+<span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// コンストラクタの中身</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
+
+<h1 id="メンバ変数-インスタンス変数">メンバ変数 (インスタンス変数)</h1>
+
 <p>上の例で出てきているように、クラスの内部でメンバ変数を定義・参照するには
-<code>this.&#x3C;プロパティ名></code> を使います。 JavaScript では Java や C++ と違い
+<code class="highlighter-rouge">this.&lt;プロパティ名&gt;</code> を使います。 JavaScript では Java や C++ と違い
 <strong>this を省略することは不可能</strong> なので注意してください。 Python
-を知っている人は <code>this</code> は <code>self</code>
+を知っている人は <code class="highlighter-rouge">this</code> は <code class="highlighter-rouge">self</code>
 に相当するものだと思うと分かりやすいかと思います。
-インスタンス変数やメソッド呼び出しの際に Python では <code>self</code>
-を付けなければならないように JavaScript では <code>this</code> が必ず必要です。</p>
-<h2 id="メソッド定義と呼び出し"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E5%AE%9A%E7%BE%A9%E3%81%A8%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97" aria-label="メソッド定義と呼び出し permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>メソッド定義と呼び出し</h2>
-<p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <code>prototype</code>
+インスタンス変数やメソッド呼び出しの際に Python では <code class="highlighter-rouge">self</code>
+を付けなければならないように JavaScript では <code class="highlighter-rouge">this</code> が必ず必要です。</p>
+
+<h1 id="メソッド定義と呼び出し">メソッド定義と呼び出し</h1>
+
+<p>JavaScript でメソッドを定義するときにはコンストラクタ関数の <code class="highlighter-rouge">prototype</code>
 オブジェクトに関数を定義します。
 またメソッド内から他のメソッドの呼び出しを行う場合は
-<code>this.&#x3C;メソッド名>(引数)</code> を使います。
+<code class="highlighter-rouge">this.&lt;メソッド名&gt;(引数)</code> を使います。
 メンバ変数の場合と同様に、メソッド呼び出しの際に <strong>this
 を省略することは不可能</strong> なので気をつけて下さい。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello, I'm "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getName</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, I'm "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
+<span class="p">};</span>
 
-<span class="token keyword">var</span> alice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-alice<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<p>まず上述したように <code>alice</code> のコンストラクタ <code>Person</code> の <code>prototype</code>
-プロパティ <code>Person.prototype</code> が alice のプロトタイプとなります。 つまり
-<code>alice</code> に存在しないプロパティがアクセスされた場合、JavaScript は
-<code>Person.prototype</code> から同名のプロパティを探してきます。 そのため、
-<code>alice.sayHello</code> は <code>Person.prototype.sayHello</code>
-になります(プロトタイプチェーン)。 さらに JavaScript では <code>this</code>
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">alice</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+<span class="nx">alice</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span></code></pre></figure>
+
+<p>まず上述したように <code class="highlighter-rouge">alice</code> のコンストラクタ <code class="highlighter-rouge">Person</code> の <code class="highlighter-rouge">prototype</code>
+プロパティ <code class="highlighter-rouge">Person.prototype</code> が alice のプロトタイプとなります。 つまり
+<code class="highlighter-rouge">alice</code> に存在しないプロパティがアクセスされた場合、JavaScript は
+<code class="highlighter-rouge">Person.prototype</code> から同名のプロパティを探してきます。 そのため、
+<code class="highlighter-rouge">alice.sayHello</code> は <code class="highlighter-rouge">Person.prototype.sayHello</code>
+になります(プロトタイプチェーン)。 さらに JavaScript では <code class="highlighter-rouge">this</code>
 は関数が呼び出された際にその関数を保持していたオブジェクトがセットされるので、
-<code>alice.sayHello();</code> という形で <code>sayHello</code> を呼び出した際には <code>this</code> は
-<code>alice</code> となります。</p>
-<p>このように <code>prototype</code> と <code>this</code>
+<code class="highlighter-rouge">alice.sayHello();</code> という形で <code class="highlighter-rouge">sayHello</code> を呼び出した際には <code class="highlighter-rouge">this</code> は
+<code class="highlighter-rouge">alice</code> となります。</p>
+
+<p>このように <code class="highlighter-rouge">prototype</code> と <code class="highlighter-rouge">this</code>
 の単体だと何のためにあるのか分からない奇妙な仕様がこのように。</p>
-<p>上のメソッド定義の例をみると <code>this</code> が <code>prototype</code>
+
+<p>上のメソッド定義の例をみると <code class="highlighter-rouge">this</code> が <code class="highlighter-rouge">prototype</code>
 を指すのではないか？心配になるかもしれませんが前節で述べたように
-JavaScript の <code>this</code>
+JavaScript の <code class="highlighter-rouge">this</code>
 は関数が呼び出された際にその関数をプロパティ保持していたオブジェクトを指します。そのため、
-<code>alice.sayHello();</code> という形で <code>sayHello</code> を呼び出した場合は <code>this</code> は
-<code>alice</code> を指すことになるのです。</p>
-<h3 id="private-protected"><a href="#private-protected" aria-label="private protected permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>private, protected</h3>
-<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code>private</code> や
-<code>protected</code> にすることはできません。 ただし名前規約で <code>private</code>
+<code class="highlighter-rouge">alice.sayHello();</code> という形で <code class="highlighter-rouge">sayHello</code> を呼び出した場合は <code class="highlighter-rouge">this</code> は
+<code class="highlighter-rouge">alice</code> を指すことになるのです。</p>
+
+<h2 id="private-protected">private, protected</h2>
+
+<p>JavaScript でクラスを実現する場合、メンバ変数やメソッドを <code class="highlighter-rouge">private</code> や
+<code class="highlighter-rouge">protected</code> にすることはできません。 ただし名前規約で <code class="highlighter-rouge">private</code>
 なものを名前でわかりやすくして間違えてアクセスしないようにすることはできます。
 <a href="https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml#Naming">Google の JavaScript
 のスタイルガイド</a>
-では private なメソッド, メンバ変数は名前の末尾に <code>_</code>
+では private なメソッド, メンバ変数は名前の末尾に <code class="highlighter-rouge">_</code>
 をつけることが求められています。</p>
-<h2 id="継承"><a href="#%E7%B6%99%E6%89%BF" aria-label="継承 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>継承</h2>
-<h3 id="プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ"><a href="#%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%A6%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%8B%E3%82%89%E5%BC%95%E3%81%8D%E7%B6%99%E3%81%90" aria-label="プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</h3>
+
+<h1 id="継承">継承</h1>
+
+<h2 id="プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ">プロトタイプチェーンを利用してメソッドを親クラスから引き継ぐ</h2>
+
 <p>子クラスから親クラスのメソッドが引き継がれるようにするには、 子クラスの
-<code>prototype</code> にメソッドが見つからなかった場合に、親クラスの <code>prototype</code>
-に定義されてるメソッドが参照されれば良いので、 親クラスの <code>prototype</code>
-が子クラスの <code>prototype</code> のプロトタイプ (<code>__proto__</code>, あるいは
+<code class="highlighter-rouge">prototype</code> にメソッドが見つからなかった場合に、親クラスの <code class="highlighter-rouge">prototype</code>
+に定義されてるメソッドが参照されれば良いので、 親クラスの <code class="highlighter-rouge">prototype</code>
+が子クラスの <code class="highlighter-rouge">prototype</code> のプロトタイプ (<code class="highlighter-rouge">__proto__</code>, あるいは
 [[Prototype]])になるようにします。</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&lt;figure&gt;</code></pre></div>
-<p>前述したように、<code>setPrototypeOf</code>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;figure&gt;
+</code></pre></div></div>
+
+<p>前述したように、<code class="highlighter-rouge">setPrototypeOf</code>
 であるオブジェクトを他のオブジェクトのプロトタイプに設定できるので、次のような継承用の関数を事前に用意しておきます。
 (Google Closure の実際の inherits は互換性のためにもう少し複雑です)</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">inherits</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">childCtor<span class="token punctuation">,</span> parentCtor</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>childCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> parentCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>子クラスのコンストラクタを定義した後に、 <code>inherits(Child, Parent);</code>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">setPrototypeOf</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>子クラスのコンストラクタを定義した後に、 <code class="highlighter-rouge">inherits(Child, Parent);</code>
 のように呼び出して使います。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">Parent</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">arg</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token comment">// Parent のコンストラクタ実装</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> <span class="token class-name">Parent</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">method0</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Parent.method0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Parent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Parent のコンストラクタ実装</span>
+<span class="p">};</span>
 
-<span class="token keyword">var</span> <span class="token function-variable function">Child</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">arg</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token comment">// Child のコンストラクタの実装</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="kd">var</span> <span class="nx">Parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">method0</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Parent.method0'</span><span class="p">);</span>
+<span class="p">}</span>
 
-<span class="token function">inherits</span><span class="token punctuation">(</span>Child<span class="token punctuation">,</span> Parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="kd">var</span> <span class="nx">Child</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Child のコンストラクタの実装</span>
+<span class="p">};</span>
 
-<span class="token class-name">Child</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">method1</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Child.method1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<span class="nx">inherits</span><span class="p">(</span><span class="nx">Child</span><span class="p">,</span> <span class="nx">Parent</span><span class="p">);</span>
 
-<span class="token keyword">var</span> child <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-child<span class="token punctuation">.</span><span class="token function">method0</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-child<span class="token punctuation">.</span><span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<h3 id="親クラスのコンストラクタの呼び出し"><a href="#%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97" aria-label="親クラスのコンストラクタの呼び出し permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>親クラスのコンストラクタの呼び出し</h3>
+<span class="nx">Child</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">method1</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Child.method1'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Child</span><span class="p">();</span>
+<span class="nx">child</span><span class="p">.</span><span class="nx">method0</span><span class="p">();</span>
+<span class="nx">child</span><span class="p">.</span><span class="nx">method1</span><span class="p">();</span></code></pre></figure>
+
+<h2 id="親クラスのコンストラクタの呼び出し">親クラスのコンストラクタの呼び出し</h2>
+
 <p>上の例ではコンストラクタが空だったので問題ありませんでしたが、
 現実のプログラムでは初期化を正しく行うためには子クラスのコンストラクタから
 親クラスのコンストラクタを呼びださなくてはなりません。</p>
+
 <p>親クラスのコンストラクタを呼び出す際には、親クラスのコンストラクタ内の
-<code>this</code> が子クラスのコンストラクタ内の <code>this</code> (つまり <code>new</code>
+<code class="highlighter-rouge">this</code> が子クラスのコンストラクタ内の <code class="highlighter-rouge">this</code> (つまり <code class="highlighter-rouge">new</code>
 で生成された初期化対象のインスタンス)
-になるようにしなくてはなりません。<code>this</code>
-を明示的に指定して関数を呼び出すには前述したように <code>call</code> を使います。
+になるようにしなくてはなりません。<code class="highlighter-rouge">this</code>
+を明示的に指定して関数を呼び出すには前述したように <code class="highlighter-rouge">call</code> を使います。
 そのため親クラスのコンストラクタの呼び出しは
-<code>Parent.call(this, 引数...)</code> のように行います。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">Child</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">arg</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">Parent</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<h3 id="メソッドオーバーライドと親クラスのメソッドの呼び出し"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%A8%E8%A6%AA%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97" aria-label="メソッドオーバーライドと親クラスのメソッドの呼び出し permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>メソッドオーバーライドと親クラスのメソッドの呼び出し</h3>
-<p>前述したように、<code>child.method0()</code> のようにメソッド呼び出しが行われると、
-JavaScript はまず <code>child</code> のプロトタイプである <code>Child.prototype</code> から
-<code>method</code> を探します。 <code>Child.prototype</code> に <code>method</code>
+<code class="highlighter-rouge">Parent.call(this, 引数...)</code> のように行います。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Child</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Parent</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arg</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<h2 id="メソッドオーバーライドと親クラスのメソッドの呼び出し">メソッドオーバーライドと親クラスのメソッドの呼び出し</h2>
+
+<p>前述したように、<code class="highlighter-rouge">child.method0()</code> のようにメソッド呼び出しが行われると、
+JavaScript はまず <code class="highlighter-rouge">child</code> のプロトタイプである <code class="highlighter-rouge">Child.prototype</code> から
+<code class="highlighter-rouge">method</code> を探します。 <code class="highlighter-rouge">Child.prototype</code> に <code class="highlighter-rouge">method</code>
 が見つからない場合は、さらにプロトタイプチェーンをたどって
-<code>Parent.prototype</code> から <code>method</code> を探してきて呼び出します。</p>
-<p>仕組み上、<code>C++</code> のようにオーバーライドする関数に <code>virtual</code>
-などの特殊な修飾子を付ける必要はありません。 また <code>Java</code>
-のようにメソッドに <code>final</code>
+<code class="highlighter-rouge">Parent.prototype</code> から <code class="highlighter-rouge">method</code> を探してきて呼び出します。</p>
+
+<p>仕組み上、<code class="highlighter-rouge">C++</code> のようにオーバーライドする関数に <code class="highlighter-rouge">virtual</code>
+などの特殊な修飾子を付ける必要はありません。 また <code class="highlighter-rouge">Java</code>
+のようにメソッドに <code class="highlighter-rouge">final</code>
 をつけてオーバーライドを禁止することもできません。
 子クラスで同名のメソッドを定義されてしまえば問答無用でオーバーライドされてしまいます。
 これは大規模なプログラムでは問題になってしまいますが、純粋な JavaScript
 では解決する手段がありません。</p>
+
 <p>また親クラスのメソッドを明示的に呼び出すには、親クラスのコンストラクタの呼び出しの場合と同様に
-<code>call</code> を使用します。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Parent</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
-<h3 id="多重継承"><a href="#%E5%A4%9A%E9%87%8D%E7%B6%99%E6%89%BF" aria-label="多重継承 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>多重継承</h3>
+<code class="highlighter-rouge">call</code> を使用します。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Parent.prototype.sayHello(this);
+</code></pre></div></div>
+
+<h2 id="多重継承">多重継承</h2>
+
 <p>プロトタイプチェーンを利用している仕組み上、多重継承はできません。</p>
-<h3 id="abstract-interface"><a href="#abstract-interface" aria-label="abstract interface permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>abstract, interface</h3>
-<p>JavaScript には <code>interface</code> や <code>abstract</code>
+
+<h2 id="abstract-interface">abstract, interface</h2>
+
+<p>JavaScript には <code class="highlighter-rouge">interface</code> や <code class="highlighter-rouge">abstract</code>
 に相当する言語仕様は用意されていません。 Java, C++ の抽象メソッド
 (abstract method) はメソッドの実体は定義せずに、
 子クラスあるいはインターフェースを実装するクラスが実装しなくてはならないメソッドを宣言するものです。
 Java, C++ は静的型チェックを行うのでそのような仕組みが必須です。 しかし
 JavaScript
 は型は動的にチェックされるので抽象メソッドはなくてもプログラムを書くことは可能です。</p>
+
 <p>ただ現実にはプログラムの可読性を高めるために子クラスが実装しなくてはならないメソッドを明示的に書きたいと思うことも多いでしょう。
 JavaScript
 ではそのような場合、単純に例外を投げるだけの関数を定義してしまいます。これは
 Python でも同じです。 Java の interface
 に相当することをしたい場合はすべてのメソッドが例外を投げるだけのクラスを作成すればよいでしょう。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Not Implemented'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<h2 id="inherits-の実際のコード"><a href="#inherits-%E3%81%AE%E5%AE%9F%E9%9A%9B%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89" aria-label="inherits の実際のコード permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>inherits の実際のコード</h2>
-<p>前述した継承用の関数 <code>inherits</code> は非常にシンプルでしたが、実際には
-<code>setPrototypeOf</code> が利用できない古いブラウザの互換性のために、
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">()</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not Implemented'</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="inherits-の実際のコード">inherits の実際のコード</h1>
+
+<p>前述した継承用の関数 <code class="highlighter-rouge">inherits</code> は非常にシンプルでしたが、実際には
+<code class="highlighter-rouge">setPrototypeOf</code> が利用できない古いブラウザの互換性のために、
 同じことをもう少し複雑なコードで行う必要があります。 Google Closure の
 <a href="https://github.com/google/closure-library/blob/master/closure/goog/base.js#L2170">base.js に定義されている
 goog.inherits</a>
-はブラウザ互換性のために <code>setPrototypeOf</code>
+はブラウザ互換性のために <code class="highlighter-rouge">setPrototypeOf</code>
 を使わず下のような少し複雑なコードになっています。</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js">goog<span class="token punctuation">.</span><span class="token function-variable function">inherits</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">childCtor<span class="token punctuation">,</span> parentCtor</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token comment">/** @constructor \*/</span>
-<span class="token keyword">function</span> <span class="token function">tempCtor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-tempCtor<span class="token punctuation">.</span>prototype <span class="token operator">=</span> parentCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">;</span>
-childCtor<span class="token punctuation">.</span>superClass\_ <span class="token operator">=</span> parentCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">;</span>
-childCtor<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">tempCtor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment">/** @override \*/</span>
-childCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> childCtor<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<h2 id="良くないクラス実現方法"><a href="#%E8%89%AF%E3%81%8F%E3%81%AA%E3%81%84%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9F%E7%8F%BE%E6%96%B9%E6%B3%95" aria-label="良くないクラス実現方法 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>良くないクラス実現方法</h2>
-<p>メソッドの定義方法として、</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">Person</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment">// ....</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token class-name">Person</span><span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token function-variable function">sayHello</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// ...</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">getName</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// ....</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>のように、<code>prototype</code>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">goog</span><span class="p">.</span><span class="nx">inherits</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childCtor</span><span class="p">,</span> <span class="nx">parentCtor</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/** @constructor */</span>
+  <span class="kd">function</span> <span class="nx">tempCtor</span><span class="p">()</span> <span class="p">{};</span>
+  <span class="nx">tempCtor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+  <span class="nx">childCtor</span><span class="p">.</span><span class="nx">superClass_</span> <span class="o">=</span> <span class="nx">parentCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+  <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">tempCtor</span><span class="p">();</span>
+  <span class="cm">/** @override */</span>
+  <span class="nx">childCtor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">=</span> <span class="nx">childCtor</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="良くないクラス実現方法">良くないクラス実現方法</h1>
+
+<h2 id="prototype--">prototype = {}</h2>
+
+<p>メソッドの定義方法として、</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ....</span>
+<span class="p">};</span>
+
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">sayHello</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">},</span>
+  <span class="na">getName</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ....</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>のように、<code class="highlighter-rouge">prototype</code>
 を新しいオブジェクトで置き換えてしまうコードが揚げられている場合がありますが、
 この方法だと、そのクラスが他のクラスを継承している場合にプロトタイプチェーンが切れてしまって継承関係が失われてしまうので
 子クラスの定義では使えません。コードの一貫性を保つために、常に</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token regex">/_..._/</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getName</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token regex">/_..._/</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayHello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
+<span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span></code></pre></figure>
+
 <p>のように１つずつメソッドを追加するスタイルのほうが好ましいかと思います。
-それと多くの場合問題になりませんが、<code>prototype</code>
+それと多くの場合問題になりませんが、<code class="highlighter-rouge">prototype</code>
 を新しいオブジェクトで置き換えてしまうと、
-<code>Person.prototype.constructor == Person</code>
+<code class="highlighter-rouge">Person.prototype.constructor == Person</code>
 の関係は壊れてしまうのでそこも若干マイナスポイントです。</p>
-<h2 id="es6-のクラス"><a href="#es6-%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9" aria-label="es6 のクラス permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ES6 のクラス</h2>
-<p><a href="javascript_class_es6.html">ECMAScript 6 (ES6) でようやく JavaScript にもクラスの構文が追加されています</a>。数年後、ユーザが使っているブラウザの大半が ECMAScript 6 をサポートするようになれば(2015 年 10 月時点では最新の Firefox ではサポートされていない)、新規のプロジェクトや単なる趣味であればここに書かれている文法を直接使う必要はなくなると思います。
-ただ下位互換性が非常に重要になる Closure Library のようなコアライブラリや既存のコード読む上で、あるいは<a href="https://github.com/google/traceur-compiler">ES6 to ES5 converter</a>の出力をデバッグする上で、今後少なくとも数年はもここに書かれている手段への理解は必要となるかと思います。
-また<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ES6 のクラスがシンタックスシュガーに過ぎない</a>以上、ES6 のクラスの挙動をきちんと理解したければプロトタイプを使ってどのようにクラスが実現できるのかを理解しておくのは今後も重要だと思います。ES6 はあくまで既存の JavaScript の上に作られた言語であり、JavaScript がプロトタイプベースの言語であることは変わりません。</p></div></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->5/8/2016</div></div></div></main></div></div></div><script>
-  
-  
-  if(true) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  }
-  if (typeof ga === "function") {
-    ga('create', 'UA-19477574-2', 'auto', {});
-      
-      
-      
-      }
-      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-javascript-class-in-google-html-831","path":"/docs/javascript_class_in_google.html"};window.dataPath="969/path---docs-javascript-class-in-google-html-831-eb7-icfCVVHGvyEaNk64S0bSftus8";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-a409082f05ae56f79255.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-77bdbd45d64174385941.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-a409082f05ae56f79255.js" async=""></script></body></html>
+
+<h1 id="es6-のクラス">ES6 のクラス</h1>
+<p><a href="javascript_class_es6.html">ECMAScript 6 (ES6) でようやくJavaScriptにもクラスの構文が追加されています</a>。数年後、ユーザが使っているブラウザの大半がECMAScript 6 をサポートするようになれば(2015年10月時点では最新のFirefoxではサポートされていない)、新規のプロジェクトや単なる趣味であればここに書かれている文法を直接使う必要はなくなると思います。
+ただ下位互換性が非常に重要になるClosure Libraryのようなコアライブラリや既存のコード読む上で、あるいは<a href="https://github.com/google/traceur-compiler">ES6 to ES5 converter</a>の出力をデバッグする上で、今後少なくとも数年はもここに書かれている手段への理解は必要となるかと思います。
+また<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">ES6のクラスがシンタックスシュガーに過ぎない</a>以上、ES6のクラスの挙動をきちんと理解したければプロトタイプを使ってどのようにクラスが実現できるのかを理解しておくのは今後も重要だと思います。ES6はあくまで既存のJavaScriptの上に作られた言語であり、JavaScriptがプロトタイプベースの言語であることは変わりません。</p>
+
+        <div>
+  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+  </div>
+  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
+  </div>
+  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
+    <div class="g-plusone" data-size="tall"></div>
+  </div>
+  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  </div>
+</div>
+
+        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/javascript_class_in_google.html"  data-numposts="5"></div>
+        <div style="text-align:center">
+          <a href="/docs">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+    
+  </body>
+
+</html>
