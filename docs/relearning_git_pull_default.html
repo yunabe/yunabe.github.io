@@ -1,240 +1,141 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Git 再入門:&nbsp;引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</title>
-  <meta name="description" content="">
-  <meta property="fb:admins" content="yunabe">
-  <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/docs/relearning_git_pull_default.html">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/docs/relearning_git_pull_default.html">
-  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
-  <script>
-    if(location.host=='www.yunabe.jp'){
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-19477574-2', 'yunabe.jp');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて) | yunabe.jp</title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
     }
-  </script>
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-5305161629251914",
-      enable_page_level_ads: true
-    });
-  </script>
-</head>
-
-
-  <body>
-    <div class="page-content">
-      <div class="wrapper">
-        <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Git 再入門:&nbsp;引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</h1>
-          <p class="post-meta"><time datetime="2015-05-01T00:00:00+09:00" itemprop="datePublished">更新 May 1, 2015</time></p>
-        </header>
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <p><a href="relearning_git_remote.html#git-pull">前章で git pull の使い方を紹介</a> した際に
-<code class="highlighter-rouge">git pull &lt;remote&gt; &lt;src&gt;</code> のように引数を与えると説明しましたが、
-実はこの2つの引数を省略して単に <code class="highlighter-rouge">git pull</code>
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var offset = element.offsetTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-19d0e74b7318ca3436ff.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-378fb84b5b87ba9c574c.js"/><link as="fetch" rel="preload" href="/static/d/949/path---docs-relearning-git-pull-default-html-a-40-399-SdGpDuZBY56H6wxLI2BQwbOdDA.json" crossorigin="use-credentials"/><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Git 再入門: 引数がない git pull のデフォルトの挙動 (アップストリーム, トラッキングブランチについて)</h1><div><p><a href="relearning_git_remote.html#git-pull">前章で git pull の使い方を紹介</a> した際に
+<code>git pull &#x3C;remote> &#x3C;src></code> のように引数を与えると説明しましたが、
+実はこの2つの引数を省略して単に <code>git pull</code>
 として実行することも出来ます。 このように引数を省略した時には、git
 はどのリモートリポジトリのブランチを選んで現在のブランチに pull
 するのでしょうか。</p>
-
-<h1 id="トラッキングブランチ-tracking-branch-とアップストリーム-upstream">トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</h1>
-
-<p><code class="highlighter-rouge">git pull/push</code> で引数を省略できるように、Git
+<h2 id="トラッキングブランチ-tracking-branch-とアップストリーム-upstream"><a href="#%E3%83%88%E3%83%A9%E3%83%83%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81-tracking-branch-%E3%81%A8%E3%82%A2%E3%83%83%E3%83%97%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0-upstream" aria-label="トラッキングブランチ tracking branch とアップストリーム upstream permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>トラッキングブランチ (Tracking Branch) とアップストリーム (Upstream)</h2>
+<p><code>git pull/push</code> で引数を省略できるように、Git
 ではローカルブランチをリモートトラッキングブランチに対して関連付けることができます。
 リモートトラッキングブランチに関連付けられたローカルブランチのことを
 <a href="http://git-scm.com/book/en/Git-Branching-Remote-Branches#Tracking-Branches">トラッキングブランチ (Tracking Branch)</a>
 と呼びます。
 逆に関連付けられているリモートトラキングブランチのことはアップストリーム
 (Upstream) と呼びます。</p>
-
-<h1 id="アップストリームの設定と確認">アップストリームの設定と確認</h1>
-
+<h2 id="アップストリームの設定と確認"><a href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E7%A2%BA%E8%AA%8D" aria-label="アップストリームの設定と確認 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>アップストリームの設定と確認</h2>
 <p>既存のブランチをリモートトラッキングブランチに関連付けてみましょう。
-これは <code class="highlighter-rouge">git branch -u &lt;upstream&gt; &lt;branch&gt;</code> で行うことができます
-(<code class="highlighter-rouge">&lt;branch&gt;</code> は省略可。省略した際は現在のブランチが暗黙的に指定される)。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /tmp/my/workingdir/alice
+これは <code>git branch -u &#x3C;upstream> &#x3C;branch></code> で行うことができます
+(<code>&#x3C;branch></code> は省略可。省略した際は現在のブランチが暗黙的に指定される)。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ cd /tmp/my/workingdir/alice
 $ git branch -u shared/master master
-Branch master set up to track remote branch master from shared.
-</code></pre></div></div>
-
-<p>これでローカルブランチ <code class="highlighter-rouge">master</code> が リモートトラキングブランチ
-<code class="highlighter-rouge">shared/master</code> と関連付けられました。
+Branch master set up to track remote branch master from shared.</code></pre></div>
+<p>これでローカルブランチ <code>master</code> が リモートトラキングブランチ
+<code>shared/master</code> と関連付けられました。
 ローカルブランチがどのリモートトラキングブランチに関連付けられているかは、
-<code class="highlighter-rouge">git branch -vv</code>, <code class="highlighter-rouge">git remote show &lt;repository&gt;</code> の出力あるいは
-<code class="highlighter-rouge">.git/config</code> ファイルの中身から確認できます。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git branch -vv
-* master   d623bbf [shared/master] Merged.
-</code></pre></div></div>
-
-<p>ブランチの upstream が存在する場合 <code class="highlighter-rouge">[]</code> で囲まれて表示されます。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git remote show shared
+<code>git branch -vv</code>, <code>git remote show &#x3C;repository></code> の出力あるいは
+<code>.git/config</code> ファイルの中身から確認できます。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git branch -vv
+* master   d623bbf [shared/master] Merged.</code></pre></div>
+<p>ブランチの upstream が存在する場合 <code>[]</code> で囲まれて表示されます。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git remote show shared
   * remote shared
   (略)
-  Local branch configured for 'git pull':
+  Local branch configured for &#39;git pull&#39;:
     master merges with remote master
-  (略)
-</code></pre></div></div>
-
-<p>このように、<code class="highlighter-rouge">master</code> ブランチが <code class="highlighter-rouge">shared</code> の <code class="highlighter-rouge">master</code>
-ブランチに関連付けられていることが <code class="highlighter-rouge">'git pull'</code> の項目に表示されます。
-また、<code class="highlighter-rouge">.git/config</code>
+  (略)</code></pre></div>
+<p>このように、<code>master</code> ブランチが <code>shared</code> の <code>master</code>
+ブランチに関連付けられていることが <code>'git pull'</code> の項目に表示されます。
+また、<code>.git/config</code>
 ファイルを開くと下のような項目が追加されているはずです。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[branch "master"]
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">[branch &quot;master&quot;]
  remote = shared
- merge = refs/heads/master
-</code></pre></div></div>
-
-<p>これで、アップストリームが設定できたので <code class="highlighter-rouge">git pull</code>
-を引数なしで実行してみましょう (<code class="highlighter-rouge">-v</code> をつけると分かりやすいです)。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git pull
-Already up-to-date.
-</code></pre></div></div>
-
+ merge = refs/heads/master</code></pre></div>
+<p>これで、アップストリームが設定できたので <code>git pull</code>
+を引数なしで実行してみましょう (<code>-v</code> をつけると分かりやすいです)。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git pull
+Already up-to-date.</code></pre></div>
 <p>ローカルブランチとリモートトラキングブランチの関連付けは
-<code class="highlighter-rouge">git branch --unset-upstream &lt;local_branch&gt;</code> で解除できます。
-解除すると、<code class="highlighter-rouge">git pull</code> は引数なしでは動かなくなります。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git branch --unset-upstream master
+<code>git branch --unset-upstream &#x3C;local_branch></code> で解除できます。
+解除すると、<code>git pull</code> は引数なしでは動かなくなります。</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">$ git branch --unset-upstream master
 $ git pull
 fatal: No remote repository specified.  Please, specify either a URL or a
-remote name from which new revisions should be fetched.
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">git remote show shared</code> の出力と <code class="highlighter-rouge">.git/config</code>
+remote name from which new revisions should be fetched.</code></pre></div>
+<p><code>git remote show shared</code> の出力と <code>.git/config</code>
 の中身をみて、関連付けが解除されていることを確認してみてください。</p>
-
-<h1 id="暗黙的に設定されるアップストリーム">暗黙的に設定されるアップストリーム</h1>
-
-<p>ここまで読んで、アップストリームの設定はしたことないけれど <code class="highlighter-rouge">git pull</code>
+<h2 id="暗黙的に設定されるアップストリーム"><a href="#%E6%9A%97%E9%BB%99%E7%9A%84%E3%81%AB%E8%A8%AD%E5%AE%9A%E3%81%95%E3%82%8C%E3%82%8B%E3%82%A2%E3%83%83%E3%83%97%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0" aria-label="暗黙的に設定されるアップストリーム permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>暗黙的に設定されるアップストリーム</h2>
+<p>ここまで読んで、アップストリームの設定はしたことないけれど <code>git pull</code>
 は引数なしで普段使っていると思った人がいるかもしれません。
 実はアップストリームの設定は暗黙的に行われることがあります。
-そのため、アップストリームの設定を明示的にしなくても <code class="highlighter-rouge">git pull</code>
+そのため、アップストリームの設定を明示的にしなくても <code>git pull</code>
 は多くの場合で引数なしで使えるようになっています。</p>
-
 <p>アップストリームの設定は以下の様な場合に暗黙的に行われます</p>
-
 <ul>
-  <li>リモートトラキングブランチからブランチを作成した場合
-    <ul>
-      <li><code class="highlighter-rouge">git branch &lt;local&gt; &lt;remote&gt;/&lt;branch&gt;</code> (あるいは
-<code class="highlighter-rouge">git checkout -b &lt;local&gt; &lt;remote&gt;/&lt;branch&gt;</code>)
+<li>
+<p>リモートトラキングブランチからブランチを作成した場合</p>
+<ul>
+<li><code>git branch &#x3C;local> &#x3C;remote>/&#x3C;branch></code> (あるいは
+<code>git checkout -b &#x3C;local> &#x3C;remote>/&#x3C;branch></code>)
 を実行してリモートトラキングブランチから
-ブランチを作成した場合、&lt;local&gt; と &lt;remote&gt;/&lt;branch&gt;
-が関連付けられます。 (参考: <a href="http://git-scm.com/docs/git-branch">git branch の –track
+ブランチを作成した場合、&#x3C;local> と &#x3C;remote>/&#x3C;branch>
+が関連付けられます。 (参考: <a href="http://git-scm.com/docs/git-branch">git branch の --track
 の項目</a>)</li>
-    </ul>
-  </li>
-  <li><code class="highlighter-rouge">git clone</code> で複製した場合
-    <ul>
-      <li><code class="highlighter-rouge">git clone</code> を使うと複製元のリポジトリが <code class="highlighter-rouge">origin</code>
-として自動的に登録され、 <code class="highlighter-rouge">origin/master</code> からブランチ <code class="highlighter-rouge">master</code>
-が自動的に作成されます。 この際、<code class="highlighter-rouge">master</code> と <code class="highlighter-rouge">origin/master</code>
-が関連付けられます。</li>
-    </ul>
-  </li>
 </ul>
-
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/relearning_git_pull_default.html"  data-numposts="5"></div>
-        <div style="text-align:center">
-          <a href="/docs">Home</a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li></li>
-          <li><a href="mailto:"></a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          
-
-          
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-
-    <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-  {lang: 'ja'}
-</script>
-<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-
-    
-  </body>
-
-</html>
+</li>
+<li>
+<p><code>git clone</code> で複製した場合</p>
+<ul>
+<li><code>git clone</code> を使うと複製元のリポジトリが <code>origin</code>
+として自動的に登録され、 <code>origin/master</code> からブランチ <code>master</code>
+が自動的に作成されます。 この際、<code>master</code> と <code>origin/master</code>
+が関連付けられます。</li>
+</ul>
+</li>
+</ul></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->5/1/2015</div></div></div></main></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-19477574-2', 'auto', {});
+      
+      
+      
+      }
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-relearning-git-pull-default-html-a40","path":"/docs/relearning_git_pull_default.html"};window.dataPath="949/path---docs-relearning-git-pull-default-html-a-40-399-SdGpDuZBY56H6wxLI2BQwbOdDA";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-19d0e74b7318ca3436ff.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-378fb84b5b87ba9c574c.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-19d0e74b7318ca3436ff.js" async=""></script></body></html>

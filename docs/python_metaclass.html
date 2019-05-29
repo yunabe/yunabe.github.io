@@ -1,179 +1,152 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Python の メタプログラミング (__metaclass__, メタクラス) を理解する</title>
-  <meta name="description" content="">
-  <meta property="fb:admins" content="yunabe">
-  <meta property="fb:app_id" content="234187763701556">
-  <meta property="og:url" href="http://www.yunabe.jp/docs/python_metaclass.html">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.yunabe.jp/docs/python_metaclass.html">
-  <link rel="alternate" type="application/rss+xml" title="" href="http://www.yunabe.jp/feed.xml">
-  <script>
-    if(location.host=='www.yunabe.jp'){
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-19477574-2', 'yunabe.jp');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta property="fb:admins" content="yunabe"/><meta property="fb:app_id" content="234187763701556"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.8d493c1f9931ce30113c.css">:root{--accent-color:#2a7ae2}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;color:#333;margin:0}a{text-decoration:none}ol,ul{padding-left:1.2em}code[class*=language-],pre[class*=language-]{color:#ccc;background:none;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><meta name="generator" content="Gatsby 2.4.2"/><title data-react-helmet="true">Python の メタプログラミング (__metaclass__, メタクラス) を理解する | yunabe.jp</title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
     }
-  </script>
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-5305161629251914",
-      enable_page_level_ads: true
-    });
-  </script>
-</head>
-
-
-  <body>
-    <div class="page-content">
-      <div class="wrapper">
-        <header class="post-header">
-          <h1 class="post-title" itemprop="name headline">Python の メタプログラミング (__metaclass__, メタクラス) を理解する</h1>
-          <p class="post-meta"><time datetime="2015-01-14T00:00:00+09:00" itemprop="datePublished">更新 Jan 14, 2015</time></p>
-        </header>
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <p>Pythonのメタプログラミング (__metaclass__) は組み込み関数 <code class="highlighter-rouge">type</code>
-の普段利用しない隠れた機能や、 普通は利用しない特殊メソッド <code class="highlighter-rouge">__new__</code>
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var offset = element.offsetTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link as="script" rel="preload" href="/component---src-templates-post-js-19d0e74b7318ca3436ff.js"/><link as="script" rel="preload" href="/5-e0a4cbbccbb36c7fddc9.js"/><link as="script" rel="preload" href="/app-48a1d62e13e6714e875b.js"/><link as="script" rel="preload" href="/styles-6dc9e1bb46ccd13e3789.js"/><link as="script" rel="preload" href="/webpack-runtime-378fb84b5b87ba9c574c.js"/><link as="fetch" rel="preload" href="/static/d/168/path---docs-python-metaclass-html-beb-3bb-LWtHYunQg7bAiaTLt7pUwl4vKqs.json" crossorigin="use-credentials"/><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script></head><body><noscript id="gatsby-noscript">This app works best with JavaScript enabled.</noscript><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div><style data-emotion-css="15ux5f4">.css-15ux5f4{position:fixed;top:0;left:0;z-index:20;right:0;background-color:#fff;box-sizing:border-box;border-bottom:1px solid #eaecef;padding:0rem 1rem;line-height:2.2rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:baseline;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}.css-15ux5f4 nav{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.css-15ux5f4 nav > div{font-size:0.875rem;color:inherit;font-weight:500;display:inline-block;padding:0 0.5rem;margin:0 0.25rem;border-bottom:3px solid transparent;}.css-15ux5f4 nav > div:hover,.css-15ux5f4 nav > div .hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 nav > div.hlt{border-bottom:3px solid var(--accent-color);}.css-15ux5f4 a{color:inherit;box-sizing:border-box;}</style><header class="css-15ux5f4 e1mn4eq11"><style data-emotion-css="fo4y4d">.css-fo4y4d{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:16px;font-weight:bold;}</style><div class="css-fo4y4d e1mn4eq10"><a href="/">yunabe.jp</a></div><nav><div class="hlt"><a href="/docs/">Docs</a></div><div><a href="https://github.com/yunabe">GitHub</a></div><div><a href="https://www.facebook.com/yunabe">Facebook</a></div></nav></header><main><style data-emotion-css="hu7ge8">.css-hu7ge8{padding-top:2rem;padding-left:1.5rem;padding-right:1.5rem;max-width:740px;margin:0 auto;}.css-hu7ge8 p,.css-hu7ge8 ol,.css-hu7ge8 ul{line-height:1.7;}.css-hu7ge8 a{color:var(--accent-color);}.css-hu7ge8 *:not(pre) > code{font-size:0.875em;background-color:rgba(27,31,35,0.05);padding:0.25rem 0.5rem;margin:0;border-radius:3px;}.css-hu7ge8 h1{font-size:2.2rem;}.css-hu7ge8 h3{font-size:1.35rem;}.css-hu7ge8 h2{font-size:1.65rem;padding-bottom:0.3rem;border-bottom:1px solid #eaecef;}.css-hu7ge8 h1,.css-hu7ge8 h2,.css-hu7ge8 h3,.css-hu7ge8 h4,.css-hu7ge8 h5,.css-hu7ge8 h6{padding-top:3rem;margin-top:-2rem;}.css-hu7ge8 img{max-width:100%;}.css-hu7ge8 pre{line-height:1.4;padding:1.25rem 1.5rem;margin:0.85rem 0;border-radius:6px;overflow:auto;font-size:0.875rem;}@media (max-width:419px){.css-hu7ge8 pre{border-radius:0px;margin:0.85rem -1.5rem;}}.css-hu7ge8 code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;}.css-hu7ge8 li > p{margin:0;}.css-hu7ge8 blockquote{font-size:0.9rem;color:#888;border-left:0.5rem solid #dfe2e5;margin:0.5rem 0;padding:0.25rem 0 0.25rem 1rem;}.css-hu7ge8 blockquote > p{margin:0;}.css-hu7ge8 (max-width:419px) pre{margin:0.85rem -1.5rem;border-radius:0;}</style><div class="css-hu7ge8 e4j2fu00"><h1>Python の メタプログラミング (__metaclass__, メタクラス) を理解する</h1><div><div><p>Pythonのメタプログラミング (__metaclass__) は組み込み関数 <code>type</code>
+の普段利用しない隠れた機能や、 普通は利用しない特殊メソッド <code>__new__</code>
 などを理解する必要があり 理解するのが結構難しい。
 あまり関連情報がまとまってるドキュメントがなくて理解するのに苦労したので情報をまとめておきました。</p>
-
-<ul id="markdown-toc">
-  <li><a href="#type-とクラス定義のあまり知られていない関係" id="markdown-toc-type-とクラス定義のあまり知られていない関係">type とクラス定義のあまり知られていない関係</a></li>
-  <li><a href="#特殊メソッド-__new__" id="markdown-toc-特殊メソッド-__new__">特殊メソッド __new__</a></li>
-  <li><a href="#typeの継承" id="markdown-toc-typeの継承">typeの継承</a></li>
-  <li><a href="#実装の解説" id="markdown-toc-実装の解説">実装の解説</a></li>
+</div><p><b>目次</b></p><div><ul>
+<li>
+<p><a href="/docs/python_metaclass.html/#%E4%BA%8B%E5%89%8D%E7%9F%A5%E8%AD%98">事前知識</a></p>
+<ul>
+<li><a href="/docs/python_metaclass.html/#type-%E3%81%A8%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9A%E7%BE%A9%E3%81%AE%E3%81%82%E3%81%BE%E3%82%8A%E7%9F%A5%E3%82%89%E3%82%8C%E3%81%A6%E3%81%84%E3%81%AA%E3%81%84%E9%96%A2%E4%BF%82">type とクラス定義のあまり知られていない関係</a></li>
+<li><a href="/docs/python_metaclass.html/#%E7%89%B9%E6%AE%8A%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-__new__">特殊メソッド __new__</a></li>
 </ul>
-
-<p>#事前知識</p>
-
+</li>
+<li>
+<p><a href="/docs/python_metaclass.html/#__metaclass__">__metaclass__</a></p>
+<ul>
+<li><a href="/docs/python_metaclass.html/#type%E3%81%AE%E7%B6%99%E6%89%BF">typeの継承</a></li>
+</ul>
+</li>
+<li><a href="/docs/python_metaclass.html/#%E3%83%A1%E3%82%BF%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E4%BE%8B">メタクラスの例</a></li>
+<li><a href="/docs/python_metaclass.html/#%E5%AE%9F%E8%A3%85%E3%81%AE%E8%A7%A3%E8%AA%AC">実装の解説</a></li>
+</ul></div><div><h2 id="事前知識"><a href="#%E4%BA%8B%E5%89%8D%E7%9F%A5%E8%AD%98" aria-label="事前知識 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>事前知識</h2>
 <p><a href="https://docs.python.org/2/reference/datamodel.html#customizing-class-creation">Customizing class creation</a>
 (<a href="http://docs.python.jp/2/reference/datamodel.html#metaclasses">日本語:クラス生成をカスタマイズする</a>)
-を読むと、型を取得するのに普通利用するbuiltin関数 <code class="highlighter-rouge">type</code>
-を継承していたり、 普通利用することのない <code class="highlighter-rouge">__new__</code>
-が定義されていたりして、 <code class="highlighter-rouge">type</code> の隠された機能と <code class="highlighter-rouge">__new__</code>
+を読むと、型を取得するのに普通利用するbuiltin関数 <code>type</code>
+を継承していたり、 普通利用することのない <code>__new__</code>
+が定義されていたりして、 <code>type</code> の隠された機能と <code>__new__</code>
 について理解していないと
-何が書かれているかさっぱり分からないと思います。 まずは <code class="highlighter-rouge">__metaclass__</code>
+何が書かれているかさっぱり分からないと思います。 まずは <code>__metaclass__</code>
 を理解する上で重要なこの2つについて整理しておきましょう。</p>
-
-<h2 id="type-とクラス定義のあまり知られていない関係">type とクラス定義のあまり知られていない関係</h2>
-
-<p>ご存知のように Python には <code class="highlighter-rouge">type</code> という builtin
-関数が定義されています。 type は <code class="highlighter-rouge">type(obj)</code> のように1つの引数を与えて
+<h3 id="type-とクラス定義のあまり知られていない関係"><a href="#type-%E3%81%A8%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9A%E7%BE%A9%E3%81%AE%E3%81%82%E3%81%BE%E3%82%8A%E7%9F%A5%E3%82%89%E3%82%8C%E3%81%A6%E3%81%84%E3%81%AA%E3%81%84%E9%96%A2%E4%BF%82" aria-label="type とクラス定義のあまり知られていない関係 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>type とクラス定義のあまり知られていない関係</h3>
+<p>ご存知のように Python には <code>type</code> という builtin
+関数が定義されています。 type は <code>type(obj)</code> のように1つの引数を与えて
 obj の型を取得するのに利用したことがあるはずです。
 普通はこちらの機能しか使いません。</p>
-
 <p>しかし実は type にはもう一つの隠れた機能があります。
 <a href="http://docs.python.jp/2/library/functions.html#type">第1引数に文字列でクラス名、第2引数に親クラスの列、第3引数にクラスのメソッドや属性を定義した
 dict を渡して type
 を呼び出すとクラスを動的に定義することが可能です。</a></p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">ClassName</span><span class="token punctuation">(</span>P0<span class="token punctuation">,</span> P1<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  attrivute1 <span class="token operator">=</span> value1
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">P1</span><span class="p">):</span>
-  <span class="n">attrivute1</span> <span class="o">=</span> <span class="n">value1</span>
+  <span class="token keyword">def</span> <span class="token function">function1</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre></div>
+<p>のように普段クラスを定義していると思いますが、これは <code>type</code> を使うと:</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">def</span> <span class="token function">function1</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 
-  <span class="k">def</span> <span class="nf">function1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="o">...</span></code></pre></figure>
-
-<p>のように普段クラスを定義していると思いますが、これは <code class="highlighter-rouge">type</code> を使うと:</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">function1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-   <span class="o">...</span>
-
-<span class="n">ClassName</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s">'ClassName'</span><span class="p">,</span>
-                 <span class="p">[</span><span class="n">P0</span><span class="p">,</span><span class="n">P1</span><span class="p">,],</span>
-                 <span class="p">{</span><span class="s">'attribute1'</span><span class="p">:</span> <span class="n">value1</span><span class="p">,</span>
-                  <span class="s">'function1'</span><span class="p">:</span> <span class="n">function1</span><span class="p">,})</span></code></pre></figure>
-
+ClassName <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span><span class="token string">'ClassName'</span><span class="token punctuation">,</span>
+                 <span class="token punctuation">[</span>P0<span class="token punctuation">,</span>P1<span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                 <span class="token punctuation">{</span><span class="token string">'attribute1'</span><span class="token punctuation">:</span> value1<span class="token punctuation">,</span>
+                  <span class="token string">'function1'</span><span class="token punctuation">:</span> function1<span class="token punctuation">,</span><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre></div>
 <p>のように定義することも可能です。この2つの定義は全く同じ実行結果が得られます。
 ここで2つ目の type を使った定義をよく見てみると、 実は ClassName は type
 クラスにクラス名、親クラス、クラス定義を渡してインスタンス生成
 したものだということが分かります。クラスは <strong>type のインスタンス</strong>
-なのです。 その証拠に <code class="highlighter-rouge">type(cls)</code> は <code class="highlighter-rouge">type</code> を返しますし、
-<code class="highlighter-rouge">isinstance(cls, type)</code> は True を返します。</p>
-
-<h2 id="特殊メソッド-__new__">特殊メソッド __new__</h2>
-
+なのです。 その証拠に <code>type(cls)</code> は <code>type</code> を返しますし、
+<code>isinstance(cls, type)</code> は True を返します。</p>
+<h3 id="特殊メソッド-__new__"><a href="#%E7%89%B9%E6%AE%8A%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-__new__" aria-label="特殊メソッド __new__ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>特殊メソッド __new__</h3>
 <p>Python
 でクラスを定義する際、インスタンスを初期化するメソッドとして普通は
-<code class="highlighter-rouge">__init__</code> を定義します。 厳密には Python
+<code>__init__</code> を定義します。 厳密には Python
 には「コンストラクタ」という用語はありませんが、 C++/Java
-におけるコンストラクタに相当する処理は普通 <code class="highlighter-rouge">__init__</code> に書かれます。
+におけるコンストラクタに相当する処理は普通 <code>__init__</code> に書かれます。
 しかし実は Python にはインスタンスの生成方法を定義するもう一つの
 <a href="https://docs.python.org/2/reference/datamodel.html#object.__new__">特殊メソッド
 __new__</a>
 が存在します (<a href="http://docs.python.jp/2/reference/datamodel.html#object.__new__">__new__
 の日本語のドキュメント</a>)。</p>
-
 <p>Python でクラスを定義して、それを呼び出してインスタンスの生成を行うと
-<code class="highlighter-rouge">__init__</code> が
+<code>__init__</code> が
 暗黙的に呼び出されインスタンスの初期化が行われると理解していると思いますが、
-実はその前に <code class="highlighter-rouge">__new__</code> による処理が存在しています。
+実はその前に <code>__new__</code> による処理が存在しています。
 クラスのインスタンス生成を行った際に暗黙的に行われている処理はより正確に書くと</p>
-
 <ul>
-  <li><code class="highlighter-rouge">class ClassName</code> が <code class="highlighter-rouge">ClassName()</code>
+<li><code>class ClassName</code> が <code>ClassName()</code>
 によってインスタンス生成された場合</li>
-  <li>まず <code class="highlighter-rouge">ClassName.__new__</code> が第1引数に ClassName, 残りの引数に
+<li>まず <code>ClassName.__new__</code> が第1引数に ClassName, 残りの引数に
 ClassName に与えた残りの引数が与えられて呼び出される。</li>
-  <li>普通は <code class="highlighter-rouge">__new__</code>
+<li>普通は <code>__new__</code>
 は定義されていないので親クラスをたどっていって最終的に
-<code class="highlighter-rouge">object.__new__</code> が呼び出される。<code class="highlighter-rouge">object.__new__</code>
+<code>object.__new__</code> が呼び出される。<code>object.__new__</code>
 は第1引数で与えられた
-クラスのインスタンスを生成して返す。<code class="highlighter-rouge">object.__new__</code>
-が返すインスタンスは <code class="highlighter-rouge">__init__</code>
+クラスのインスタンスを生成して返す。<code>object.__new__</code>
+が返すインスタンスは <code>__init__</code>
 が実行される前の未初期化のインスタンスである点に注意。</li>
-  <li><code class="highlighter-rouge">__new__</code> が ClassName のインスタンスを返した場合に限り
-<code class="highlighter-rouge">ClassName.__init__</code> が呼び出される。</li>
+<li><code>__new__</code> が ClassName のインスタンスを返した場合に限り
+<code>ClassName.__init__</code> が呼び出される。</li>
 </ul>
-
 <p>というようになっています。 例えばものすごく極端な例ですが:</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+  <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span> <span class="token string">'__init__'</span>
 
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">print</span> <span class="s">'__init__'</span>
-
-<span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
-<span class="k">print</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></code></pre></figure>
-
-<p>のようなコードを書くと、<code class="highlighter-rouge">c</code> には <code class="highlighter-rouge">'43'</code> が代入されます。 そして
-<code class="highlighter-rouge">__init__</code> は呼び出されません。</p>
-
-<p><code class="highlighter-rouge">__new__</code> の役割はかなり理解しづらいと思うので
+c <span class="token operator">=</span> C<span class="token punctuation">(</span><span class="token number">43</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span> <span class="token builtin">type</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span></code></pre></div>
+<p>のようなコードを書くと、<code>c</code> には <code>'43'</code> が代入されます。 そして
+<code>__init__</code> は呼び出されません。</p>
+<p><code>__new__</code> の役割はかなり理解しづらいと思うので
 よくドキュメントを読んでサンプルを書いて動かしていろいろ試してみたほうがよいかと思います。
-個人的には ClassNameを呼び出すと <code class="highlighter-rouge">__init__</code> が暗黙的に呼び出されるという
-先入観が強すぎるせいか、 <code class="highlighter-rouge">__new__</code>
+個人的には ClassNameを呼び出すと <code>__init__</code> が暗黙的に呼び出されるという
+先入観が強すぎるせいか、 <code>__new__</code>
 で何が制御できるのか理解するのがなかなか大変でした。</p>
-
-<p>#__metaclass__
-class を定義すると自動的に <code class="highlighter-rouge">type('ClassName', ...)</code>
+<h2 id="__metaclass__"><a href="#__metaclass__" aria-label="__metaclass__ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>__metaclass__</h2>
+<p>class を定義すると自動的に <code>type('ClassName', ...)</code>
 が呼び出されてクラスが生成されるということを type の節で述べました。
 実は Python ではこの class
 を定義される際に暗黙的に呼び出される関数を別の関数で置き換えることができます。
@@ -181,175 +154,101 @@ class を定義すると自動的に <code class="highlighter-rouge">type('Class
 <a href="https://docs.python.org/2.7/reference/datamodel.html#__metaclass__">__metaclass__</a>
 です (<a href="http://docs.python.jp/2/reference/datamodel.html#__metaclass__">__metaclass__
 の日本語のドキュメント</a>)。</p>
+<p>classの定義に <code>__metaclass__</code> が存在するとクラスを生成する際に
+<code>__metaclass__</code> に格納された関数が <code>type</code> の代わりに呼び出されます。
+metaclass という名前がついていますが、<code>__metaclass__</code> は class
+である必要はありません。 <code>type</code> と同様の引数を受け取れる callable
+なオブジェクトならば何でも <code>__metaclass__</code> として利用できます。 例えば</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">def</span> <span class="token function">tolower_classname</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">return</span> <span class="token builtin">type</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span>
 
-<p>classの定義に <code class="highlighter-rouge">__metaclass__</code> が存在するとクラスを生成する際に
-<code class="highlighter-rouge">__metaclass__</code> に格納された関数が <code class="highlighter-rouge">type</code> の代わりに呼び出されます。
-metaclass という名前がついていますが、<code class="highlighter-rouge">__metaclass__</code> は class
-である必要はありません。 <code class="highlighter-rouge">type</code> と同様の引数を受け取れる callable
-なオブジェクトならば何でも <code class="highlighter-rouge">__metaclass__</code> として利用できます。 例えば</p>
+<span class="token keyword">class</span> <span class="token class-name">ClassName</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  __metaclass__ <span class="token operator">=</span> tolower_classname
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">tolower_classname</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-  <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">tolower_classname</span>
-
-  <span class="k">print</span> <span class="n">ClassName</span><span class="o">.</span><span class="n">__name__</span>  <span class="c1"># classname</span></code></pre></figure>
-
-<p>のようなコードを書くと、ClassName の名前が ‘classname’ になります
+  <span class="token keyword">print</span> ClassName<span class="token punctuation">.</span>__name__  <span class="token comment"># classname</span></code></pre></div>
+<p>のようなコードを書くと、ClassName の名前が 'classname' になります
 (classname というクラスが ClassName という変数に格納されている状態)。</p>
-
-<h2 id="typeの継承">typeの継承</h2>
-
+<h3 id="typeの継承"><a href="#type%E3%81%AE%E7%B6%99%E6%89%BF" aria-label="typeの継承 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>typeの継承</h3>
 <p>ただそれだと metaclass
 という名称とマッチしないので、実際にはtypeを継承したクラスを作成してそれを
-<code class="highlighter-rouge">__metaclass__</code> に指定するのが一番自然なのではないかと思います。
-その場合、 <code class="highlighter-rouge">__metaclass__</code>
+<code>__metaclass__</code> に指定するのが一番自然なのではないかと思います。
+その場合、 <code>__metaclass__</code>
 に指定されたクラスのインスタンスとしてクラスが作成されるようになるので、
-クラス作成をカスタマイズするには <code class="highlighter-rouge">__metaclass__</code> に指定したクラスの
-<code class="highlighter-rouge">__new__</code> もしくは <code class="highlighter-rouge">__init__</code> をカスタマイズすることになります。</p>
-
-<p><code class="highlighter-rouge">type</code> は <code class="highlighter-rouge">__init__</code> ではなく <code class="highlighter-rouge">__new__</code>
+クラス作成をカスタマイズするには <code>__metaclass__</code> に指定したクラスの
+<code>__new__</code> もしくは <code>__init__</code> をカスタマイズすることになります。</p>
+<p><code>type</code> は <code>__init__</code> ではなく <code>__new__</code>
 メソッドの方でクラス生成の主な作業を行っています (<a href="http://svn.python.org/projects/python/trunk/Objects/typeobject.c">typeobject.c
 ソースコード</a>)。
-そのため、 <code class="highlighter-rouge">type</code> の挙動をカスタマイズするには、普段オーバーライドする
-<code class="highlighter-rouge">__init__</code> ではなくて、 <code class="highlighter-rouge">__new__</code>
-メソッドをオーバーライドする必要があります。 そして <code class="highlighter-rouge">type.__new__</code>
-を呼び出す前に引数の <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">bases</code>, <code class="highlighter-rouge">dict</code>
+そのため、 <code>type</code> の挙動をカスタマイズするには、普段オーバーライドする
+<code>__init__</code> ではなくて、 <code>__new__</code>
+メソッドをオーバーライドする必要があります。 そして <code>type.__new__</code>
+を呼び出す前に引数の <code>name</code>, <code>bases</code>, <code>dict</code>
 を編集してクラス生成をカスタマイズすることになります。</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">mymeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="c1"># TODO: customize name, bases, dict.
-</span>    <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span></code></pre></figure>
-
-<p>#メタクラスの例</p>
-
-<p><code class="highlighter-rouge">__metaclass__</code>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">mymeta</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># TODO: customize name, bases, dict.</span>
+    <span class="token builtin">type</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span></code></pre></div>
+<h2 id="メタクラスの例"><a href="#%E3%83%A1%E3%82%BF%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E4%BE%8B" aria-label="メタクラスの例 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>メタクラスの例</h2>
+<p><code>__metaclass__</code>
 でどんなことができるのか理解するには例をみてみるのが一番だと思うので、
-メタクラスのサンプルとして、<code class="highlighter-rouge">__metaclass__</code> に指定すると getter/setter
-っぽい名前のメソッド (e.g. <code class="highlighter-rouge">get_name</code>, <code class="highlighter-rouge">getName</code>, <code class="highlighter-rouge">SetName</code>) を自動的に
+メタクラスのサンプルとして、<code>__metaclass__</code> に指定すると getter/setter
+っぽい名前のメソッド (e.g. <code>get_name</code>, <code>getName</code>, <code>SetName</code>) を自動的に
 <a href="http://docs.python.jp/2/library/functions.html#property">プロパティ</a>
 に変換してくれるメタクラス <a href="https://github.com/yunabe/practice/tree/master/python/metaclass/">auto_property
 (ソースコード)</a>
-を作成しました。 例えば <code class="highlighter-rouge">get_x</code>
-というメソッドを持つクラスに指定すると、アクセスすると <code class="highlighter-rouge">get_x</code>
-が呼び出されるプロパティ <code class="highlighter-rouge">x</code> が自動的に生成されます。 （逆に <code class="highlighter-rouge">get_x</code>
+を作成しました。 例えば <code>get_x</code>
+というメソッドを持つクラスに指定すると、アクセスすると <code>get_x</code>
+が呼び出されるプロパティ <code>x</code> が自動的に生成されます。 （逆に <code>get_x</code>
 はメソッドから消えます）</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  __metaclass__ <span class="token operator">=</span> auto_property
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">auto_property</span>
+  <span class="token keyword">def</span> <span class="token function">get_x</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token number">123</span>
 
-  <span class="k">def</span> <span class="nf">get_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">123</span>
+c <span class="token operator">=</span> C<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">assert</span> c<span class="token punctuation">.</span>x <span class="token operator">==</span> <span class="token number">123</span></code></pre></div>
+<h2 id="実装の解説"><a href="#%E5%AE%9F%E8%A3%85%E3%81%AE%E8%A7%A3%E8%AA%AC" aria-label="実装の解説 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>実装の解説</h2>
+<p>まずは <code>type</code> を継承したクラス auto_property を定義します。 そして
+<code>__new__</code> の中で引数として受け取ったクラス定義の辞書 <code>dict</code>
+をカスタマイズしてから、 <code>type.__new__</code> を呼び出します。</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">auto_property</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> classname<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># TODO: dict から setter/getter っぽい名前のメソッドを取り除いて、</span>
+    <span class="token comment">#       代わりに対応する property を持つ new_dict を作成する</span>
+    <span class="token keyword">return</span> <span class="token builtin">type</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span> classname<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> new_dict<span class="token punctuation">)</span></code></pre></div>
+<p>後は、 TODO の部分で <code>dict</code> に対して for文を回して正規表現を使って
+getter/setter と property 名を取り出して、 最後に <code>new_dict</code> に対して
+<code>property(getter, setter)</code> を代入するだけです。</p>
+<div class="gatsby-highlight" data-language="py"><pre class="language-py"><code class="language-py"><span class="token keyword">class</span> <span class="token class-name">auto_property</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">__new__</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> classname<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    new_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    setters <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    getters <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    properties <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> name <span class="token keyword">in</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+      value <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">[</span>name<span class="token punctuation">]</span>
+      <span class="token comment"># TODO: setter/getter を正規表現で検出</span>
 
-<span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="mi">123</span></code></pre></figure>
-
-<h2 id="実装の解説">実装の解説</h2>
-
-<p>まずは <code class="highlighter-rouge">type</code> を継承したクラス auto_property を定義します。 そして
-<code class="highlighter-rouge">__new__</code> の中で引数として受け取ったクラス定義の辞書 <code class="highlighter-rouge">dict</code>
-をカスタマイズしてから、 <code class="highlighter-rouge">type.__new__</code> を呼び出します。</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">auto_property</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="c1"># TODO: dict から setter/getter っぽい名前のメソッドを取り除いて、
-</span>    <span class="c1">#       代わりに対応する property を持つ new_dict を作成する
-</span>    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span></code></pre></figure>
-
-<p>後は、 TODO の部分で <code class="highlighter-rouge">dict</code> に対して for文を回して正規表現を使って
-getter/setter と property 名を取り出して、 最後に <code class="highlighter-rouge">new_dict</code> に対して
-<code class="highlighter-rouge">property(getter, setter)</code> を代入するだけです。</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">auto_property</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="n">new_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">setters</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">getters</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
-      <span class="n">value</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-      <span class="c1"># TODO: setter/getter を正規表現で検出
-</span>
-    <span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
-      <span class="n">getter</span> <span class="o">=</span> <span class="n">getters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-      <span class="n">setter</span> <span class="o">=</span> <span class="n">setters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-      <span class="n">new_dict</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getter</span><span class="p">,</span> <span class="n">setter</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">)</span></code></pre></figure>
-
+    <span class="token keyword">for</span> property_name <span class="token keyword">in</span> properties<span class="token punctuation">:</span>
+      getter <span class="token operator">=</span> getters<span class="token punctuation">.</span>get<span class="token punctuation">(</span>property_name<span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+      setter <span class="token operator">=</span> setters<span class="token punctuation">.</span>get<span class="token punctuation">(</span>property_name<span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+      new_dict<span class="token punctuation">[</span>property_name<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">property</span><span class="token punctuation">(</span>getter<span class="token punctuation">,</span> setter<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token builtin">type</span><span class="token punctuation">.</span>__new__<span class="token punctuation">(</span>cls<span class="token punctuation">,</span> classname<span class="token punctuation">,</span> bases<span class="token punctuation">,</span> new_dict<span class="token punctuation">)</span></code></pre></div>
 <p><a href="https://github.com/yunabe/practice/tree/master/python/metaclass/">githubにソースコードをコミットしてある</a>
-ので、実装の細かい部分はそちらを確認して下さい。</p>
-
-
-        <div>
-  <div style="display:inline-block;width:69px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="fb-like" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-  </div>
-  <div style="display:inline-block;width:56px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical"></a>
-  </div>
-  <div style="display:inline-block;width:50px;vertical-align:top;height:61px;margin-bottom:15px">
-    <div class="g-plusone" data-size="tall"></div>
-  </div>
-  <div style="display:inline-block;width:80px;vertical-align:top;height:61px;margin-bottom:15px">
-    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="vertical-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
-  </div>
-</div>
-
-        <div class="fb-comments" data-href="http://www.yunabe.jp/docs/python_metaclass.html"  data-numposts="5"></div>
-        <div style="text-align:center">
-          <a href="/docs">Home</a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li></li>
-          <li><a href="mailto:"></a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          
-
-          
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-
-    <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.8&appId=234187763701556";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-  {lang: 'ja'}
-</script>
-<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-
-    
-  </body>
-
-</html>
+ので、実装の細かい部分はそちらを確認して下さい。</p></div></div><style data-emotion-css="1fj6yi4">.css-1fj6yi4{margin-top:1rem;margin-bottom:1rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-webkit-justify-content:flex-end;-ms-flex-pack:end;justify-content:flex-end;font-size:0.875rem;color:#888;}</style><div class="css-1fj6yi4"><div><b>最終更新:</b> <!-- -->1/14/2015</div></div></div></main></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-19477574-2', 'auto', {});
+      
+      
+      
+      }
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-post-js","jsonName":"docs-python-metaclass-html-beb","path":"/docs/python_metaclass.html"};window.dataPath="168/path---docs-python-metaclass-html-beb-3bb-LWtHYunQg7bAiaTLt7pUwl4vKqs";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-48a1d62e13e6714e875b.js"],"component---src-templates-post-js":["/component---src-templates-post-js-19d0e74b7318ca3436ff.js"],"pages-manifest":["/pages-manifest-8e7c30eedc2020233eaa.js"]};/*]]>*/</script><script src="/webpack-runtime-378fb84b5b87ba9c574c.js" async=""></script><script src="/styles-6dc9e1bb46ccd13e3789.js" async=""></script><script src="/app-48a1d62e13e6714e875b.js" async=""></script><script src="/5-e0a4cbbccbb36c7fddc9.js" async=""></script><script src="/component---src-templates-post-js-19d0e74b7318ca3436ff.js" async=""></script></body></html>
