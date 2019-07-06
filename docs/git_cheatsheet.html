@@ -50,6 +50,9 @@
 <li><a href="/docs/git_cheatsheet.html#%E5%B1%A5%E6%AD%B4%E3%81%AE%E8%A1%A8%E7%A4%BA">履歴の表示</a></li>
 </ul>
 </li>
+<li><a href="/docs/git_cheatsheet.html#%E5%B7%AE%E5%88%86%E3%81%AE%E8%A1%A8%E7%A4%BA">差分の表示</a></li>
+<li><a href="/docs/git_cheatsheet.html#%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">コミットのマージ</a></li>
+<li><a href="/docs/git_cheatsheet.html#%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%81%AE%E6%93%8D%E4%BD%9C">ブランチの操作</a></li>
 <li><a href="/docs/git_cheatsheet.html#%E8%A9%B3%E7%B4%B0%E8%A7%A3%E8%AA%AC">詳細解説</a></li>
 <li><a href="/docs/git_cheatsheet.html#git-%E3%83%AC%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AE%E4%BD%9C%E6%88%90%E3%81%A8%E8%A4%87%E8%A3%BD">Git レポジトリの作成と複製</a></li>
 <li>
@@ -184,13 +187,55 @@
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git clean -f</code></pre></div>
 <p>レポジトリを作業前の状態に戻す</p>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git checkout HEAD . &amp;&amp; git clean -f</code></pre></div>
+<p>コミットしていない変更を一時避難する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git stach [push]</code></pre></div>
+<p>stashした変更を一覧表示</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git stash list</code></pre></div>
+<p>stashした変更を復元</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git stash pop [&lt;stash&gt;]</code></pre></div>
 <h3 id="コミット"><a href="#%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88" aria-label="コミット permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>コミット</h3>
 <p>ステージングされたファイルをコミットとして記録する。<code>-m &#x3C;message></code>でコミットメッセージを指定。</p>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git commit [-m &lt;message&gt;]</code></pre></div>
 <p>直前のコミットを修正する</p>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git commit --amend</code></pre></div>
 <h3 id="履歴の表示"><a href="#%E5%B1%A5%E6%AD%B4%E3%81%AE%E8%A1%A8%E7%A4%BA" aria-label="履歴の表示 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>履歴の表示</h3>
+<p>コミットログを表示</p>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log</code></pre></div>
+<p>コミットログをグラフで表示</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log --graph --oneline</code></pre></div>
+<p><code>git log</code>で変更内容の表示する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log -p</code></pre></div>
+<p><code>git log</code>で著者でコミットをフィルター</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log --author=&lt;pattern&gt;</code></pre></div>
+<p><code>git log</code>で表示件数を制限</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git log -n &lt;number&gt;</code></pre></div>
+<h2 id="差分の表示"><a href="#%E5%B7%AE%E5%88%86%E3%81%AE%E8%A1%A8%E7%A4%BA" aria-label="差分の表示 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>差分の表示</h2>
+<p>ワーキングツリーをインデックスと比較</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git diff</code></pre></div>
+<p>ワーキングツリーをHEADと比較する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git diff HEAD</code></pre></div>
+<p>インデックスをHEADと比較する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git diff --cached HEAD</code></pre></div>
+<p>２つのコミットを比較</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git diff &lt;base&gt; &lt;target&gt;</code></pre></div>
+<h2 id="コミットのマージ"><a href="#%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8" aria-label="コミットのマージ permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>コミットのマージ</h2>
+<p>現在のブランチを<code>&#x3C;commit></code>とマージ</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git merge &lt;commit&gt;</code></pre></div>
+<p>マージを中断する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git merge --abort</code></pre></div>
+<h2 id="ブランチの操作"><a href="#%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E3%81%AE%E6%93%8D%E4%BD%9C" aria-label="ブランチの操作 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ブランチの操作</h2>
+<p>ブランチ一覧表示</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git branch -vv</code></pre></div>
+<p>新しいブランチを作る</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git branch &lt;new&gt;</code></pre></div>
+<p>ブランチを切り替える</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git checkout &lt;branch&gt;</code></pre></div>
+<p>ブランチを作成して、切り替える</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git checkout [&lt;commit&gt;] -b &lt;branch&gt;</code></pre></div>
+<p>ブランチを削除する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git branch -d &lt;branch&gt;</code></pre></div>
+<p>ブランチを強制的に削除する</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">git branch -D &lt;branch&gt;</code></pre></div>
 <h2 id="詳細解説"><a href="#%E8%A9%B3%E7%B4%B0%E8%A7%A3%E8%AA%AC" aria-label="詳細解説 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>詳細解説</h2>
 <p><a href="https://git-scm.com/book/en/v2">Git - Book</a>は非常に丁寧にわかりやすく書かれており、トピックも十分に広く・深くカバーされています。<a href="https://git-scm.com/book/ja/v2">Git - Bookは日本語版</a>もあります。読んだことがなくgitを何となく使用している人は一度目を通すべきでしょう。
 <code>git-scm.com</code>のページは検索ではあまり上位には出てきませんが、ちまたのgit入門サイトを読むより公式の正しいドキュメントを目を通すほうが遥かにためになると思います。このドキュメントの目的もあくまで備忘録用によく使うコマンドを逆引きで一覧にすることです。詳細な情報やチュートリアルは公式の情報を参照してください。</p>
